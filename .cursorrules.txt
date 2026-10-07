@@ -1,0 +1,17 @@
+# REGLAS DE DESARROLLO - ASL IDEAS SPA (SALUD DIGITAL INCLUSIVA)
+
+## 1. PRINCIPIOS DE DISEÑO UI/UX E INCLUSIÓN COGNITIVA (TEA & TDAH)
+- **Carga Sensorial:** Evitar animaciones bruscas, pop-ups invasivos, contrastes extremos o tonos estridentes.
+- **Paleta de Colores:** Usar tonos relajantes. Fondo principal Crema (#FAF8F5), acentos en Verdes Suaves (#52796F, #84A59D) y texto oscuro suave.
+- **Tipografía:** Usar "Plus Jakarta Sans" con legibilidad alta y espaciado claro.
+- **Navegación:** Diseñar flujos lineales, simples y de baja fricción cognitiva.
+
+## 2. ESTRUCTURA DEL ECOSISTEMA (MODULOS DE APLICACIÓN)
+- **/app/lawenmoll:** Vitrina virtual de profesionales de medicina natural, terapias complementarias y fichas clínicas.
+- **/app/wellness:** Videoteca de rutinas de movimiento suave (Yoga, Tai Chi) y salas virtuales interactivas (Lotus, Cielo, Bosque, Raíz).
+- **/app/bienestar:** Interfaz de mensajería unificada (WhatsApp / Telegram).
+
+## 3. ARQUITECTURA TÉCNICA
+- Framework: Next.js (App Router) + Tailwind CSS + Lucide Icons.
+- Backend: Supabase Client (`@supabase/supabase-js`).
+- Rendimiento: Optimizado para tiempos de carga menores a 1.2 segundos.
