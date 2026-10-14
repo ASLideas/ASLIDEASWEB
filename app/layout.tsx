@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'ASL Ideas SpA | Salud Digital Inclusiva',
-  description: 'Plataforma de salud digital integrativa y bienestar consciente.',
+  description: 'Plataforma de Salud Digital Inclusiva & Bienestar Integrativo.',
 };
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="bg-[#FAF8F5] text-[#1B4D3E] antialiased">
+      <body className="bg-[#FAF8F5] text-[#1B4D3E] antialiased min-h-screen">
         {children}
       </body>
     </html>
