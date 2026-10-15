@@ -52,7 +52,7 @@ export default function Home() {
           <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-xl bg-[#1B4D3E]/10 flex items-center justify-center text-[#1B4D3E] font-bold text-lg">
-                ÌøõÔ∏è
+                ÔøΩÔøΩÔøΩÔ∏è
               </div>
               <h3 className="text-xl font-bold text-[#1B4D3E]">
                 Casa Matriz B2B
@@ -72,7 +72,7 @@ export default function Home() {
           <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-xl bg-[#2D6A4F]/10 flex items-center justify-center text-[#2D6A4F] font-bold text-lg">
-                Ìºø
+                ÔøΩÔøΩÔøΩ
               </div>
               <h3 className="text-xl font-bold text-[#1B4D3E]">
                 LAWENMOLL
@@ -92,7 +92,7 @@ export default function Home() {
           <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-xl bg-[#B08D4B]/10 flex items-center justify-center text-[#B08D4B] font-bold text-lg">
-                Ì∑ò‚Äç‚ôÄÔ∏è
+                ÔøΩÔøΩÔøΩ‚Äç‚ôÄÔ∏è
               </div>
               <h3 className="text-xl font-bold text-[#1B4D3E]">
                 Wellness Web App
@@ -112,7 +112,7 @@ export default function Home() {
           <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-xl bg-[#D4AF37]/10 flex items-center justify-center text-[#D4AF37] font-bold text-lg">
-                Ì≥ñ
+                ÔøΩÔøΩÔøΩ
               </div>
               <h3 className="text-xl font-bold text-[#1B4D3E]">
                 Sabidur√≠a Ancestral
