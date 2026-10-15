@@ -7,33 +7,33 @@ export default function Home() {
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
             <img 
-              src="/logo.png" 
+              src="/LOGO asl.png" 
               alt="ASL Ideas SpA Logo" 
-              className="h-10 w-auto object-contain"
+              className="h-12 w-auto object-contain"
             />
             <div>
               <h1 className="text-xl font-bold tracking-tight text-[#1B4D3E]">
                 ASL Ideas SpA
               </h1>
-              <p className="text-xs text-[#B08D4B] font-semibold">
+              <p className="text-xs text-[#E07A5F] font-semibold">
                 Casa Matriz B2B & Software Inclusivo
               </p>
             </div>
           </div>
           <a
             href="#contacto"
-            className="bg-[#1B4D3E] text-white text-xs md:text-sm px-5 py-2.5 rounded-xl font-medium hover:bg-[#2D6A4F] transition-all shadow-xs"
+            className="bg-[#E07A5F] text-white text-xs md:text-sm px-5 py-2.5 rounded-xl font-bold hover:bg-[#c9654a] transition-all shadow-xs"
           >
             Contacto B2B
           </a>
         </div>
       </header>
 
-      {/* 2. Hero B2B: Atracción de Clientes e Instituciones */}
+      {/* 2. Hero B2B */}
       <section className="max-w-5xl mx-auto text-center px-6 pt-16 pb-12 space-y-6">
-        <div className="inline-flex items-center gap-2 bg-[#B08D4B]/10 border border-[#B08D4B]/30 text-[#B08D4B] text-xs font-semibold px-4 py-1.5 rounded-full">
+        <div className="inline-flex items-center gap-2 bg-[#E07A5F]/10 border border-[#E07A5F]/30 text-[#E07A5F] text-xs font-semibold px-4 py-1.5 rounded-full">
           <span>✨</span>
-          <span>Desarrollo de Tecnología Amable & Accesibilidad Cognitiva (TEA & TDAH)</span>
+          <span>Tecnología Amable & Accesibilidad Cognitiva (TEA & TDAH)</span>
         </div>
         
         <h2 className="text-3xl md:text-5xl font-extrabold text-[#1B4D3E] leading-tight">
@@ -45,7 +45,7 @@ export default function Home() {
         </p>
       </section>
 
-      {/* 3. Misión y Visión de la PYME ASL Ideas SpA */}
+      {/* 3. Misión y Visión */}
       <section className="max-w-7xl mx-auto px-6 pb-16">
         <div className="grid md:grid-cols-2 gap-8 bg-white p-8 md:p-10 rounded-3xl border border-[#B08D4B]/20 shadow-xs">
           <div className="space-y-3">
@@ -61,7 +61,7 @@ export default function Home() {
           </div>
 
           <div className="space-y-3">
-            <div className="inline-block bg-[#B08D4B]/10 text-[#B08D4B] text-xs font-bold px-3 py-1 rounded-lg">
+            <div className="inline-block bg-[#E07A5F]/10 text-[#E07A5F] text-xs font-bold px-3 py-1 rounded-lg">
               � Visión Corporativa
             </div>
             <h3 className="text-xl font-bold text-[#1B4D3E]">
@@ -74,95 +74,98 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. Espacio Destacado: Tríada Mongen y sus 3 Pilares */}
+      {/* 4. Tríada Mongen: 3 Pilares */}
       <section className="max-w-7xl mx-auto px-6 pb-20">
-        <div className="bg-gradient-to-r from-[#1B4D3E] to-[#2D6A4F] text-white p-8 rounded-3xl mb-12 shadow-md">
+        <div className="bg-gradient-to-r from-[#1B4D3E] via-[#2D6A4F] to-[#1B4D3E] text-white p-8 rounded-3xl mb-12 shadow-md border border-[#E07A5F]/30">
           <div className="max-w-3xl mx-auto text-center space-y-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#E07A5F] bg-white/90 px-3 py-1 rounded-full">
               Ecosistema Integrativo Destacado
             </span>
-            <h3 className="text-2xl md:text-4xl font-extrabold">
+            <h3 className="text-2xl md:text-4xl font-extrabold pt-2">
               Tríada Mongen
             </h3>
             <p className="text-sm md:text-base text-emerald-100 leading-relaxed">
-              El término <strong>"Mongen"</strong> proviene del Mapudungun y significa <strong>"Vida", "Existencia" o "Salud Sanadora"</strong>. Unido con el concepto de <strong>"Tríada"</strong>, representa la unión perfecta de nuestros 3 primeros pilares de salud y autocuidado, diseñados para equilibrar cuerpo, mente y territorio.
+              El término <strong>"Mongen"</strong> proviene del Mapudungun y significa <strong>"Vida", "Existencia" o "Salud Sanadora"</strong>. Unido con el concepto de <strong>"Tríada"</strong>, representa la unión perfecta de nuestros 3 pilares clave de salud, movimiento y acompañamiento continuo.
             </p>
           </div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
           
+          {/* Pilar 1: LAWENMOLL */}
           <div className="bg-white rounded-3xl p-8 border border-[#B08D4B]/20 shadow-xs hover:shadow-lg transition-all flex flex-col justify-between group">
             <div className="space-y-4">
-              <div className="w-16 h-16 rounded-2xl bg-[#1B4D3E]/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
-                �
+              <div className="w-20 h-20 rounded-2xl bg-[#FAF8F5] border border-[#B08D4B]/20 p-2 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <img src="/lawenmoll_logo.jpg" alt="LAWENMOLL Logo" className="max-h-full max-w-full object-contain rounded-xl" />
               </div>
               <h4 className="text-2xl font-bold text-[#1B4D3E]">
                 1. LAWENMOLL
               </h4>
-              <p className="text-xs font-semibold text-[#B08D4B]">
-                Pilar de Salud Integrativa & Fichas Clínicas
+              <p className="text-xs font-semibold text-[#E07A5F]">
+                Salud Integrativa & Fichas Clínicas
               </p>
               <p className="text-xs text-gray-600 leading-relaxed">
-                <strong>Visión & Objetivo:</strong> Proporcionar diagnósticos preventivos inteligentes mediante el Test Metabólico y fichas clínicas encriptadas (Ley N° 21.663), conectando a usuarios con terapeutas y profesionales de medicina complementaria.
+                <strong>Visión & Objetivo:</strong> Proporcionar diagnósticos preventivos inteligentes mediante el Test Metabólico y fichas clínicas encriptadas (Ley N° 21.663), conectando a usuarios con terapeutas y profesionales.
               </p>
             </div>
             <div className="pt-6 border-t border-gray-100 mt-6">
               <a
-                href="#lawenmoll"
+                href="/lawenmoll"
                 className="inline-flex items-center justify-center w-full bg-[#1B4D3E] text-white text-xs font-bold py-3 rounded-xl hover:bg-[#2D6A4F] transition-all"
               >
-                Ingresar a Sala LAWENMOLL →
+                Ingresar a LAWENMOLL →
               </a>
             </div>
           </div>
 
+          {/* Pilar 2: WELLNESS */}
           <div className="bg-white rounded-3xl p-8 border border-[#B08D4B]/20 shadow-xs hover:shadow-lg transition-all flex flex-col justify-between group">
             <div className="space-y-4">
-              <div className="w-16 h-16 rounded-2xl bg-[#B08D4B]/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
-                �‍♀️
+              <div className="w-20 h-20 rounded-2xl bg-[#FAF8F5] border border-[#B08D4B]/20 p-2 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <img src="/logo.png" alt="Wellness Logo" className="max-h-full max-w-full object-contain rounded-xl" />
               </div>
               <h4 className="text-2xl font-bold text-[#1B4D3E]">
-                2. Wellness Web App
+                2. WELLNESS
               </h4>
-              <p className="text-xs font-semibold text-[#B08D4B]">
-                Pilar de Movimiento Adaptado & Salas Virtuales
+              <p className="text-xs font-semibold text-[#E07A5F]">
+                Movimiento Adaptado & Salas Virtuales
               </p>
               <p className="text-xs text-gray-600 leading-relaxed">
-                <strong>Visión & Objetivo:</strong> Promover el movimiento consciente sin impacto físico ni sobrecarga articular. Incluye salas temáticas (Lotus, Cielo, Bosque, Raíz) para regular el sistema nervioso y reducir el cortisol.
+                <strong>Visión & Objetivo:</strong> Promover el movimiento consciente sin impacto físico. Incluye salas temáticas (Lotus, Cielo, Bosque, Raíz) para regular el sistema nervioso y reducir el cortisol.
               </p>
             </div>
             <div className="pt-6 border-t border-gray-100 mt-6">
               <a
-                href="#wellness"
-                className="inline-flex items-center justify-center w-full bg-[#B08D4B] text-white text-xs font-bold py-3 rounded-xl hover:bg-[#96763D] transition-all"
+                href="/wellness"
+                className="inline-flex items-center justify-center w-full bg-[#E07A5F] text-white text-xs font-bold py-3 rounded-xl hover:bg-[#c9654a] transition-all"
               >
                 Ingresar a Salas Temáticas →
               </a>
             </div>
           </div>
 
+          {/* Pilar 3: BIENESTAR */}
           <div className="bg-white rounded-3xl p-8 border border-[#B08D4B]/20 shadow-xs hover:shadow-lg transition-all flex flex-col justify-between group">
             <div className="space-y-4">
-              <div className="w-16 h-16 rounded-2xl bg-[#D4AF37]/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
-                �
+              <div className="w-20 h-20 rounded-2xl bg-[#FAF8F5] border border-[#B08D4B]/20 p-2 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <img src="/LOGO BIENESTAR.png" alt="Bienestar Logo" className="max-h-full max-w-full object-contain rounded-xl" />
               </div>
               <h4 className="text-2xl font-bold text-[#1B4D3E]">
-                3. Sabiduría Ancestral
+                3. BIENESTAR
               </h4>
-              <p className="text-xs font-semibold text-[#B08D4B]">
-                Pilar de Comunidad & Fitoterapia Nativa
+              <p className="text-xs font-semibold text-[#E07A5F]">
+                Acompañamiento Empático & Mensajería Unificada
               </p>
               <p className="text-xs text-gray-600 leading-relaxed">
-                <strong>Visión & Objetivo:</strong> Preservar la herbolaria nativa y pautas tradicionales a través del Diario Mural interactivo "Secretos de la Abuela" y la generación automática de recetarios descargables en PDF.
+                <strong>Visión & Objetivo:</strong> Interfaz de comunicación unificada en WhatsApp y Telegram de baja fricción, diseñada para el acompañamiento cercano, resolución de dudas y contención en salud.
               </p>
             </div>
             <div className="pt-6 border-t border-gray-100 mt-6">
               <a
-                href="#sabiduria"
-                className="inline-flex items-center justify-center w-full bg-[#D4AF37] text-white text-xs font-bold py-3 rounded-xl hover:bg-[#B89628] transition-all"
+                href="/bienestar"
+                className="inline-flex items-center justify-center w-full bg-[#B08D4B] text-white text-xs font-bold py-3 rounded-xl hover:bg-[#96763D] transition-all"
               >
-                Ver Galería & Recetarios →
+                Ingresar a Mensajería →
               </a>
             </div>
           </div>
@@ -170,18 +173,18 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. Próximas Aplicaciones B2B en Construcción */}
+      {/* 5. Próximas Soluciones B2B */}
       <section className="max-w-7xl mx-auto px-6 pb-20">
         <div className="bg-white rounded-3xl p-8 md:p-10 border border-[#B08D4B]/20 shadow-xs space-y-6">
           <div className="text-center space-y-2">
-            <span className="text-xs font-bold text-[#B08D4B] uppercase tracking-wider">
+            <span className="text-xs font-bold text-[#E07A5F] uppercase tracking-wider">
               Innovación Continua
             </span>
             <h3 className="text-2xl font-bold text-[#1B4D3E]">
-              Otras Aplicaciones y Soluciones B2B (En Construcción �️)
+              Otras Soluciones B2B (En Construcción �️)
             </h3>
             <p className="text-xs text-gray-600 max-w-2xl mx-auto">
-              Como Casa Matriz de desarrollo tecnológico, nos encontramos diseñando nuevas herramientas modulares para PYMES, consultorías UI/UX e integración de inteligencia artificial empática.
+              Diseñamos herramientas modulares para PYMES, consultorías UI/UX e integración de IA empática.
             </p>
           </div>
 
@@ -189,8 +192,8 @@ export default function Home() {
             <div className="border border-dashed border-[#B08D4B]/40 rounded-2xl p-6 bg-[#FAF8F5] flex items-center gap-4">
               <div className="text-2xl">�</div>
               <div>
-                <h5 className="text-sm font-bold text-[#1B4D3E]">Módulo de Mensajería Unificada en Salud</h5>
-                <p className="text-xs text-gray-500">Integración asistida de canales de atención (WhatsApp / Telegram) con baja fricción. <em>[En desarrollo]</em></p>
+                <h5 className="text-sm font-bold text-[#1B4D3E]">Biblioteca & Recetarios Digitales</h5>
+                <p className="text-xs text-gray-500">Módulo descargable de guías de autocuidado y fitoterapia en PDF. <em>[En desarrollo]</em></p>
               </div>
             </div>
 
@@ -210,7 +213,7 @@ export default function Home() {
         <div className="bg-white rounded-3xl p-8 border border-[#B08D4B]/30 shadow-xs space-y-6">
           <div className="text-center space-y-2">
             <h3 className="text-2xl font-bold text-[#1B4D3E]">Contacto B2B & Convenios Institucionales</h3>
-            <p className="text-xs text-gray-600">¿Eres una PYME o institución? Contáctanos para solicitar licencias, desarrollo a medida o asesoría en diseño inclusivo.</p>
+            <p className="text-xs text-gray-600">¿Eres una PYME o institución? Contáctanos para solicitar licencias o desarrollo a medida.</p>
           </div>
           <form className="space-y-4">
             <div className="grid md:grid-cols-2 gap-4">
@@ -218,7 +221,7 @@ export default function Home() {
               <input type="email" placeholder="Correo corporativo" className="w-full p-3 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#1B4D3E]" />
             </div>
             <textarea placeholder="Cuéntanos sobre tu proyecto o necesidad de software B2B..." rows={4} className="w-full p-3 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#1B4D3E]"></textarea>
-            <button type="button" className="w-full bg-[#1B4D3E] text-white py-3 rounded-xl text-xs font-bold hover:bg-[#2D6A4F] transition-all shadow-xs">
+            <button type="button" className="w-full bg-[#E07A5F] text-white py-3 rounded-xl text-xs font-bold hover:bg-[#c9654a] transition-all shadow-xs">
               Enviar Consulta B2B
             </button>
           </form>
