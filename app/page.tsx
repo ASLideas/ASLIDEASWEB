@@ -31,9 +31,8 @@ export default function Home() {
 
       {/* 2. Hero B2B */}
       <section className="max-w-5xl mx-auto text-center px-6 pt-16 pb-12 space-y-6">
-        <div className="inline-flex items-center gap-2 bg-[#E07A5F]/10 border border-[#E07A5F]/30 text-[#E07A5F] text-xs font-semibold px-4 py-1.5 rounded-full">
-          <span>✨</span>
-          <span>Tecnología Amable & Accesibilidad Cognitiva (TEA & TDAH)</span>
+        <div className="inline-flex items-center bg-[#E07A5F]/10 border border-[#E07A5F]/30 text-[#E07A5F] text-xs font-semibold px-4 py-1.5 rounded-full">
+          <span>Tecnología Amable & Accesibilidad Cognitiva para Neurodivergencias</span>
         </div>
         
         <h2 className="text-3xl md:text-5xl font-extrabold text-[#1B4D3E] leading-tight">
@@ -50,7 +49,7 @@ export default function Home() {
         <div className="grid md:grid-cols-2 gap-8 bg-white p-8 md:p-10 rounded-3xl border border-[#B08D4B]/20 shadow-xs">
           <div className="space-y-3">
             <div className="inline-block bg-[#1B4D3E]/10 text-[#1B4D3E] text-xs font-bold px-3 py-1 rounded-lg">
-              � Misión Corporativa
+              Misión Corporativa
             </div>
             <h3 className="text-xl font-bold text-[#1B4D3E]">
               Diseño y Escalabilidad de Software Amable
@@ -62,13 +61,13 @@ export default function Home() {
 
           <div className="space-y-3">
             <div className="inline-block bg-[#E07A5F]/10 text-[#E07A5F] text-xs font-bold px-3 py-1 rounded-lg">
-              � Visión Corporativa
+              Visión Corporativa
             </div>
             <h3 className="text-xl font-bold text-[#1B4D3E]">
               Liderazgo en Accesibilidad UI/UX
             </h3>
             <p className="text-sm text-gray-600 leading-relaxed">
-              Ser la Casa Matriz de desarrollo tecnológico de referencia en Latinoamérica para entornos de baja fricción cognitiva (TEA Grado 1 y TDAH), transformando la salud digital en una experiencia humana, amigable y competitiva.
+              Ser la Casa Matriz de desarrollo tecnológico de referencia en Latinoamérica para entornos de baja fricción cognitiva y neurodivergencias, transformando la salud digital en una experiencia humana, amigable y competitiva.
             </p>
           </div>
         </div>
@@ -181,7 +180,7 @@ export default function Home() {
               Innovación Continua
             </span>
             <h3 className="text-2xl font-bold text-[#1B4D3E]">
-              Otras Soluciones B2B (En Construcción �️)
+              Otras Soluciones B2B (En Construcción)
             </h3>
             <p className="text-xs text-gray-600 max-w-2xl mx-auto">
               Diseñamos herramientas modulares para PYMES, consultorías UI/UX e integración de IA empática.
@@ -189,20 +188,14 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-6 pt-4">
-            <div className="border border-dashed border-[#B08D4B]/40 rounded-2xl p-6 bg-[#FAF8F5] flex items-center gap-4">
-              <div className="text-2xl">�</div>
-              <div>
-                <h5 className="text-sm font-bold text-[#1B4D3E]">Biblioteca & Recetarios Digitales</h5>
-                <p className="text-xs text-gray-500">Módulo descargable de guías de autocuidado y fitoterapia en PDF. <em>[En desarrollo]</em></p>
-              </div>
+            <div className="border border-dashed border-[#B08D4B]/40 rounded-2xl p-6 bg-[#FAF8F5]">
+              <h5 className="text-sm font-bold text-[#1B4D3E]">Biblioteca & Recetarios Digitales</h5>
+              <p className="text-xs text-gray-500 mt-1">Módulo descargable de guías de autocuidado y fitoterapia en PDF. <em>[En desarrollo]</em></p>
             </div>
 
-            <div className="border border-dashed border-[#B08D4B]/40 rounded-2xl p-6 bg-[#FAF8F5] flex items-center gap-4">
-              <div className="text-2xl">�</div>
-              <div>
-                <h5 className="text-sm font-bold text-[#1B4D3E]">Licencias UI/UX para Neurodivergencias</h5>
-                <p className="text-xs text-gray-500">Kits de componentes web adaptados bajo normas de accesibilidad cognitiva TEA & TDAH. <em>[En desarrollo]</em></p>
-              </div>
+            <div className="border border-dashed border-[#B08D4B]/40 rounded-2xl p-6 bg-[#FAF8F5]">
+              <h5 className="text-sm font-bold text-[#1B4D3E]">Licencias UI/UX para Neurodivergencias</h5>
+              <p className="text-xs text-gray-500 mt-1">Kits de componentes web adaptados bajo normas de accesibilidad cognitiva para neurodivergencias. <em>[En desarrollo]</em></p>
             </div>
           </div>
         </div>
