@@ -31,8 +31,8 @@ export default function Home() {
 
       {/* 2. Hero B2B */}
       <section className="max-w-5xl mx-auto text-center px-6 pt-16 pb-12 space-y-6">
-        <div className="inline-flex items-center bg-[#E07A5F]/10 border border-[#E07A5F]/30 text-[#E07A5F] text-xs font-semibold px-4 py-1.5 rounded-full">
-          <span>Tecnología Amable & Accesibilidad Cognitiva para Neurodivergencias</span>
+        <div className="inline-flex items-center bg-[#E07A5F]/10 border border-[#E07A5F]/30 text-[#E07A5F] text-xs font-semibold px-4 py-1.5 rounded-full uppercase tracking-wider">
+          Tecnología Amable & Accesibilidad Cognitiva para Neurodivergencias
         </div>
         
         <h2 className="text-3xl md:text-5xl font-extrabold text-[#1B4D3E] leading-tight">
@@ -48,7 +48,7 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-6 pb-16">
         <div className="grid md:grid-cols-2 gap-8 bg-white p-8 md:p-10 rounded-3xl border border-[#B08D4B]/20 shadow-xs">
           <div className="space-y-3">
-            <div className="inline-block bg-[#1B4D3E]/10 text-[#1B4D3E] text-xs font-bold px-3 py-1 rounded-lg">
+            <div className="inline-block bg-[#1B4D3E]/10 text-[#1B4D3E] text-xs font-bold px-3 py-1 rounded-lg uppercase tracking-wider">
               Misión Corporativa
             </div>
             <h3 className="text-xl font-bold text-[#1B4D3E]">
@@ -60,7 +60,7 @@ export default function Home() {
           </div>
 
           <div className="space-y-3">
-            <div className="inline-block bg-[#E07A5F]/10 text-[#E07A5F] text-xs font-bold px-3 py-1 rounded-lg">
+            <div className="inline-block bg-[#E07A5F]/10 text-[#E07A5F] text-xs font-bold px-3 py-1 rounded-lg uppercase tracking-wider">
               Visión Corporativa
             </div>
             <h3 className="text-xl font-bold text-[#1B4D3E]">
@@ -77,14 +77,14 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-6 pb-20">
         <div className="bg-gradient-to-r from-[#1B4D3E] via-[#2D6A4F] to-[#1B4D3E] text-white p-8 rounded-3xl mb-12 shadow-md border border-[#E07A5F]/30">
           <div className="max-w-3xl mx-auto text-center space-y-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#E07A5F] bg-white/90 px-3 py-1 rounded-full">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#E07A5F] bg-white px-4 py-1.5 rounded-full inline-block">
               Ecosistema Integrativo Destacado
             </span>
             <h3 className="text-2xl md:text-4xl font-extrabold pt-2">
               Tríada Mongen
             </h3>
             <p className="text-sm md:text-base text-emerald-100 leading-relaxed">
-              El término <strong>"Mongen"</strong> proviene del Mapudungun y significa <strong>"Vida", "Existencia" o "Salud Sanadora"</strong>. Unido con el concepto de <strong>"Tríada"</strong>, representa la unión perfecta de nuestros 3 pilares clave de salud, movimiento y acompañamiento continuo.
+              El término <strong>"Mongen"</strong> proviene del Mapudungun y significa <strong>"Vida", "Existencia" o "Salud Sanadora"</strong>. Unido con el concepto de <strong>"Tríada"</strong>, representa la unión de nuestros 3 pilares clave de salud integrativa, movimiento adaptado y acompañamiento continuo.
             </p>
           </div>
         </div>
@@ -180,7 +180,7 @@ export default function Home() {
               Innovación Continua
             </span>
             <h3 className="text-2xl font-bold text-[#1B4D3E]">
-              Otras Soluciones B2B (En Construcción)
+              Otras Soluciones B2B (En Desarrollo)
             </h3>
             <p className="text-xs text-gray-600 max-w-2xl mx-auto">
               Diseñamos herramientas modulares para PYMES, consultorías UI/UX e integración de IA empática.
@@ -190,12 +190,12 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-6 pt-4">
             <div className="border border-dashed border-[#B08D4B]/40 rounded-2xl p-6 bg-[#FAF8F5]">
               <h5 className="text-sm font-bold text-[#1B4D3E]">Biblioteca & Recetarios Digitales</h5>
-              <p className="text-xs text-gray-500 mt-1">Módulo descargable de guías de autocuidado y fitoterapia en PDF. <em>[En desarrollo]</em></p>
+              <p className="text-xs text-gray-500 mt-1">Módulo descargable de guías de autocuidado y fitoterapia en PDF.</p>
             </div>
 
             <div className="border border-dashed border-[#B08D4B]/40 rounded-2xl p-6 bg-[#FAF8F5]">
               <h5 className="text-sm font-bold text-[#1B4D3E]">Licencias UI/UX para Neurodivergencias</h5>
-              <p className="text-xs text-gray-500 mt-1">Kits de componentes web adaptados bajo normas de accesibilidad cognitiva para neurodivergencias. <em>[En desarrollo]</em></p>
+              <p className="text-xs text-gray-500 mt-1">Kits de componentes web adaptados bajo normas de accesibilidad cognitiva para neurodivergencias.</p>
             </div>
           </div>
         </div>
