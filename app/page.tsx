@@ -9,7 +9,7 @@ export default function Home() {
             <img 
               src="/LOGO asl.png" 
               alt="ASL Ideas SpA Logo" 
-              className="h-12 w-auto object-contain"
+              className="h-12 w-12 rounded-full object-cover border border-[#B08D4B]/30 shadow-xs"
             />
             <div>
               <h1 className="text-xl font-bold tracking-tight text-[#1B4D3E]">
@@ -74,7 +74,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. Tríada Mongen: 3 Pilares */}
+      {/* 4. Tríada Mongen: 3 Pilares con Logos Circulares */}
       <section className="max-w-7xl mx-auto px-6 pb-20">
         <div className="bg-gradient-to-r from-[#1B4D3E] via-[#2D6A4F] to-[#1B4D3E] text-white p-8 rounded-3xl mb-12 shadow-md border border-[#E07A5F]/30">
           <div className="max-w-3xl mx-auto text-center space-y-3">
@@ -95,8 +95,8 @@ export default function Home() {
           {/* Pilar 1: LAWENMOLL */}
           <div className="bg-white rounded-3xl p-8 border border-[#B08D4B]/20 shadow-xs hover:shadow-lg transition-all flex flex-col justify-between group">
             <div className="space-y-4">
-              <div className="w-20 h-20 rounded-2xl bg-[#FAF8F5] border border-[#B08D4B]/20 p-2 flex items-center justify-center group-hover:scale-105 transition-transform">
-                <img src="/lawenmoll_logo.jpg" alt="LAWENMOLL Logo" className="max-h-full max-w-full object-contain rounded-xl" />
+              <div className="w-24 h-24 rounded-full bg-[#FAF8F5] border-2 border-[#B08D4B]/30 p-1 flex items-center justify-center overflow-hidden mx-auto md:mx-0 group-hover:scale-105 transition-transform shadow-xs">
+                <img src="/lawenmoll_logo.jpg" alt="LAWENMOLL Logo" className="w-full h-full object-cover rounded-full" />
               </div>
               <h4 className="text-2xl font-bold text-[#1B4D3E]">
                 1. LAWENMOLL
@@ -121,8 +121,8 @@ export default function Home() {
           {/* Pilar 2: WELLNESS */}
           <div className="bg-white rounded-3xl p-8 border border-[#B08D4B]/20 shadow-xs hover:shadow-lg transition-all flex flex-col justify-between group">
             <div className="space-y-4">
-              <div className="w-20 h-20 rounded-2xl bg-[#FAF8F5] border border-[#B08D4B]/20 p-2 flex items-center justify-center group-hover:scale-105 transition-transform">
-                <img src="/logo.png" alt="Wellness Logo" className="max-h-full max-w-full object-contain rounded-xl" />
+              <div className="w-24 h-24 rounded-full bg-[#FAF8F5] border-2 border-[#B08D4B]/30 p-1 flex items-center justify-center overflow-hidden mx-auto md:mx-0 group-hover:scale-105 transition-transform shadow-xs">
+                <img src="/logo wellness.jpg" alt="Wellness Logo" className="w-full h-full object-cover rounded-full" />
               </div>
               <h4 className="text-2xl font-bold text-[#1B4D3E]">
                 2. WELLNESS
@@ -147,8 +147,8 @@ export default function Home() {
           {/* Pilar 3: BIENESTAR */}
           <div className="bg-white rounded-3xl p-8 border border-[#B08D4B]/20 shadow-xs hover:shadow-lg transition-all flex flex-col justify-between group">
             <div className="space-y-4">
-              <div className="w-20 h-20 rounded-2xl bg-[#FAF8F5] border border-[#B08D4B]/20 p-2 flex items-center justify-center group-hover:scale-105 transition-transform">
-                <img src="/LOGO BIENESTAR.png" alt="Bienestar Logo" className="max-h-full max-w-full object-contain rounded-xl" />
+              <div className="w-24 h-24 rounded-full bg-[#FAF8F5] border-2 border-[#B08D4B]/30 p-1 flex items-center justify-center overflow-hidden mx-auto md:mx-0 group-hover:scale-105 transition-transform shadow-xs">
+                <img src="/LOGO BIENESTAR.png" alt="Bienestar Logo" className="w-full h-full object-cover rounded-full" />
               </div>
               <h4 className="text-2xl font-bold text-[#1B4D3E]">
                 3. BIENESTAR
