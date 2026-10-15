@@ -15,7 +15,7 @@ export default function Home() {
                 ASL Ideas SpA
               </h1>
               <p className="text-xs text-[#B08D4B] font-semibold">
-                Salud Digital Inclusiva & Bienestar Integrativo
+                Casa Matriz & Salud Digital Inclusiva
               </p>
             </div>
           </div>
@@ -32,73 +32,106 @@ export default function Home() {
       <section className="max-w-5xl mx-auto text-center px-6 pt-16 pb-12 space-y-6">
         <div className="inline-flex items-center gap-2 bg-[#B08D4B]/10 border border-[#B08D4B]/30 text-[#B08D4B] text-xs font-semibold px-4 py-1.5 rounded-full">
           <span>✨</span>
-          <span>Accesibilidad Cognitiva & Baja Carga Sensorial (TEA & TDAH)</span>
+          <span>Desarrollo de Software B2B & Visibilidad Virtual Accesible</span>
         </div>
         
         <h2 className="text-3xl md:text-5xl font-extrabold text-[#1B4D3E] leading-tight">
-          Plataforma de Salud Digital Inclusiva
+          Impulsamos la Visibilidad Digital de PYMES y Salud Integrativa
         </h2>
         
         <p className="text-base md:text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
-          Ecosistema de tecnología amable, diseñado para acompañar el autocuidado, eliminar la frustración urbana y conectar la ciencia metabólica con la sabiduría integrativa.
+          Como Casa Matriz tecnológica, desarrollamos aplicaciones amables y herramientas de alto impacto para destacar en las competencias de hoy, conectando la innovación B2B con la accesibilidad cognitiva.
         </p>
       </section>
 
-      {/* Ecosistema de las 4 Oficinas Virtuales */}
+      {/* Sección Misión, Visión y Casa Matriz */}
+      <section className="max-w-7xl mx-auto px-6 pb-12">
+        <div className="grid md:grid-cols-2 gap-8 bg-white p-8 rounded-3xl border border-[#B08D4B]/20 shadow-xs">
+          <div className="space-y-3">
+            <div className="inline-block bg-[#1B4D3E]/10 text-[#1B4D3E] text-xs font-bold px-3 py-1 rounded-lg">
+              ��� Nuestra Misión
+            </div>
+            <h3 className="text-xl font-bold text-[#1B4D3E]">
+              Herramientas de Visibilidad Virtual B2B
+            </h3>
+            <p className="text-sm text-gray-600 leading-relaxed">
+              Diseñar y escalar soluciones tecnológicas amables que entreguen a PYMES, terapeutas e instituciones las mejores herramientas virtuales de presencia, eliminando la sobrecarga sensorial y diferenciándose en el mercado actual.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <div className="inline-block bg-[#B08D4B]/10 text-[#B08D4B] text-xs font-bold px-3 py-1 rounded-lg">
+              ��� Nuestra Visión
+            </div>
+            <h3 className="text-xl font-bold text-[#1B4D3E]">
+              Liderazgo en Tecnología Inclusiva
+            </h3>
+            <p className="text-sm text-gray-600 leading-relaxed">
+              Posicionar a ASL Ideas SpA en Latinoamérica como la empresa matriz de desarrollo de software accesible por excelencia, transformando la tecnología en una experiencia placentera, humana y altamente competitiva.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Ecosistema de las 3 Primeras Herramientas + Casa Matriz */}
       <section className="max-w-7xl mx-auto px-6 pb-20">
+        <h3 className="text-2xl font-bold text-center text-[#1B4D3E] mb-8">
+          Nuestras Soluciones de Software y Soluciones Activas
+        </h3>
+        
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           
-          {/* Oficina 1: Casa Matriz */}
+          {/* Casa Matriz B2B */}
           <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-xl bg-[#1B4D3E]/10 flex items-center justify-center text-[#1B4D3E] font-bold text-lg">
-                ���️
+                ���️
               </div>
               <h3 className="text-xl font-bold text-[#1B4D3E]">
                 Casa Matriz B2B
               </h3>
               <p className="text-xs text-gray-600 leading-relaxed">
-                Gestión corporativa, convenios institucionales, licencias tecnológicas y consultoría UI/UX adaptada para neurodivergencias.
+                Desarrollo de apps para PYMES, licencias tecnológicas, convenios institucionales y consultoría en posicionamiento virtual adaptado.
               </p>
             </div>
             <div className="pt-6 border-t border-gray-100 mt-6">
               <span className="text-xs font-semibold text-[#B08D4B]">
-                Ver Soluciones B2B →
+                Servicios B2B →
               </span>
             </div>
           </div>
 
-          {/* Oficina 2: LAWENMOLL */}
+          {/* Herramienta 1: LAWENMOLL */}
           <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-xl bg-[#2D6A4F]/10 flex items-center justify-center text-[#2D6A4F] font-bold text-lg">
-                ���
+                ���
               </div>
               <h3 className="text-xl font-bold text-[#1B4D3E]">
                 LAWENMOLL
               </h3>
               <p className="text-xs text-gray-600 leading-relaxed">
-                Salud Integrativa & Fichas Clínicas encriptadas (Ley N° 21.663). Test de Bienestar Inteligente, evaluación metabólica y agenda médica.
+                Salud Integrativa & Fichas Clínicas encriptadas (Ley N° 21.663). Test de Bienestar Inteligente y vitrina para profesionales de salud alternativa.
               </p>
             </div>
             <div className="pt-6 border-t border-gray-100 mt-6">
               <span className="text-xs font-semibold text-[#B08D4B]">
-                Ingresar a Portal →
+                Ver Portal →
               </span>
             </div>
           </div>
 
-          {/* Oficina 3: Wellness Web App */}
+          {/* Herramienta 2: Wellness Web App */}
           <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-xl bg-[#B08D4B]/10 flex items-center justify-center text-[#B08D4B] font-bold text-lg">
-                ���‍♀️
+                ���‍♀️
               </div>
               <h3 className="text-xl font-bold text-[#1B4D3E]">
                 Wellness Web App
               </h3>
               <p className="text-xs text-gray-600 leading-relaxed">
-                Movimiento adaptado sin impacto, videoteca interactiva y Salas Virtuales temáticas (Lotus, Cielo, Bosque, Raíz) para reducción de cortisol.
+                Movimiento adaptado sin impacto, videoteca interactiva y Salas Virtuales temáticas para la gestión del estrés y autocuidado.
               </p>
             </div>
             <div className="pt-6 border-t border-gray-100 mt-6">
@@ -108,17 +141,17 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Oficina 4: Sabiduría Ancestral */}
+          {/* Herramienta 3: Sabiduría Ancestral */}
           <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-xl bg-[#D4AF37]/10 flex items-center justify-center text-[#D4AF37] font-bold text-lg">
-                ���
+                ���
               </div>
               <h3 className="text-xl font-bold text-[#1B4D3E]">
                 Sabiduría Ancestral
               </h3>
               <p className="text-xs text-gray-600 leading-relaxed">
-                Fitoterapia nativa, comunidad activa, Diario Mural "Secretos de la Abuela" y recetarios herbolarios descargables en PDF.
+                Fitoterapia nativa, comunidad activa, Diario Mural interactivo y divulgación herbolaria descargable en PDF.
               </p>
             </div>
             <div className="pt-6 border-t border-gray-100 mt-6">
@@ -133,7 +166,7 @@ export default function Home() {
 
       {/* Pie de Página */}
       <footer className="bg-white border-t border-gray-100 text-center text-xs text-gray-500 py-6 px-6">
-        <p>© ASL Ideas SpA. Todos los derechos reservados. | Plataforma diseñada con Accesibilidad Sensorial.</p>
+        <p>© ASL Ideas SpA. Todos los derechos reservados. | Casa Matriz de Desarrollo B2B & Salud Digital Inclusiva.</p>
       </footer>
     </main>
   );
