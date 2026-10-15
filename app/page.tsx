@@ -50,7 +50,7 @@ export default function Home() {
         <div className="grid md:grid-cols-2 gap-8 bg-white p-8 md:p-10 rounded-3xl border border-[#B08D4B]/20 shadow-xs">
           <div className="space-y-3">
             <div className="inline-block bg-[#1B4D3E]/10 text-[#1B4D3E] text-xs font-bold px-3 py-1 rounded-lg">
-              ÌæØ Misi√≥n Corporativa
+              ÔøΩ Misi√≥n Corporativa
             </div>
             <h3 className="text-xl font-bold text-[#1B4D3E]">
               Dise√±o y Escalabilidad de Software Amable
@@ -62,7 +62,7 @@ export default function Home() {
 
           <div className="space-y-3">
             <div className="inline-block bg-[#B08D4B]/10 text-[#B08D4B] text-xs font-bold px-3 py-1 rounded-lg">
-              Ì∫Ä Visi√≥n Corporativa
+              ÔøΩ Visi√≥n Corporativa
             </div>
             <h3 className="text-xl font-bold text-[#1B4D3E]">
               Liderazgo en Accesibilidad UI/UX
@@ -76,7 +76,6 @@ export default function Home() {
 
       {/* 4. Espacio Destacado: Tr√≠ada Mongen y sus 3 Pilares */}
       <section className="max-w-7xl mx-auto px-6 pb-20">
-        {/* Rese√±a del Nombre */}
         <div className="bg-gradient-to-r from-[#1B4D3E] to-[#2D6A4F] text-white p-8 rounded-3xl mb-12 shadow-md">
           <div className="max-w-3xl mx-auto text-center space-y-3">
             <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
@@ -86,19 +85,17 @@ export default function Home() {
               Tr√≠ada Mongen
             </h3>
             <p className="text-sm md:text-base text-emerald-100 leading-relaxed">
-              El t√©rmino <strong>"Mongen"</strong> proviene del Mapudungun y significa <strong>"Vida", "Existencia" o "Salud Sanadora"</strong>. Unilalizado con el concepto de <strong>"Tr√≠ada"</strong>, representa la uni√≥n perfecta de nuestros 3 primeros pilares de salud y autocuidado, dise√±ados para equilibrar cuerpo, mente y territorio.
+              El t√©rmino <strong>"Mongen"</strong> proviene del Mapudungun y significa <strong>"Vida", "Existencia" o "Salud Sanadora"</strong>. Unido con el concepto de <strong>"Tr√≠ada"</strong>, representa la uni√≥n perfecta de nuestros 3 primeros pilares de salud y autocuidado, dise√±ados para equilibrar cuerpo, mente y territorio.
             </p>
           </div>
         </div>
 
-        {/* Tarjetas de los 3 Pilares con Redirecci√≥n a Salas Virtuales */}
         <div className="grid md:grid-cols-3 gap-8">
           
-          {/* Pilar 1: LAWENMOLL */}
           <div className="bg-white rounded-3xl p-8 border border-[#B08D4B]/20 shadow-xs hover:shadow-lg transition-all flex flex-col justify-between group">
             <div className="space-y-4">
               <div className="w-16 h-16 rounded-2xl bg-[#1B4D3E]/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
-                Ìºø
+                ÔøΩ
               </div>
               <h4 className="text-2xl font-bold text-[#1B4D3E]">
                 1. LAWENMOLL
@@ -120,11 +117,10 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Pilar 2: Wellness Web App */}
           <div className="bg-white rounded-3xl p-8 border border-[#B08D4B]/20 shadow-xs hover:shadow-lg transition-all flex flex-col justify-between group">
             <div className="space-y-4">
               <div className="w-16 h-16 rounded-2xl bg-[#B08D4B]/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
-                Ì∑ò‚Äç‚ôÄÔ∏è
+                ÔøΩ‚Äç‚ôÄÔ∏è
               </div>
               <h4 className="text-2xl font-bold text-[#1B4D3E]">
                 2. Wellness Web App
@@ -146,11 +142,10 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Pilar 3: Sabidur√≠a Ancestral */}
           <div className="bg-white rounded-3xl p-8 border border-[#B08D4B]/20 shadow-xs hover:shadow-lg transition-all flex flex-col justify-between group">
             <div className="space-y-4">
               <div className="w-16 h-16 rounded-2xl bg-[#D4AF37]/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
-                Ì≥ñ
+                ÔøΩ
               </div>
               <h4 className="text-2xl font-bold text-[#1B4D3E]">
                 3. Sabidur√≠a Ancestral
@@ -183,7 +178,7 @@ export default function Home() {
               Innovaci√≥n Continua
             </span>
             <h3 className="text-2xl font-bold text-[#1B4D3E]">
-              Otras Aplicaciones y Soluciones B2B (En Construcci√≥n Ìª†Ô∏è)
+              Otras Aplicaciones y Soluciones B2B (En Construcci√≥n ÔøΩÔ∏è)
             </h3>
             <p className="text-xs text-gray-600 max-w-2xl mx-auto">
               Como Casa Matriz de desarrollo tecnol√≥gico, nos encontramos dise√±ando nuevas herramientas modulares para PYMES, consultor√≠as UI/UX e integraci√≥n de inteligencia artificial emp√°tica.
@@ -192,7 +187,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 gap-6 pt-4">
             <div className="border border-dashed border-[#B08D4B]/40 rounded-2xl p-6 bg-[#FAF8F5] flex items-center gap-4">
-              <div className="text-2xl">Ì≤¨</div>
+              <div className="text-2xl">ÔøΩ</div>
               <div>
                 <h5 className="text-sm font-bold text-[#1B4D3E]">M√≥dulo de Mensajer√≠a Unificada en Salud</h5>
                 <p className="text-xs text-gray-500">Integraci√≥n asistida de canales de atenci√≥n (WhatsApp / Telegram) con baja fricci√≥n. <em>[En desarrollo]</em></p>
@@ -200,7 +195,7 @@ export default function Home() {
             </div>
 
             <div className="border border-dashed border-[#B08D4B]/40 rounded-2xl p-6 bg-[#FAF8F5] flex items-center gap-4">
-              <div className="text-2xl">Ì∑©</div>
+              <div className="text-2xl">ÔøΩ</div>
               <div>
                 <h5 className="text-sm font-bold text-[#1B4D3E]">Licencias UI/UX para Neurodivergencias</h5>
                 <p className="text-xs text-gray-500">Kits de componentes web adaptados bajo normas de accesibilidad cognitiva TEA & TDAH. <em>[En desarrollo]</em></p>
