@@ -18,39 +18,39 @@ export default function AdminConsole() {
 
   if (!isAuthenticated) {
     return (
-      <main className="min-h-screen bg-[#FAF8F5] flex items-center justify-center p-6 font-sans">
-        <div className="bg-white p-8 rounded-2xl border border-[#E07A5F]/40 shadow-xl max-w-md w-full space-y-6">
-          <div className="text-center space-y-2">
-            <div className="w-16 h-16 rounded-full bg-[#1B4D3E] text-white flex items-center justify-center mx-auto font-bold text-xl border-2 border-[#E07A5F]">
-              ASL
+      <main className="min-h-screen bg-[#F4F7F5] flex items-center justify-center p-6 font-sans">
+        <div className="bg-white p-8 rounded-2xl border border-[#C8D8CE] shadow-md max-w-md w-full space-y-6 text-[#2D5A4C]">
+          <div className="text-center space-y-3">
+            <div className="w-20 h-20 rounded-full border-2 border-[#E07A5F] overflow-hidden bg-white mx-auto shadow-xs flex items-center justify-center p-1">
+              <img src="/LOGO_asl.png" alt="Logo Oficial ASL Ideas SpA" className="w-full h-full object-cover rounded-full" />
             </div>
-            <h1 className="text-xl font-bold text-[#1B4D3E]">Consola Privada de Administración</h1>
-            <p className="text-xs text-[#52796F]">Uso exclusivo autorizado para la Administradora Fundadora de ASL Ideas SpA</p>
+            <h1 className="text-xl font-bold text-[#2D5A4C]">Consola Privada de Administración</h1>
+            <p className="text-xs text-[#52796F]">Acceso exclusivo para la Administradora Fundadora</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-[#1B4D3E] mb-1">Clave de Acceso Privada</label>
+              <label className="block text-xs font-semibold text-[#2D5A4C] mb-1">Clave de Acceso Privada</label>
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Ingresa tu clave privada"
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-[#E07A5F]"
+                className="w-full px-4 py-2.5 border border-[#C8D8CE] rounded-xl text-xs focus:outline-hidden focus:border-[#52796F] bg-[#FAF8F5]"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-[#1B4D3E] text-white py-3 rounded-xl font-semibold text-xs hover:bg-[#2D6A4F] transition shadow-sm"
+              className="w-full bg-[#52796F] text-white py-3 rounded-xl font-semibold text-xs hover:bg-[#41675B] transition shadow-xs"
             >
               Ingresar a la Consola
             </button>
           </form>
 
           <div className="text-center pt-2">
-            <p className="text-[10px] text-gray-400">Protegido bajo encriptación SSL TLS 1.3 &amp; Supabase Auth</p>
+            <p className="text-[10px] text-[#84A59D]">Protegido bajo encriptación SSL TLS 1.3 &amp; Supabase Auth</p>
           </div>
         </div>
       </main>
@@ -58,28 +58,28 @@ export default function AdminConsole() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#1B4D3E] font-sans flex flex-col md:flex-row">
-      {/* Sidebar de Navegación Administradora */}
-      <aside className="w-full md:w-80 bg-[#1B4D3E] text-[#FAF8F5] p-6 flex flex-col justify-between">
+    <div className="min-h-screen bg-[#F4F7F5] text-[#2D5A4C] font-sans flex flex-col md:flex-row">
+      {/* Sidebar Verde Clarito Suave (#E8F0EC) en lugar de Verde Oscuro (#1B4D3E) */}
+      <aside className="w-full md:w-80 bg-[#E8F0EC] border-r border-[#C8D8CE] p-6 flex flex-col justify-between">
         <div>
-          <div className="mb-8 border-b border-[#52796F]/40 pb-6">
+          <div className="mb-8 border-b border-[#C8D8CE] pb-6">
             <div className="flex items-center space-x-3 mb-2">
-              <div className="w-10 h-10 rounded-full border-2 border-[#E07A5F] overflow-hidden bg-white p-0.5">
+              <div className="w-12 h-12 rounded-full border-2 border-[#E07A5F] overflow-hidden bg-white p-0.5 shadow-xs">
                 <img src="/LOGO_asl.png" alt="Logo ASL Ideas" className="w-full h-full object-cover rounded-full" />
               </div>
               <div>
-                <h1 className="text-base font-bold tracking-wide">ASL Ideas SpA</h1>
-                <span className="text-[10px] text-[#E07A5F] font-semibold">Panel de Control Unificado</span>
+                <h1 className="text-base font-bold text-[#2D5A4C] tracking-wide">ASL Ideas SpA</h1>
+                <span className="text-[11px] text-[#E07A5F] font-bold">Consola Administradora</span>
               </div>
             </div>
-            <p className="text-[11px] text-[#84A59D]">Sesión Privada Activa: Administradora</p>
+            <p className="text-[11px] text-[#52796F]">Sesión Privada Activa</p>
           </div>
 
           <nav className="space-y-2">
             <button
               onClick={() => setActiveTab('contabilidad')}
               className={`w-full text-left px-4 py-3 rounded-xl text-xs font-semibold transition flex items-center space-x-3 ${
-                activeTab === 'contabilidad' ? 'bg-[#52796F] text-white' : 'hover:bg-[#2D6A4F]/50 text-[#FAF8F5]'
+                activeTab === 'contabilidad' ? 'bg-[#52796F] text-white shadow-xs' : 'hover:bg-[#D5E3DB] text-[#2D5A4C]'
               }`}
             >
               <svg className="w-4 h-4 text-[#E07A5F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,19 +91,19 @@ export default function AdminConsole() {
             <button
               onClick={() => setActiveTab('especialistas')}
               className={`w-full text-left px-4 py-3 rounded-xl text-xs font-semibold transition flex items-center space-x-3 ${
-                activeTab === 'especialistas' ? 'bg-[#52796F] text-white' : 'hover:bg-[#2D6A4F]/50 text-[#FAF8F5]'
+                activeTab === 'especialistas' ? 'bg-[#52796F] text-white shadow-xs' : 'hover:bg-[#D5E3DB] text-[#2D5A4C]'
               }`}
             >
               <svg className="w-4 h-4 text-[#E07A5F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
-              <span>Especialistas LAWENMOLL (Ley 21.663)</span>
+              <span>Especialistas LAWENMOLL</span>
             </button>
 
             <button
               onClick={() => setActiveTab('metricas')}
               className={`w-full text-left px-4 py-3 rounded-xl text-xs font-semibold transition flex items-center space-x-3 ${
-                activeTab === 'metricas' ? 'bg-[#52796F] text-white' : 'hover:bg-[#2D6A4F]/50 text-[#FAF8F5]'
+                activeTab === 'metricas' ? 'bg-[#52796F] text-white shadow-xs' : 'hover:bg-[#D5E3DB] text-[#2D5A4C]'
               }`}
             >
               <svg className="w-4 h-4 text-[#E07A5F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,7 +115,7 @@ export default function AdminConsole() {
             <button
               onClick={() => setActiveTab('actualizaciones')}
               className={`w-full text-left px-4 py-3 rounded-xl text-xs font-semibold transition flex items-center space-x-3 ${
-                activeTab === 'actualizaciones' ? 'bg-[#52796F] text-white' : 'hover:bg-[#2D6A4F]/50 text-[#FAF8F5]'
+                activeTab === 'actualizaciones' ? 'bg-[#52796F] text-white shadow-xs' : 'hover:bg-[#D5E3DB] text-[#2D5A4C]'
               }`}
             >
               <svg className="w-4 h-4 text-[#E07A5F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -127,7 +127,7 @@ export default function AdminConsole() {
             <button
               onClick={() => setActiveTab('redes')}
               className={`w-full text-left px-4 py-3 rounded-xl text-xs font-semibold transition flex items-center space-x-3 ${
-                activeTab === 'redes' ? 'bg-[#52796F] text-white' : 'hover:bg-[#2D6A4F]/50 text-[#FAF8F5]'
+                activeTab === 'redes' ? 'bg-[#52796F] text-white shadow-xs' : 'hover:bg-[#D5E3DB] text-[#2D5A4C]'
               }`}
             >
               <svg className="w-4 h-4 text-[#E07A5F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,73 +138,76 @@ export default function AdminConsole() {
           </nav>
         </div>
 
-        <div className="pt-6 border-t border-[#52796F]/40 text-[11px] text-[#84A59D] space-y-2">
-          <p>Correo B2B: <span className="text-white font-mono">contacto@aslideas.cl</span></p>
-          <p>Correo LAWENMOLL: <span className="text-white font-mono">salud@lawenmoll.cl</span></p>
+        <div className="pt-6 border-t border-[#C8D8CE] text-[11px] text-[#52796F] space-y-2">
+          <p>Correo B2B: <span className="text-[#2D5A4C] font-mono font-semibold">contacto@aslideas.cl</span></p>
+          <p>Correo LAWENMOLL: <span className="text-[#2D5A4C] font-mono font-semibold">contacto@lawenmoll.cl</span></p>
           <button onClick={() => setIsAuthenticated(false)} className="text-[#E07A5F] hover:underline text-xs font-semibold pt-2 block">
             Cerrar Sesión Segura
           </button>
         </div>
       </aside>
 
-      {/* Área Principal */}
-      <main className="flex-1 p-6 md:p-10 max-w-6xl">
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 pb-4 border-b border-[#52796F]/20">
-          <div>
-            <h2 className="text-2xl font-bold text-[#1B4D3E]">
-              {activeTab === 'contabilidad' && 'Casa Matriz: Área Contable & Archivos Excel'}
-              {activeTab === 'especialistas' && 'Auditoría de Documentos de Especialistas (LAWENMOLL)'}
-              {activeTab === 'metricas' && 'Estadísticas Mercado & Desempeño de Apps'}
-              {activeTab === 'actualizaciones' && 'Administración & Actualizaciones de Módulos'}
-              {activeTab === 'redes' && 'Agente Automatizado para Redes Sociales & Monetización'}
-            </h2>
-            <p className="text-xs text-[#52796F] mt-1">Consola privada para la gestión integrada de las 4 plataformas</p>
+      {/* Área Principal con Tonos Suaves y Claros */}
+      <main className="flex-1 p-6 md:p-10 max-w-6xl bg-[#FAF8F5]">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 pb-4 border-b border-[#C8D8CE]">
+          <div className="flex items-center gap-4">
+            <img src="/LOGO_asl.png" alt="Logo ASL" className="w-10 h-10 rounded-full object-cover border border-[#E07A5F]" />
+            <div>
+              <h2 className="text-xl font-bold text-[#2D5A4C]">
+                {activeTab === 'contabilidad' && 'Casa Matriz: Área Contable & Archivos Excel'}
+                {activeTab === 'especialistas' && 'Auditoría de Documentos de Especialistas (LAWENMOLL)'}
+                {activeTab === 'metricas' && 'Estadísticas Mercado & Desempeño de Apps'}
+                {activeTab === 'actualizaciones' && 'Administración & Actualizaciones de Módulos'}
+                {activeTab === 'redes' && 'Agente Automatizado para Redes Sociales & Monetización'}
+              </h2>
+              <p className="text-xs text-[#52796F] mt-0.5">Consola privada con baja carga sensorial para la gestión unificada</p>
+            </div>
           </div>
         </header>
 
         {activeTab === 'contabilidad' && (
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white p-5 rounded-2xl border border-[#E07A5F]/30 shadow-xs">
+              <div className="bg-white p-5 rounded-2xl border border-[#C8D8CE] shadow-xs">
                 <p className="text-xs text-[#52796F] font-semibold">Convenios B2B Activos</p>
-                <p className="text-2xl font-bold text-[#1B4D3E] mt-1">8 Municipalidades / PYMES</p>
+                <p className="text-2xl font-bold text-[#2D5A4C] mt-1">8 Municipalidades / PYMES</p>
               </div>
-              <div className="bg-white p-5 rounded-2xl border border-[#E07A5F]/30 shadow-xs">
+              <div className="bg-white p-5 rounded-2xl border border-[#C8D8CE] shadow-xs">
                 <p className="text-xs text-[#52796F] font-semibold">Facturación Licencias Software</p>
                 <p className="text-2xl font-bold text-[#E07A5F] mt-1">\$4.250.000 CLP</p>
               </div>
-              <div className="bg-white p-5 rounded-2xl border border-[#E07A5F]/30 shadow-xs">
+              <div className="bg-white p-5 rounded-2xl border border-[#C8D8CE] shadow-xs">
                 <p className="text-xs text-[#52796F] font-semibold">Descarga Contable</p>
-                <button onClick={() => alert('Generando archivo Excel (.xlsx) con el balance contable unificado...')} className="mt-2 text-xs bg-[#1B4D3E] text-white px-3 py-1.5 rounded-lg font-medium hover:bg-[#2D6A4F]">
-                  Descargar Excel (.xlsx)
+                <button onClick={() => alert('Generando archivo Excel (.xlsx) con el balance contable unificado...')} className="mt-2 text-xs bg-[#52796F] text-white px-3.5 py-2 rounded-xl font-medium hover:bg-[#41675B] transition shadow-xs">
+                  ��� Descargar Excel (.xlsx)
                 </button>
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl border border-[#84A59D]/30 p-6 shadow-xs space-y-4">
-              <h3 className="font-bold text-[#1B4D3E] text-base">Registro de Ingresos &amp; Contratos B2B</h3>
+            <div className="bg-white rounded-2xl border border-[#C8D8CE] p-6 shadow-xs space-y-4">
+              <h3 className="font-bold text-[#2D5A4C] text-base">Registro de Ingresos &amp; Contratos B2B</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead>
-                    <tr className="border-b border-[#FAF8F5] text-[#52796F]">
+                    <tr className="border-b border-[#E8F0EC] text-[#52796F]">
                       <th className="pb-3">Cliente / Entidad</th>
                       <th className="pb-3">Tipo de Licencia</th>
                       <th className="pb-3">Estado Contable</th>
                       <th className="pb-3">Acción</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#FAF8F5]">
+                  <tbody className="divide-y divide-[#E8F0EC]">
                     <tr>
                       <td className="py-3 font-semibold">Comercio Asociado Santiago Centro</td>
                       <td className="py-3">Software Accesible UI/UX</td>
                       <td className="py-3"><span className="bg-emerald-100 text-emerald-800 text-[10px] px-2.5 py-0.5 rounded-full font-bold">Al Día</span></td>
-                      <td className="py-3"><button className="text-[#1B4D3E] underline font-semibold">Ver Contrato</button></td>
+                      <td className="py-3"><button className="text-[#52796F] underline font-semibold hover:text-[#2D5A4C]">Ver Contrato</button></td>
                     </tr>
                     <tr>
                       <td className="py-3 font-semibold">Municipalidad Programa Inclusión</td>
                       <td className="py-3">Módulo Wellness + Salud Integrativa</td>
                       <td className="py-3"><span className="bg-emerald-100 text-emerald-800 text-[10px] px-2.5 py-0.5 rounded-full font-bold">Al Día</span></td>
-                      <td className="py-3"><button className="text-[#1B4D3E] underline font-semibold">Ver Contrato</button></td>
+                      <td className="py-3"><button className="text-[#52796F] underline font-semibold hover:text-[#2D5A4C]">Ver Contrato</button></td>
                     </tr>
                   </tbody>
                 </table>
@@ -215,23 +218,23 @@ export default function AdminConsole() {
 
         {activeTab === 'especialistas' && (
           <div className="space-y-6">
-            <div className="bg-white p-6 rounded-2xl border border-[#E07A5F]/30 shadow-xs space-y-4">
-              <h3 className="font-bold text-[#1B4D3E] text-base">Recepción &amp; Validación de Certificados Médicos</h3>
+            <div className="bg-white p-6 rounded-2xl border border-[#C8D8CE] shadow-xs space-y-4">
+              <h3 className="font-bold text-[#2D5A4C] text-base">Recepción &amp; Validación de Certificados Médicos</h3>
               <p className="text-xs text-[#52796F]">
                 Documentación cargada por profesionales del área de la salud y terapias integrativas. Almacenamiento encriptado bajo la Ley N° 21.663.
               </p>
 
               <div className="space-y-3 pt-2">
-                <div className="p-4 border border-[#84A59D]/30 rounded-xl bg-[#FAF8F5] flex justify-between items-center">
+                <div className="p-4 border border-[#C8D8CE] rounded-xl bg-[#E8F0EC]/40 flex justify-between items-center">
                   <div>
-                    <span className="font-bold text-xs text-[#1B4D3E]">Dra. Carolina Morales - Medicina Integrativa</span>
+                    <span className="font-bold text-xs text-[#2D5A4C]">Dra. Carolina Morales - Medicina Integrativa</span>
                     <p className="text-[11px] text-[#52796F] mt-0.5">Certificado de Título + Registro SIS cargado (PDF)</p>
                   </div>
                   <div className="flex gap-2">
-                    <button onClick={() => alert('Aprobado y derivado a base de datos LAWENMOLL.')} className="bg-[#1B4D3E] text-white text-[11px] px-3 py-1.5 rounded-lg font-semibold">
+                    <button onClick={() => alert('Aprobado y derivado a base de datos LAWENMOLL.')} className="bg-[#52796F] text-white text-[11px] px-3.5 py-1.5 rounded-xl font-semibold hover:bg-[#41675B]">
                       Aprobar
                     </button>
-                    <button className="bg-gray-200 text-gray-700 text-[11px] px-3 py-1.5 rounded-lg font-semibold">
+                    <button className="bg-gray-100 text-gray-700 text-[11px] px-3.5 py-1.5 rounded-xl font-semibold hover:bg-gray-200">
                       Revisar PDF
                     </button>
                   </div>
@@ -244,23 +247,23 @@ export default function AdminConsole() {
         {activeTab === 'metricas' && (
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-2xl border border-[#E07A5F]/30 shadow-xs">
-                <h3 className="font-bold text-[#1B4D3E] text-sm mb-4">Uso de Aplicaciones en el Mercado</h3>
+              <div className="bg-white p-6 rounded-2xl border border-[#C8D8CE] shadow-xs">
+                <h3 className="font-bold text-[#2D5A4C] text-sm mb-4">Uso de Aplicaciones en el Mercado</h3>
                 <ul className="space-y-3 text-xs text-[#52796F]">
-                  <li className="flex justify-between"><span>1. LAWENMOLL (Test Metabólico)</span><span className="font-bold text-[#1B4D3E]">42% del tráfico</span></li>
-                  <li className="flex justify-between"><span>2. Wellness Web App (Salas Virtuales)</span><span className="font-bold text-[#1B4D3E]">31% del tráfico</span></li>
-                  <li className="flex justify-between"><span>3. Sabiduría Ancestral (PDFs Herbolaria)</span><span className="font-bold text-[#1B4D3E]">18% del tráfico</span></li>
-                  <li className="flex justify-between"><span>4. Casa Matriz B2B (Licencias)</span><span className="font-bold text-[#1B4D3E]">9% del tráfico</span></li>
+                  <li className="flex justify-between"><span>1. LAWENMOLL (Test Metabólico)</span><span className="font-bold text-[#2D5A4C]">42% del tráfico</span></li>
+                  <li className="flex justify-between"><span>2. Wellness Web App (Salas Virtuales)</span><span className="font-bold text-[#2D5A4C]">31% del tráfico</span></li>
+                  <li className="flex justify-between"><span>3. Sabiduría Ancestral (PDFs Herbolaria)</span><span className="font-bold text-[#2D5A4C]">18% del tráfico</span></li>
+                  <li className="flex justify-between"><span>4. Casa Matriz B2B (Licencias)</span><span className="font-bold text-[#2D5A4C]">9% del tráfico</span></li>
                 </ul>
               </div>
 
-              <div className="bg-white p-6 rounded-2xl border border-[#E07A5F]/30 shadow-xs">
-                <h3 className="font-bold text-[#1B4D3E] text-sm mb-4">Adherencia sin Sobrecarga Sensorial</h3>
+              <div className="bg-white p-6 rounded-2xl border border-[#C8D8CE] shadow-xs">
+                <h3 className="font-bold text-[#2D5A4C] text-sm mb-4">Adherencia sin Sobrecarga Sensorial</h3>
                 <p className="text-xs text-[#52796F] leading-relaxed mb-4">
                   El diseño amable ha reducido la tasa de abandono temprano al 14% (frente al 55% promedio del mercado tradicional).
                 </p>
-                <div className="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
-                  <div className="bg-[#1B4D3E] h-full w-[86%]"></div>
+                <div className="w-full bg-[#E8F0EC] h-3 rounded-full overflow-hidden">
+                  <div className="bg-[#52796F] h-full w-[86%]"></div>
                 </div>
                 <span className="text-[10px] text-[#E07A5F] font-bold mt-2 block">86% Retención de Usuarios Activos</span>
               </div>
@@ -269,23 +272,23 @@ export default function AdminConsole() {
         )}
 
         {activeTab === 'actualizaciones' && (
-          <div className="bg-white p-6 rounded-2xl border border-[#E07A5F]/30 shadow-xs space-y-4">
-            <h3 className="font-bold text-[#1B4D3E] text-base">Control de Módulos &amp; Publicaciones</h3>
+          <div className="bg-white p-6 rounded-2xl border border-[#C8D8CE] shadow-xs space-y-4">
+            <h3 className="font-bold text-[#2D5A4C] text-base">Control de Módulos &amp; Publicaciones</h3>
             <p className="text-xs text-[#52796F]">
               Ingresa a cada aplicación para realizar modificaciones de texto, añadir recetarios PDF o actualizar horarios de salas virtuales sin requerir código adicional.
             </p>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2">
-              <button onClick={() => alert('Abriendo editor de LAWENMOLL...')} className="p-4 border border-[#84A59D]/30 rounded-xl bg-[#FAF8F5] text-xs font-bold text-[#1B4D3E] hover:border-[#E07A5F]">
+              <button onClick={() => alert('Abriendo editor de LAWENMOLL...')} className="p-4 border border-[#C8D8CE] rounded-xl bg-[#E8F0EC]/30 text-xs font-bold text-[#2D5A4C] hover:border-[#E07A5F]">
                 Editar LAWENMOLL
               </button>
-              <button onClick={() => alert('Abriendo editor de Wellness Web App...')} className="p-4 border border-[#84A59D]/30 rounded-xl bg-[#FAF8F5] text-xs font-bold text-[#1B4D3E] hover:border-[#E07A5F]">
+              <button onClick={() => alert('Abriendo editor de Wellness Web App...')} className="p-4 border border-[#C8D8CE] rounded-xl bg-[#E8F0EC]/30 text-xs font-bold text-[#2D5A4C] hover:border-[#E07A5F]">
                 Editar Wellness App
               </button>
-              <button onClick={() => alert('Abriendo editor de Sabiduría Ancestral...')} className="p-4 border border-[#84A59D]/30 rounded-xl bg-[#FAF8F5] text-xs font-bold text-[#1B4D3E] hover:border-[#E07A5F]">
+              <button onClick={() => alert('Abriendo editor de Sabiduría Ancestral...')} className="p-4 border border-[#C8D8CE] rounded-xl bg-[#E8F0EC]/30 text-xs font-bold text-[#2D5A4C] hover:border-[#E07A5F]">
                 Editar Sabiduría Ancestral
               </button>
-              <button onClick={() => alert('Abriendo editor de Casa Matriz...')} className="p-4 border border-[#84A59D]/30 rounded-xl bg-[#FAF8F5] text-xs font-bold text-[#1B4D3E] hover:border-[#E07A5F]">
+              <button onClick={() => alert('Abriendo editor de Casa Matriz...')} className="p-4 border border-[#C8D8CE] rounded-xl bg-[#E8F0EC]/30 text-xs font-bold text-[#2D5A4C] hover:border-[#E07A5F]">
                 Editar Casa Matriz B2B
               </button>
             </div>
@@ -294,26 +297,26 @@ export default function AdminConsole() {
 
         {activeTab === 'redes' && (
           <div className="space-y-6">
-            <div className="bg-white p-6 rounded-2xl border border-[#E07A5F]/30 shadow-xs space-y-4">
+            <div className="bg-white p-6 rounded-2xl border border-[#C8D8CE] shadow-xs space-y-4">
               <div className="flex justify-between items-center">
-                <h3 className="font-bold text-[#1B4D3E] text-base">Agente Virtual de IA para Redes &amp; Monetización</h3>
+                <h3 className="font-bold text-[#2D5A4C] text-base">Agente Virtual de IA para Redes &amp; Monetización</h3>
                 <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full font-bold">● Automatización Activa</span>
               </div>
               <p className="text-xs text-[#52796F]">
                 El agente redacta contenido con accesibilidad cognitiva y calcula el rendimiento económico proyectado en tus canales.
               </p>
 
-              <div className="p-4 bg-[#FAF8F5] rounded-xl border border-[#84A59D]/20 space-y-3">
+              <div className="p-4 bg-[#E8F0EC]/40 rounded-xl border border-[#C8D8CE] space-y-3">
                 <span className="text-xs font-bold text-[#E07A5F]">Próxima Publicación Sugerida por la IA:</span>
-                <p className="text-xs text-[#1B4D3E] italic">
+                <p className="text-xs text-[#2D5A4C] italic">
                   &quot;En ASL Ideas SpA desarrollamos tecnología con baja carga sensorial para promover la salud integrativa y la inclusión laboral. ¿Buscas adaptar tu pyme a la Ley TEA?&quot;
                 </p>
 
                 <div className="flex gap-3 pt-2">
-                  <button onClick={() => alert('Publicación programada para LinkedIn B2B e Instagram.')} className="bg-[#1B4D3E] text-white text-xs px-4 py-2 rounded-lg font-semibold">
+                  <button onClick={() => alert('Publicación programada para LinkedIn B2B e Instagram.')} className="bg-[#52796F] text-white text-xs px-4 py-2 rounded-xl font-semibold hover:bg-[#41675B]">
                     Aprobar &amp; Programar Publicación
                   </button>
-                  <button className="bg-gray-200 text-gray-700 text-xs px-4 py-2 rounded-lg font-semibold">
+                  <button className="bg-gray-100 text-gray-700 text-xs px-4 py-2 rounded-xl font-semibold hover:bg-gray-200">
                     Reescribir
                   </button>
                 </div>
