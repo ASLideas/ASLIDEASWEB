@@ -8,14 +8,14 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#1B4D3E] font-sans flex flex-col justify-between">
-      {/* Encabezado Corporativo con Logo Rosado Oficial ASL Ideas SpA */}
-      <header className="bg-white sticky top-0 z-50 border-b border-[#B08D4B]/20 py-4 px-6 md:px-12 shadow-xs">
+      {/* Encabezado Corporativo con Logo Rosado y Acento Rosado en Borde */}
+      <header className="bg-white sticky top-0 z-50 border-b border-[#E07A5F]/30 py-4 px-6 md:px-12 shadow-xs">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-xs bg-white flex items-center justify-center p-0.5">
+            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#E07A5F] shadow-xs bg-white flex items-center justify-center p-0.5">
               <img
                 src="/LOGO_asl.png"
-                alt="Logo Rosado Oficial ASL Ideas SpA"
+                alt="Logo Oficial ASL Ideas SpA"
                 className="w-full h-full object-cover rounded-full"
               />
             </div>
@@ -23,16 +23,16 @@ export default function Home() {
               <h1 className="text-xl font-bold tracking-tight text-[#1B4D3E]">
                 ASL Ideas SpA
               </h1>
-              <p className="text-xs text-[#B08D4B] font-semibold">
+              <p className="text-xs text-[#E07A5F] font-semibold">
                 Salud Digital Inclusiva & Bienestar Integrativo
               </p>
             </div>
           </div>
 
           <nav className="hidden md:flex items-center space-x-6 text-xs font-semibold text-[#52796F]">
-            <a href="#mision-vision" className="hover:text-[#1B4D3E] transition">Misión y Visión</a>
-            <a href="#pymes" className="hover:text-[#1B4D3E] transition">Servicios PYMES</a>
-            <a href="#portales" className="hover:text-[#1B4D3E] transition">Portales y Citas</a>
+            <a href="#mision-vision" className="hover:text-[#E07A5F] transition">Misión y Visión</a>
+            <a href="#pymes" className="hover:text-[#E07A5F] transition">Servicios PYMES</a>
+            <a href="#portales" className="hover:text-[#E07A5F] transition">Portales y Citas</a>
           </nav>
 
           <div className="flex items-center space-x-3">
@@ -44,7 +44,7 @@ export default function Home() {
             </a>
             <Link
               href="/admin"
-              className="text-xs bg-[#FAF8F5] border border-[#84A59D]/40 px-3 py-2 rounded-xl hover:bg-[#84A59D]/10 text-[#1B4D3E] font-medium"
+              className="text-xs bg-[#FAF8F5] border border-[#E07A5F]/40 px-3 py-2 rounded-xl hover:bg-[#E07A5F]/10 text-[#1B4D3E] font-medium"
             >
               Acceso Privado
             </Link>
@@ -52,9 +52,9 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero Principal con Enfoque B2B y PYMEs */}
+      {/* Hero Principal con Badge Acentuado en Rosado Cálido */}
       <section className="max-w-5xl mx-auto text-center px-6 pt-14 pb-10 space-y-6">
-        <div className="inline-flex items-center gap-2 bg-[#B08D4B]/10 border border-[#B08D4B]/30 text-[#B08D4B] text-xs font-semibold px-4 py-1.5 rounded-full">
+        <div className="inline-flex items-center gap-2 bg-[#E07A5F]/15 border border-[#E07A5F]/40 text-[#E07A5F] text-xs font-bold px-4 py-1.5 rounded-full">
           <span>Accesibilidad Cognitiva & Baja Carga Sensorial (TEA & TDAH)</span>
         </div>
 
@@ -75,7 +75,7 @@ export default function Home() {
           </a>
           <a
             href="#portales"
-            className="w-full sm:w-auto bg-white border border-[#B08D4B]/40 text-[#1B4D3E] px-6 py-3 rounded-xl font-semibold text-sm hover:bg-[#FAF8F5] transition shadow-sm"
+            className="w-full sm:w-auto bg-white border border-[#E07A5F]/50 text-[#1B4D3E] px-6 py-3 rounded-xl font-semibold text-sm hover:bg-[#FAF8F5] transition shadow-sm"
           >
             Agendar Reunión Virtual
           </a>
@@ -90,8 +90,8 @@ export default function Home() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
-          <div className="bg-white p-8 rounded-2xl border border-[#B08D4B]/20 shadow-xs">
-            <div className="w-10 h-10 rounded-lg bg-[#1B4D3E]/10 flex items-center justify-center text-[#1B4D3E] font-bold text-xs mb-4">
+          <div className="bg-white p-8 rounded-2xl border border-[#E07A5F]/30 shadow-xs">
+            <div className="w-10 h-10 rounded-lg bg-[#E07A5F]/15 flex items-center justify-center text-[#E07A5F] font-bold text-xs mb-4">
               VISIÓN
             </div>
             <h3 className="text-xl font-bold text-[#1B4D3E] mb-3">Nuestra Visión</h3>
@@ -100,8 +100,8 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="bg-white p-8 rounded-2xl border border-[#B08D4B]/20 shadow-xs">
-            <div className="w-10 h-10 rounded-lg bg-[#2D6A4F]/10 flex items-center justify-center text-[#2D6A4F] font-bold text-xs mb-4">
+          <div className="bg-white p-8 rounded-2xl border border-[#E07A5F]/30 shadow-xs">
+            <div className="w-10 h-10 rounded-lg bg-[#2D6A4F]/15 flex items-center justify-center text-[#2D6A4F] font-bold text-xs mb-4">
               MISIÓN
             </div>
             <h3 className="text-xl font-bold text-[#1B4D3E] mb-3">Nuestra Misión</h3>
@@ -112,11 +112,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Servicios PYMES */}
+      {/* Servicios para PYMEs */}
       <section id="pymes" className="bg-white border-y border-[#84A59D]/20 py-12 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
-            <span className="text-xs font-bold text-[#B08D4B] uppercase tracking-wider">Liderazgo & Innovación B2B</span>
+            <span className="text-xs font-bold text-[#E07A5F] uppercase tracking-wider">Liderazgo & Innovación B2B</span>
             <h2 className="text-2xl md:text-3xl font-bold text-[#1B4D3E] mt-2">Servicios a PYMES y Comercios Asociados</h2>
             <p className="text-sm text-[#52796F] max-w-2xl mx-auto mt-2">
               Acompañamos a pequeñas y medianas empresas, comercios e instituciones de salud en la incorporación de estándares de accesibilidad digital y software a medida.
@@ -124,21 +124,21 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-[#FAF8F5] p-6 rounded-xl border border-[#84A59D]/30">
+            <div className="bg-[#FAF8F5] p-6 rounded-xl border border-[#E07A5F]/20">
               <h3 className="font-bold text-[#1B4D3E] mb-2">Desarrollo de Software A Medida</h3>
               <p className="text-xs text-[#52796F] leading-relaxed">
                 Plataformas ligeras y amables adaptadas a los requerimientos operativos de comercios y pymes asociadas.
               </p>
             </div>
 
-            <div className="bg-[#FAF8F5] p-6 rounded-xl border border-[#84A59D]/30">
+            <div className="bg-[#FAF8F5] p-6 rounded-xl border border-[#E07A5F]/20">
               <h3 className="font-bold text-[#1B4D3E] mb-2">Consultoría UI/UX Inclusiva</h3>
               <p className="text-xs text-[#52796F] leading-relaxed">
                 Auditoría y diseño de interfaces optimizadas para baja sobrecarga cognitiva (cumplimiento Ley TEA y estándares WCAG).
               </p>
             </div>
 
-            <div className="bg-[#FAF8F5] p-6 rounded-xl border border-[#84A59D]/30">
+            <div className="bg-[#FAF8F5] p-6 rounded-xl border border-[#E07A5F]/20">
               <h3 className="font-bold text-[#1B4D3E] mb-2">Licencias y Convenios B2B</h3>
               <p className="text-xs text-[#52796F] leading-relaxed">
                 Integración de módulos de salud, pausa activa y fichas clínicas encriptadas bajo la Ley N° 21.663 para colaboradores y clientes.
@@ -148,7 +148,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Portales Interactivos con Logos Circulares Oficiales */}
+      {/* Portales Interactivos con Logos Circulares */}
       <section id="portales" className="max-w-7xl mx-auto px-6 py-16">
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold text-[#1B4D3E]">Portales Interactivos y Agendamiento de Reuniones</h2>
@@ -156,10 +156,10 @@ export default function Home() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Portal 1: Casa Matriz ASL Ideas (Logo Rosado Oficial) */}
-          <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
+          {/* Portal 1: Casa Matriz ASL Ideas (Acento Rosado) */}
+          <div className="bg-white rounded-2xl p-6 border border-[#E07A5F]/30 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
             <div>
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-0.5">
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#E07A5F] shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-0.5">
                 <img src="/LOGO_asl.png" alt="Logo Rosado Oficial ASL Ideas SpA" className="w-full h-full object-cover rounded-full" />
               </div>
               <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">Casa Matriz B2B</h3>
@@ -175,16 +175,16 @@ export default function Home() {
               >
                 Agendar Reunión B2B
               </button>
-              <Link href="/aslideas" className="block text-xs font-semibold text-[#B08D4B] hover:underline pt-1">
+              <Link href="/aslideas" className="block text-xs font-semibold text-[#E07A5F] hover:underline pt-1">
                 Explorar Portal &rarr;
               </Link>
             </div>
           </div>
 
           {/* Portal 2: LAWENMOLL */}
-          <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
+          <div className="bg-white rounded-2xl p-6 border border-[#E07A5F]/30 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
             <div>
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-0.5">
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#E07A5F]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-0.5">
                 <img src="/lawenmoll_logo.jpg" alt="Logo LAWENMOLL" className="w-full h-full object-cover rounded-full" />
               </div>
               <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">LAWENMOLL</h3>
@@ -200,16 +200,16 @@ export default function Home() {
               >
                 Reservar Cita Médica
               </button>
-              <Link href="/lawenmoll" className="block text-xs font-semibold text-[#B08D4B] hover:underline pt-1">
+              <Link href="/lawenmoll" className="block text-xs font-semibold text-[#E07A5F] hover:underline pt-1">
                 Explorar Portal &rarr;
               </Link>
             </div>
           </div>
 
           {/* Portal 3: Wellness Web App */}
-          <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
+          <div className="bg-white rounded-2xl p-6 border border-[#E07A5F]/30 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
             <div>
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-0.5">
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#E07A5F]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-0.5">
                 <img src="/logo_wellness.jpg" alt="Logo Wellness" className="w-full h-full object-cover rounded-full" />
               </div>
               <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">Wellness Web App</h3>
@@ -225,16 +225,16 @@ export default function Home() {
               >
                 Agendar Sala Virtual
               </button>
-              <Link href="/wellness" className="block text-xs font-semibold text-[#B08D4B] hover:underline pt-1">
+              <Link href="/wellness" className="block text-xs font-semibold text-[#E07A5F] hover:underline pt-1">
                 Explorar Portal &rarr;
               </Link>
             </div>
           </div>
 
           {/* Portal 4: Sabiduría Ancestral */}
-          <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
+          <div className="bg-white rounded-2xl p-6 border border-[#E07A5F]/30 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
             <div>
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-0.5">
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#E07A5F]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-0.5">
                 <img src="/LOGO_BIENESTAR.png" alt="Logo Bienestar Ancestral" className="w-full h-full object-cover rounded-full" />
               </div>
               <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">Sabiduría Ancestral</h3>
@@ -250,7 +250,7 @@ export default function Home() {
               >
                 Agendar Taller Herbolario
               </button>
-              <Link href="/bienestar" className="block text-xs font-semibold text-[#B08D4B] hover:underline pt-1">
+              <Link href="/bienestar" className="block text-xs font-semibold text-[#E07A5F] hover:underline pt-1">
                 Explorar Portal &rarr;
               </Link>
             </div>
@@ -258,13 +258,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Modal Interactivo de Cita y Horario */}
+      {/* Modal Interactivo con Detalles en Rosado */}
       {selectedPortal && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl p-6 md:p-8 max-w-lg w-full border border-[#84A59D]/30 shadow-xl space-y-6">
+          <div className="bg-white rounded-2xl p-6 md:p-8 max-w-lg w-full border border-[#E07A5F]/40 shadow-xl space-y-6">
             <div className="flex justify-between items-start border-b border-gray-100 pb-4">
               <div>
-                <span className="text-xs font-bold text-[#B08D4B] uppercase tracking-wider">Previa Cita & Horario</span>
+                <span className="text-xs font-bold text-[#E07A5F] uppercase tracking-wider">Previa Cita & Horario</span>
                 <h3 className="text-lg font-bold text-[#1B4D3E] mt-1">{selectedPortal}</h3>
               </div>
               <button 
@@ -278,28 +278,28 @@ export default function Home() {
             <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); alert('Cita agendada con éxito. Recibirás la confirmación por correo y WhatsApp.'); setSelectedPortal(null); }}>
               <div>
                 <label className="block text-xs font-semibold text-[#1B4D3E] mb-1">Nombre Completo</label>
-                <input required type="text" placeholder="Ej: María González" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#1B4D3E]" />
+                <input required type="text" placeholder="Ej: María González" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#E07A5F]" />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-[#1B4D3E] mb-1">Correo Electrónico</label>
-                  <input required type="email" placeholder="correo@ejemplo.cl" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#1B4D3E]" />
+                  <input required type="email" placeholder="correo@ejemplo.cl" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#E07A5F]" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-[#1B4D3E] mb-1">Teléfono / WhatsApp</label>
-                  <input required type="tel" placeholder="+56 9 1234 5678" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#1B4D3E]" />
+                  <input required type="tel" placeholder="+56 9 1234 5678" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#E07A5F]" />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-[#1B4D3E] mb-1">Fecha de Cita</label>
-                  <input required type="date" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#1B4D3E]" />
+                  <input required type="date" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#E07A5F]" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-[#1B4D3E] mb-1">Horario Disponible</label>
-                  <select required className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#1B4D3E]">
+                  <select required className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#E07A5F]">
                     <option value="">Selecciona Horario</option>
                     <option value="10:00">10:00 - 10:45 AM</option>
                     <option value="12:00">12:00 - 12:45 PM</option>
