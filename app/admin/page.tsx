@@ -7,7 +7,6 @@ export default function AdminConsole() {
   const [password, setPassword] = useState('');
   const [activeTab, setActiveTab] = useState<'contabilidad' | 'especialistas' | 'metricas' | 'actualizaciones' | 'redes'>('contabilidad');
 
-  // Login simple para proteccion de ruta privada
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (password === 'ASL2026Admin' || password === 'admin') {
@@ -26,7 +25,7 @@ export default function AdminConsole() {
               ASL
             </div>
             <h1 className="text-xl font-bold text-[#1B4D3E]">Consola Privada de Administración</h1>
-            <p className="text-xs text-[#52796F]">Uso exclusivo autorizada para la Administradora Fundadora de ASL Ideas SpA</p>
+            <p className="text-xs text-[#52796F]">Uso exclusivo autorizado para la Administradora Fundadora de ASL Ideas SpA</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -38,7 +37,7 @@ export default function AdminConsole() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Ingresa tu clave privada"
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#E07A5F]"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-[#E07A5F]"
               />
             </div>
 
@@ -51,7 +50,7 @@ export default function AdminConsole() {
           </form>
 
           <div className="text-center pt-2">
-            <p className="text-[10px] text-gray-400">Protegido bajo encriptación SSL TLS 1.3 & Supabase Auth</p>
+            <p className="text-[10px] text-gray-400">Protegido bajo encriptación SSL TLS 1.3 &amp; Supabase Auth</p>
           </div>
         </div>
       </main>
@@ -86,7 +85,7 @@ export default function AdminConsole() {
               <svg className="w-4 h-4 text-[#E07A5F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
               </svg>
-              <span>Casa Matriz & Contabilidad B2B</span>
+              <span>Casa Matriz &amp; Contabilidad B2B</span>
             </button>
 
             <button
@@ -134,21 +133,21 @@ export default function AdminConsole() {
               <svg className="w-4 h-4 text-[#E07A5F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-              <span>Agente IA Redes & Monetización</span>
+              <span>Agente IA Redes &amp; Monetización</span>
             </button>
           </nav>
         </div>
 
         <div className="pt-6 border-t border-[#52796F]/40 text-[11px] text-[#84A59D] space-y-2">
-          <p>��� Correo B2B: <span className="text-white font-mono">contacto@aslideas.cl</span></p>
-          <p>��� Correo LAWENMOLL: <span className="text-white font-mono">salud@lawenmoll.cl</span></p>
+          <p>Correo B2B: <span className="text-white font-mono">contacto@aslideas.cl</span></p>
+          <p>Correo LAWENMOLL: <span className="text-white font-mono">salud@lawenmoll.cl</span></p>
           <button onClick={() => setIsAuthenticated(false)} className="text-[#E07A5F] hover:underline text-xs font-semibold pt-2 block">
             Cerrar Sesión Segura
           </button>
         </div>
       </aside>
 
-      {/* Área Principal de Trabajo */}
+      {/* Área Principal */}
       <main className="flex-1 p-6 md:p-10 max-w-6xl">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 pb-4 border-b border-[#52796F]/20">
           <div>
@@ -163,7 +162,6 @@ export default function AdminConsole() {
           </div>
         </header>
 
-        {/* 1. Módulo Contabilidad & Excel */}
         {activeTab === 'contabilidad' && (
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -178,13 +176,13 @@ export default function AdminConsole() {
               <div className="bg-white p-5 rounded-2xl border border-[#E07A5F]/30 shadow-xs">
                 <p className="text-xs text-[#52796F] font-semibold">Descarga Contable</p>
                 <button onClick={() => alert('Generando archivo Excel (.xlsx) con el balance contable unificado...')} className="mt-2 text-xs bg-[#1B4D3E] text-white px-3 py-1.5 rounded-lg font-medium hover:bg-[#2D6A4F]">
-                  ��� Descargar Excel (.xlsx)
+                  Descargar Excel (.xlsx)
                 </button>
               </div>
             </div>
 
             <div className="bg-white rounded-2xl border border-[#84A59D]/30 p-6 shadow-xs space-y-4">
-              <h3 className="font-bold text-[#1B4D3E] text-base">Registro de Ingresos & Contratos B2B</h3>
+              <h3 className="font-bold text-[#1B4D3E] text-base">Registro de Ingresos &amp; Contratos B2B</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead>
@@ -215,11 +213,10 @@ export default function AdminConsole() {
           </div>
         )}
 
-        {/* 2. Módulo Especialistas LAWENMOLL */}
         {activeTab === 'especialistas' && (
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-2xl border border-[#E07A5F]/30 shadow-xs space-y-4">
-              <h3 className="font-bold text-[#1B4D3E] text-base">Recepción & Validación de Certificados Médicos</h3>
+              <h3 className="font-bold text-[#1B4D3E] text-base">Recepción &amp; Validación de Certificados Médicos</h3>
               <p className="text-xs text-[#52796F]">
                 Documentación cargada por profesionales del área de la salud y terapias integrativas. Almacenamiento encriptado bajo la Ley N° 21.663.
               </p>
@@ -244,7 +241,6 @@ export default function AdminConsole() {
           </div>
         )}
 
-        {/* 3. Módulo Estadísticas */}
         {activeTab === 'metricas' && (
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -272,10 +268,9 @@ export default function AdminConsole() {
           </div>
         )}
 
-        {/* 4. Gestor de Actualizaciones */}
         {activeTab === 'actualizaciones' && (
           <div className="bg-white p-6 rounded-2xl border border-[#E07A5F]/30 shadow-xs space-y-4">
-            <h3 className="font-bold text-[#1B4D3E] text-base">Control de Módulos & Publicaciones</h3>
+            <h3 className="font-bold text-[#1B4D3E] text-base">Control de Módulos &amp; Publicaciones</h3>
             <p className="text-xs text-[#52796F]">
               Ingresa a cada aplicación para realizar modificaciones de texto, añadir recetarios PDF o actualizar horarios de salas virtuales sin requerir código adicional.
             </p>
@@ -297,12 +292,11 @@ export default function AdminConsole() {
           </div>
         )}
 
-        {/* 5. Agente IA Redes Sociales & Monetización */}
         {activeTab === 'redes' && (
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-2xl border border-[#E07A5F]/30 shadow-xs space-y-4">
               <div className="flex justify-between items-center">
-                <h3 className="font-bold text-[#1B4D3E] text-base">Agente Virtual de IA para Redes & Monetización</h3>
+                <h3 className="font-bold text-[#1B4D3E] text-base">Agente Virtual de IA para Redes &amp; Monetización</h3>
                 <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full font-bold">● Automatización Activa</span>
               </div>
               <p className="text-xs text-[#52796F]">
@@ -312,12 +306,12 @@ export default function AdminConsole() {
               <div className="p-4 bg-[#FAF8F5] rounded-xl border border-[#84A59D]/20 space-y-3">
                 <span className="text-xs font-bold text-[#E07A5F]">Próxima Publicación Sugerida por la IA:</span>
                 <p className="text-xs text-[#1B4D3E] italic">
-                  "En ASL Ideas SpA desarrollamos tecnología con baja carga sensorial para promover la salud integrativa y la inclusión laboral. ¿Buscas adaptar tu pyme a la Ley TEA?"
+                  &quot;En ASL Ideas SpA desarrollamos tecnología con baja carga sensorial para promover la salud integrativa y la inclusión laboral. ¿Buscas adaptar tu pyme a la Ley TEA?&quot;
                 </p>
 
                 <div className="flex gap-3 pt-2">
                   <button onClick={() => alert('Publicación programada para LinkedIn B2B e Instagram.')} className="bg-[#1B4D3E] text-white text-xs px-4 py-2 rounded-lg font-semibold">
-                    Aprobar & Programar Publicación
+                    Aprobar &amp; Programar Publicación
                   </button>
                   <button className="bg-gray-200 text-gray-700 text-xs px-4 py-2 rounded-lg font-semibold">
                     Reescribir
