@@ -1,20 +1,24 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 
 export default function Home() {
+  const [selectedPortal, setSelectedPortal] = useState<string | null>(null);
+
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#1B4D3E] font-sans flex flex-col justify-between">
-      {/* Encabezado Corporativo con Logo Oficial */}
+      {/* Encabezado Corporativo */}
       <header className="bg-white sticky top-0 z-50 border-b border-[#B08D4B]/20 py-4 px-6 md:px-12 shadow-xs">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <img
-              src="/logo.png"
-              alt="ASL Ideas SpA Logo"
-              className="h-10 w-auto object-contain"
-            />
+            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-xs bg-white flex items-center justify-center">
+              <img
+                src="/LOGO_asl.png"
+                alt="Logo ASL Ideas SpA"
+                className="w-full h-full object-cover"
+              />
+            </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight text-[#1B4D3E]">
                 ASL Ideas SpA
@@ -28,16 +32,15 @@ export default function Home() {
           <nav className="hidden md:flex items-center space-x-6 text-xs font-semibold text-[#52796F]">
             <a href="#mision-vision" className="hover:text-[#1B4D3E] transition">Misión y Visión</a>
             <a href="#pymes" className="hover:text-[#1B4D3E] transition">Servicios PYMES</a>
-            <a href="#portales" className="hover:text-[#1B4D3E] transition">Portales</a>
-            <a href="#videollamadas" className="hover:text-[#1B4D3E] transition">Salas Virtuales</a>
+            <a href="#portales" className="hover:text-[#1B4D3E] transition">Portales y Citas</a>
           </nav>
 
           <div className="flex items-center space-x-3">
             <a
-              href="#contacto"
+              href="#portales"
               className="bg-[#1B4D3E] text-white text-xs md:text-sm px-4 py-2 rounded-xl font-medium hover:bg-[#2D6A4F] transition shadow-xs"
             >
-              Contacto B2B
+              Agendar Cita
             </a>
             <Link
               href="/admin"
@@ -49,7 +52,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero Principal con Llamado de Atención para PYMEs y Comercios */}
+      {/* Hero Principal con Enfoque B2B y PYMEs */}
       <section className="max-w-5xl mx-auto text-center px-6 pt-14 pb-10 space-y-6">
         <div className="inline-flex items-center gap-2 bg-[#B08D4B]/10 border border-[#B08D4B]/30 text-[#B08D4B] text-xs font-semibold px-4 py-1.5 rounded-full">
           <span>Accesibilidad Cognitiva & Baja Carga Sensorial (TEA & TDAH)</span>
@@ -71,10 +74,10 @@ export default function Home() {
             Soluciones B2B para PYMES
           </a>
           <a
-            href="#videollamadas"
+            href="#portales"
             className="w-full sm:w-auto bg-white border border-[#B08D4B]/40 text-[#1B4D3E] px-6 py-3 rounded-xl font-semibold text-sm hover:bg-[#FAF8F5] transition shadow-sm"
           >
-            Entrar a Sala Virtual
+            Agendar Reunión Virtual
           </a>
         </div>
       </section>
@@ -88,7 +91,7 @@ export default function Home() {
 
         <div className="grid md:grid-cols-2 gap-8">
           <div className="bg-white p-8 rounded-2xl border border-[#B08D4B]/20 shadow-xs">
-            <div className="w-10 h-10 rounded-lg bg-[#1B4D3E]/10 flex items-center justify-center text-[#1B4D3E] font-bold text-sm mb-4">
+            <div className="w-10 h-10 rounded-lg bg-[#1B4D3E]/10 flex items-center justify-center text-[#1B4D3E] font-bold text-xs mb-4">
               VISIÓN
             </div>
             <h3 className="text-xl font-bold text-[#1B4D3E] mb-3">Nuestra Visión</h3>
@@ -98,7 +101,7 @@ export default function Home() {
           </div>
 
           <div className="bg-white p-8 rounded-2xl border border-[#B08D4B]/20 shadow-xs">
-            <div className="w-10 h-10 rounded-lg bg-[#2D6A4F]/10 flex items-center justify-center text-[#2D6A4F] font-bold text-sm mb-4">
+            <div className="w-10 h-10 rounded-lg bg-[#2D6A4F]/10 flex items-center justify-center text-[#2D6A4F] font-bold text-xs mb-4">
               MISIÓN
             </div>
             <h3 className="text-xl font-bold text-[#1B4D3E] mb-3">Nuestra Misión</h3>
@@ -109,7 +112,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Sección Servicios para PYMEs y Comercios Asociados */}
+      {/* Servicios para PYMEs */}
       <section id="pymes" className="bg-white border-y border-[#84A59D]/20 py-12 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
@@ -145,104 +148,189 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Ecosistema de los 4 Portales Interactivos con sus Logos Oficiales */}
+      {/* Ecosistema de Portales con Logos Circulares y Agendamiento Virtual */}
       <section id="portales" className="max-w-7xl mx-auto px-6 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-[#1B4D3E]">Ecosistema de Portales Interactivos</h2>
-          <p className="text-xs text-[#52796F] mt-2">Acceso directo a las áreas especializadas de nuestra plataforma</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-[#1B4D3E]">Portales Interactivos y Agendamiento de Reuniones</h2>
+          <p className="text-xs text-[#52796F] mt-2">Selecciona un portal para ingresar o coordinar una reunión virtual con previa cita y horario reservado</p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Portal 1: Casa Matriz */}
-          <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="w-14 h-14 rounded-xl bg-[#FAF8F5] border border-[#84A59D]/30 flex items-center justify-center p-2">
-                <img src="/logo.png" alt="Logo ASL Ideas" className="max-h-full max-w-full object-contain" />
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Portal 1: Casa Matriz ASL Ideas */}
+          <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
+            <div>
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-1">
+                <img src="/LOGO_asl.png" alt="Logo ASL Ideas" className="w-full h-full object-cover rounded-full" />
               </div>
-              <h3 className="text-xl font-bold text-[#1B4D3E]">Casa Matriz B2B</h3>
-              <p className="text-xs text-[#52796F] leading-relaxed">
-                Gestión corporativa, convenios institucionales, licencias tecnológicas y consultoría UI/UX adaptada para neurodivergencias.
+              <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">Casa Matriz B2B</h3>
+              <p className="text-xs text-[#52796F] leading-relaxed mb-4">
+                Gestión corporativa, convenios institucionales, licencias tecnológicas y consultoría UI/UX.
               </p>
             </div>
-            <div className="pt-6 border-t border-gray-100 mt-6">
-              <Link href="/aslideas" className="text-xs font-semibold text-[#B08D4B] hover:underline">
-                Ver Soluciones B2B &rarr;
+            
+            <div className="space-y-2 pt-4 border-t border-gray-100">
+              <button 
+                onClick={() => setSelectedPortal('Casa Matriz ASL Ideas (Reunión Corporativa B2B)')}
+                className="w-full bg-[#1B4D3E] text-white text-xs py-2.5 rounded-xl font-medium hover:bg-[#2D6A4F] transition"
+              >
+                Agendar Reunión B2B
+              </button>
+              <Link href="/aslideas" className="block text-xs font-semibold text-[#B08D4B] hover:underline pt-1">
+                Explorar Portal &rarr;
               </Link>
             </div>
           </div>
 
           {/* Portal 2: LAWENMOLL */}
-          <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="w-14 h-14 rounded-xl bg-[#FAF8F5] border border-[#84A59D]/30 flex items-center justify-center p-2">
-                <img src="/lawenmoll_logo.jpg" alt="Logo LAWENMOLL" className="max-h-full max-w-full object-contain rounded-lg" />
+          <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
+            <div>
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-1">
+                <img src="/lawenmoll_logo.jpg" alt="Logo LAWENMOLL" className="w-full h-full object-cover rounded-full" />
               </div>
-              <h3 className="text-xl font-bold text-[#1B4D3E]">LAWENMOLL</h3>
-              <p className="text-xs text-[#52796F] leading-relaxed">
-                Salud Integrativa & Fichas Clínicas encriptadas (Ley N° 21.663). Test de Bienestar Inteligente, evaluación metabólica y agenda.
+              <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">LAWENMOLL</h3>
+              <p className="text-xs text-[#52796F] leading-relaxed mb-4">
+                Salud Integrativa & Fichas Clínicas encriptadas (Ley N° 21.663). Test de Bienestar Inteligente.
               </p>
             </div>
-            <div className="pt-6 border-t border-gray-100 mt-6">
-              <Link href="/lawenmoll" className="text-xs font-semibold text-[#B08D4B] hover:underline">
-                Ingresar a Portal &rarr;
+            
+            <div className="space-y-2 pt-4 border-t border-gray-100">
+              <button 
+                onClick={() => setSelectedPortal('LAWENMOLL (Consulta de Salud Integrativa)')}
+                className="w-full bg-[#1B4D3E] text-white text-xs py-2.5 rounded-xl font-medium hover:bg-[#2D6A4F] transition"
+              >
+                Reservar Cita Médica
+              </button>
+              <Link href="/lawenmoll" className="block text-xs font-semibold text-[#B08D4B] hover:underline pt-1">
+                Explorar Portal &rarr;
               </Link>
             </div>
           </div>
 
           {/* Portal 3: Wellness Web App */}
-          <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="w-14 h-14 rounded-xl bg-[#FAF8F5] border border-[#84A59D]/30 flex items-center justify-center p-2">
-                <img src="/logo_wellness.jpg" alt="Logo Wellness" className="max-h-full max-w-full object-contain rounded-lg" />
+          <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
+            <div>
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-1">
+                <img src="/logo_wellness.jpg" alt="Logo Wellness" className="w-full h-full object-cover rounded-full" />
               </div>
-              <h3 className="text-xl font-bold text-[#1B4D3E]">Wellness Web App</h3>
-              <p className="text-xs text-[#52796F] leading-relaxed">
-                Movimiento adaptado sin impacto, videoteca interactiva y Salas Virtuales temáticas (Lotus, Cielo, Bosque, Raíz) para reducción de cortisol.
+              <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">Wellness Web App</h3>
+              <p className="text-xs text-[#52796F] leading-relaxed mb-4">
+                Movimiento adaptado sin impacto, videoteca y Salas Virtuales (Lotus, Cielo, Bosque, Raíz).
               </p>
             </div>
-            <div className="pt-6 border-t border-gray-100 mt-6">
-              <Link href="/wellness" className="text-xs font-semibold text-[#B08D4B] hover:underline">
-                Explorar Rutinas &rarr;
+            
+            <div className="space-y-2 pt-4 border-t border-gray-100">
+              <button 
+                onClick={() => setSelectedPortal('Wellness Web App (Sesión de Pausa Activa / Sala Virtual)')}
+                className="w-full bg-[#1B4D3E] text-white text-xs py-2.5 rounded-xl font-medium hover:bg-[#2D6A4F] transition"
+              >
+                Agendar Sala Virtual
+              </button>
+              <Link href="/wellness" className="block text-xs font-semibold text-[#B08D4B] hover:underline pt-1">
+                Explorar Portal &rarr;
               </Link>
             </div>
           </div>
 
           {/* Portal 4: Sabiduría Ancestral */}
-          <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="w-14 h-14 rounded-xl bg-[#FAF8F5] border border-[#84A59D]/30 flex items-center justify-center p-2">
-                <img src="/LOGO_BIENESTAR.png" alt="Logo Bienestar Ancestral" className="max-h-full max-w-full object-contain rounded-lg" />
+          <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
+            <div>
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-1">
+                <img src="/LOGO_BIENESTAR.png" alt="Logo Bienestar Ancestral" className="w-full h-full object-cover rounded-full" />
               </div>
-              <h3 className="text-xl font-bold text-[#1B4D3E]">Sabiduría Ancestral</h3>
-              <p className="text-xs text-[#52796F] leading-relaxed">
-                Fitoterapia nativa, comunidad activa, Diario Mural "Secretos de la Abuela" y recetarios herbolarios descargables en PDF.
+              <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">Sabiduría Ancestral</h3>
+              <p className="text-xs text-[#52796F] leading-relaxed mb-4">
+                Fitoterapia nativa, comunidad activa, Diario Mural y recetarios herbolarios descargables en PDF.
               </p>
             </div>
-            <div className="pt-6 border-t border-gray-100 mt-6">
-              <Link href="/bienestar" className="text-xs font-semibold text-[#B08D4B] hover:underline">
-                Ver Recetarios &rarr;
+            
+            <div className="space-y-2 pt-4 border-t border-gray-100">
+              <button 
+                onClick={() => setSelectedPortal('Sabiduría Ancestral (Taller Comunitaria Herbolaria)')}
+                className="w-full bg-[#1B4D3E] text-white text-xs py-2.5 rounded-xl font-medium hover:bg-[#2D6A4F] transition"
+              >
+                Agendar Taller Herbolario
+              </button>
+              <Link href="/bienestar" className="block text-xs font-semibold text-[#B08D4B] hover:underline pt-1">
+                Explorar Portal &rarr;
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Control de Salas Virtuales */}
-      <section id="videollamadas" className="max-w-5xl mx-auto px-6 py-12">
-        <div className="bg-white p-8 rounded-2xl border border-[#84A59D]/30 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <span className="text-xs font-bold text-[#B08D4B] uppercase tracking-wider">Interacción & Pausa Activa</span>
-            <h3 className="text-xl font-bold text-[#1B4D3E] mt-1">Salas Virtuales en Vivo</h3>
-            <p className="text-xs text-[#52796F] mt-1">Acceso directo a las transmisiones de ejercicios suaves y talleres comunitarios sin enlaces complejos.</p>
+      {/* Módulo Interactivo de Agendamiento de Cita y Horario */}
+      {selectedPortal && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl p-6 md:p-8 max-w-lg w-full border border-[#84A59D]/30 shadow-xl space-y-6">
+            <div className="flex justify-between items-start border-b border-gray-100 pb-4">
+              <div>
+                <span className="text-xs font-bold text-[#B08D4B] uppercase tracking-wider">Previa Cita & Horario</span>
+                <h3 className="text-lg font-bold text-[#1B4D3E] mt-1">{selectedPortal}</h3>
+              </div>
+              <button 
+                onClick={() => setSelectedPortal(null)}
+                className="text-gray-400 hover:text-gray-600 text-lg font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); alert('Cita agendada con éxito. Recibirás la confirmación por correo y WhatsApp.'); setSelectedPortal(null); }}>
+              <div>
+                <label className="block text-xs font-semibold text-[#1B4D3E] mb-1">Nombre Completo</label>
+                <input required type="text" placeholder="Ej: María González" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#1B4D3E]" />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-[#1B4D3E] mb-1">Correo Electrónico</label>
+                  <input required type="email" placeholder="correo@ejemplo.cl" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#1B4D3E]" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-[#1B4D3E] mb-1">Teléfono / WhatsApp</label>
+                  <input required type="tel" placeholder="+56 9 1234 5678" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#1B4D3E]" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-[#1B4D3E] mb-1">Fecha de Cita</label>
+                  <input required type="date" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#1B4D3E]" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-[#1B4D3E] mb-1">Horario Disponible</label>
+                  <select required className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#1B4D3E]">
+                    <option value="">Selecciona Horario</option>
+                    <option value="10:00">10:00 - 10:45 AM</option>
+                    <option value="12:00">12:00 - 12:45 PM</option>
+                    <option value="15:30">15:30 - 16:15 PM</option>
+                    <option value="18:00">18:00 - 18:45 PM</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="pt-4 flex gap-3">
+                <button 
+                  type="button"
+                  onClick={() => setSelectedPortal(null)}
+                  className="w-1/2 bg-gray-100 text-gray-700 py-2.5 rounded-xl text-xs font-semibold hover:bg-gray-200 transition"
+                >
+                  Cancelar
+                </button>
+                <button 
+                  type="submit"
+                  className="w-1/2 bg-[#1B4D3E] text-white py-2.5 rounded-xl text-xs font-semibold hover:bg-[#2D6A4F] transition"
+                >
+                  Confirmar Reserva
+                </button>
+              </div>
+            </form>
           </div>
-          <button className="w-full md:w-auto bg-[#1B4D3E] text-white px-6 py-3 rounded-xl font-semibold text-sm hover:bg-[#2D6A4F] transition whitespace-nowrap">
-            Entrar a Sala Lotus
-          </button>
         </div>
-      </section>
+      )}
 
       {/* Pie de Página */}
-      <footer id="contacto" className="bg-[#1B4D3E] text-[#FAF8F5] py-12 px-6 mt-12 border-t border-[#84A59D]/20">
+      <footer className="bg-[#1B4D3E] text-[#FAF8F5] py-12 px-6 mt-12 border-t border-[#84A59D]/20">
         <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
           <div>
             <h4 className="font-bold text-base mb-2">ASL Ideas SpA</h4>
