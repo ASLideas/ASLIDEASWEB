@@ -8,7 +8,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#1B4D3E] font-sans flex flex-col justify-between">
-      {/* Encabezado Corporativo con Logo Rosado y Acento Rosado en Borde */}
+      {/* Encabezado Corporativo Limpio sin Botón Privado Visible */}
       <header className="bg-white sticky top-0 z-50 border-b border-[#E07A5F]/30 py-4 px-6 md:px-12 shadow-xs">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -35,24 +35,18 @@ export default function Home() {
             <a href="#portales" className="hover:text-[#E07A5F] transition">Portales y Citas</a>
           </nav>
 
-          <div className="flex items-center space-x-3">
+          <div>
             <a
               href="#portales"
-              className="bg-[#1B4D3E] text-white text-xs md:text-sm px-4 py-2 rounded-xl font-medium hover:bg-[#2D6A4F] transition shadow-xs"
+              className="bg-[#1B4D3E] text-white text-xs md:text-sm px-5 py-2.5 rounded-xl font-medium hover:bg-[#2D6A4F] transition shadow-xs"
             >
               Agendar Cita
             </a>
-            <Link
-              href="/admin"
-              className="text-xs bg-[#FAF8F5] border border-[#E07A5F]/40 px-3 py-2 rounded-xl hover:bg-[#E07A5F]/10 text-[#1B4D3E] font-medium"
-            >
-              Acceso Privado
-            </Link>
           </div>
         </div>
       </header>
 
-      {/* Hero Principal con Badge Acentuado en Rosado Cálido */}
+      {/* Hero Principal */}
       <section className="max-w-5xl mx-auto text-center px-6 pt-14 pb-10 space-y-6">
         <div className="inline-flex items-center gap-2 bg-[#E07A5F]/15 border border-[#E07A5F]/40 text-[#E07A5F] text-xs font-bold px-4 py-1.5 rounded-full">
           <span>Accesibilidad Cognitiva & Baja Carga Sensorial (TEA & TDAH)</span>
@@ -156,11 +150,11 @@ export default function Home() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Portal 1: Casa Matriz ASL Ideas (Acento Rosado) */}
+          {/* Portal 1: Casa Matriz ASL Ideas */}
           <div className="bg-white rounded-2xl p-6 border border-[#E07A5F]/30 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
             <div>
               <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#E07A5F] shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-0.5">
-                <img src="/LOGO_asl.png" alt="Logo Rosado Oficial ASL Ideas SpA" className="w-full h-full object-cover rounded-full" />
+                <img src="/LOGO_asl.png" alt="Logo Oficial ASL Ideas SpA" className="w-full h-full object-cover rounded-full" />
               </div>
               <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">Casa Matriz B2B</h3>
               <p className="text-xs text-[#52796F] leading-relaxed mb-4">
@@ -258,7 +252,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Modal Interactivo con Detalles en Rosado */}
+      {/* Modal Interactivo de Agendamiento */}
       {selectedPortal && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl p-6 md:p-8 max-w-lg w-full border border-[#E07A5F]/40 shadow-xl space-y-6">
