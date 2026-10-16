@@ -1,358 +1,289 @@
 'use client';
 
-import React, { useState } from 'react';
-import Link from 'next/link';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function Home() {
-  const [selectedPortal, setSelectedPortal] = useState<string | null>(null);
+  const [triada, setTriada] = useState({
+    metabolismo: {
+      titulo: "01. Metabolismo Sano",
+      descripcion: "Evaluación metabólica inteligente y acompañamiento nutricional amable para condiciones crónicas y autoinmunes.",
+      categoria: "Dimensión Metabólica & Nutricional"
+    },
+    saludMental: {
+      titulo: "02. Salud Mental & Emocional",
+      descripcion: "Entornos de baja carga sensorial orientados a reducir la ansiedad urbana y acoger la neurodivergencia (TEA & TDAH).",
+      categoria: "Dimensión Emocional & Neurodivergencia"
+    },
+    espiritual: {
+      titulo: "03. Dimensión Espiritual & Bienestar",
+      descripcion: "Conexión holística con terapeutas certificados, fitoterapia nativa y locales de alimentación consciente.",
+      categoria: "Dimensión Holística & Sabiduría"
+    }
+  });
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [tempTriada, setTempTriada] = useState(triada);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("asl_triada_data");
+    if (saved) {
+      try {
+        setTriada(JSON.parse(saved));
+      } catch (e) {
+        console.error("Error al cargar la tríada guardada", e);
+      }
+    }
+  }, []);
+
+  const handleOpenEdit = () => {
+    setTempTriada(triada);
+    setIsEditing(true);
+    setSaveSuccess(false);
+  };
+
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    setTriada(tempTriada);
+    localStorage.setItem("asl_triada_data", JSON.stringify(tempTriada));
+    setSaveSuccess(true);
+    setTimeout(() => {
+      setIsEditing(false);
+      setSaveSuccess(false);
+    }, 1000);
+  };
 
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#1B4D3E] font-sans flex flex-col justify-between">
-      {/* Encabezado Corporativo Limpio sin Botón Privado Visible */}
-      <header className="bg-white sticky top-0 z-50 border-b border-[#E07A5F]/30 py-4 px-6 md:px-12 shadow-xs">
+      <header className="bg-white sticky top-0 z-50 border-b border-[#C8D8CE] py-4 px-6 md:px-12 shadow-xs">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#E07A5F] shadow-xs bg-white flex items-center justify-center p-0.5">
-              <img
-                src="/LOGO_asl.png"
-                alt="Logo Oficial ASL Ideas SpA"
-                className="w-full h-full object-cover rounded-full"
-              />
+            <div className="w-10 h-10 rounded-xl bg-[#1B4D3E] flex items-center justify-center text-white font-bold text-xs tracking-wider">
+              ASL
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-[#1B4D3E]">
-                ASL Ideas SpA
-              </h1>
-              <p className="text-xs text-[#E07A5F] font-semibold">
-                Salud Digital Inclusiva & Bienestar Integrativo
-              </p>
+              <h1 className="text-base font-bold text-[#1B4D3E] tracking-tight">ASL Ideas SpA</h1>
+              <p className="text-[11px] text-[#B08D4B] font-semibold uppercase tracking-wider">Salud Digital Inclusiva & Bienestar Integrativo</p>
             </div>
           </div>
 
-          <nav className="hidden md:flex items-center space-x-6 text-xs font-semibold text-[#52796F]">
-            <a href="#mision-vision" className="hover:text-[#E07A5F] transition">Misión y Visión</a>
-            <a href="#pymes" className="hover:text-[#E07A5F] transition">Servicios PYMES</a>
-            <a href="#portales" className="hover:text-[#E07A5F] transition">Portales y Citas</a>
-          </nav>
-
-          <div>
-            <a
-              href="#portales"
-              className="bg-[#1B4D3E] text-white text-xs md:text-sm px-5 py-2.5 rounded-xl font-medium hover:bg-[#2D6A4F] transition shadow-xs"
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleOpenEdit}
+              className="bg-[#E8F0EC] border border-[#C8D8CE] text-[#1B4D3E] text-xs px-4 py-2 rounded-xl font-bold hover:bg-[#D8E6DF] transition"
             >
-              Agendar Cita
-            </a>
+              Editar Tríada
+            </button>
+            <Link
+              href="/lawenmoll"
+              className="bg-[#1B4D3E] text-white text-xs px-4 py-2 rounded-xl font-bold hover:bg-[#2D6A4F] transition shadow-xs"
+            >
+              Portal LAWENMOLL
+            </Link>
           </div>
         </div>
       </header>
 
-      {/* Hero Principal */}
-      <section className="max-w-5xl mx-auto text-center px-6 pt-14 pb-10 space-y-6">
-        <div className="inline-flex items-center gap-2 bg-[#E07A5F]/15 border border-[#E07A5F]/40 text-[#E07A5F] text-xs font-bold px-4 py-1.5 rounded-full">
-          <span>Accesibilidad Cognitiva & Baja Carga Sensorial (TEA & TDAH)</span>
+      <section className="max-w-5xl mx-auto text-center px-6 pt-14 pb-8 space-y-4">
+        <div className="inline-flex items-center bg-[#E8F0EC] border border-[#C8D8CE] text-[#1B4D3E] text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full">
+          Tecnología Amable con Accesibilidad Sensorial & Cognitiva
         </div>
 
-        <h2 className="text-3xl md:text-5xl font-extrabold text-[#1B4D3E] leading-tight">
-          Desarrollamos Soluciones Accesibles e Inclusivas para PYMES y Comercios Asociados
+        <h2 className="text-3xl md:text-5xl font-extrabold text-[#1B4D3E] leading-tight tracking-tight">
+          Plataforma de Salud Digital Inclusiva
         </h2>
 
-        <p className="text-base md:text-lg text-[#52796F] max-w-3xl mx-auto leading-relaxed">
-          En ASL Ideas SpA creamos software, licencias tecnológicas y aplicaciones web diseñadas de forma amable, eliminando la sobrecarga sensorial y conectando la ciencia metabólica con la sabiduría integrativa.
+        <p className="text-sm md:text-base text-gray-700 max-w-3xl mx-auto leading-relaxed font-normal">
+          Ecosistema institucional diseñado para acompañar el autocuidado, eliminar la sobrecarga sensorial y conectar la ciencia médica con la salud integrativa.
         </p>
-
-        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a
-            href="#pymes"
-            className="w-full sm:w-auto bg-[#1B4D3E] text-white px-6 py-3 rounded-xl font-semibold text-sm hover:bg-[#2D6A4F] transition shadow-sm"
-          >
-            Soluciones B2B para PYMES
-          </a>
-          <a
-            href="#portales"
-            className="w-full sm:w-auto bg-white border border-[#E07A5F]/50 text-[#1B4D3E] px-6 py-3 rounded-xl font-semibold text-sm hover:bg-[#FAF8F5] transition shadow-sm"
-          >
-            Agendar Reunión Virtual
-          </a>
-        </div>
       </section>
 
-      {/* Misión y Visión */}
-      <section id="mision-vision" className="max-w-6xl mx-auto px-6 py-12 border-t border-[#84A59D]/20">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl font-bold text-[#1B4D3E]">Nuestra Misión y Visión</h2>
-          <p className="text-xs text-[#52796F] mt-1">Fundamentos estratégicos de innovación tecnológica e inclusión humana</p>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="bg-white p-8 rounded-2xl border border-[#E07A5F]/30 shadow-xs">
-            <div className="w-10 h-10 rounded-lg bg-[#E07A5F]/15 flex items-center justify-center text-[#E07A5F] font-bold text-xs mb-4">
-              VISIÓN
+      <section className="max-w-6xl mx-auto px-6 py-6 w-full">
+        <div className="bg-white rounded-3xl p-8 border border-[#C8D8CE] shadow-xs space-y-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-100 pb-5">
+            <div>
+              <span className="text-[11px] font-bold text-[#B08D4B] uppercase tracking-wider">Eje Fundamental</span>
+              <h3 className="text-2xl font-bold text-[#1B4D3E]">Tríada de Salud Integrativa</h3>
+              <p className="text-xs text-gray-600">Las tres dimensiones esenciales para abordar la salud corporal, emocional y holística.</p>
             </div>
-            <h3 className="text-xl font-bold text-[#1B4D3E] mb-3">Nuestra Visión</h3>
-            <p className="text-sm text-[#52796F] leading-relaxed">
-              Liderar la transformación de la salud digital integrativa y la accesibilidad tecnológica en Latinoamérica, posicionando a ASL Ideas SpA como el referente en ecosistemas digitales diseñados por y para personas con neurodivergencias y condiciones crónicas de salud.
-            </p>
+            <button
+              onClick={handleOpenEdit}
+              className="bg-[#1B4D3E] text-white text-xs px-5 py-2.5 rounded-xl font-bold hover:bg-[#2D6A4F] transition shadow-xs"
+            >
+              Editar Contenido
+            </button>
           </div>
 
-          <div className="bg-white p-8 rounded-2xl border border-[#E07A5F]/30 shadow-xs">
-            <div className="w-10 h-10 rounded-lg bg-[#2D6A4F]/15 flex items-center justify-center text-[#2D6A4F] font-bold text-xs mb-4">
-              MISIÓN
-            </div>
-            <h3 className="text-xl font-bold text-[#1B4D3E] mb-3">Nuestra Misión</h3>
-            <p className="text-sm text-[#52796F] leading-relaxed">
-              Diseñar, desarrollar y escalar soluciones tecnológicas amables —como LAWENMOLL y Wellness Web App— que unifiquen la evaluación metabólica inteligente, la medicina integrativa, el movimiento adaptado sin impacto y la sabiduría ancestral. Buscamos eliminar la frustración y la sobrecarga sensorial, empoderando a los usuarios en la gestión autónoma de su bienestar.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Servicios para PYMEs */}
-      <section id="pymes" className="bg-white border-y border-[#84A59D]/20 py-12 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <span className="text-xs font-bold text-[#E07A5F] uppercase tracking-wider">Liderazgo & Innovación B2B</span>
-            <h2 className="text-2xl md:text-3xl font-bold text-[#1B4D3E] mt-2">Servicios a PYMES y Comercios Asociados</h2>
-            <p className="text-sm text-[#52796F] max-w-2xl mx-auto mt-2">
-              Acompañamos a pequeñas y medianas empresas, comercios e instituciones de salud en la incorporación de estándares de accesibilidad digital y software a medida.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-[#FAF8F5] p-6 rounded-xl border border-[#E07A5F]/20">
-              <h3 className="font-bold text-[#1B4D3E] mb-2">Desarrollo de Software A Medida</h3>
-              <p className="text-xs text-[#52796F] leading-relaxed">
-                Plataformas ligeras y amables adaptadas a los requerimientos operativos de comercios y pymes asociadas.
-              </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+            <div className="bg-[#FAF8F5] p-6 rounded-2xl border border-[#C8D8CE] space-y-4 flex flex-col justify-between">
+              <div className="space-y-3">
+                <span className="text-xs font-bold text-[#1B4D3E] bg-[#E8F0EC] border border-[#C8D8CE] px-2.5 py-1 rounded-md inline-block">01</span>
+                <h4 className="font-bold text-base text-[#1B4D3E]">{triada.metabolismo.titulo}</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">{triada.metabolismo.descripcion}</p>
+              </div>
+              <div className="pt-3 border-t border-gray-200/60 text-[11px] font-bold text-[#52796F]">
+                {triada.metabolismo.categoria}
+              </div>
             </div>
 
-            <div className="bg-[#FAF8F5] p-6 rounded-xl border border-[#E07A5F]/20">
-              <h3 className="font-bold text-[#1B4D3E] mb-2">Consultoría UI/UX Inclusiva</h3>
-              <p className="text-xs text-[#52796F] leading-relaxed">
-                Auditoría y diseño de interfaces optimizadas para baja sobrecarga cognitiva (cumplimiento Ley TEA y estándares WCAG).
-              </p>
+            <div className="bg-[#FAF8F5] p-6 rounded-2xl border border-[#C8D8CE] space-y-4 flex flex-col justify-between">
+              <div className="space-y-3">
+                <span className="text-xs font-bold text-[#1B4D3E] bg-[#E8F0EC] border border-[#C8D8CE] px-2.5 py-1 rounded-md inline-block">02</span>
+                <h4 className="font-bold text-base text-[#1B4D3E]">{triada.saludMental.titulo}</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">{triada.saludMental.descripcion}</p>
+              </div>
+              <div className="pt-3 border-t border-gray-200/60 text-[11px] font-bold text-[#52796F]">
+                {triada.saludMental.categoria}
+              </div>
             </div>
 
-            <div className="bg-[#FAF8F5] p-6 rounded-xl border border-[#E07A5F]/20">
-              <h3 className="font-bold text-[#1B4D3E] mb-2">Licencias y Convenios B2B</h3>
-              <p className="text-xs text-[#52796F] leading-relaxed">
-                Integración de módulos de salud, pausa activa y fichas clínicas encriptadas bajo la Ley N° 21.663 para colaboradores y clientes.
-              </p>
+            <div className="bg-[#FAF8F5] p-6 rounded-2xl border border-[#C8D8CE] space-y-4 flex flex-col justify-between">
+              <div className="space-y-3">
+                <span className="text-xs font-bold text-[#1B4D3E] bg-[#E8F0EC] border border-[#C8D8CE] px-2.5 py-1 rounded-md inline-block">03</span>
+                <h4 className="font-bold text-base text-[#1B4D3E]">{triada.espiritual.titulo}</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">{triada.espiritual.descripcion}</p>
+              </div>
+              <div className="pt-3 border-t border-gray-200/60 text-[11px] font-bold text-[#B08D4B]">
+                {triada.espiritual.categoria}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Portales Interactivos con Logos Circulares */}
-      <section id="portales" className="max-w-7xl mx-auto px-6 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-[#1B4D3E]">Portales Interactivos y Agendamiento de Reuniones</h2>
-          <p className="text-xs text-[#52796F] mt-2">Selecciona un portal para ingresar o coordinar una reunión virtual con previa cita y horario reservado</p>
+      <section className="max-w-7xl mx-auto px-6 py-6 w-full">
+        <div className="text-center mb-8 space-y-1">
+          <h3 className="text-2xl font-bold text-[#1B4D3E]">Las 4 Oficinas Virtuales del Ecosistema</h3>
+          <p className="text-xs text-gray-600">Acceso a los portales institucionales de ASL Ideas SpA.</p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Portal 1: Casa Matriz ASL Ideas */}
-          <div className="bg-white rounded-2xl p-6 border border-[#E07A5F]/30 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
-            <div>
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#E07A5F] shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-0.5">
-                <img src="/LOGO_asl.png" alt="Logo Oficial ASL Ideas SpA" className="w-full h-full object-cover rounded-full" />
-              </div>
-              <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">Casa Matriz B2B</h3>
-              <p className="text-xs text-[#52796F] leading-relaxed mb-4">
-                Gestión corporativa, convenios institucionales, licencias tecnológicas y consultoría UI/UX.
-              </p>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-white rounded-2xl p-6 border border-[#C8D8CE] shadow-xs flex flex-col justify-between">
+            <div className="space-y-3">
+              <span className="text-[10px] font-bold text-[#B08D4B] uppercase tracking-wider">Unidad B2B</span>
+              <h4 className="text-lg font-bold text-[#1B4D3E]">Casa Matriz B2B</h4>
+              <p className="text-xs text-gray-600 leading-relaxed">Gestión corporativa, convenios B2B y licencias tecnológicas para instituciones.</p>
             </div>
-            
-            <div className="space-y-2 pt-4 border-t border-gray-100">
-              <button 
-                onClick={() => setSelectedPortal('Casa Matriz ASL Ideas (Reunión Corporativa B2B)')}
-                className="w-full bg-[#1B4D3E] text-white text-xs py-2.5 rounded-xl font-medium hover:bg-[#2D6A4F] transition"
-              >
-                Agendar Reunión B2B
-              </button>
-              <Link href="/aslideas" className="block text-xs font-semibold text-[#E07A5F] hover:underline pt-1">
-                Explorar Portal &rarr;
-              </Link>
+            <div className="pt-4 border-t border-gray-100 mt-4">
+              <Link href="/admin" className="text-xs font-bold text-[#B08D4B] hover:underline">Panel B2B / Admin &rarr;</Link>
             </div>
           </div>
 
-          {/* Portal 2: LAWENMOLL */}
-          <div className="bg-white rounded-2xl p-6 border border-[#E07A5F]/30 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
-            <div>
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#E07A5F]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-0.5">
-                <img src="/lawenmoll_logo.jpg" alt="Logo LAWENMOLL" className="w-full h-full object-cover rounded-full" />
-              </div>
-              <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">LAWENMOLL</h3>
-              <p className="text-xs text-[#52796F] leading-relaxed mb-4">
-                Salud Integrativa & Fichas Clínicas encriptadas (Ley N° 21.663). Test de Bienestar Inteligente.
-              </p>
+          <div className="bg-white rounded-2xl p-6 border border-[#C8D8CE] shadow-xs flex flex-col justify-between">
+            <div className="space-y-3">
+              <span className="text-[10px] font-bold text-[#2D6A4F] uppercase tracking-wider">Salud Integrativa</span>
+              <h4 className="text-lg font-bold text-[#1B4D3E]">LAWENMOLL</h4>
+              <p className="text-xs text-gray-600 leading-relaxed">Vitrina virtual, Fichas Clínicas protegidas y Sala Virtual de Agendamiento.</p>
             </div>
-            
-            <div className="space-y-2 pt-4 border-t border-gray-100">
-              <button 
-                onClick={() => setSelectedPortal('LAWENMOLL (Consulta de Salud Integrativa)')}
-                className="w-full bg-[#1B4D3E] text-white text-xs py-2.5 rounded-xl font-medium hover:bg-[#2D6A4F] transition"
-              >
-                Reservar Cita Médica
-              </button>
-              <Link href="/lawenmoll" className="block text-xs font-semibold text-[#E07A5F] hover:underline pt-1">
-                Explorar Portal &rarr;
-              </Link>
+            <div className="pt-4 border-t border-gray-100 mt-4">
+              <Link href="/lawenmoll" className="text-xs font-bold text-[#2D6A4F] hover:underline">Ingresar a LAWENMOLL &rarr;</Link>
             </div>
           </div>
 
-          {/* Portal 3: Wellness Web App */}
-          <div className="bg-white rounded-2xl p-6 border border-[#E07A5F]/30 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
-            <div>
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#E07A5F]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-0.5">
-                <img src="/logo_wellness.jpg" alt="Logo Wellness" className="w-full h-full object-cover rounded-full" />
-              </div>
-              <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">Wellness Web App</h3>
-              <p className="text-xs text-[#52796F] leading-relaxed mb-4">
-                Movimiento adaptado sin impacto, videoteca y Salas Virtuales (Lotus, Cielo, Bosque, Raíz).
-              </p>
+          <div className="bg-white rounded-2xl p-6 border border-[#C8D8CE] shadow-xs flex flex-col justify-between">
+            <div className="space-y-3">
+              <span className="text-[10px] font-bold text-[#B08D4B] uppercase tracking-wider">Pausa Activa</span>
+              <h4 className="text-lg font-bold text-[#1B4D3E]">Wellness Web App</h4>
+              <p className="text-xs text-gray-600 leading-relaxed">Movimiento adaptado sin impacto y Salas Virtuales temáticas de bienestar.</p>
             </div>
-            
-            <div className="space-y-2 pt-4 border-t border-gray-100">
-              <button 
-                onClick={() => setSelectedPortal('Wellness Web App (Sesión de Pausa Activa / Sala Virtual)')}
-                className="w-full bg-[#1B4D3E] text-white text-xs py-2.5 rounded-xl font-medium hover:bg-[#2D6A4F] transition"
-              >
-                Agendar Sala Virtual
-              </button>
-              <Link href="/wellness" className="block text-xs font-semibold text-[#E07A5F] hover:underline pt-1">
-                Explorar Portal &rarr;
-              </Link>
+            <div className="pt-4 border-t border-gray-100 mt-4">
+              <Link href="/wellness" className="text-xs font-bold text-[#B08D4B] hover:underline">Explorar Rutinas &rarr;</Link>
             </div>
           </div>
 
-          {/* Portal 4: Sabiduría Ancestral */}
-          <div className="bg-white rounded-2xl p-6 border border-[#E07A5F]/30 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
-            <div>
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#E07A5F]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-0.5">
-                <img src="/LOGO_BIENESTAR.png" alt="Logo Bienestar Ancestral" className="w-full h-full object-cover rounded-full" />
-              </div>
-              <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">Sabiduría Ancestral</h3>
-              <p className="text-xs text-[#52796F] leading-relaxed mb-4">
-                Fitoterapia nativa, comunidad activa, Diario Mural y recetarios herbolarios descargables en PDF.
-              </p>
+          <div className="bg-white rounded-2xl p-6 border border-[#C8D8CE] shadow-xs flex flex-col justify-between">
+            <div className="space-y-3">
+              <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider">Comunidad</span>
+              <h4 className="text-lg font-bold text-[#1B4D3E]">Sabiduría Ancestral</h4>
+              <p className="text-xs text-gray-600 leading-relaxed">Fitoterapia nativa, Diario Mural comunitario y recetarios en PDF.</p>
             </div>
-            
-            <div className="space-y-2 pt-4 border-t border-gray-100">
-              <button 
-                onClick={() => setSelectedPortal('Sabiduría Ancestral (Taller Comunitario Herbolario)')}
-                className="w-full bg-[#1B4D3E] text-white text-xs py-2.5 rounded-xl font-medium hover:bg-[#2D6A4F] transition"
-              >
-                Agendar Taller Herbolario
-              </button>
-              <Link href="/bienestar" className="block text-xs font-semibold text-[#E07A5F] hover:underline pt-1">
-                Explorar Portal &rarr;
-              </Link>
+            <div className="pt-4 border-t border-gray-100 mt-4">
+              <Link href="/comunidad" className="text-xs font-bold text-amber-800 hover:underline">Ver Comunidad &rarr;</Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Modal Interactivo de Agendamiento */}
-      {selectedPortal && (
+      {isEditing && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl p-6 md:p-8 max-w-lg w-full border border-[#E07A5F]/40 shadow-xl space-y-6">
-            <div className="flex justify-between items-start border-b border-gray-100 pb-4">
+          <div className="bg-white rounded-2xl p-6 md:p-8 max-w-2xl w-full border border-[#C8D8CE] shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center border-b border-gray-100 pb-3">
               <div>
-                <span className="text-xs font-bold text-[#E07A5F] uppercase tracking-wider">Previa Cita & Horario</span>
-                <h3 className="text-lg font-bold text-[#1B4D3E] mt-1">{selectedPortal}</h3>
+                <span className="text-[10px] font-bold text-[#B08D4B] uppercase tracking-wider">Editor Interactivo</span>
+                <h3 className="text-lg font-bold text-[#1B4D3E]">Editar Tríada de Salud Integrativa</h3>
               </div>
-              <button 
-                onClick={() => setSelectedPortal(null)}
-                className="text-gray-400 hover:text-gray-600 text-lg font-bold"
-              >
-                ✕
-              </button>
+              <button onClick={() => setIsEditing(false)} className="text-gray-400 hover:text-gray-600 font-bold text-sm">Cerrar</button>
             </div>
 
-            <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); alert('Cita agendada con éxito. Recibirás la confirmación por correo y WhatsApp.'); setSelectedPortal(null); }}>
-              <div>
-                <label className="block text-xs font-semibold text-[#1B4D3E] mb-1">Nombre Completo</label>
-                <input required type="text" placeholder="Ej: María González" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#E07A5F]" />
-              </div>
+            {!saveSuccess ? (
+              <form onSubmit={handleSave} className="space-y-4">
+                <div className="p-4 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] space-y-2">
+                  <label className="block text-xs font-bold text-[#1B4D3E]">Pilar 1: Metabolismo Sano</label>
+                  <input
+                    type="text"
+                    value={tempTriada.metabolismo.titulo}
+                    onChange={(e) => setTempTriada({ ...tempTriada, metabolismo: { ...tempTriada.metabolismo, titulo: e.target.value } })}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs font-semibold focus:outline-none focus:border-[#1B4D3E]"
+                  />
+                  <textarea
+                    rows={2}
+                    value={tempTriada.metabolismo.descripcion}
+                    onChange={(e) => setTempTriada({ ...tempTriada, metabolismo: { ...tempTriada.metabolismo, descripcion: e.target.value } })}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:border-[#1B4D3E]"
+                  />
+                </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-semibold text-[#1B4D3E] mb-1">Correo Electrónico</label>
-                  <input required type="email" placeholder="correo@ejemplo.cl" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#E07A5F]" />
+                <div className="p-4 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] space-y-2">
+                  <label className="block text-xs font-bold text-[#1B4D3E]">Pilar 2: Salud Mental & Emocional</label>
+                  <input
+                    type="text"
+                    value={tempTriada.saludMental.titulo}
+                    onChange={(e) => setTempTriada({ ...tempTriada, saludMental: { ...tempTriada.saludMental, titulo: e.target.value } })}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs font-semibold focus:outline-none focus:border-[#1B4D3E]"
+                  />
+                  <textarea
+                    rows={2}
+                    value={tempTriada.saludMental.descripcion}
+                    onChange={(e) => setTempTriada({ ...tempTriada, saludMental: { ...tempTriada.saludMental, descripcion: e.target.value } })}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:border-[#1B4D3E]"
+                  />
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-[#1B4D3E] mb-1">Teléfono / WhatsApp</label>
-                  <input required type="tel" placeholder="+56 9 1234 5678" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#E07A5F]" />
-                </div>
-              </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-semibold text-[#1B4D3E] mb-1">Fecha de Cita</label>
-                  <input required type="date" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#E07A5F]" />
+                <div className="p-4 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] space-y-2">
+                  <label className="block text-xs font-bold text-[#1B4D3E]">Pilar 3: Dimensión Espiritual & Bienestar</label>
+                  <input
+                    type="text"
+                    value={tempTriada.espiritual.titulo}
+                    onChange={(e) => setTempTriada({ ...tempTriada, espiritual: { ...tempTriada.espiritual, titulo: e.target.value } })}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs font-semibold focus:outline-none focus:border-[#1B4D3E]"
+                  />
+                  <textarea
+                    rows={2}
+                    value={tempTriada.espiritual.descripcion}
+                    onChange={(e) => setTempTriada({ ...tempTriada, espiritual: { ...tempTriada.espiritual, descripcion: e.target.value } })}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:border-[#1B4D3E]"
+                  />
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-[#1B4D3E] mb-1">Horario Disponible</label>
-                  <select required className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:border-[#E07A5F]">
-                    <option value="">Selecciona Horario</option>
-                    <option value="10:00">10:00 - 10:45 AM</option>
-                    <option value="12:00">12:00 - 12:45 PM</option>
-                    <option value="15:30">15:30 - 16:15 PM</option>
-                    <option value="18:00">18:00 - 18:45 PM</option>
-                  </select>
-                </div>
-              </div>
 
-              <div className="pt-4 flex gap-3">
-                <button 
-                  type="button"
-                  onClick={() => setSelectedPortal(null)}
-                  className="w-1/2 bg-gray-100 text-gray-700 py-2.5 rounded-xl text-xs font-semibold hover:bg-gray-200 transition"
-                >
-                  Cancelar
-                </button>
-                <button 
-                  type="submit"
-                  className="w-1/2 bg-[#1B4D3E] text-white py-2.5 rounded-xl text-xs font-semibold hover:bg-[#2D6A4F] transition"
-                >
-                  Confirmar Reserva
-                </button>
+                <div className="flex gap-3 pt-2">
+                  <button type="button" onClick={() => setIsEditing(false)} className="w-1/2 bg-gray-100 text-gray-700 py-2.5 rounded-xl text-xs font-semibold">Cancelar</button>
+                  <button type="submit" className="w-1/2 bg-[#1B4D3E] text-white py-2.5 rounded-xl text-xs font-bold hover:bg-[#2D6A4F] transition">Guardar Cambios</button>
+                </div>
+              </form>
+            ) : (
+              <div className="text-center py-6 space-y-3">
+                <div className="w-10 h-10 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center mx-auto text-sm font-bold">OK</div>
+                <h4 className="font-bold text-base text-[#1B4D3E]">Tríada Actualizada con Éxito</h4>
+                <p className="text-xs text-gray-600">Los cambios se han registrado y se muestran de inmediato en el portal.</p>
               </div>
-            </form>
+            )}
           </div>
         </div>
       )}
 
-      {/* Pie de Página */}
-      <footer className="bg-[#1B4D3E] text-[#FAF8F5] py-12 px-6 mt-12 border-t border-[#84A59D]/20">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
-          <div>
-            <h4 className="font-bold text-base mb-2">ASL Ideas SpA</h4>
-            <p className="text-xs text-[#84A59D] leading-relaxed">
-              Plataforma de Salud Digital Inclusiva. Innovación tecnológica amable y accesible, diseñada para transformar el autocuidado y elevar la calidad de vida.
-            </p>
-          </div>
-
-          <div>
-            <h4 className="font-bold text-sm mb-3">Redes Sociales & Canales B2B</h4>
-            <ul className="space-y-2 text-xs text-[#FAF8F5]">
-              <li><a href="[suspicious link removed]" target="_blank" rel="noreferrer" className="hover:underline">LinkedIn (Enfoque Corporativo B2B)</a></li>
-              <li><a href="[suspicious link removed]" target="_blank" rel="noreferrer" className="hover:underline">Instagram (Consejos & Autocuidado)</a></li>
-              <li><a href="[suspicious link removed]" target="_blank" rel="noreferrer" className="hover:underline">YouTube (Videoteca & Ejercicios)</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-bold text-sm mb-3">Soporte & Alianzas</h4>
-            <p className="text-xs text-[#84A59D] leading-relaxed">
-              Contacto habilitado para PYMES, instituciones públicas y comercios asociados vía WhatsApp y Telegram.
-            </p>
-          </div>
-        </div>
-
-        <div className="max-w-7xl mx-auto pt-8 mt-8 border-t border-[#52796F]/30 text-center text-xs text-[#84A59D]">
-          &copy; {new Date().getFullYear()} ASL Ideas SpA. Todos los derechos reservados. | Diseñado con Accesibilidad Sensorial.
-        </div>
+      <footer className="bg-white border-t border-[#C8D8CE] text-center text-xs text-gray-500 py-6 px-6 mt-8">
+        <p>&copy; {new Date().getFullYear()} ASL Ideas SpA. Todos los derechos reservados. | Plataforma diseñada con Accesibilidad Sensorial.</p>
       </footer>
     </main>
   );
