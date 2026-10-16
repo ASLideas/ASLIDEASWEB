@@ -8,15 +8,15 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#1B4D3E] font-sans flex flex-col justify-between">
-      {/* Encabezado Corporativo con Nuevo Logo ASL Ideas SpA */}
+      {/* Encabezado Corporativo con Logo Rosado Oficial ASL Ideas SpA */}
       <header className="bg-white sticky top-0 z-50 border-b border-[#B08D4B]/20 py-4 px-6 md:px-12 shadow-xs">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-xs bg-white flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-xs bg-white flex items-center justify-center p-0.5">
               <img
-                src="/logoASLideas.jpeg"
-                alt="Nuevo Logo ASL Ideas SpA"
-                className="w-full h-full object-cover"
+                src="/LOGO_asl.png"
+                alt="Logo Rosado Oficial ASL Ideas SpA"
+                className="w-full h-full object-cover rounded-full"
               />
             </div>
             <div>
@@ -82,7 +82,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Sección Misión y Visión */}
+      {/* Misión y Visión */}
       <section id="mision-vision" className="max-w-6xl mx-auto px-6 py-12 border-t border-[#84A59D]/20">
         <div className="text-center mb-10">
           <h2 className="text-2xl font-bold text-[#1B4D3E]">Nuestra Misión y Visión</h2>
@@ -112,7 +112,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Servicios para PYMEs */}
+      {/* Servicios PYMES */}
       <section id="pymes" className="bg-white border-y border-[#84A59D]/20 py-12 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
@@ -148,7 +148,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Ecosistema de Portales con Logos Circulares */}
+      {/* Portales Interactivos con Logos Circulares Oficiales */}
       <section id="portales" className="max-w-7xl mx-auto px-6 py-16">
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold text-[#1B4D3E]">Portales Interactivos y Agendamiento de Reuniones</h2>
@@ -156,11 +156,11 @@ export default function Home() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Portal 1: Casa Matriz ASL Ideas (Nuevo Logo) */}
+          {/* Portal 1: Casa Matriz ASL Ideas (Logo Rosado Oficial) */}
           <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
             <div>
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-1">
-                <img src="/logoASLideas.jpeg" alt="Nuevo Logo ASL Ideas SpA" className="w-full h-full object-cover rounded-full" />
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-0.5">
+                <img src="/LOGO_asl.png" alt="Logo Rosado Oficial ASL Ideas SpA" className="w-full h-full object-cover rounded-full" />
               </div>
               <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">Casa Matriz B2B</h3>
               <p className="text-xs text-[#52796F] leading-relaxed mb-4">
@@ -184,7 +184,7 @@ export default function Home() {
           {/* Portal 2: LAWENMOLL */}
           <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
             <div>
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-1">
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-0.5">
                 <img src="/lawenmoll_logo.jpg" alt="Logo LAWENMOLL" className="w-full h-full object-cover rounded-full" />
               </div>
               <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">LAWENMOLL</h3>
@@ -209,7 +209,7 @@ export default function Home() {
           {/* Portal 3: Wellness Web App */}
           <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
             <div>
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-1">
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-0.5">
                 <img src="/logo_wellness.jpg" alt="Logo Wellness" className="w-full h-full object-cover rounded-full" />
               </div>
               <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">Wellness Web App</h3>
@@ -234,7 +234,7 @@ export default function Home() {
           {/* Portal 4: Sabiduría Ancestral */}
           <div className="bg-white rounded-2xl p-6 border border-[#B08D4B]/20 shadow-xs hover:shadow-md transition-all flex flex-col justify-between text-center">
             <div>
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-1">
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#B08D4B]/40 shadow-sm mx-auto mb-4 bg-white flex items-center justify-center p-0.5">
                 <img src="/LOGO_BIENESTAR.png" alt="Logo Bienestar Ancestral" className="w-full h-full object-cover rounded-full" />
               </div>
               <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">Sabiduría Ancestral</h3>
