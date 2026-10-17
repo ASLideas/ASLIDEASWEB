@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
-export default function BienestarApp() {
+export default function BienestarPage() {
   const [activeTab, setActiveTab] = useState("comunidad");
   const [waterGlasses, setWaterGlasses] = useState(4);
   const [steps, setSteps] = useState(5420);
@@ -17,8 +17,8 @@ export default function BienestarApp() {
   const [morfeoPlaying, setMorfeoPlaying] = useState(null);
   const [medicalSuccess, setMedicalSuccess] = useState(false);
 
-  const handleCreatePost = (evt) => {
-    evt.preventDefault();
+  const handleCreatePost = (e) => {
+    e.preventDefault();
     if (!newPostText.trim()) return;
     setPostsList([{ author: "Usuario Activo", text: newPostText, time: "Ahora mismo" }, ...postsList]);
     setNewPostText("");
@@ -28,8 +28,8 @@ export default function BienestarApp() {
     setScannedFood("Ensalada de Quinoa con Palta y Semillas - 320 kcal (Aporte óptimo en Magnesio)");
   };
 
-  const handleMedicalBooking = (evt) => {
-    evt.preventDefault();
+  const handleMedicalBooking = (e) => {
+    e.preventDefault();
     setMedicalSuccess(true);
   };
 
@@ -57,31 +57,31 @@ export default function BienestarApp() {
         <div className="max-w-6xl mx-auto flex flex-wrap gap-2 text-xs font-bold justify-center">
           <button
             onClick={() => setActiveTab("comunidad")}
-            className={`px-4 py-2 rounded-xl transition ${activeTab === "comunidad" ? "bg-[#1B4D3E] text-white" : "bg-[#FAF8F5] text-gray-700 hover:bg-[#E8F0EC]"}`}
+            className={activeTab === "comunidad" ? "px-4 py-2 rounded-xl transition bg-[#1B4D3E] text-white" : "px-4 py-2 rounded-xl transition bg-[#FAF8F5] text-gray-700 hover:bg-[#E8F0EC]"}
           >
             Comunidad & Muro
           </button>
           <button
             onClick={() => setActiveTab("habitos")}
-            className={`px-4 py-2 rounded-xl transition ${activeTab === "habitos" ? "bg-[#1B4D3E] text-white" : "bg-[#FAF8F5] text-gray-700 hover:bg-[#E8F0EC]"}`}
+            className={activeTab === "habitos" ? "px-4 py-2 rounded-xl transition bg-[#1B4D3E] text-white" : "px-4 py-2 rounded-xl transition bg-[#FAF8F5] text-gray-700 hover:bg-[#E8F0EC]"}
           >
             Pasos, Agua & Escáner
           </button>
           <button
             onClick={() => setActiveTab("citas")}
-            className={`px-4 py-2 rounded-xl transition ${activeTab === "citas" ? "bg-[#1B4D3E] text-white" : "bg-[#FAF8F5] text-gray-700 hover:bg-[#E8F0EC]"}`}
+            className={activeTab === "citas" ? "px-4 py-2 rounded-xl transition bg-[#1B4D3E] text-white" : "px-4 py-2 rounded-xl transition bg-[#FAF8F5] text-gray-700 hover:bg-[#E8F0EC]"}
           >
             Agendar Horas Médicas
           </button>
           <button
             onClick={() => setActiveTab("shopping")}
-            className={`px-4 py-2 rounded-xl transition ${activeTab === "shopping" ? "bg-[#1B4D3E] text-white" : "bg-[#FAF8F5] text-gray-700 hover:bg-[#E8F0EC]"}`}
+            className={activeTab === "shopping" ? "px-4 py-2 rounded-xl transition bg-[#1B4D3E] text-white" : "px-4 py-2 rounded-xl transition bg-[#FAF8F5] text-gray-700 hover:bg-[#E8F0EC]"}
           >
             Shopping PYMES Herbolarias
           </button>
           <button
             onClick={() => setActiveTab("morfeo")}
-            className={`px-4 py-2 rounded-xl transition ${activeTab === "morfeo" ? "bg-amber-900 text-white" : "bg-[#FAF8F5] text-amber-900 border border-amber-200 hover:bg-amber-50"}`}
+            className={activeTab === "morfeo" ? "px-4 py-2 rounded-xl transition bg-amber-900 text-white" : "px-4 py-2 rounded-xl transition bg-[#FAF8F5] text-amber-900 border border-amber-200 hover:bg-amber-50"}
           >
             Módulo Morfeo (Sueño REM)
           </button>
@@ -96,7 +96,7 @@ export default function BienestarApp() {
               <textarea
                 rows={3}
                 value={newPostText}
-                onChange={(evt) => setNewPostText(evt.target.value)}
+                onChange={(e) => setNewPostText(e.target.value)}
                 placeholder="Escribe un mensaje, recomendación de herbolaria o logro de bienestar..."
                 className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-[#1B4D3E]"
               />
