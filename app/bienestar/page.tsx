@@ -7,20 +7,20 @@ export default function BienestarApp() {
   const [activeTab, setActiveTab] = useState("comunidad");
   const [waterGlasses, setWaterGlasses] = useState(4);
   const [steps, setSteps] = useState(5420);
-  const [scannedFood, setScannedFood] = useState<string | null>(null);
+  const [scannedFood, setScannedFood] = useState(null);
 
-  const [posts, setPosts] = useState([
+  const [postsList, setPostsList] = useState([
     { author: "Elena R.", text: "¡Comparto mi receta de infusión de cedrón y toronjil para una tarde serena!", time: "Hace 15 min" },
     { author: "Marcos T.", text: "Caminata matutina adaptada completada. ¡5,000 pasos a ritmo suave!", time: "Hace 1 hora" }
   ]);
   const [newPostText, setNewPostText] = useState("");
-  const [morfeoPlaying, setMorfeoPlaying] = useState<string | null>(null);
+  const [morfeoPlaying, setMorfeoPlaying] = useState(null);
   const [medicalSuccess, setMedicalSuccess] = useState(false);
 
-  const handleCreatePost = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleCreatePost = (evt) => {
+    evt.preventDefault();
     if (!newPostText.trim()) return;
-    setPosts([{ author: "Usuario Activo", text: newPostText, time: "Ahora mismo" }, ...posts]);
+    setPostsList([{ author: "Usuario Activo", text: newPostText, time: "Ahora mismo" }, ...postsList]);
     setNewPostText("");
   };
 
@@ -28,8 +28,8 @@ export default function BienestarApp() {
     setScannedFood("Ensalada de Quinoa con Palta y Semillas - 320 kcal (Aporte óptimo en Magnesio)");
   };
 
-  const handleMedicalBooking = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleMedicalBooking = (evt) => {
+    evt.preventDefault();
     setMedicalSuccess(true);
   };
 
@@ -96,7 +96,7 @@ export default function BienestarApp() {
               <textarea
                 rows={3}
                 value={newPostText}
-                onChange={(e) => setNewPostText([enlace sospechoso eliminado].value)}
+                onChange={(evt) => setNewPostText(evt.target.value)}
                 placeholder="Escribe un mensaje, recomendación de herbolaria o logro de bienestar..."
                 className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-[#1B4D3E]"
               />
@@ -124,13 +124,13 @@ export default function BienestarApp() {
           </div>
 
           <div className="space-y-4">
-            {[enlace sospechoso eliminado]((p, i) => (
-              <div key={i} className="bg-white p-5 rounded-2xl border border-[#C8D8CE] shadow-xs space-y-2">
+            {postsList.map((item, idx) => (
+              <div key={idx} className="bg-white p-5 rounded-2xl border border-[#C8D8CE] shadow-xs space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="font-bold text-xs text-[#1B4D3E]">{[enlace sospechoso eliminado]}</span>
-                  <span className="text-[10px] text-gray-400">{p.time}</span>
+                  <span className="font-bold text-xs text-[#1B4D3E]">{item.author}</span>
+                  <span className="text-[10px] text-gray-400">{item.time}</span>
                 </div>
-                <p className="text-xs text-gray-700 leading-relaxed">{p.text}</p>
+                <p className="text-xs text-gray-700 leading-relaxed">{item.text}</p>
               </div>
             ))}
           </div>
