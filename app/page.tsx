@@ -1,12 +1,27 @@
 'use client';
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 
 export default function Home() {
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [bookingType, setBookingType] = useState("B2B");
+  const [bookingSuccess, setBookingSuccess] = useState(false);
+
+  const openBooking = (type: string) => {
+    setBookingType(type);
+    setShowBookingModal(true);
+    setBookingSuccess(false);
+  };
+
+  const handleBookingSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setBookingSuccess(true);
+  };
+
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#1B4D3E] font-sans flex flex-col justify-between">
-      {/* Encabezado Principal con Boton de Acceso a la Consola Administradora */}
+      {/* Encabezado Principal */}
       <header className="bg-white sticky top-0 z-50 border-b border-[#C8D8CE] py-4 px-6 md:px-12 shadow-xs">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -28,6 +43,12 @@ export default function Home() {
           </nav>
 
           <div className="flex items-center gap-3">
+            <button
+              onClick={() => openBooking("General")}
+              className="bg-[#2D6A4F] text-white text-xs px-4 py-2 rounded-xl font-bold hover:bg-[#1B4D3E] transition shadow-xs"
+            >
+              Agendar Cita
+            </button>
             <Link
               href="/admin"
               className="bg-[#1B4D3E] text-white text-xs px-4 py-2 rounded-xl font-bold hover:bg-[#2D6A4F] transition shadow-xs"
@@ -53,18 +74,18 @@ export default function Home() {
         </p>
 
         <div className="flex flex-wrap justify-center gap-4 pt-2">
-          <a
-            href="#servicios-pymes"
+          <button
+            onClick={() => openBooking("Reunión B2B para PYMES")}
             className="bg-[#2D6A4F] text-white text-xs px-6 py-3 rounded-xl font-bold hover:bg-[#1B4D3E] transition shadow-xs"
           >
             Soluciones B2B para PYMES
-          </a>
-          <Link
-            href="/admin"
+          </button>
+          <button
+            onClick={() => openBooking("Reunión Virtual")}
             className="bg-white border border-[#C8D8CE] text-[#1B4D3E] text-xs px-6 py-3 rounded-xl font-bold hover:bg-[#E8F0EC] transition"
           >
-            Ingresar a Consola Administradora
-          </Link>
+            Agendar Reunión Virtual
+          </button>
         </div>
       </section>
 
@@ -135,7 +156,7 @@ export default function Home() {
       {/* Portales Interactivos */}
       <section id="portales" className="max-w-7xl mx-auto px-6 py-8 w-full">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Card 1: Casa Matriz B2B */}
+          {/* Casa Matriz B2B */}
           <div className="bg-white rounded-2xl p-6 border border-[#C8D8CE] shadow-xs flex flex-col justify-between space-y-4 text-center items-center">
             <div className="space-y-3 flex flex-col items-center">
               <div className="w-16 h-16 rounded-full overflow-hidden bg-white border border-[#C8D8CE] p-1 flex items-center justify-center">
@@ -147,16 +168,19 @@ export default function Home() {
               </p>
             </div>
             <div className="w-full space-y-2 pt-2 border-t border-gray-100">
-              <Link href="/admin" className="block w-full bg-[#2D6A4F] text-white text-xs py-2.5 rounded-xl font-bold hover:bg-[#1B4D3E] transition">
+              <button
+                onClick={() => openBooking("Reunión Casa Matriz B2B")}
+                className="w-full bg-[#2D6A4F] text-white text-xs py-2.5 rounded-xl font-bold hover:bg-[#1B4D3E] transition"
+              >
                 Agendar Reunión B2B
-              </Link>
+              </button>
               <Link href="/admin" className="block text-xs text-gray-500 hover:underline pt-1">
                 Explorar Portal &rarr;
               </Link>
             </div>
           </div>
 
-          {/* Card 2: LAWENMOLL */}
+          {/* LAWENMOLL */}
           <div className="bg-white rounded-2xl p-6 border border-[#C8D8CE] shadow-xs flex flex-col justify-between space-y-4 text-center items-center">
             <div className="space-y-3 flex flex-col items-center">
               <div className="w-16 h-16 rounded-full overflow-hidden bg-white border border-[#C8D8CE] p-1 flex items-center justify-center">
@@ -168,16 +192,19 @@ export default function Home() {
               </p>
             </div>
             <div className="w-full space-y-2 pt-2 border-t border-gray-100">
-              <Link href="/lawenmoll" className="block w-full bg-[#2D6A4F] text-white text-xs py-2.5 rounded-xl font-bold hover:bg-[#1B4D3E] transition">
+              <button
+                onClick={() => openBooking("Cita Médica LAWENMOLL")}
+                className="w-full bg-[#2D6A4F] text-white text-xs py-2.5 rounded-xl font-bold hover:bg-[#1B4D3E] transition"
+              >
                 Reservar Cita Médica
-              </Link>
+              </button>
               <Link href="/lawenmoll" className="block text-xs text-gray-500 hover:underline pt-1">
                 Explorar Portal &rarr;
               </Link>
             </div>
           </div>
 
-          {/* Card 3: Wellness Web App */}
+          {/* Wellness */}
           <div className="bg-white rounded-2xl p-6 border border-[#C8D8CE] shadow-xs flex flex-col justify-between space-y-4 text-center items-center">
             <div className="space-y-3 flex flex-col items-center">
               <div className="w-16 h-16 rounded-full overflow-hidden bg-white border border-[#C8D8CE] p-1 flex items-center justify-center">
@@ -189,16 +216,19 @@ export default function Home() {
               </p>
             </div>
             <div className="w-full space-y-2 pt-2 border-t border-gray-100">
-              <Link href="/wellness" className="block w-full bg-[#2D6A4F] text-white text-xs py-2.5 rounded-xl font-bold hover:bg-[#1B4D3E] transition">
+              <button
+                onClick={() => openBooking("Sala Virtual Wellness")}
+                className="w-full bg-[#2D6A4F] text-white text-xs py-2.5 rounded-xl font-bold hover:bg-[#1B4D3E] transition"
+              >
                 Agendar Sala Virtual
-              </Link>
+              </button>
               <Link href="/wellness" className="block text-xs text-gray-500 hover:underline pt-1">
                 Explorar Portal &rarr;
               </Link>
             </div>
           </div>
 
-          {/* Card 4: Bienestar */}
+          {/* Bienestar */}
           <div className="bg-white rounded-2xl p-6 border border-[#C8D8CE] shadow-xs flex flex-col justify-between space-y-4 text-center items-center">
             <div className="space-y-3 flex flex-col items-center">
               <div className="w-16 h-16 rounded-full overflow-hidden bg-white border border-[#C8D8CE] p-1 flex items-center justify-center">
@@ -210,9 +240,12 @@ export default function Home() {
               </p>
             </div>
             <div className="w-full space-y-2 pt-2 border-t border-gray-100">
-              <Link href="/comunidad" className="block w-full bg-[#2D6A4F] text-white text-xs py-2.5 rounded-xl font-bold hover:bg-[#1B4D3E] transition">
+              <button
+                onClick={() => openBooking("Taller Herbolario Bienestar")}
+                className="w-full bg-[#2D6A4F] text-white text-xs py-2.5 rounded-xl font-bold hover:bg-[#1B4D3E] transition"
+              >
                 Agendar Taller Herbolario
-              </Link>
+              </button>
               <Link href="/comunidad" className="block text-xs text-gray-500 hover:underline pt-1">
                 Explorar Portal &rarr;
               </Link>
@@ -221,7 +254,59 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pie de Página */}
+      {/* MODAL INTERACTIVO DE AGENDAMIENTO */}
+      {showBookingModal && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full border border-[#C8D8CE] shadow-xl space-y-4">
+            <div className="flex justify-between items-center border-b border-gray-100 pb-3">
+              <div>
+                <span className="text-[10px] font-bold text-[#E07A5F] uppercase tracking-wider block">Sistema de Citas B2B & Salud</span>
+                <h3 className="text-base font-bold text-[#1B4D3E]">{bookingType}</h3>
+              </div>
+              <button onClick={() => setShowBookingModal(false)} className="text-gray-400 hover:text-gray-600 text-xs font-bold">Cerrar</button>
+            </div>
+
+            {!bookingSuccess ? (
+              <form onSubmit={handleBookingSubmit} className="space-y-3">
+                <div>
+                  <label className="block text-xs font-bold text-[#1B4D3E] mb-1">Nombre Completo / Empresa</label>
+                  <input required type="text" placeholder="Ej: Maria González" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-[#2D6A4F]" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-[#1B4D3E] mb-1">Correo Electrónico de Contacto</label>
+                  <input required type="email" placeholder="contacto@empresa.cl" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-[#2D6A4F]" />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-[#1B4D3E] mb-1">Fecha</label>
+                    <input required type="date" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-[#2D6A4F]" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-[#1B4D3E] mb-1">Horario Preferente</label>
+                    <select required className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-[#2D6A4F]">
+                      <option value="10:00">10:00 AM</option>
+                      <option value="12:30">12:30 PM</option>
+                      <option value="15:30">03:30 PM</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="pt-2 flex gap-3">
+                  <button type="button" onClick={() => setShowBookingModal(false)} className="w-1/2 bg-gray-100 text-gray-700 py-2.5 rounded-xl text-xs font-semibold">Cancelar</button>
+                  <button type="submit" className="w-1/2 bg-[#2D6A4F] text-white py-2.5 rounded-xl text-xs font-bold hover:bg-[#1B4D3E]">Confirmar Reserva</button>
+                </div>
+              </form>
+            ) : (
+              <div className="text-center py-6 space-y-3">
+                <div className="w-10 h-10 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center mx-auto text-xs font-bold">OK</div>
+                <h4 className="font-bold text-sm text-[#1B4D3E]">Solicitud Registrada Exitosamente</h4>
+                <p className="text-xs text-gray-600">Se ha enviado la confirmación al correo institucional y coordinado el horario.</p>
+                <button onClick={() => setShowBookingModal(false)} className="bg-[#2D6A4F] text-white text-xs px-6 py-2 rounded-xl font-bold">Entendido</button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       <footer className="bg-white border-t border-[#C8D8CE] py-6 px-6 text-center text-xs text-gray-500">
         <p>&copy; {new Date().getFullYear()} ASL Ideas SpA. Todos los derechos reservados. | Diseñado con Accesibilidad Sensorial.</p>
       </footer>
