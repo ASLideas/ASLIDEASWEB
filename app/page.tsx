@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#1B4D3E] font-sans flex flex-col justify-between">
-      {/* Encabezado Principal */}
+      {/* Encabezado Principal con Boton de Acceso a la Consola Administradora */}
       <header className="bg-white sticky top-0 z-50 border-b border-[#C8D8CE] py-4 px-6 md:px-12 shadow-xs">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -24,19 +24,21 @@ export default function Home() {
           <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-[#1B4D3E]">
             <a href="#mision-vision" className="hover:text-[#B08D4B] transition">Misión y Visión</a>
             <a href="#servicios-pymes" className="hover:text-[#B08D4B] transition">Servicios PYMES</a>
-            <a href="#portales" className="hover:text-[#B08D4B] transition">Portales y Citas</a>
+            <a href="#portales" className="hover:text-[#B08D4B] transition">Portales</a>
           </nav>
 
-          <a
-            href="#portales"
-            className="bg-[#2D6A4F] text-white text-xs px-5 py-2.5 rounded-xl font-bold hover:bg-[#1B4D3E] transition shadow-xs"
-          >
-            Agendar Cita
-          </a>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/admin"
+              className="bg-[#1B4D3E] text-white text-xs px-4 py-2 rounded-xl font-bold hover:bg-[#2D6A4F] transition shadow-xs"
+            >
+              Consola Administradora
+            </Link>
+          </div>
         </div>
       </header>
 
-      {/* Hero Principal (Foto 1) */}
+      {/* Hero Principal */}
       <section className="max-w-5xl mx-auto text-center px-6 pt-12 pb-8 space-y-5">
         <div className="inline-flex items-center bg-[#FCEFEB] border border-[#E07A5F]/30 text-[#E07A5F] text-[11px] font-bold uppercase tracking-wider px-4 py-1.5 rounded-full">
           Accesibilidad Cognitiva & Baja Carga Sensorial (TEA & TDAH)
@@ -57,16 +59,16 @@ export default function Home() {
           >
             Soluciones B2B para PYMES
           </a>
-          <a
-            href="#portales"
+          <Link
+            href="/admin"
             className="bg-white border border-[#C8D8CE] text-[#1B4D3E] text-xs px-6 py-3 rounded-xl font-bold hover:bg-[#E8F0EC] transition"
           >
-            Agendar Reunión Virtual
-          </a>
+            Ingresar a Consola Administradora
+          </Link>
         </div>
       </section>
 
-      {/* Misión y Visión (Foto 2) */}
+      {/* Misión y Visión */}
       <section id="mision-vision" className="max-w-6xl mx-auto px-6 py-8 w-full">
         <div className="bg-white rounded-3xl p-8 border border-[#C8D8CE] shadow-xs space-y-6">
           <div className="text-center max-w-2xl mx-auto space-y-1">
@@ -94,7 +96,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Servicios B2B (Foto 3) */}
+      {/* Servicios B2B */}
       <section id="servicios-pymes" className="max-w-6xl mx-auto px-6 py-8 w-full">
         <div className="bg-white rounded-3xl p-8 border border-[#C8D8CE] shadow-xs space-y-6">
           <div className="text-center space-y-1">
@@ -130,7 +132,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Portales Interactivos (Foto 4) */}
+      {/* Portales Interactivos */}
       <section id="portales" className="max-w-7xl mx-auto px-6 py-8 w-full">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Card 1: Casa Matriz B2B */}
