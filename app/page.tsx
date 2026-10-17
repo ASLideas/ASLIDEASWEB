@@ -10,8 +10,8 @@ export default function Home() {
       <header className="bg-white border-b border-[#C8D8CE] py-4 px-6 md:px-12 sticky top-0 z-50 shadow-xs">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#1B4D3E] flex items-center justify-center text-white font-bold text-xs tracking-wider">
-              ASL
+            <div className="w-10 h-10 rounded-xl overflow-hidden bg-white border border-[#C8D8CE] p-0.5 flex items-center justify-center">
+              <img src="/LOGO asl.png" alt="Logo Oficial ASL Ideas SpA" className="w-full h-full object-contain" />
             </div>
             <div>
               <h1 className="text-base font-bold text-[#1B4D3E] tracking-tight">ASL Ideas SpA</h1>
@@ -130,7 +130,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Portales Interactivos */}
+      {/* Portales Interactivos con Logos y Sin Emojis */}
       <section id="portales" className="max-w-7xl mx-auto px-6 py-8 w-full">
         <div className="text-center mb-8 space-y-1">
           <h3 className="text-2xl font-bold text-[#1B4D3E]">Portales Interactivos y Agendamiento de Reuniones</h3>
@@ -140,10 +140,13 @@ export default function Home() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Casa Matriz */}
+          {/* Casa Matriz B2B */}
           <div className="bg-white rounded-2xl p-6 border border-[#C8D8CE] shadow-xs flex flex-col justify-between space-y-4">
             <div className="space-y-3">
-              <span className="text-[10px] font-bold text-[#B08D4B] uppercase tracking-wider">Casa Matriz B2B</span>
+              <div className="w-16 h-16 rounded-xl overflow-hidden bg-white border border-[#C8D8CE] p-1 flex items-center justify-center">
+                <img src="/LOGO asl.png" alt="Logo Oficial ASL Ideas SpA" className="w-full h-full object-contain" />
+              </div>
+              <span className="text-[10px] font-bold text-[#B08D4B] uppercase tracking-wider block">Casa Matriz B2B</span>
               <h4 className="text-lg font-bold text-[#1B4D3E]">Casa Matriz B2B</h4>
               <p className="text-xs text-gray-600 leading-relaxed">
                 Gestión corporativa, convenios institucionales, licencias tecnológicas y consultoría UI/UX.
@@ -162,7 +165,10 @@ export default function Home() {
           {/* LAWENMOLL */}
           <div className="bg-white rounded-2xl p-6 border border-[#C8D8CE] shadow-xs flex flex-col justify-between space-y-4">
             <div className="space-y-3">
-              <span className="text-[10px] font-bold text-[#2D6A4F] uppercase tracking-wider">Salud Integrativa</span>
+              <div className="w-16 h-16 rounded-xl overflow-hidden bg-white border border-[#C8D8CE] p-1 flex items-center justify-center">
+                <img src="/lawenmoll_logo.png" alt="Logo LAWENMOLL" className="w-full h-full object-contain" onError={(e)=>{e.currentTarget.src='/lawenmoll_logo.jpg'}} />
+              </div>
+              <span className="text-[10px] font-bold text-[#2D6A4F] uppercase tracking-wider block">Salud Integrativa</span>
               <h4 className="text-lg font-bold text-[#1B4D3E]">LAWENMOLL</h4>
               <p className="text-xs text-gray-600 leading-relaxed">
                 Salud Integrativa & Fichas Clínicas encriptadas (Ley N° 21.663). Test de Bienestar Inteligente.
@@ -181,7 +187,10 @@ export default function Home() {
           {/* Wellness */}
           <div className="bg-white rounded-2xl p-6 border border-[#C8D8CE] shadow-xs flex flex-col justify-between space-y-4">
             <div className="space-y-3">
-              <span className="text-[10px] font-bold text-[#B08D4B] uppercase tracking-wider">Pausa Activa</span>
+              <div className="w-16 h-16 rounded-xl overflow-hidden bg-white border border-[#C8D8CE] p-1 flex items-center justify-center">
+                <img src="/logo wellness.jpg" alt="Logo Wellness" className="w-full h-full object-contain" />
+              </div>
+              <span className="text-[10px] font-bold text-[#B08D4B] uppercase tracking-wider block">Pausa Activa</span>
               <h4 className="text-lg font-bold text-[#1B4D3E]">Wellness Web App</h4>
               <p className="text-xs text-gray-600 leading-relaxed">
                 Movimiento adaptado sin impacto, videoteca y Salas Virtuales (Lotus, Cielo, Bosque, Raíz).
@@ -197,11 +206,14 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Sabiduría Ancestral */}
+          {/* Bienestar */}
           <div className="bg-white rounded-2xl p-6 border border-[#C8D8CE] shadow-xs flex flex-col justify-between space-y-4">
             <div className="space-y-3">
-              <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider">Comunidad</span>
-              <h4 className="text-lg font-bold text-[#1B4D3E]">Sabiduría Ancestral</h4>
+              <div className="w-16 h-16 rounded-xl overflow-hidden bg-white border border-[#C8D8CE] p-1 flex items-center justify-center">
+                <img src="/LOGO BIENESTAR.png" alt="Logo Bienestar" className="w-full h-full object-contain" />
+              </div>
+              <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">Bienestar</span>
+              <h4 className="text-lg font-bold text-[#1B4D3E]">Bienestar</h4>
               <p className="text-xs text-gray-600 leading-relaxed">
                 Fitoterapia nativa, comunidad activa, Diario Mural y recetarios herbolarios descargables en PDF.
               </p>
