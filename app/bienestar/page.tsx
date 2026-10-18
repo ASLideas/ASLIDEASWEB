@@ -8,7 +8,7 @@ export default function BienestarExplorarPage() {
 
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#1B4D3E] font-sans flex flex-col justify-between">
-      {/* Header idéntico a Lawenmoll */}
+      {/* Header */}
       <header className="bg-white border-b border-[#C8D8CE] py-4 px-6 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -36,7 +36,7 @@ export default function BienestarExplorarPage() {
         </div>
       </header>
 
-      {/* Propósito y Respuesta a las Interrogantes */}
+      {/* Propósito */}
       <section className="bg-white border-b border-[#C8D8CE] py-10 px-6 text-center">
         <div className="max-w-4xl mx-auto space-y-4">
           <span className="bg-amber-100 text-amber-900 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider inline-block">
@@ -47,7 +47,7 @@ export default function BienestarExplorarPage() {
           </h2>
           <div className="bg-[#FAF8F5] p-6 rounded-3xl border border-[#C8D8CE] text-left max-w-3xl mx-auto space-y-3">
             <p className="text-xs text-gray-700 leading-relaxed">
-              La app de mensajería de <strong>Bienestar</strong> se creó en función de que WhatsApp, WhatsApp Business o Telegram a la larga pueden cobrar por mensajes masivos. Por ese motivo se crea Bienestar, que es un ecosistema que junto con <strong>LAWENMOLL ([enlace sospechoso eliminado])</strong> y <strong>Wellness Web App (https://wellness-app-eight-kohl.vercel.app/)</strong> hacen una <strong>tríada</strong> para manejar y fortalecer la salud integrativa e impulsar una mejor calidad de vida.
+              La app de mensajería de <strong>Bienestar</strong> se creó en función de que WhatsApp, WhatsApp Business o Telegram a la larga pueden cobrar por mensajes masivos. Por ese motivo se crea Bienestar, que es un ecosistema que junto con <strong>LAWENMOLL (https://lawenmoll.cl)</strong> y <strong>Wellness Web App (https://wellness-app-eight-kohl.vercel.app/)</strong> hacen una <strong>tríada</strong> para manejar y fortalecer la salud integrativa e impulsar una mejor calidad de vida.
             </p>
             <p className="text-xs text-gray-700 leading-relaxed">
               La función que cumple Bienestar como mensajería está para comunicarse e interactuar con amigos y personas. A su vez, tiene distintos enfoques dentro de esta aplicación: sirve para crear conciencia de los pasos que caminas, la cantidad de agua que tienes que tomar, las calorías que comes en el transcurso del día y sugerencias de ejercicios. Forma parte de un estado de salud física y psicológica por el buen dormir en su <strong>Módulo Morfeo</strong> (que da tips para descansar como música relajante, sonidos, voces y meditación para lograr sueño REM), y ayuda a microempresas, pymes o personas que vendan productos naturales u otros rubros dentro del ecosistema integrado.
@@ -145,8 +145,8 @@ export default function BienestarExplorarPage() {
             <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-2">
               <span className="font-bold text-[#1B4D3E] block">🏥 LAWENMOLL</span>
               <p className="text-gray-600 text-[11px]">Salud integrativa, evaluación y fichas clínicas.</p>
-              <a href="[suspicious link removed]" target="_blank" rel="noopener noreferrer" className="inline-block text-emerald-800 font-bold hover:underline">
-                [enlace sospechoso eliminado]
+              <a href="https://lawenmoll.cl" target="_blank" rel="noopener noreferrer" className="inline-block text-emerald-800 font-bold hover:underline">
+                https://lawenmoll.cl
               </a>
             </div>
             <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-2">

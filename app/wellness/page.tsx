@@ -8,7 +8,7 @@ export default function WellnessExplorarPage() {
 
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#1B4D3E] font-sans flex flex-col justify-between">
-      {/* Header idéntico a Lawenmoll */}
+      {/* Header */}
       <header className="bg-white border-b border-[#C8D8CE] py-4 px-6 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -36,7 +36,7 @@ export default function WellnessExplorarPage() {
         </div>
       </header>
 
-      {/* Propósito y Respuesta a las Interrogantes */}
+      {/* Propósito */}
       <section className="bg-white border-b border-[#C8D8CE] py-10 px-6 text-center">
         <div className="max-w-4xl mx-auto space-y-4">
           <span className="bg-[#E8F0EC] text-[#2D6A4F] text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider inline-block">
@@ -117,8 +117,8 @@ export default function WellnessExplorarPage() {
             <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-2">
               <span className="font-bold text-[#1B4D3E] block">🏥 LAWENMOLL</span>
               <p className="text-gray-600 text-[11px]">Salud integrativa, evaluación y fichas clínicas.</p>
-              <a href="[suspicious link removed]" target="_blank" rel="noopener noreferrer" className="inline-block text-emerald-800 font-bold hover:underline">
-                [enlace sospechoso eliminado]
+              <a href="https://lawenmoll.cl" target="_blank" rel="noopener noreferrer" className="inline-block text-emerald-800 font-bold hover:underline">
+                https://lawenmoll.cl
               </a>
             </div>
             <div className="p-4 bg-[#E8F0EC] rounded-2xl border border-[#C8D8CE] space-y-2">
