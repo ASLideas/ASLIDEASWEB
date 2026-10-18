@@ -17,10 +17,10 @@ export default function BienestarExplorarPage() {
             </div>
             <div>
               <h1 className="text-lg font-bold text-[#1B4D3E]">Bienestar App</h1>
-              <p className="text-xs text-amber-800 font-semibold">Comunidad, Hábitos Saludables y Descanso Morfeo</p>
+              <p className="text-xs text-amber-800 font-semibold">Mensajería, Hábitos y Descanso Morfeo</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <a
               href="https://aslideas-bienestar-2jpc.vercel.app/"
               target="_blank"
@@ -40,14 +40,16 @@ export default function BienestarExplorarPage() {
       <section className="bg-white border-b border-[#C8D8CE] py-10 px-6 text-center">
         <div className="max-w-4xl mx-auto space-y-4">
           <span className="bg-amber-100 text-amber-900 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            Ecosistema de Mensajería Autónoma y Salud Integrativa
+            Tríada de Salud Integrativa — Ecosistema de Mensajería Autónoma
           </span>
           <h2 className="text-2xl font-extrabold text-[#1B4D3E] leading-tight">
             ¿Por qué se creó Bienestar App y qué función cumple?
           </h2>
           <p className="text-xs text-gray-700 leading-relaxed max-w-3xl mx-auto">
-            Bienestar App nació de una necesidad estratégica: evitar la dependencia de aplicaciones comerciales de mensajería (como WhatsApp Business o Telegram), las cuales con el tiempo aplican cobros por mensajes masivos.
-            Al contar con una plataforma propia de mensajería y comunidad, se conforma una <strong>tríada perfecta junto con LAWENMOLL y Wellness Web App</strong> para fortalecer la salud integrativa, comunicarse fluidamente y crear conciencia sobre pasos caminados, agua consumida, balance calórico, descanso profundo con el <strong>Módulo Morfeo</strong> e impulso a PYMES de productos naturales.
+            La app de mensajería de Bienestar se creó en función de que aplicaciones como WhatsApp, WhatsApp Business o Telegram a la larga pueden cobrar por mensajes masivos. Por ese motivo se creó Bienestar, conformando un ecosistema propio que junto con <strong>LAWENMOLL ([enlace sospechoso eliminado]) y Wellness Web App (https://wellness-app-eight-kohl.vercel.app/)</strong> hacen una <strong>tríada estratégica</strong> para manejar y fortalecer la salud integrativa e impulsar una mejor calidad de vida.
+          </p>
+          <p className="text-xs text-gray-700 leading-relaxed max-w-3xl mx-auto pt-2">
+            La función que cumple Bienestar como mensajería es comunicarse e interactuar con amigos y personas cercanas, integrando distintos enfoques dentro de la misma aplicación: crear conciencia de los pasos que caminas, la cantidad de agua que tomas y las calorías que consumes en el día con sugerencias de ejercicios. Forma parte de un estado de salud física y psicológica a través del buen dormir en su <strong>Módulo Morfeo</strong> (con música relajante, sonidos, voces, tips de meditación) y apoya a microempresas y pymes que vendan productos naturales u otros rubros integradas en el ecosistema.
           </p>
         </div>
       </section>
@@ -59,91 +61,116 @@ export default function BienestarExplorarPage() {
             onClick={() => setActiveTab("comunidad")}
             className={activeTab === "comunidad" ? "px-5 py-2.5 rounded-xl bg-[#1B4D3E] text-white" : "px-5 py-2.5 rounded-xl bg-white border border-[#C8D8CE] text-gray-700 hover:bg-[#E8F0EC]"}
           >
-            Mensajería y Muro Social
+            Mensajería &amp; Muro Interactivo
           </button>
           <button
             onClick={() => setActiveTab("habitos")}
             className={activeTab === "habitos" ? "px-5 py-2.5 rounded-xl bg-[#1B4D3E] text-white" : "px-5 py-2.5 rounded-xl bg-white border border-[#C8D8CE] text-gray-700 hover:bg-[#E8F0EC]"}
           >
-            Pasos, Agua y Escáner
+            Pasos, Agua, Calorías y Ejercicios
           </button>
           <button
             onClick={() => setActiveTab("morfeo")}
             className={activeTab === "morfeo" ? "px-5 py-2.5 rounded-xl bg-amber-900 text-white" : "px-5 py-2.5 rounded-xl bg-white border border-amber-300 text-amber-900 hover:bg-amber-50"}
           >
-            Módulo Morfeo (Sueño REM)
+            Módulo Morfeo (Salud Física &amp; Psicológica)
           </button>
           <button
             onClick={() => setActiveTab("pymes")}
             className={activeTab === "pymes" ? "px-5 py-2.5 rounded-xl bg-[#1B4D3E] text-white" : "px-5 py-2.5 rounded-xl bg-white border border-[#C8D8CE] text-gray-700 hover:bg-[#E8F0EC]"}
           >
-            Shopping PYMES Naturales
+            Vitrina PYMES &amp; Microempresas
           </button>
         </div>
 
         {activeTab === "comunidad" && (
           <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-4">
-            <h3 className="font-bold text-base text-[#1B4D3E]">Canal de Comunicación Fluido y Libre de Estrés</h3>
+            <h3 className="font-bold text-base text-[#1B4D3E]">Mensajería Fluida e Interacción Social</h3>
             <p className="text-xs text-gray-600 leading-relaxed">
-              Permite enviar mensajes, fotos y videos a seres queridos, ofreciendo también enlaces directos para llamadas telefónicas y videollamadas con coordinadores comunitarios.
+              Comunícate con amigos y personas cercanas compartiendo mensajes, imágenes y videos, con acceso directo a llamadas y videollamadas.
             </p>
           </div>
         )}
 
         {activeTab === "habitos" && (
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-2">
-              <span className="text-[10px] font-bold text-[#2D6A4F] uppercase tracking-wider block">Podómetro Diario</span>
-              <h4 className="font-bold text-sm text-[#1B4D3E]">Conteo de Pasos Suaves</h4>
-              <p className="text-xs text-gray-600">Registro amable de caminatas para evitar el sedentarismo sin sobreexigencia.</p>
+          <div className="grid md:grid-cols-4 gap-4">
+            <div className="bg-white p-5 rounded-2xl border border-[#C8D8CE] shadow-xs space-y-2">
+              <span className="text-[10px] font-bold text-[#2D6A4F] uppercase tracking-wider block">Podómetro</span>
+              <h4 className="font-bold text-xs text-[#1B4D3E]">Pasos Caminados</h4>
+              <p className="text-[11px] text-gray-600">Creación de conciencia sobre la caminata diaria.</p>
             </div>
-            <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-2">
+            <div className="bg-white p-5 rounded-2xl border border-[#C8D8CE] shadow-xs space-y-2">
               <span className="text-[10px] font-bold text-[#B08D4B] uppercase tracking-wider block">Hidratación</span>
-              <h4 className="font-bold text-sm text-[#1B4D3E]">Monitor de Agua Consumida</h4>
-              <p className="text-xs text-gray-600">Recordatorio consciente para mantener un nivel óptimo de hidratación diario.</p>
+              <h4 className="font-bold text-xs text-[#1B4D3E]">Vasos de Agua</h4>
+              <p className="text-[11px] text-gray-600">Registro de consumo para hidratación corporal.</p>
             </div>
-            <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-2">
-              <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Escáner Nutricional</span>
-              <h4 className="font-bold text-sm text-[#1B4D3E]">Escáner de Alimentos y Calorías</h4>
-              <p className="text-xs text-gray-600">Análisis gráfico del plato para evaluar el aporte e ingredientes.</p>
+            <div className="bg-white p-5 rounded-2xl border border-[#C8D8CE] shadow-xs space-y-2">
+              <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Nutrición</span>
+              <h4 className="font-bold text-xs text-[#1B4D3E]">Escáner de Calorías</h4>
+              <p className="text-[11px] text-gray-600">Control amigable de alimentos en el día.</p>
+            </div>
+            <div className="bg-white p-5 rounded-2xl border border-[#C8D8CE] shadow-xs space-y-2">
+              <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Movimiento</span>
+              <h4 className="font-bold text-xs text-[#1B4D3E]">Sugerencias de Ejercicios</h4>
+              <p className="text-[11px] text-gray-600">Horarios y rutinas adaptadas a tu ritmo.</p>
             </div>
           </div>
         )}
 
         {activeTab === "morfeo" && (
           <div className="bg-[#1C2541] text-white p-8 rounded-3xl space-y-4 shadow-lg">
-            <span className="text-xs font-bold text-amber-300 uppercase tracking-widest block">Módulo Morfeo</span>
-            <h3 className="text-xl font-bold">Música de Relajación, Historias y Meditación para Sueño REM</h3>
+            <span className="text-xs font-bold text-amber-300 uppercase tracking-widest block">Módulo Morfeo — Salud Física y Psicológica</span>
+            <h3 className="text-xl font-bold">Música Relajante, Sonidos, Voces y Meditación para el Buen Dormir</h3>
             <p className="text-xs text-gray-300 leading-relaxed max-w-2xl">
-              Especialmente diseñado para personas con insomnio o mal dormir. Ofrece paisajes sonoros, meditaciones guiadas e historias serenas para inducir un descanso reparador.
+              Diseñado para inducir un estado de descanso integral y sueño REM. Ofrece paisajes sonoros, voces serenas, música de relajación y tips de meditación.
             </p>
           </div>
         )}
 
         {activeTab === "pymes" && (
           <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-4">
-            <h3 className="font-bold text-base text-[#1B4D3E]">Vitrina para Emprendimientos de Salud Natural</h3>
+            <h3 className="font-bold text-base text-[#1B4D3E]">Impulso a Microempresas y PYMES de Productos Naturales</h3>
             <p className="text-xs text-gray-600 leading-relaxed">
-              Vitrina comercial para pymes de herbolaria nativa, cosmética limpia y alimentos orgánicos, conectando a productores locales con la comunidad.
+              Vitrina integrada para que emprendedores y pymes exhiban sus productos herbolarios, orgánicos y de bienestar a todos los usuarios del ecosistema.
             </p>
           </div>
         )}
 
-        <div className="text-center pt-6">
+        <div className="text-center pt-2">
           <a
             href="https://aslideas-bienestar-2jpc.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-amber-800 text-white text-xs px-6 py-3 rounded-xl font-bold hover:bg-amber-900 transition shadow-xs"
           >
-            Explorar Bienestar App ↗
+            Abrir Bienestar App en la Web ↗
           </a>
+        </div>
+
+        {/* Canales de Contacto Directo y Redes Alternativas */}
+        <div className="bg-white p-8 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-4 text-center">
+          <h3 className="text-base font-bold text-[#1B4D3E]">Contacto Directo &amp; Redes Oficiales — Bienestar App</h3>
+          <p className="text-xs text-gray-600">Canales de soporte para usuarios, comunidades y pymes integradas.</p>
+          <div className="grid md:grid-cols-3 gap-4 text-xs pt-2">
+            <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE]">
+              <span className="font-bold text-[#1B4D3E] block mb-1">📞 Teléfono / WhatsApp Virtual</span>
+              <p className="text-gray-600">+56 9 7654 3210 (Atención Comunitaria)</p>
+            </div>
+            <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE]">
+              <span className="font-bold text-[#1B4D3E] block mb-1">✉️ Correo Electrónico</span>
+              <p className="text-gray-600">bienestar@aslideas.cl</p>
+            </div>
+            <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE]">
+              <span className="font-bold text-[#1B4D3E] block mb-1">🌐 Redes Sociales Oficiales</span>
+              <p className="text-gray-600">@bienestar.app.cl | Instagram / Telegram</p>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="bg-white border-t border-[#C8D8CE] py-6 px-6 text-center text-xs text-gray-500">
-        <p>&copy; {new Date().getFullYear()} Bienestar App - ASL Ideas SpA | Red de Autocuidado, Comunidad y Descanso Morfeo.</p>
+        <p>&copy; {new Date().getFullYear()} Bienestar App - ASL Ideas SpA | Integrada en la Tríada con LAWENMOLL y Wellness Web App.</p>
       </footer>
     </main>
   );

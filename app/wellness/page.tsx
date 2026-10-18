@@ -20,14 +20,14 @@ export default function WellnessExplorarPage() {
               <p className="text-xs text-emerald-800 font-semibold">Apoyo Visual para el Equilibrio Cuerpo y Mente</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <a
               href="https://wellness-app-eight-kohl.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-[#2D6A4F] text-white text-xs px-4 py-2 rounded-xl font-bold hover:bg-[#1B4D3E] transition"
             >
-              Abrir Web App Wellness ↗
+              Abrir Wellness App ↗
             </a>
             <Link href="/" className="text-xs text-[#1B4D3E] hover:underline font-semibold">
               Volver a Portada
@@ -36,18 +36,18 @@ export default function WellnessExplorarPage() {
         </div>
       </header>
 
-      {/* Propósito y Respuesta a las Grandes Interrogantes */}
+      {/* Propósito & Grandes Interrogantes */}
       <section className="bg-white border-b border-[#C8D8CE] py-10 px-6 text-center">
         <div className="max-w-4xl mx-auto space-y-4">
           <span className="bg-[#E8F0EC] text-[#2D6A4F] text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            Propósito & Herramienta Virtual Visual
+            Tríada de Salud Integrativa — Herramienta Virtual
           </span>
           <h2 className="text-2xl font-extrabold text-[#1B4D3E] leading-tight">
             ¿Por qué se creó Wellness Web App y qué función cumple?
           </h2>
           <p className="text-xs text-gray-700 leading-relaxed max-w-3xl mx-auto">
-            Wellness Web App surgió mediante la idea y visión de <strong>LAWENMOLL</strong> para desarrollar de forma 100% visual distintas alternativas que brinden una mejor calidad de vida en cuerpo, mente y salud, complementando la medicina alternativa.
-            Su función principal es ser un apoyo intuitivo para usuarios a quienes no les gusta ir al gimnasio tradicional o les cuesta encontrar recetas nutritivas al alcance de la mano. Además, ofrece a los profesionales de la salud integrativa un espacio interactivo para transmitir <strong>clases en vivo</strong> y compartir pautas con la comunidad fitness natural.
+            Wellness surgió a partir de la visión de <strong>LAWENMOLL ([enlace sospechoso eliminado])</strong> para desarrollar de forma visual distintas alternativas que brinden una mejor calidad de vida en cuerpo, mente y salud, complementando la medicina alternativa.
+            Su función es ayudar a usuarios que no disfrutan de los gimnasios tradicionales o les cuesta encontrar recetas nutritivas a mano para su buen vivir y afecciones específicas. A su vez, brinda a profesionales de la salud e instructores la posibilidad de hacer <strong>clases en vivo</strong> y publicar rutinas para la comunidad fitness natural.
           </p>
         </div>
       </section>
@@ -65,32 +65,32 @@ export default function WellnessExplorarPage() {
             onClick={() => setActiveCategory("ejercicios")}
             className={activeCategory === "ejercicios" ? "px-5 py-2.5 rounded-xl bg-[#1B4D3E] text-white" : "px-5 py-2.5 rounded-xl bg-white border border-[#C8D8CE] text-gray-700 hover:bg-[#E8F0EC]"}
           >
-            Ejercicios Adaptados Sin Impacto
+            Rutinas Adaptadas Sin Impacto
           </button>
           <button
             onClick={() => setActiveCategory("profesionales")}
             className={activeCategory === "profesionales" ? "px-5 py-2.5 rounded-xl bg-[#1B4D3E] text-white" : "px-5 py-2.5 rounded-xl bg-white border border-[#C8D8CE] text-gray-700 hover:bg-[#E8F0EC]"}
           >
-            Portal Profesionales & Clases en Vivo
+            Portal Profesionales &amp; Clases en Vivo
           </button>
         </div>
 
         {activeCategory === "recetas" && (
           <div className="grid md:grid-cols-3 gap-6">
             <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-3">
-              <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Nutrición Antiinflamatoria</span>
-              <h3 className="font-bold text-sm text-[#1B4D3E]">Bowl de Quinoa, Cúrcuma y Vegetales Asados</h3>
-              <p className="text-xs text-gray-600">Guía visual ilustrada paso a paso para apoyar la digestión y reducir la inflamación corporal.</p>
+              <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Receta Visual Digestiva</span>
+              <h3 className="font-bold text-sm text-[#1B4D3E]">Bowl Nutritivo de Quinoa y Vegetales</h3>
+              <p className="text-xs text-gray-600">Paso a paso ilustrado con ingredientes naturales al alcance de la mano para el bienestar diario.</p>
             </div>
             <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-3">
-              <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Control Metabólico</span>
-              <h3 className="font-bold text-sm text-[#1B4D3E]">Crema de Zapallo Camote con Semillas Nativa</h3>
-              <p className="text-xs text-gray-600">Plato saciante alto en magnesio, ideal para pautas de salud integrativa.</p>
+              <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Nutrición Adaptada</span>
+              <h3 className="font-bold text-sm text-[#1B4D3E]">Crema Antiinflamatoria de Zapallo y Cúrcuma</h3>
+              <p className="text-xs text-gray-600">Receta visual pensada para acompañar distintas afecciones de salud de forma natural.</p>
             </div>
             <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-3">
-              <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Postre Consciente</span>
-              <h3 className="font-bold text-sm text-[#1B4D3E]">Mousse de Palta, Cacao Puro y Miel</h3>
-              <p className="text-xs text-gray-600">Preparación antioxidante baja en glucosa para disfrutar de forma saludable.</p>
+              <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Baja Carga Glicémica</span>
+              <h3 className="font-bold text-sm text-[#1B4D3E]">Infusión y Postre Saludable de Semillas</h3>
+              <p className="text-xs text-gray-600">Guía gráfica fácil de preparar para mantener la energía y el equilibrio corporal.</p>
             </div>
           </div>
         )}
@@ -99,27 +99,27 @@ export default function WellnessExplorarPage() {
           <div className="grid md:grid-cols-3 gap-6">
             <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-3">
               <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Pausa Activa</span>
-              <h3 className="font-bold text-sm text-[#1B4D3E]">Movilidad en Silla & Estiramiento Suave</h3>
-              <p className="text-xs text-gray-600">Secuencia de 15 minutos pensada para personas con dolencias articulares o sobrepeso.</p>
+              <h3 className="font-bold text-sm text-[#1B4D3E]">Movilidad Suave en Silla</h3>
+              <p className="text-xs text-gray-600">Sin impacto ni sobreexigencia, ideal para quienes no asisten a gimnasios.</p>
             </div>
             <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-3">
-              <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Fuerza Sin Impacto</span>
-              <h3 className="font-bold text-sm text-[#1B4D3E]">Rutina GAP Adaptada (Sin Saltos)</h3>
-              <p className="text-xs text-gray-600">Fortalecimiento de piernas y torso respetando las articulaciones.</p>
+              <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Fuerza Adaptada</span>
+              <h3 className="font-bold text-sm text-[#1B4D3E]">Rutina Consciente de Tronco y Piernas</h3>
+              <p className="text-xs text-gray-600">Ejercicios visuales para fortalecer el cuerpo sin dañar articulaciones.</p>
             </div>
             <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-3">
-              <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Reducción de Cortisol</span>
-              <h3 className="font-bold text-sm text-[#1B4D3E]">Descompresión Espinal & Respiración</h3>
-              <p className="text-xs text-gray-600">Guía gráfica de relajación para liberar la tensión acumulada durante la jornada.</p>
+              <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Equilibrio Mente-Cuerpo</span>
+              <h3 className="font-bold text-sm text-[#1B4D3E]">Descompresión Espinal &amp; Respiración</h3>
+              <p className="text-xs text-gray-600">Soporte visual para reducir el estrés e inducir la relajación física.</p>
             </div>
           </div>
         )}
 
         {activeCategory === "profesionales" && (
           <div className="bg-[#E8F0EC] p-8 rounded-3xl border border-[#C8D8CE] space-y-4">
-            <h3 className="font-bold text-base text-[#1B4D3E]">Transmisiones en Vivo para la Comunidad Fitness Natural</h3>
+            <h3 className="font-bold text-base text-[#1B4D3E]">Publicación de Clases en Vivo y Contenido Fitness Natural</h3>
             <p className="text-xs text-gray-700 leading-relaxed">
-              Médicos, terapeutas e instructores pueden transmitir sus clases en vivo, dictar talleres y publicar contenido interactivo en Salas Virtuales temáticas (Lotus, Cielo, Bosque, Raíz).
+              Profesionales, instructores y terapeutas pueden realizar clases en vivo y compartir sus contenidos para potenciar la salud integrativa de toda la comunidad.
             </p>
             <a
               href="https://wellness-app-eight-kohl.vercel.app/"
@@ -127,15 +127,35 @@ export default function WellnessExplorarPage() {
               rel="noopener noreferrer"
               className="inline-block bg-[#1B4D3E] text-white text-xs px-5 py-2.5 rounded-xl font-bold hover:bg-[#2D6A4F]"
             >
-              Probar Plataforma Wellness Web App ↗
+              Ir a la Plataforma Wellness Web App ↗
             </a>
           </div>
         )}
+
+        {/* Canales de Contacto Directo y Redes Alternativas */}
+        <div className="bg-white p-8 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-4 text-center">
+          <h3 className="text-base font-bold text-[#1B4D3E]">Contacto Directo &amp; Redes Oficiales — Wellness Web App</h3>
+          <p className="text-xs text-gray-600">Canales de atención para usuarios, instructores y profesionales de la salud integrativa.</p>
+          <div className="grid md:grid-cols-3 gap-4 text-xs pt-2">
+            <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE]">
+              <span className="font-bold text-[#1B4D3E] block mb-1">📞 Teléfono / WhatsApp Virtual</span>
+              <p className="text-gray-600">+56 9 8765 4321 (Atención Directa)</p>
+            </div>
+            <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE]">
+              <span className="font-bold text-[#1B4D3E] block mb-1">✉️ Correo Electrónico</span>
+              <p className="text-gray-600">wellness@aslideas.cl</p>
+            </div>
+            <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE]">
+              <span className="font-bold text-[#1B4D3E] block mb-1">🌐 Redes Sociales Oficiales</span>
+              <p className="text-gray-600">@wellness.app.cl | LinkedIn ASL Ideas</p>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Footer */}
       <footer className="bg-white border-t border-[#C8D8CE] py-6 px-6 text-center text-xs text-gray-500">
-        <p>&copy; {new Date().getFullYear()} Wellness Web App - ASL Ideas SpA | Apoyo Visual Mente-Cuerpo y Salud Integrativa.</p>
+        <p>&copy; {new Date().getFullYear()} Wellness Web App - ASL Ideas SpA | Parte de la Tríada de Salud Integrativa con LAWENMOLL y Bienestar App.</p>
       </footer>
     </main>
   );
