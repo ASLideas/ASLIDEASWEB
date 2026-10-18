@@ -3,10 +3,10 @@
 import React from "react";
 import Link from "next/link";
 
-export default function BienestarExplorarPage() {
+export default function ComunidadBienestarPage() {
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#1B4D3E] font-sans flex flex-col justify-between">
-      {/* Header estilo Lawenmoll con acento rosado sutil ASL Ideas */}
+      {/* Header estilo Lawenmoll con acento rosado sutil de ASL Ideas SpA */}
       <header className="bg-white border-b border-[#C8D8CE] py-4 px-6 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">

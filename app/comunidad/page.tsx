@@ -1,335 +1,147 @@
 'use client';
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 
-export default function BienestarPage() {
-  const [activeTab, setActiveTab] = useState("comunidad");
-  const [waterGlasses, setWaterGlasses] = useState(4);
-  const [steps, setSteps] = useState(5420);
-  const [scannedFood, setScannedFood] = useState("");
-
-  const [postsList, setPostsList] = useState([
-    { author: "Elena R.", text: "Comparto mi receta de infusión de cedrón y toronjil para una tarde serena.", time: "Hace 15 min" },
-    { author: "Marcos T.", text: "Caminata matutina adaptada completada. 5,000 pasos a ritmo suave.", time: "Hace 1 hora" }
-  ]);
-  const [newPostText, setNewPostText] = useState("");
-  const [morfeoPlaying, setMorfeoPlaying] = useState("");
-  const [medicalSuccess, setMedicalSuccess] = useState(false);
-
-  const handleCreatePost = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newPostText.trim()) return;
-    setPostsList([{ author: "Usuario Activo", text: newPostText, time: "Ahora mismo" }, ...postsList]);
-    setNewPostText("");
-  };
-
-  const handleSimulateScan = () => {
-    setScannedFood("Ensalada de Quinoa con Palta y Semillas - 320 kcal");
-  };
-
-  const handleMedicalBooking = (e: React.FormEvent) => {
-    e.preventDefault();
-    setMedicalSuccess(true);
-  };
-
+export default function ComunidadBienestarPage() {
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#1B4D3E] font-sans flex flex-col justify-between">
-      <header className="bg-white border-b border-[#C8D8CE] py-4 px-6 sticky top-0 z-40 shadow-xs">
+      {/* Header estilo Lawenmoll con acento rosado sutil de ASL Ideas SpA */}
+      <header className="bg-white border-b border-[#C8D8CE] py-4 px-6 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-amber-700 bg-white p-0.5">
+            <div className="w-12 h-12 rounded-full overflow-hidden border border-[#E8B4B8] bg-white p-0.5 shadow-xs">
               <img src="/LOGO BIENESTAR.png" alt="Logo Bienestar" className="w-full h-full object-contain rounded-full" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-[#1B4D3E]">Bienestar App</h1>
-              <p className="text-xs text-amber-800 font-semibold">Comunidad, Hábitos Saludables y Descanso Morfeo</p>
+              <div className="flex items-center gap-2">
+                <h1 className="text-lg font-bold text-[#1B4D3E]">Bienestar App</h1>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#FAF0F2] text-[#9E4A59] border border-[#E8B4B8]">ASL Ideas</span>
+              </div>
+              <p className="text-xs text-emerald-800 font-medium">Mensajería Autónoma, Hábitos Saludables y Descanso Morfeo</p>
             </div>
           </div>
-
-          <Link href="/" className="text-xs text-[#1B4D3E] hover:underline font-semibold">
-            Volver a Portada
-          </Link>
+          <div className="flex items-center gap-3">
+            <a
+              href="https://aslideas-bienestar-2jpc.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#1B4D3E] text-white text-xs px-4 py-2.5 rounded-xl font-bold hover:bg-[#2D6A4F] transition"
+            >
+              Abrir Bienestar App
+            </a>
+            <Link href="/" className="text-xs text-[#1B4D3E] hover:underline font-semibold">
+              Volver a Portada
+            </Link>
+          </div>
         </div>
       </header>
 
-      <section className="bg-white border-b border-[#C8D8CE] px-6 py-3">
-        <div className="max-w-6xl mx-auto flex flex-wrap gap-2 text-xs font-bold justify-center">
-          <button
-            onClick={() => setActiveTab("comunidad")}
-            className={activeTab === "comunidad" ? "px-4 py-2 rounded-xl transition bg-[#1B4D3E] text-white" : "px-4 py-2 rounded-xl transition bg-[#FAF8F5] text-gray-700 hover:bg-[#E8F0EC]"}
-          >
-            Comunidad y Muro
-          </button>
-          <button
-            onClick={() => setActiveTab("habitos")}
-            className={activeTab === "habitos" ? "px-4 py-2 rounded-xl transition bg-[#1B4D3E] text-white" : "px-4 py-2 rounded-xl transition bg-[#FAF8F5] text-gray-700 hover:bg-[#E8F0EC]"}
-          >
-            Pasos, Agua y Escáner
-          </button>
-          <button
-            onClick={() => setActiveTab("citas")}
-            className={activeTab === "citas" ? "px-4 py-2 rounded-xl transition bg-[#1B4D3E] text-white" : "px-4 py-2 rounded-xl transition bg-[#FAF8F5] text-gray-700 hover:bg-[#E8F0EC]"}
-          >
-            Agendar Horas Médicas
-          </button>
-          <button
-            onClick={() => setActiveTab("shopping")}
-            className={activeTab === "shopping" ? "px-4 py-2 rounded-xl transition bg-[#1B4D3E] text-white" : "px-4 py-2 rounded-xl transition bg-[#FAF8F5] text-gray-700 hover:bg-[#E8F0EC]"}
-          >
-            Shopping PYMES Herbolarias
-          </button>
-          <button
-            onClick={() => setActiveTab("morfeo")}
-            className={activeTab === "morfeo" ? "px-4 py-2 rounded-xl transition bg-amber-900 text-white" : "px-4 py-2 rounded-xl transition bg-[#FAF8F5] text-amber-900 border border-amber-200 hover:bg-amber-50"}
-          >
-            Módulo Morfeo (Sueño REM)
-          </button>
+      {/* Propósito y Justificación Estratégica */}
+      <section className="bg-white border-b border-[#C8D8CE] py-10 px-6 text-center">
+        <div className="max-w-4xl mx-auto space-y-4">
+          <div className="flex justify-center gap-2 flex-wrap">
+            <span className="bg-[#E8F0EC] text-[#2D6A4F] text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider inline-block">
+              Tríada de Salud Integrativa
+            </span>
+            <span className="bg-[#FAF0F2] text-[#9E4A59] border border-[#E8B4B8] text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider inline-block">
+              Ecosistema de Mensajería Autónoma
+            </span>
+          </div>
+          <h2 className="text-2xl font-extrabold text-[#1B4D3E] leading-tight">
+            ¿Por qué se creó Bienestar App y qué función cumple?
+          </h2>
+          <div className="bg-[#FAF8F5] p-6 rounded-3xl border border-[#C8D8CE] text-left max-w-3xl mx-auto space-y-4">
+            <p className="text-xs text-gray-700 leading-relaxed">
+              La aplicación de mensajería <strong>Bienestar</strong> se creó como una respuesta estratégica frente a plataformas comerciales como WhatsApp, WhatsApp Business o Telegram, las cuales con el tiempo pueden aplicar cobros por envíos masivos. Por este motivo se diseñó un ecosistema propio que, junto a <strong>LAWENMOLL (https://lawenmoll.cl)</strong> y <strong>Wellness Web App (https://wellness-app-eight-kohl.vercel.app/)</strong>, conforma una <strong>tríada estratégica</strong> para fortalecer la salud integrativa y elevar la calidad de vida.
+            </p>
+            <p className="text-xs text-gray-700 leading-relaxed">
+              Para diferenciarse de una aplicación convencional, <strong>Bienestar App</strong> incorpora herramientas integrales de salud física y psicológica: comunicación fluida con amigos y allegados (mensajes, imágenes, videos, llamadas y videollamadas), un muro de interacción para la comunidad, seguimiento de caminata diaria (podómetro), control de hidratación (toma de agua), alarmas y agendamiento de citas médicas (consultorios/CESFAM, hospitales o consultas privadas), escáner de alimentos e ingesta calórica, y sugerencias de rutinas de ejercicio (yoga, pilates, HIIT y cardio).
+            </p>
+            <p className="text-xs text-gray-700 leading-relaxed">
+              Asimismo, incluye el <strong>Módulo Morfeo</strong>, un espacio de inducción al descanso profundo para personas con mal dormir o dificultad para conciliar el sueño, con música relajante, paisajes sonoros, voces serenas, meditación guiada y tips para lograr sueño REM. Además, integra un canal de <strong>Shopping para PYMES</strong> y microempresas locales de herbolaria y productos naturales.
+            </p>
+          </div>
         </div>
       </section>
 
-      {activeTab === "comunidad" && (
-        <section className="max-w-4xl mx-auto px-6 py-8 w-full space-y-6">
-          <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-4">
-            <h3 className="text-base font-bold text-[#1B4D3E]">Muro de Comunicación y Compartir Experiencias</h3>
-            <form onSubmit={handleCreatePost} className="space-y-3">
-              <textarea
-                rows={3}
-                value={newPostText}
-                onChange={(e) => setNewPostText(e.target.value)}
-                placeholder="Escribe un mensaje, recomendación de herbolaria o logro de bienestar..."
-                className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-[#1B4D3E]"
-              />
-              <div className="flex justify-between items-center">
-                <div className="flex gap-2 text-xs text-gray-500 font-semibold">
-                  <span className="bg-gray-100 px-3 py-1 rounded-lg">Adjuntar Imagen</span>
-                  <span className="bg-gray-100 px-3 py-1 rounded-lg">Compartir Video</span>
-                </div>
-                <button type="submit" className="bg-[#1B4D3E] text-white text-xs px-5 py-2 rounded-xl font-bold hover:bg-[#2D6A4F]">
-                  Publicar Mensaje
-                </button>
-              </div>
-            </form>
+      {/* Módulos de Bienestar App (4 Columnas estilo Lawenmoll) */}
+      <section className="max-w-6xl mx-auto px-6 py-10 w-full space-y-8">
+        <h3 className="text-xs font-bold text-[#1B4D3E] text-center uppercase tracking-wider">Ejes Fundamentales de Bienestar App</h3>
+        <div className="grid md:grid-cols-4 gap-4">
+          <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-2">
+            <span className="text-[10px] font-bold text-[#9E4A59] uppercase tracking-wider block">Mensajería &amp; Red</span>
+            <h4 className="font-bold text-xs text-[#1B4D3E]">Comunicación Fluida</h4>
+            <p className="text-[11px] text-gray-600 leading-relaxed">Interacción con amigos y personas cercanas mediante mensajes, imágenes, videos, llamadas y videollamadas.</p>
           </div>
-
-          <div className="bg-[#E8F0EC] p-6 rounded-3xl border border-[#C8D8CE] flex flex-col md:flex-row justify-between items-center gap-4">
-            <div>
-              <h4 className="font-bold text-sm text-[#1B4D3E]">Canales Directos de Comunicación</h4>
-              <p className="text-xs text-gray-600">Conéctate vía llamada, videollamada o teléfono directo con coordinadores comunitarios.</p>
-            </div>
-            <div className="flex gap-3">
-              <button className="bg-[#2D6A4F] text-white text-xs px-4 py-2 rounded-xl font-bold">Iniciar Videollamada</button>
-              <button className="bg-white border border-[#C8D8CE] text-[#1B4D3E] text-xs px-4 py-2 rounded-xl font-bold">Llamada Telefónica</button>
-            </div>
+          <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-2">
+            <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Conciencia Corporal</span>
+            <h4 className="font-bold text-xs text-[#1B4D3E]">Pasos, Agua &amp; Calorías</h4>
+            <p className="text-[11px] text-gray-600 leading-relaxed">Registro de caminata diaria, monitoreo de agua consumida y escáner nutricional con evaluación de calorías.</p>
           </div>
-
-          <div className="space-y-4">
-            {postsList.map((item, idx) => (
-              <div key={idx} className="bg-white p-5 rounded-2xl border border-[#C8D8CE] shadow-xs space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="font-bold text-xs text-[#1B4D3E]">{item.author}</span>
-                  <span className="text-[10px] text-gray-400">{item.time}</span>
-                </div>
-                <p className="text-xs text-gray-700 leading-relaxed">{item.text}</p>
-              </div>
-            ))}
+          <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-2">
+            <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Salud &amp; Movimiento</span>
+            <h4 className="font-bold text-xs text-[#1B4D3E]">Citas Médicas &amp; Ejercicios</h4>
+            <p className="text-[11px] text-gray-600 leading-relaxed">Alarmas para horas médicas (consultorio, hospital o consultas privadas) y pautas de yoga, pilates, HIIT y cardio.</p>
           </div>
-        </section>
-      )}
+          <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-2">
+            <span className="text-[10px] font-bold text-[#9E4A59] uppercase tracking-wider block">Descanso &amp; Comercio</span>
+            <h4 className="font-bold text-xs text-[#1B4D3E]">Módulo Morfeo &amp; PYMES</h4>
+            <p className="text-[11px] text-gray-600 leading-relaxed">Tips y sonidos de meditación para un sueño REM reparador, junto a la vitrina comercial de productos naturales.</p>
+          </div>
+        </div>
 
-      {activeTab === "habitos" && (
-        <section className="max-w-4xl mx-auto px-6 py-8 w-full space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-3 text-center">
-              <span className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider block">Podómetro Diario</span>
-              <h3 className="text-3xl font-extrabold text-[#1B4D3E]">{steps} Pasos</h3>
-              <p className="text-xs text-gray-500">Meta recomendada: 8,000 pasos suaves al día.</p>
-              <button
-                onClick={() => setSteps(steps + 500)}
-                className="bg-[#E8F0EC] border border-[#C8D8CE] text-[#1B4D3E] text-xs px-4 py-2 rounded-xl font-bold hover:bg-[#D8E6DF]"
-              >
-                + Registrar 500 Pasos de Caminata
-              </button>
+        {/* Tríada de Aplicaciones */}
+        <div className="bg-white p-8 rounded-3xl border border-[#C8D8CE] space-y-4">
+          <h3 className="text-xs font-bold text-[#1B4D3E] text-center uppercase tracking-wider">Ecosistema de Salud Integrativa — Tríada de Aplicaciones</h3>
+          <div className="grid md:grid-cols-3 gap-4 text-center text-xs">
+            <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-2">
+              <span className="font-bold text-[#1B4D3E] block">LAWENMOLL</span>
+              <p className="text-gray-600 text-[11px]">Salud integrativa, evaluación y fichas clínicas.</p>
+              <a href="https://lawenmoll.cl" target="_blank" rel="noopener noreferrer" className="inline-block text-emerald-800 font-bold hover:underline">
+                https://lawenmoll.cl
+              </a>
             </div>
-
-            <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-3 text-center">
-              <span className="text-xs font-bold text-[#B08D4B] uppercase tracking-wider block">Control de Hidratación</span>
-              <h3 className="text-3xl font-extrabold text-[#1B4D3E]">{waterGlasses} Vasos de Agua</h3>
-              <p className="text-xs text-gray-500">Equivalente a {(waterGlasses * 0.25).toFixed(2)} Litros consumidos.</p>
-              <button
-                onClick={() => setWaterGlasses(waterGlasses + 1)}
-                className="bg-[#FAF8F5] border border-[#C8D8CE] text-[#1B4D3E] text-xs px-4 py-2 rounded-xl font-bold hover:bg-amber-50"
-              >
-                + Tomar 1 Vaso de Agua (250 ml)
-              </button>
+            <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-2">
+              <span className="font-bold text-[#1B4D3E] block">Wellness Web App</span>
+              <p className="text-gray-600 text-[11px]">Apoyo visual y clases en vivo.</p>
+              <a href="https://wellness-app-eight-kohl.vercel.app/" target="_blank" rel="noopener noreferrer" className="inline-block text-emerald-800 font-bold hover:underline">
+                https://wellness-app-eight-kohl.vercel.app/
+              </a>
+            </div>
+            <div className="p-4 bg-[#FAF0F2] rounded-2xl border border-[#E8B4B8] space-y-2">
+              <span className="font-bold text-[#9E4A59] block">Bienestar App</span>
+              <p className="text-gray-600 text-[11px]">Mensajería, hábitos y descanso Morfeo.</p>
+              <a href="https://aslideas-bienestar-2jpc.vercel.app/" target="_blank" rel="noopener noreferrer" className="inline-block text-[#9E4A59] font-bold hover:underline">
+                https://aslideas-bienestar-2jpc.vercel.app/
+              </a>
             </div>
           </div>
+        </div>
 
-          <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-4">
-            <h3 className="text-base font-bold text-[#1B4D3E]">Escáner Inteligente de Alimentos y Calorías</h3>
-            <p className="text-xs text-gray-600">Simula el escaneo visual de tu plato o alimento para conocer el balance calórico e ingredientes.</p>
-            <button
-              onClick={handleSimulateScan}
-              className="bg-[#1B4D3E] text-white text-xs px-6 py-2.5 rounded-xl font-bold hover:bg-[#2D6A4F]"
-            >
-              Simular Escaneo de Plato de Comida
-            </button>
-
-            {scannedFood ? (
-              <div className="p-4 bg-[#E8F0EC] border border-[#C8D8CE] rounded-2xl text-xs text-[#1B4D3E] font-medium">
-                <strong>Resultado del Escaneo:</strong> {scannedFood}
-              </div>
-            ) : null}
-          </div>
-        </section>
-      )}
-
-      {activeTab === "citas" && (
-        <section className="max-w-3xl mx-auto px-6 py-8 w-full">
-          <div className="bg-white p-8 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-5">
-            <div className="border-b border-gray-100 pb-3">
-              <span className="text-[10px] font-bold text-[#2D6A4F] uppercase tracking-wider block">Red de Atención Médica</span>
-              <h3 className="text-lg font-bold text-[#1B4D3E]">Agendar Hora Médica en Consultorio, Hospital o Centro Privado</h3>
+        {/* Canales de Contacto Directo */}
+        <div className="bg-white p-8 rounded-3xl border border-[#C8D8CE] space-y-4 text-center">
+          <h3 className="text-sm font-bold text-[#1B4D3E]">Canales de Contacto Directo — Bienestar App</h3>
+          <div className="grid md:grid-cols-3 gap-4 text-xs pt-2">
+            <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE]">
+              <span className="font-bold text-[#1B4D3E] block mb-1">Teléfono / WhatsApp Virtual</span>
+              <p className="text-gray-600">+56 9 7654 3210</p>
             </div>
-
-            {!medicalSuccess ? (
-              <form onSubmit={handleMedicalBooking} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-bold text-[#1B4D3E] mb-1">Centro de Salud Requerido</label>
-                  <select required className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-[#1B4D3E]">
-                    <option value="">Selecciona una opción</option>
-                    <option value="consultorio">Consultorio / CESFAM de Atención Primaria</option>
-                    <option value="hospital">Hospital Público Regional</option>
-                    <option value="privado">Centro Médico / Clínica Privada</option>
-                  </select>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-bold text-[#1B4D3E] mb-1">Nombre Paciente</label>
-                    <input required type="text" placeholder="Ej: Juan Pérez" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none" />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-[#1B4D3E] mb-1">RUT / Identificación</label>
-                    <input required type="text" placeholder="Ej: 12.345.678-9" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none" />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-bold text-[#1B4D3E] mb-1">Fecha Preferente</label>
-                    <input required type="date" className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none" />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-[#1B4D3E] mb-1">Horario</label>
-                    <select required className="w-full px-3 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none">
-                      <option value="09:00">09:00 AM</option>
-                      <option value="11:30">11:30 AM</option>
-                      <option value="16:00">04:00 PM</option>
-                    </select>
-                  </div>
-                </div>
-
-                <button type="submit" className="w-full bg-[#1B4D3E] text-white py-3 rounded-xl text-xs font-bold hover:bg-[#2D6A4F]">
-                  Confirmar Reserva de Hora Médica
-                </button>
-              </form>
-            ) : (
-              <div className="text-center py-6 space-y-3">
-                <div className="w-10 h-10 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center mx-auto text-xs font-bold">OK</div>
-                <h4 className="font-bold text-sm text-[#1B4D3E]">Hora Médica Agendada Exitosamente</h4>
-                <p className="text-xs text-gray-600">Se ha registrado el cupo en el centro seleccionado y enviado comprobante al usuario.</p>
-                <button onClick={() => setMedicalSuccess(false)} className="bg-[#1B4D3E] text-white text-xs px-6 py-2 rounded-xl font-bold">Agendar Otra Hora</button>
-              </div>
-            )}
-          </div>
-        </section>
-      )}
-
-      {activeTab === "shopping" && (
-        <section className="max-w-6xl mx-auto px-6 py-8 w-full space-y-6">
-          <div className="border-b border-gray-200 pb-3">
-            <h3 className="text-lg font-bold text-[#1B4D3E]">Shopping PYMES y Emprendimientos de Salud Natural</h3>
-            <p className="text-xs text-gray-600">Vitrina de comercios asociados, herbolaria nativa, cosmética limpia y productos orgánicos.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white p-5 rounded-2xl border border-[#C8D8CE] shadow-xs space-y-3">
-              <span className="text-[10px] font-bold text-amber-800 uppercase tracking-wider block">Herbolaria Nativa</span>
-              <h4 className="font-bold text-sm text-[#1B4D3E]">Matico y Menta Piperita Orgánica</h4>
-              <p className="text-xs text-gray-600">Hojas seleccionadas para infusiones digestivas y cicatrización natural.</p>
-              <button className="w-full bg-amber-800 text-white text-xs py-2 rounded-xl font-bold hover:bg-amber-900">
-                Contactar Emprendimiento PYME
-              </button>
+            <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE]">
+              <span className="font-bold text-[#1B4D3E] block mb-1">Correo Electrónico</span>
+              <p className="text-gray-600">bienestar@aslideas.cl</p>
             </div>
-
-            <div className="bg-white p-5 rounded-2xl border border-[#C8D8CE] shadow-xs space-y-3">
-              <span className="text-[10px] font-bold text-amber-800 uppercase tracking-wider block">Cosmética Limpia</span>
-              <h4 className="font-bold text-sm text-[#1B4D3E]">Ungüento de Caléndula y Aceite de Rosa Mosqueta</h4>
-              <p className="text-xs text-gray-600">Bálsamo regenerador artesanal libre de parabenos y químicos agresivos.</p>
-              <button className="w-full bg-amber-800 text-white text-xs py-2 rounded-xl font-bold hover:bg-amber-900">
-                Contactar Emprendimiento PYME
-              </button>
-            </div>
-
-            <div className="bg-white p-5 rounded-2xl border border-[#C8D8CE] shadow-xs space-y-3">
-              <span className="text-[10px] font-bold text-amber-800 uppercase tracking-wider block">Alimentación Consciente</span>
-              <h4 className="font-bold text-sm text-[#1B4D3E]">Miel Multifloral Pura y Propóleo Nivel Farmacéutico</h4>
-              <p className="text-xs text-gray-600">Fortalecimiento del sistema inmune producido por apicultores locales.</p>
-              <button className="w-full bg-amber-800 text-white text-xs py-2 rounded-xl font-bold hover:bg-amber-900">
-                Contactar Emprendimiento PYME
-              </button>
+            <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE]">
+              <span className="font-bold text-[#1B4D3E] block mb-1">Redes Sociales Oficiales</span>
+              <p className="text-gray-600">@bienestar.app.cl | ASL Ideas SpA</p>
             </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
-      {activeTab === "morfeo" && (
-        <section className="max-w-4xl mx-auto px-6 py-8 w-full space-y-6">
-          <div className="bg-[#1C2541] text-white p-8 rounded-3xl space-y-4 shadow-lg">
-            <span className="text-xs font-bold text-amber-300 uppercase tracking-widest block">Módulo Morfeo</span>
-            <h3 className="text-2xl font-bold">Música de Relajación, Historias y Meditación para Sueño REM</h3>
-            <p className="text-xs text-gray-300 leading-relaxed max-w-2xl">
-              Diseñado especialmente para personas con mal dormir o insomnio. Activa frecuencias sonoras calmantes y tips de descanso para inducir un sueño profundo y reparador.
-            </p>
-
-            {morfeoPlaying ? (
-              <div className="p-4 bg-amber-900/40 border border-amber-400/30 rounded-2xl text-xs font-bold text-amber-200">
-                Reproduciendo ahora: {morfeoPlaying}
-              </div>
-            ) : null}
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
-              <button
-                onClick={() => setMorfeoPlaying("Sonido de Lluvia Suave en el Bosque Nativo (60 min)")}
-                className="p-4 bg-white/10 hover:bg-white/20 rounded-2xl text-left border border-white/10 transition space-y-2"
-              >
-                <h4 className="font-bold text-xs">Música Relajante</h4>
-                <p className="text-[11px] text-gray-300">Lluvia suave y ondas delta</p>
-              </button>
-
-              <button
-                onClick={() => setMorfeoPlaying("Historia Narrada: Susurro entre los Bosques del Sur (30 min)")}
-                className="p-4 bg-white/10 hover:bg-white/20 rounded-2xl text-left border border-white/10 transition space-y-2"
-              >
-                <h4 className="font-bold text-xs">Historias para Dormir</h4>
-                <p className="text-[11px] text-gray-300">Narración serena de baja cadencia</p>
-              </button>
-
-              <button
-                onClick={() => setMorfeoPlaying("Meditación Guiada: Despresurización Sensorial y Respiración 4-7-8")}
-                className="p-4 bg-white/10 hover:bg-white/20 rounded-2xl text-left border border-white/10 transition space-y-2"
-              >
-                <h4 className="font-bold text-xs">Meditación Sueño REM</h4>
-                <p className="text-[11px] text-gray-300">Inducción al descanso profundo</p>
-              </button>
-            </div>
-          </div>
-        </section>
-      )}
-
+      {/* Footer */}
       <footer className="bg-white border-t border-[#C8D8CE] py-6 px-6 text-center text-xs text-gray-500">
-        <p>&copy; {new Date().getFullYear()} Bienestar App - ASL Ideas SpA | Red de Autocuidado, Comunidad y Descanso Morfeo.</p>
+        <p>&copy; {new Date().getFullYear()} Bienestar App - ASL Ideas SpA | Parte de la Tríada de Salud Integrativa con LAWENMOLL y Wellness Web App.</p>
       </footer>
     </main>
   );
