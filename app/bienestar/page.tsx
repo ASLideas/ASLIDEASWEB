@@ -6,17 +6,17 @@ import Link from "next/link";
 export default function ComunidadBienestarPage() {
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#1B4D3E] font-sans flex flex-col justify-between">
-      {/* Header estilo Lawenmoll con acento rosado sutil de ASL Ideas SpA */}
+      {/* Header Institucional Unificado */}
       <header className="bg-white border-b border-[#C8D8CE] py-4 px-6 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full overflow-hidden border border-[#E8B4B8] bg-white p-0.5 shadow-xs">
+            <div className="w-12 h-12 rounded-full overflow-hidden border border-[#C8D8CE] bg-white p-0.5">
               <img src="/LOGO BIENESTAR.png" alt="Logo Bienestar" className="w-full h-full object-contain rounded-full" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-lg font-bold text-[#1B4D3E]">Bienestar App</h1>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#FAF0F2] text-[#9E4A59] border border-[#E8B4B8]">ASL Ideas</span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#E8F0EC] text-[#2D6A4F] border border-[#C8D8CE]">ASL Ideas SpA</span>
               </div>
               <p className="text-xs text-emerald-800 font-medium">Mensajería Autónoma, Hábitos Saludables y Descanso Morfeo</p>
             </div>
@@ -44,7 +44,7 @@ export default function ComunidadBienestarPage() {
             <span className="bg-[#E8F0EC] text-[#2D6A4F] text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider inline-block">
               Tríada de Salud Integrativa
             </span>
-            <span className="bg-[#FAF0F2] text-[#9E4A59] border border-[#E8B4B8] text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider inline-block">
+            <span className="bg-[#FAF8F5] text-[#B08D4B] border border-[#C8D8CE] text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider inline-block">
               Ecosistema de Mensajería Autónoma
             </span>
           </div>
@@ -65,12 +65,12 @@ export default function ComunidadBienestarPage() {
         </div>
       </section>
 
-      {/* Módulos de Bienestar App (4 Columnas estilo Lawenmoll) */}
+      {/* Módulos Principales (4 Columnas estilo Lawenmoll) */}
       <section className="max-w-6xl mx-auto px-6 py-10 w-full space-y-8">
         <h3 className="text-xs font-bold text-[#1B4D3E] text-center uppercase tracking-wider">Ejes Fundamentales de Bienestar App</h3>
         <div className="grid md:grid-cols-4 gap-4">
           <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-2">
-            <span className="text-[10px] font-bold text-[#9E4A59] uppercase tracking-wider block">Mensajería &amp; Red</span>
+            <span className="text-[10px] font-bold text-[#B08D4B] uppercase tracking-wider block">Mensajería &amp; Red</span>
             <h4 className="font-bold text-xs text-[#1B4D3E]">Comunicación Fluida</h4>
             <p className="text-[11px] text-gray-600 leading-relaxed">Interacción con amigos y personas cercanas mediante mensajes, imágenes, videos, llamadas y videollamadas.</p>
           </div>
@@ -85,7 +85,7 @@ export default function ComunidadBienestarPage() {
             <p className="text-[11px] text-gray-600 leading-relaxed">Alarmas para horas médicas (consultorio, hospital o consultas privadas) y pautas de yoga, pilates, HIIT y cardio.</p>
           </div>
           <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-2">
-            <span className="text-[10px] font-bold text-[#9E4A59] uppercase tracking-wider block">Descanso &amp; Comercio</span>
+            <span className="text-[10px] font-bold text-[#B08D4B] uppercase tracking-wider block">Descanso &amp; Comercio</span>
             <h4 className="font-bold text-xs text-[#1B4D3E]">Módulo Morfeo &amp; PYMES</h4>
             <p className="text-[11px] text-gray-600 leading-relaxed">Tips y sonidos de meditación para un sueño REM reparador, junto a la vitrina comercial de productos naturales.</p>
           </div>
@@ -109,10 +109,10 @@ export default function ComunidadBienestarPage() {
                 https://wellness-app-eight-kohl.vercel.app/
               </a>
             </div>
-            <div className="p-4 bg-[#FAF0F2] rounded-2xl border border-[#E8B4B8] space-y-2">
-              <span className="font-bold text-[#9E4A59] block">Bienestar App</span>
+            <div className="p-4 bg-[#E8F0EC] rounded-2xl border border-[#C8D8CE] space-y-2">
+              <span className="font-bold text-[#1B4D3E] block">Bienestar App</span>
               <p className="text-gray-600 text-[11px]">Mensajería, hábitos y descanso Morfeo.</p>
-              <a href="https://aslideas-bienestar-2jpc.vercel.app/" target="_blank" rel="noopener noreferrer" className="inline-block text-[#9E4A59] font-bold hover:underline">
+              <a href="https://aslideas-bienestar-2jpc.vercel.app/" target="_blank" rel="noopener noreferrer" className="inline-block text-emerald-800 font-bold hover:underline">
                 https://aslideas-bienestar-2jpc.vercel.app/
               </a>
             </div>
