@@ -4,7 +4,7 @@ import React, { useState, useRef } from "react";
 import Link from "next/link";
 import { subirPeticionPdf } from "@/lib/uploadService";
 
-export default function AslIdeasOficinaPage() {
+export default function Home() {
   const [isRoomOpen, setIsRoomOpen] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<string | null>(null);
@@ -43,7 +43,7 @@ export default function AslIdeasOficinaPage() {
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.;
     if (!file) return;
 
     setUploading(true);
@@ -51,36 +51,51 @@ export default function AslIdeasOficinaPage() {
 
     const result = await subirPeticionPdf({
       file,
-      clienteNombre: "Contraparte B2B Corporativa",
-      clienteEmail: "convenio@empresa.cl",
+      clienteNombre: "Contraparte B2B Casa Matriz",
+      clienteEmail: "convenio@aslideas.cl",
       appOrigen: "LAWENMOLL"
     });
 
     setUploading(false);
     if (result.success) {
-      setUploadStatus("Contrato/Propuesta PDF subida con exito a Supabase.");
+      setUploadStatus("Documento B2B enviado con exito a Supabase.");
     } else {
-      setUploadStatus("Error al subir archivo. Revisa variables en Vercel.");
+      setUploadStatus("Error al subir archivo. Revisa configuracion en Vercel.");
     }
   };
 
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#2C4A3E] font-sans flex flex-col justify-between">
-      <header className="bg-white border-b border-[#C8D8CE] py-4 px-6 sticky top-0 z-40 shadow-xs">
+      <header className="bg-white border-b border-[#C8D8CE] py-4 px-6 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
             <img src="/logoASLideas.jpeg" alt="Logo ASL Ideas SpA" className="w-10 h-10 object-contain rounded-full border border-[#C8D8CE]" />
             <div>
-              <h1 className="text-base font-bold text-[#2C4A3E]">Oficina 1: ASL Ideas SpA (Casa Matriz &amp; B2B)</h1>
-              <p className="text-xs text-[#52796F]">Gestion Corporativa, Licencias y Convenios Institucionales</p>
+              <h1 className="text-base font-bold text-[#2C4A3E]">ASL Ideas SpA — Casa Matriz</h1>
+              <p className="text-xs text-[#52796F]">Ecosistema de Salud Digital Inclusiva y Software B2B</p>
             </div>
           </div>
-          <Link href="/" className="text-xs text-[#2C4A3E] hover:underline font-semibold">Volver a Portada</Link>
+          <div className="flex gap-4 text-xs font-semibold">
+            <Link href="/lawenmoll" className="hover:underline">LAWENMOLL</Link>
+            <Link href="/wellness" className="hover:underline">Wellness</Link>
+            <Link href="/comunidad" className="hover:underline">Bienestar</Link>
+          </div>
         </div>
       </header>
 
+      <section className="bg-white border-b border-[#C8D8CE] py-8 px-6 text-center">
+        <div className="max-w-4xl mx-auto space-y-3">
+          <span className="text-xs font-bold text-[#D85260] uppercase tracking-wider block">Casa Matriz &amp; Licencias B2B</span>
+          <h2 className="text-2xl font-extrabold text-[#2C4A3E]">Desarrollamos Soluciones Accesibles para PYMES y Comercio Asociado</h2>
+          <p className="text-xs text-gray-700 leading-relaxed max-w-3xl mx-auto">
+            En ASL Ideas SpA creamos software, licencias tecnologicas y aplicaciones web diseñadas de forma amable, eliminando la sobrecarga sensorial y conectando la ciencia metabolica con la sabiduria integrativa.
+          </p>
+        </div>
+      </section>
+
+      {/* Sala Virtual B2B */}
       <section className="max-w-6xl mx-auto px-6 py-8 w-full space-y-6">
-        <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-4">
+        <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] space-y-4">
           <div className="flex justify-between items-center">
             <div>
               <span className="text-[10px] font-bold text-[#52796F] uppercase tracking-wider block">Sala Virtual Corporativa</span>
@@ -106,7 +121,7 @@ export default function AslIdeasOficinaPage() {
                 <div className="bg-[#3A5A40] p-3 rounded-xl border border-[#84A59D] text-white flex flex-col justify-between min-h-[160px]">
                   <span className="text-[9px] text-emerald-200">Participante 2 (Lado a Lado)</span>
                   <div className="w-full h-28 bg-[#2C4A3E] rounded-lg flex items-center justify-center border border-dashed border-[#84A59D]">
-                    <span className="text-[10px] text-emerald-200">Contraparte Municipalidad / PYME</span>
+                    <span className="text-[10px] text-emerald-200">Contraparte Municipal / PYME</span>
                   </div>
                   <span className="text-[10px] font-bold text-center">Cliente B2B Conectado</span>
                 </div>
@@ -114,9 +129,9 @@ export default function AslIdeasOficinaPage() {
                 <div className="bg-[#3A5A40] p-3 rounded-xl border border-[#84A59D] text-white flex flex-col justify-between min-h-[160px]">
                   <span className="text-[9px] text-emerald-200">Participante 3 (Lado a Lado)</span>
                   <div className="w-full h-28 bg-[#2C4A3E] rounded-lg flex items-center justify-center border border-dashed border-[#84A59D]">
-                    <span className="text-[10px] text-emerald-200">Asesor de Accesibilidad UI/UX</span>
+                    <span className="text-[10px] text-emerald-200">Asesor Tecnico UI/UX</span>
                   </div>
-                  <span className="text-[10px] font-bold text-center">Especialista Tecnico</span>
+                  <span className="text-[10px] font-bold text-center">Especialista Invitado</span>
                 </div>
               </div>
 
@@ -131,10 +146,10 @@ export default function AslIdeasOficinaPage() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <label htmlFor="pdf-aslideas" className="bg-[#FF8894] text-white text-[10px] font-bold px-3 py-1.5 rounded-lg cursor-pointer">
-                    {uploading ? "Subiendo..." : "Adjuntar Documento PDF B2B"}
+                  <label htmlFor="pdf-home" className="bg-[#FF8894] text-white text-[10px] font-bold px-3 py-1.5 rounded-lg cursor-pointer">
+                    {uploading ? "Subiendo..." : "Adjuntar Propuesta PDF B2B"}
                   </label>
-                  <input id="pdf-aslideas" type="file" accept=".pdf" onChange={handleFileUpload} className="hidden" />
+                  <input id="pdf-home" type="file" accept=".pdf" onChange={handleFileUpload} className="hidden" />
                 </div>
               </div>
               {uploadStatus && <p className="text-[10px] font-bold text-[#2C4A3E] text-center">{uploadStatus}</p>}
@@ -144,7 +159,7 @@ export default function AslIdeasOficinaPage() {
       </section>
 
       <footer className="bg-white border-t border-[#C8D8CE] py-4 text-center text-xs text-gray-500">
-        &copy; {new Date().getFullYear()} ASL Ideas SpA — Oficina Casa Matriz.
+        &copy; {new Date().getFullYear()} ASL Ideas SpA — Casa Matriz.
       </footer>
     </main>
   );

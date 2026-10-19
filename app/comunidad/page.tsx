@@ -43,7 +43,7 @@ export default function ComunidadBienestarPage() {
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.;
     if (!file) return;
 
     setUploading(true);
@@ -79,7 +79,6 @@ export default function ComunidadBienestarPage() {
         </div>
       </header>
 
-      {/* Descripcion Completa de Sabiduria Ancestral / Bienestar App */}
       <section className="bg-white border-b border-[#C8D8CE] py-8 px-6">
         <div className="max-w-5xl mx-auto space-y-4">
           <span className="text-xs font-bold text-[#52796F] uppercase tracking-wider block">Proposito &amp; Fitoterapia Nativa</span>
