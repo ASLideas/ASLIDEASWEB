@@ -25,9 +25,9 @@ export default function LawenmollExplorarPage() {
 
     setUploading(false);
     if (result.success) {
-      setUploadStatus("✅ ¡Petición enviada con éxito a la Vitrina Virtual!");
+      setUploadStatus("Petición enviada con éxito a la Vitrina Virtual.");
     } else {
-      setUploadStatus("⚠️ Error al subir archivo. Verifica tus credenciales.");
+      setUploadStatus("Error al subir archivo. Verifica tus credenciales.");
     }
   };
 
@@ -66,7 +66,6 @@ export default function LawenmollExplorarPage() {
         </div>
       </header>
 
-      {/* Sala Virtual Desplegable con Carga Real */}
       <section className="max-w-6xl mx-auto px-6 py-8 w-full space-y-6">
         <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-4 text-center">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
@@ -85,7 +84,7 @@ export default function LawenmollExplorarPage() {
           </div>
 
           {isRoomOpen && (
-            <div className="bg-[#FAF8F5] p-6 rounded-2xl border border-[#84A59D] mt-4 grid md:grid-cols-3 gap-6 text-left animate-fadeIn">
+            <div className="bg-[#FAF8F5] p-6 rounded-2xl border border-[#84A59D] mt-4 grid md:grid-cols-3 gap-6 text-left">
               <div className="md:col-span-2 bg-[#52796F] p-5 rounded-2xl text-white flex flex-col justify-between min-h-[280px]">
                 <div className="flex justify-between items-center border-b border-[#84A59D] pb-2">
                   <h4 className="font-bold text-xs text-white">Sala Virtual LAWENMOLL — Conexión Encriptada</h4>
@@ -108,7 +107,6 @@ export default function LawenmollExplorarPage() {
                 </div>
               </div>
 
-              {/* Módulo de Carga Real de PDF */}
               <div className="bg-white p-4 rounded-2xl border border-[#C8D8CE] flex flex-col justify-between space-y-3">
                 <div>
                   <h5 className="font-bold text-xs text-[#2C4A3E] border-b border-[#C8D8CE] pb-1.5">Adjuntar Petición (PDF)</h5>
