@@ -2,9 +2,34 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { subirPeticionPdf } from "@/lib/uploadService";
 
 export default function LawenmollExplorarPage() {
   const [isRoomOpen, setIsRoomOpen] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState<string | null>(null);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setUploadStatus("Subiendo archivo a Supabase...");
+
+    const result = await subirPeticionPdf({
+      file,
+      clienteNombre: "Cliente Regional LAWENMOLL",
+      clienteEmail: "contacto@cliente.cl",
+      appOrigen: "LAWENMOLL"
+    });
+
+    setUploading(false);
+    if (result.success) {
+      setUploadStatus("✅ ¡Petición enviada con éxito a la Vitrina Virtual!");
+    } else {
+      setUploadStatus("⚠️ Error al subir archivo. Verifica tus credenciales.");
+    }
+  };
 
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#2C4A3E] font-sans flex flex-col justify-between">
@@ -41,46 +66,14 @@ export default function LawenmollExplorarPage() {
         </div>
       </header>
 
-      <section className="bg-white border-b border-[#C8D8CE] py-10 px-6 text-center">
-        <div className="max-w-4xl mx-auto space-y-4">
-          <div className="flex justify-center gap-2 flex-wrap">
-            <span className="bg-[#E8F0EC] text-[#52796F] border border-[#84A59D] text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              Tríada de Salud Integrativa
-            </span>
-            <span className="bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              Vitrina Virtual &amp; Recepción PDF
-            </span>
-          </div>
-          <h2 className="text-2xl font-extrabold text-[#2C4A3E] leading-tight">
-            ¿Por qué se creó LAWENMOLL y cuáles son sus beneficios?
-          </h2>
-          <div className="bg-[#FAF8F5] p-6 rounded-3xl border border-[#C8D8CE] text-left max-w-3xl mx-auto space-y-4 shadow-xs">
-            <div className="border-l-4 border-[#FF8894] pl-4 py-1">
-              <h3 className="text-xs font-bold text-[#2C4A3E] uppercase tracking-wider">Reseña de Creación</h3>
-              <p className="text-xs text-gray-700 leading-relaxed mt-1">
-                LAWENMOLL fue concebida como una respuesta accesible para dar a conocer alternativas integrativas ante enfermedades crónicas y estrés, con un diseño respetuoso y libre de sobrecarga sensorial.
-              </p>
-            </div>
-            <div className="border-l-4 border-[#52796F] pl-4 py-1">
-              <h3 className="text-xs font-bold text-[#2C4A3E] uppercase tracking-wider">Beneficios Principales</h3>
-              <ul className="text-xs text-gray-700 space-y-1.5 mt-1 list-disc list-inside">
-                <li><strong>Ahorro en Traslados Regionales:</strong> Los clientes cargan sus solicitudes en PDF desde su región sin viajes presenciales.</li>
-                <li><strong>Test de Bienestar Inteligente:</strong> Evaluación cualitativa sin juicios corporales.</li>
-                <li><strong>Ciberseguridad:</strong> Fichas protegidas bajo la Ley N° 21.663.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Sección con Botón Desplegable para la Sala Virtual */}
+      {/* Sala Virtual Desplegable con Carga Real */}
       <section className="max-w-6xl mx-auto px-6 py-8 w-full space-y-6">
         <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-4 text-center">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-left">
-              <span className="text-[10px] font-bold text-[#52796F] uppercase tracking-wider block">Modulo Desplegable</span>
+              <span className="text-[10px] font-bold text-[#52796F] uppercase tracking-wider block">Módulo Desplegable</span>
               <h3 className="text-base font-bold text-[#2C4A3E]">Sala Virtual de Videollamada y Carga de Archivos LAWENMOLL</h3>
-              <p className="text-xs text-gray-600">Despliega el panel para realizar la reunión y recibir peticiones PDF de clientes regionales.</p>
+              <p className="text-xs text-gray-600">Reunión en vivo y recepción directa de peticiones PDF para la Vitrina Virtual.</p>
             </div>
             <button
               onClick={() => setIsRoomOpen(!isRoomOpen)}
@@ -91,7 +84,6 @@ export default function LawenmollExplorarPage() {
             </button>
           </div>
 
-          {/* Interfaz Desplegable */}
           {isRoomOpen && (
             <div className="bg-[#FAF8F5] p-6 rounded-2xl border border-[#84A59D] mt-4 grid md:grid-cols-3 gap-6 text-left animate-fadeIn">
               <div className="md:col-span-2 bg-[#52796F] p-5 rounded-2xl text-white flex flex-col justify-between min-h-[280px]">
@@ -116,52 +108,30 @@ export default function LawenmollExplorarPage() {
                 </div>
               </div>
 
+              {/* Módulo de Carga Real de PDF */}
               <div className="bg-white p-4 rounded-2xl border border-[#C8D8CE] flex flex-col justify-between space-y-3">
                 <div>
                   <h5 className="font-bold text-xs text-[#2C4A3E] border-b border-[#C8D8CE] pb-1.5">Adjuntar Petición (PDF)</h5>
-                  <p className="text-[10px] text-gray-500 mt-1">Sube tus requerimientos para la Vitrina Virtual de LAWENMOLL.</p>
-                  <div className="mt-3 p-2 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[10px]">
-                    <p className="font-bold text-[#2C4A3E]">Solicitud_Vitrina_LAWENMOLL.pdf</p>
-                    <span className="text-gray-500">Documento recibido</span>
-                  </div>
+                  <p className="text-[10px] text-gray-500 mt-1">Selecciona tu archivo en PDF para enviarlo directamente a Supabase.</p>
                 </div>
-                <div className="p-3 bg-[#FFF0F2] rounded-xl border border-dashed border-[#FF8894] text-center">
-                  <p className="text-[10px] font-bold text-[#D85260]">Cliente: Cargar PDF</p>
-                  <button className="bg-[#FF8894] text-white text-[9px] font-bold px-3 py-1 rounded-lg hover:bg-[#D85260] transition mt-1">
-                    Seleccionar Archivo
-                  </button>
+                <div className="p-3 bg-[#FFF0F2] rounded-xl border border-dashed border-[#FF8894] text-center space-y-2">
+                  <label htmlFor="pdf-upload" className="bg-[#FF8894] text-white text-[10px] font-bold px-3 py-1.5 rounded-lg hover:bg-[#D85260] transition cursor-pointer inline-block">
+                    {uploading ? "Subiendo..." : "Seleccionar Archivo PDF"}
+                  </label>
+                  <input
+                    id="pdf-upload"
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+                  {uploadStatus && (
+                    <p className="text-[9px] font-bold text-[#2C4A3E] mt-1">{uploadStatus}</p>
+                  )}
                 </div>
               </div>
             </div>
           )}
-        </div>
-
-        {/* Espacio "App en Construcción" */}
-        <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] space-y-3 text-center shadow-xs">
-          <span className="text-[10px] font-bold text-[#52796F] uppercase tracking-wider block">Espacio en Desarrollo</span>
-          <h3 className="text-sm font-bold text-[#2C4A3E]">Módulos de Fichas Clínicas Protegidas (Ley N° 21.663) — App en Construcción</h3>
-          <p className="text-xs text-gray-600 max-w-xl mx-auto">
-            Próximamente disponible el sistema completo de fichas encriptadas y seguimiento metabólico para pacientes y profesionales.
-          </p>
-        </div>
-
-        {/* Canales Directos */}
-        <div className="bg-white p-8 rounded-3xl border border-[#C8D8CE] space-y-4 text-center shadow-xs">
-          <h3 className="text-sm font-bold text-[#2C4A3E]">Canales Directos para Agendar Reuniones B2B — LAWENMOLL</h3>
-          <div className="grid md:grid-cols-3 gap-4 text-xs pt-2">
-            <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE]">
-              <span className="font-bold text-[#2C4A3E] block mb-1">Coordinación Virtual</span>
-              <p className="text-gray-600">+56 9 6543 2109</p>
-            </div>
-            <div className="p-4 bg-[#FFF0F2] rounded-2xl border border-[#FF8894]">
-              <span className="font-bold text-[#D85260] block mb-1">Correo Institucional</span>
-              <p className="text-gray-600">contacto@lawenmoll.cl</p>
-            </div>
-            <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE]">
-              <span className="font-bold text-[#2C4A3E] block mb-1">Reuniones B2B</span>
-              <p className="text-gray-600">ASL Ideas SpA &amp; Clientes B2B</p>
-            </div>
-          </div>
         </div>
       </section>
 
