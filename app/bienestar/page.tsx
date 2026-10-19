@@ -43,7 +43,7 @@ export default function ComunidadBienestarPage() {
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.;
     if (!file) return;
 
     setUploading(true);
@@ -51,36 +51,62 @@ export default function ComunidadBienestarPage() {
 
     const result = await subirPeticionPdf({
       file,
-      clienteNombre: "Comercio / PYME Herbolaria",
+      clienteNombre: "PYME Herbolaria Regional",
       clienteEmail: "pyme@herbolaria.cl",
       appOrigen: "Bienestar"
     });
 
     setUploading(false);
     if (result.success) {
-      setUploadStatus("Catalogo herbolario PDF subido con exito a Supabase.");
+      setUploadStatus("Catalogo PDF subido con exito a Supabase.");
     } else {
-      setUploadStatus("Error al subir archivo. Revisa variables en Vercel.");
+      setUploadStatus("Error al subir archivo. Revisa tus credenciales en Vercel.");
     }
   };
 
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#2C4A3E] font-sans flex flex-col justify-between">
-      <header className="bg-white border-b border-[#C8D8CE] py-4 px-6 sticky top-0 z-40 shadow-xs">
+      <header className="bg-white border-b border-[#C8D8CE] py-4 px-6 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
             <img src="/LOGO_BIENESTAR.png" alt="Logo Bienestar" className="w-10 h-10 object-contain rounded-full border border-[#C8D8CE]" />
             <div>
-              <h1 className="text-base font-bold text-[#2C4A3E]">Oficina 4: Sabiduria Ancestral (Bienestar App)</h1>
-              <p className="text-xs text-[#52796F]">Herbolaria Nativa, Diario Mural y Comercio PYME</p>
+              <h1 className="text-base font-bold text-[#2C4A3E]">Bienestar App — Sabiduria Ancestral</h1>
+              <p className="text-xs text-[#52796F]">Herbolaria Nativa, Comunidad Activa y Descanso Morfeo</p>
             </div>
           </div>
           <Link href="/" className="text-xs text-[#2C4A3E] hover:underline font-semibold">Volver a Portada</Link>
         </div>
       </header>
 
+      {/* Descripcion Completa de Sabiduria Ancestral / Bienestar App */}
+      <section className="bg-white border-b border-[#C8D8CE] py-8 px-6">
+        <div className="max-w-5xl mx-auto space-y-4">
+          <span className="text-xs font-bold text-[#52796F] uppercase tracking-wider block">Proposito &amp; Fitoterapia Nativa</span>
+          <h2 className="text-xl font-bold text-[#2C4A3E]">¿Por que se creo Sabiduria Ancestral y que funcion cumple?</h2>
+          <p className="text-xs text-gray-700 leading-relaxed">
+            Portal creado para rescatar y divulgar el conocimiento de la herbolaria nativa y la medicina natural tradicional. Su funcion es conectar a las comunidades y PYMES regionales a traves de un canal autonomo de comunicacion, intercambio de saberes y difusion de productos naturales.
+          </p>
+          <div className="grid md:grid-cols-3 gap-4 text-xs pt-2">
+            <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE]">
+              <span className="font-bold text-[#2C4A3E] block mb-1">Recetario Herbolario PDF</span>
+              <p className="text-gray-600">Guias descargables para el uso seguro de plantas medicinales y remedios populares.</p>
+            </div>
+            <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE]">
+              <span className="font-bold text-[#2C4A3E] block mb-1">Diario Mural Comunitario</span>
+              <p className="text-gray-600">Espacio donde los usuarios comparten experiencias, habitos y consejos de autocuidado.</p>
+            </div>
+            <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE]">
+              <span className="font-bold text-[#2C4A3E] block mb-1">Comercio PYME Regional</span>
+              <p className="text-gray-600">Vitrina para productores locales de herbolaria sin comisiones intermediarias.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Sala Virtual Multiusuario */}
       <section className="max-w-6xl mx-auto px-6 py-8 w-full space-y-6">
-        <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-4">
+        <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] space-y-4">
           <div className="flex justify-between items-center">
             <div>
               <span className="text-[10px] font-bold text-[#52796F] uppercase tracking-wider block">Sala Virtual Comunitaria</span>
@@ -106,17 +132,17 @@ export default function ComunidadBienestarPage() {
                 <div className="bg-[#3A5A40] p-3 rounded-xl border border-[#84A59D] text-white flex flex-col justify-between min-h-[160px]">
                   <span className="text-[9px] text-emerald-200">Participante 2 (Lado a Lado)</span>
                   <div className="w-full h-28 bg-[#2C4A3E] rounded-lg flex items-center justify-center border border-dashed border-[#84A59D]">
-                    <span className="text-[10px] text-emerald-200">PYME Productora Local</span>
+                    <span className="text-[10px] text-emerald-200">Productor Local PYME</span>
                   </div>
-                  <span className="text-[10px] font-bold text-center">Productor Regional</span>
+                  <span className="text-[10px] font-bold text-center">PYME Regional</span>
                 </div>
 
                 <div className="bg-[#3A5A40] p-3 rounded-xl border border-[#84A59D] text-white flex flex-col justify-between min-h-[160px]">
                   <span className="text-[9px] text-emerald-200">Participante 3 (Lado a Lado)</span>
                   <div className="w-full h-28 bg-[#2C4A3E] rounded-lg flex items-center justify-center border border-dashed border-[#84A59D]">
-                    <span className="text-[10px] text-emerald-200">Experto en Fitoterapia Nativa</span>
+                    <span className="text-[10px] text-emerald-200">Asesor de Fitoterapia</span>
                   </div>
-                  <span className="text-[10px] font-bold text-center">Asesor Comunitario</span>
+                  <span className="text-[10px] font-bold text-center">Especialista Invitado</span>
                 </div>
               </div>
 
@@ -132,7 +158,7 @@ export default function ComunidadBienestarPage() {
 
                 <div className="flex items-center gap-2">
                   <label htmlFor="pdf-comunidad" className="bg-[#FF8894] text-white text-[10px] font-bold px-3 py-1.5 rounded-lg cursor-pointer">
-                    {uploading ? "Subiendo..." : "Adjuntar Catalogo PDF PYME"}
+                    {uploading ? "Subiendo..." : "Adjuntar Catalogo PDF"}
                   </label>
                   <input id="pdf-comunidad" type="file" accept=".pdf" onChange={handleFileUpload} className="hidden" />
                 </div>
@@ -144,7 +170,7 @@ export default function ComunidadBienestarPage() {
       </section>
 
       <footer className="bg-white border-t border-[#C8D8CE] py-4 text-center text-xs text-gray-500">
-        &copy; {new Date().getFullYear()} Bienestar App — Oficina Sabiduria Ancestral.
+        &copy; {new Date().getFullYear()} Bienestar App — ASL Ideas SpA.
       </footer>
     </main>
   );

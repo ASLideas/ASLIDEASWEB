@@ -43,44 +43,70 @@ export default function WellnessExplorarPage() {
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.;
     if (!file) return;
 
     setUploading(true);
-    setUploadStatus("Subiendo pauta a Supabase...");
+    setUploadStatus("Subiendo archivo a Supabase...");
 
     const result = await subirPeticionPdf({
       file,
-      clienteNombre: "Usuario Wellness",
+      clienteNombre: "Cliente Wellness",
       clienteEmail: "pausa@wellness.cl",
       appOrigen: "Wellness"
     });
 
     setUploading(false);
     if (result.success) {
-      setUploadStatus("Pauta / Especificacion PDF subida con exito a Supabase.");
+      setUploadStatus("Especificacion PDF subida con exito a Supabase.");
     } else {
-      setUploadStatus("Error al subir archivo. Revisa variables en Vercel.");
+      setUploadStatus("Error al subir archivo. Revisa tus credenciales en Vercel.");
     }
   };
 
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#2C4A3E] font-sans flex flex-col justify-between">
-      <header className="bg-white border-b border-[#C8D8CE] py-4 px-6 sticky top-0 z-40 shadow-xs">
+      <header className="bg-white border-b border-[#C8D8CE] py-4 px-6 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
             <img src="/logo_wellness.jpg" alt="Logo Wellness" className="w-10 h-10 object-contain rounded-full border border-[#C8D8CE]" />
             <div>
-              <h1 className="text-base font-bold text-[#2C4A3E]">Oficina 3: Wellness Web App</h1>
-              <p className="text-xs text-[#52796F]">Movimiento Adaptado Sin Impacto y Pausas Activas</p>
+              <h1 className="text-base font-bold text-[#2C4A3E]">Wellness Web App — Movimiento Adaptado</h1>
+              <p className="text-xs text-[#52796F]">Apoyo Visual Mente-Cuerpo, Pausas Activas y Ejercicios Sin Impacto</p>
             </div>
           </div>
           <Link href="/" className="text-xs text-[#2C4A3E] hover:underline font-semibold">Volver a Portada</Link>
         </div>
       </header>
 
+      {/* Descripcion Completa de Wellness Web App */}
+      <section className="bg-white border-b border-[#C8D8CE] py-8 px-6">
+        <div className="max-w-5xl mx-auto space-y-4">
+          <span className="text-xs font-bold text-[#52796F] uppercase tracking-wider block">Proposito &amp; Herramienta Visual</span>
+          <h2 className="text-xl font-bold text-[#2C4A3E]">¿Por que se creo Wellness Web App y que funcion cumple?</h2>
+          <p className="text-xs text-gray-700 leading-relaxed">
+            Wellness Web App surgio para desarrollar alternativas de forma 100% visual que brinden una mejor calidad de vida en cuerpo, mente y salud. Su funcion principal es ser un apoyo intuitivo para usuarios a quienes no les gusta el gimnasio tradicional o les cuesta encontrar pautas de ejercicio adaptadas.
+          </p>
+          <div className="grid md:grid-cols-3 gap-4 text-xs pt-2">
+            <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE]">
+              <span className="font-bold text-[#2C4A3E] block mb-1">Movimiento Sin Impacto</span>
+              <p className="text-gray-600">Rutinas diseñadas para personas con dolor articular, sobrepeso o movilidad reducida.</p>
+            </div>
+            <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE]">
+              <span className="font-bold text-[#2C4A3E] block mb-1">Pausas Activas Laborales</span>
+              <p className="text-gray-600">Ejercicios visuales breves para disminuir el estres y mejorar la postura.</p>
+            </div>
+            <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE]">
+              <span className="font-bold text-[#2C4A3E] block mb-1">Salas Virtuales Tematicas</span>
+              <p className="text-gray-600">Transmisiones interactivas para clases grupales y talleres en vivo.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Sala Virtual Multiusuario */}
       <section className="max-w-6xl mx-auto px-6 py-8 w-full space-y-6">
-        <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-4">
+        <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] space-y-4">
           <div className="flex justify-between items-center">
             <div>
               <span className="text-[10px] font-bold text-[#52796F] uppercase tracking-wider block">Sala Virtual de Ejercicios</span>
@@ -106,9 +132,9 @@ export default function WellnessExplorarPage() {
                 <div className="bg-[#3A5A40] p-3 rounded-xl border border-[#84A59D] text-white flex flex-col justify-between min-h-[160px]">
                   <span className="text-[9px] text-emerald-200">Participante 2 (Lado a Lado)</span>
                   <div className="w-full h-28 bg-[#2C4A3E] rounded-lg flex items-center justify-center border border-dashed border-[#84A59D]">
-                    <span className="text-[10px] text-emerald-200">Alumnos Grupo A</span>
+                    <span className="text-[10px] text-emerald-200">Grupo Pausa Activa</span>
                   </div>
-                  <span className="text-[10px] font-bold text-center">Pausa Activa PYME</span>
+                  <span className="text-[10px] font-bold text-center">Alumnos Conectados</span>
                 </div>
 
                 <div className="bg-[#3A5A40] p-3 rounded-xl border border-[#84A59D] text-white flex flex-col justify-between min-h-[160px]">
@@ -116,7 +142,7 @@ export default function WellnessExplorarPage() {
                   <div className="w-full h-28 bg-[#2C4A3E] rounded-lg flex items-center justify-center border border-dashed border-[#84A59D]">
                     <span className="text-[10px] text-emerald-200">Kinesiologo Evaluador</span>
                   </div>
-                  <span className="text-[10px] font-bold text-center">Especialista en Postura</span>
+                  <span className="text-[10px] font-bold text-center">Especialista Invitado</span>
                 </div>
               </div>
 
@@ -132,7 +158,7 @@ export default function WellnessExplorarPage() {
 
                 <div className="flex items-center gap-2">
                   <label htmlFor="pdf-wellness" className="bg-[#FF8894] text-white text-[10px] font-bold px-3 py-1.5 rounded-lg cursor-pointer">
-                    {uploading ? "Subiendo..." : "Adjuntar Rutina / Pauta PDF"}
+                    {uploading ? "Subiendo..." : "Adjuntar Especificacion PDF"}
                   </label>
                   <input id="pdf-wellness" type="file" accept=".pdf" onChange={handleFileUpload} className="hidden" />
                 </div>
@@ -144,7 +170,7 @@ export default function WellnessExplorarPage() {
       </section>
 
       <footer className="bg-white border-t border-[#C8D8CE] py-4 text-center text-xs text-gray-500">
-        &copy; {new Date().getFullYear()} Wellness Web App — Oficina Movimiento Adaptado.
+        &copy; {new Date().getFullYear()} Wellness Web App — ASL Ideas SpA.
       </footer>
     </main>
   );
