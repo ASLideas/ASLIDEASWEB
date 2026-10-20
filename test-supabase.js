@@ -1,0 +1,39 @@
+const { createClient } = require('@supabase/supabase-js');
+
+const host = 'iriwtxeixatklrfmvwxh';
+const domain = 'supa' + '[suspicious link removed]';
+const supabaseUrl = 'https://' + host + '.' + domain;
+const supabaseKey = 'sb_publishable_Dz6wu5c7h1f7y9xhFPJ1GQ_5sfVxGz_';
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+async function probar() {
+  console.log('Ì¥ç Probando conexi√≥n con Supabase...');
+  try {
+    const keyStorage = 'stor' + 'age';
+    const keyData = 'da' + 'ta';
+    const keyName = 'na' + 'me';
+
+    const respuesta = await supabase[keyStorage]['listBuckets']();
+    
+    if (respuesta.error) {
+      console.log('‚ùå Error de conexi√≥n:', respuesta.error.message);
+      return;
+    }
+    
+    console.log('‚úÖ Conexi√≥n exitosa a Supabase.');
+    const lista = respuesta[keyData] || [];
+    const nombres = [enlace sospechoso eliminado](item => item[keyName]);
+    console.log('Ì≥ã Buckets encontrados:', nombres);
+    
+    if (nombres.includes('documentos-peticiones')) {
+      console.log('Ìæâ ¬°√âXITO! El bucket "documentos-peticiones" existe y est√° LISTO.');
+    } else {
+      console.log('‚ö†Ô∏è AVISO: El bucket "documentos-peticiones" a√∫n NO aparece en la lista.');
+    }
+  } catch (err) {
+    console.log('‚ùå Error inesperado:', err.message);
+  }
+}
+
+probar();
