@@ -1,0 +1,14 @@
+
+/* Paleta de Verde Suave e Inclusiva ASL Ideas SpA */
+.bg-green-500, .bg-green-600, .bg-green-700, .bg-emerald-500, .bg-emerald-600, .bg-teal-600 {
+  background-color: #52796F !important;
+}
+.hover\:bg-green-600:hover, .hover\:bg-green-700:hover, .hover\:bg-emerald-600:hover {
+  background-color: #2C4A3E !important;
+}
+.text-green-500, .text-green-600, .text-green-700, .text-emerald-600 {
+  color: #52796F !important;
+}
+.border-green-500, .border-green-600, .border-emerald-500 {
+  border-color: #84A59D !important;
+}
