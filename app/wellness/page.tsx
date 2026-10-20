@@ -5,7 +5,7 @@ import Link from "next/link";
 import { subirPeticionPdf } from "@/lib/uploadService";
 
 export default function WellnessExplorarPage() {
-  const [isRoomOpen, setIsRoomOpen] = useState(true);
+  const [isRoomOpen, setIsRoomOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<string | null>(null);
 
@@ -24,12 +24,14 @@ export default function WellnessExplorarPage() {
       setCameraActive(false);
     } else {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: micActive });
-        streamRef.current = stream;
-        if (videoRef.current) videoRef.current.srcObject = stream;
-        setCameraActive(true);
-      } catch (err) {
-        alert("No se pudo acceder a la camara web.");
+        if (typeof window !== 'undefined' && navigator.mediaDevices) {
+          const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: micActive });
+          streamRef.current = stream;
+          if (videoRef.current) videoRef.current.srcObject = stream;
+          setCameraActive(true);
+        }
+      } catch (err: any) {
+        alert("No se pudo acceder a la cámara web: " + (err.message || err));
       }
     }
   };
@@ -58,9 +60,9 @@ export default function WellnessExplorarPage() {
 
     setUploading(false);
     if (result.success) {
-      setUploadStatus("Especificacion PDF subida con exito a Supabase.");
+      setUploadStatus("Especificación PDF subida con éxito a Supabase.");
     } else {
-      setUploadStatus("Error al subir archivo. Revisa tus credenciales en Vercel.");
+      setUploadStatus("Error: " + (result.error || "Revisa credenciales en Vercel/Supabase."));
     }
   };
 
@@ -81,10 +83,10 @@ export default function WellnessExplorarPage() {
 
       <section className="bg-white border-b border-[#C8D8CE] py-8 px-6">
         <div className="max-w-5xl mx-auto space-y-4">
-          <span className="text-xs font-bold text-[#52796F] uppercase tracking-wider block">Proposito &amp; Herramienta Visual</span>
-          <h2 className="text-xl font-bold text-[#2C4A3E]">¿Por que se creo Wellness Web App y que funcion cumple?</h2>
+          <span className="text-xs font-bold text-[#52796F] uppercase tracking-wider block">Propósito &amp; Herramienta Visual</span>
+          <h2 className="text-xl font-bold text-[#2C4A3E]">¿Por qué se creó Wellness Web App y qué función cumple?</h2>
           <p className="text-xs text-gray-700 leading-relaxed">
-            Wellness Web App surgio para desarrollar alternativas de forma 100% visual que brinden una mejor calidad de vida en cuerpo, mente y salud. Su funcion principal es ser un apoyo intuitivo para usuarios a quienes no les gusta el gimnasio tradicional o les cuesta encontrar pautas de ejercicio adaptadas.
+            Wellness Web App surgió para desarrollar alternativas de forma 100% visual que brinden una mejor calidad de vida en cuerpo, mente y salud. Su función principal es ser un apoyo intuitivo para usuarios a quienes no les gusta el gimnasio tradicional o les cuesta encontrar pautas de ejercicio adaptadas.
           </p>
           <div className="grid md:grid-cols-3 gap-4 text-xs pt-2">
             <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE]">
@@ -93,10 +95,10 @@ export default function WellnessExplorarPage() {
             </div>
             <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE]">
               <span className="font-bold text-[#2C4A3E] block mb-1">Pausas Activas Laborales</span>
-              <p className="text-gray-600">Ejercicios visuales breves para disminuir el estres y mejorar la postura.</p>
+              <p className="text-gray-600">Ejercicios visuales breves para disminuir el estrés y mejorar la postura.</p>
             </div>
             <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE]">
-              <span className="font-bold text-[#2C4A3E] block mb-1">Salas Virtuales Tematicas</span>
+              <span className="font-bold text-[#2C4A3E] block mb-1">Salas Virtuales Temáticas</span>
               <p className="text-gray-600">Transmisiones interactivas para clases grupales y talleres en vivo.</p>
             </div>
           </div>
@@ -111,8 +113,11 @@ export default function WellnessExplorarPage() {
               <span className="text-[10px] font-bold text-[#52796F] uppercase tracking-wider block">Sala Virtual de Ejercicios</span>
               <h3 className="text-sm font-bold text-[#2C4A3E]">Taller en Vivo (Participantes de Lado a Lado)</h3>
             </div>
-            <button onClick={() => setIsRoomOpen(!isRoomOpen)} className="bg-[#52796F] text-white text-xs px-4 py-2 rounded-xl font-bold">
-              {isRoomOpen ? "Ocultar Sala" : "Abrir Sala Virtual"}
+            <button
+              onClick={() => setIsRoomOpen(!isRoomOpen)}
+              className="bg-[#52796F] text-white text-xs px-5 py-2.5 rounded-xl font-bold hover:bg-[#3A5A40] transition"
+            >
+              {isRoomOpen ? "Ocultar Sala Virtual" : "Abrir Sala Virtual Desplegable"}
             </button>
           </div>
 
@@ -120,10 +125,10 @@ export default function WellnessExplorarPage() {
             <div className="bg-[#FAF8F5] p-5 rounded-2xl border border-[#84A59D] space-y-4">
               <div className="grid md:grid-cols-3 gap-4">
                 <div className="bg-[#3A5A40] p-3 rounded-xl border border-[#84A59D] text-white flex flex-col justify-between min-h-[160px]">
-                  <span className="text-[9px] text-emerald-200">Camara Local (Tu Vista)</span>
+                  <span className="text-[9px] text-emerald-200">Cámara Local (Tu Vista)</span>
                   <div className="relative w-full h-28 bg-[#2C4A3E] rounded-lg overflow-hidden flex items-center justify-center">
                     <video ref={videoRef} autoPlay playsInline muted className={`w-full h-full object-cover ${cameraActive ? 'block' : 'hidden'}`} />
-                    {!cameraActive && <span className="text-[10px] text-emerald-100">Camara Apagada</span>}
+                    {!cameraActive && <span className="text-[10px] text-emerald-100">Cámara Apagada</span>}
                   </div>
                   <span className="text-[10px] font-bold text-center">Instructor Wellness</span>
                 </div>
@@ -139,7 +144,7 @@ export default function WellnessExplorarPage() {
                 <div className="bg-[#3A5A40] p-3 rounded-xl border border-[#84A59D] text-white flex flex-col justify-between min-h-[160px]">
                   <span className="text-[9px] text-emerald-200">Participante 3 (Lado a Lado)</span>
                   <div className="w-full h-28 bg-[#2C4A3E] rounded-lg flex items-center justify-center border border-dashed border-[#84A59D]">
-                    <span className="text-[10px] text-emerald-200">Kinesiologo Evaluador</span>
+                    <span className="text-[10px] text-emerald-200">Kinesiólogo Evaluador</span>
                   </div>
                   <span className="text-[10px] font-bold text-center">Especialista Invitado</span>
                 </div>
@@ -147,17 +152,17 @@ export default function WellnessExplorarPage() {
 
               <div className="flex flex-wrap justify-between items-center gap-3 pt-3 border-t border-[#84A59D]">
                 <div className="flex gap-2">
-                  <button onClick={toggleMic} className={`text-[10px] px-3 py-1.5 rounded-lg font-bold ${micActive ? 'bg-[#FF8894] text-white' : 'bg-[#3A5A40] text-white'}`}>
-                    {micActive ? "Microfono Activo" : "Activar Microfono"}
+                  <button onClick={toggleMic} className={`text-[10px] px-3 py-1.5 rounded-lg font-bold ${micActive ? 'bg-[#52796F] text-white' : 'bg-[#3A5A40] text-white'}`}>
+                    {micActive ? "Micrófono Activo" : "Activar Micrófono"}
                   </button>
-                  <button onClick={toggleCamera} className={`text-[10px] px-3 py-1.5 rounded-lg font-bold ${cameraActive ? 'bg-[#D85260] text-white' : 'bg-[#FF8894] text-white'}`}>
-                    {cameraActive ? "Apagar Camara" : "Encender Camara"}
+                  <button onClick={toggleCamera} className={`text-[10px] px-3 py-1.5 rounded-lg font-bold ${cameraActive ? 'bg-[#3A5A40] text-white' : 'bg-[#52796F] text-white'}`}>
+                    {cameraActive ? "Apagar Cámara" : "Encender Cámara"}
                   </button>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <label htmlFor="pdf-wellness" className="bg-[#FF8894] text-white text-[10px] font-bold px-3 py-1.5 rounded-lg cursor-pointer">
-                    {uploading ? "Subiendo..." : "Adjuntar Especificacion PDF"}
+                  <label htmlFor="pdf-wellness" className="bg-[#52796F] text-white text-[10px] font-bold px-3 py-1.5 rounded-lg cursor-pointer hover:bg-[#3A5A40]">
+                    {uploading ? "Subiendo..." : "Adjuntar Especificación PDF"}
                   </label>
                   <input id="pdf-wellness" type="file" accept=".pdf" onChange={handleFileUpload} className="hidden" />
                 </div>

@@ -23,9 +23,14 @@ export async function subirPeticionPdf({
     const { error: storageError } = await supabase
       .storage
       .from('documentos-peticiones')
-      .upload(filePath, file);
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: true
+      });
 
-    if (storageError) throw storageError;
+    if (storageError) {
+      throw new Error(`Storage Error (${storageError.name}): ${storageError.message}`);
+    }
 
     const { data: publicUrlData } = supabase
       .storage
@@ -48,11 +53,13 @@ export async function subirPeticionPdf({
         }
       ]);
 
-    if (dbError) throw dbError;
+    if (dbError) {
+      throw new Error(`Database Error (${dbError.code}): ${dbError.message}`);
+    }
 
     return { success: true, url: publicUrl };
   } catch (error: any) {
     console.error("Error al subir la petición:", error);
-    return { success: false, error: error.message || error };
+    return { success: false, error: error.message || String(error) };
   }
 }
