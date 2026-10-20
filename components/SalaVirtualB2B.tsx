@@ -45,7 +45,7 @@ export default function SalaVirtualB2B({ isOpen, onClose }: Props) {
                 : 'text-[#52796F] hover:bg-[#FAF8F5]/50'
             }`}
           >
-            í¾¥ Sala de Videollamada en Vivo
+            ï¿½ï¿½ï¿½ Sala de Videollamada en Vivo
           </button>
           <button
             onClick={() => setTab('agendar')}
@@ -55,7 +55,7 @@ export default function SalaVirtualB2B({ isOpen, onClose }: Props) {
                 : 'text-[#52796F] hover:bg-[#FAF8F5]/50'
             }`}
           >
-            í³… Agendar / Adjuntar Propuesta
+            ï¿½ï¿½ï¿½ Agendar / Adjuntar Propuesta
           </button>
         </div>
 
