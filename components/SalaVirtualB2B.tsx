@@ -1,1 +1,287 @@
-甧敳挠楬湥❴਻椊灭牯⁴敒捡ⱴ笠甠敳瑓瑡⁥⁽牦浯✠敲捡❴਻椊瑮牥慦散倠潲獰笠 椠佳数㩮戠潯敬湡਻†湯汃獯㩥⠠ 㸽瘠楯㭤 愠灰慎敭㨿猠牴湩㭧 愠灰潌潧㨿猠牴湩㭧紊ਊ硥潰瑲搠晥畡瑬映湵瑣潩⁮慓慬楖瑲慵䉬䈲笨椠佳数Ɱ漠䍮潬敳‬灡买浡⁥‽䌧獡⁡慍牴穩䈠䈲Ⱗ愠灰潌潧㴠✠䰯䝏彏獡⹬湰❧素›牐灯⥳笠 挠湯瑳嬠慴Ɫ猠瑥慔嵢㴠甠敳瑓瑡㱥瘧摩潥‧⁼愧敧摮牡‧⁼愧捲楨潶❳簠✠潮慴❳⠾瘧摩潥⤧਻†潣獮⁴獛汥捥整䑤瑡ⱥ猠瑥敓敬瑣摥慄整⁝‽獵卥慴整猼牴湩㹧✨⤧਻†潣獮⁴獛汥捥整呤浩ⱥ猠瑥敓敬瑣摥楔敭⁝‽獵卥慴整猼牴湩㹧✨〱㌺✰㬩 挠湯瑳嬠獵牥慎敭‬敳啴敳乲浡嵥㴠甠敳瑓瑡㱥瑳楲杮⠾✧㬩 挠湯瑳嬠獵牥浅楡ⱬ猠瑥獕牥浅楡嵬㴠甠敳瑓瑡㱥瑳楲杮⠾✧㬩 挠湯瑳嬠獵牥牏Ⱨ猠瑥獕牥牏嵧㴠甠敳瑓瑡㱥瑳楲杮⠾✧㬩 挠湯瑳嬠楦敬‬敳䙴汩嵥㴠甠敳瑓瑡㱥楆敬簠渠汵㹬渨汵⥬਻†潣獮⁴畛汰慯楤杮‬敳啴汰慯楤杮⁝‽獵卥慴整昨污敳㬩 挠湯瑳嬠潢歯湩卧捵散獳‬敳䉴潯楫杮畓捣獥嵳㴠甠敳瑓瑡⡥慦獬⥥਻† 挠湯瑳嬠潮慴ⱳ猠瑥潎慴嵳㴠甠敳瑓瑡㱥瑳楲杮嵛⠾ਜ਼††䄧畣牥潤瀠敲楬業慮㩲䐠浥獯牴捡썩溳搠⁥湩整晲穡愠捣獥扩敬瀠牡⁡敮牵摯癩牥敧据慩⹳Ⱗ †✠敒楶楳돃⁮敤爠煥敵楲業湥潴⁳慰慲䰠祥丠냂㈠⸱㘶″⁹敌⁹䕔⹁ਧ†⥝਻†潣獮⁴湛敵慶潎慴‬敳乴敵慶潎慴⁝‽獵卥慴整✨⤧਻ 椠⁦ℨ獩灏湥 敲畴湲渠汵㭬ਊ†潣獮⁴潨慲楲獯楄灳湯扩敬⁳‽❛㤰〺✰‬ㄧ㨰〳Ⱗ✠㈱〺✰‬ㄧ㨵〰Ⱗ✠㘱㌺✰‬ㄧ㨸〰崧਻ 挠湯瑳栠湡汤䅥敧摮牡㴠⠠㩥删慥瑣䘮牯䕭敶瑮 㸽笠 †攠瀮敲敶瑮敄慦汵⡴㬩 †椠⁦ℨ敳敬瑣摥慄整簠⁼甡敳乲浡⁥籼℠獵牥浅楡⥬爠瑥牵㭮 †猠瑥灕潬摡湩⡧牴敵㬩 †猠瑥楔敭畯⡴⤨㴠‾੻†††敳啴汰慯楤杮昨污敳㬩 ††猠瑥潂歯湩卧捵散獳琨畲⥥਻††ⱽㄠ〲⤰਻†㭽ਊ†潣獮⁴慨摮敬杁敲慧乲瑯⁡‽⤨㴠‾੻††晩⠠渡敵慶潎慴琮楲⡭⤩爠瑥牵㭮 †猠瑥潎慴⡳⹛⸮潮慴ⱳ渠敵慶潎慴琮楲⡭崩㬩 †猠瑥畎癥乡瑯⡡✧㬩 素਻ 爠瑥牵⁮ਨ††搼癩挠慬獳慎敭∽楦數⁤湩敳⵴‰⵺〵戠ⵧ⍛䌲䄴䔳⽝〵戠捡摫潲⵰汢牵洭⁤汦硥椠整獭挭湥整⁲番瑳晩⵹散瑮牥瀠㌭洠㩤⵰‶癯牥汦睯礭愭瑵≯ਾ†††搼癩挠慬獳慎敭∽杢嬭䘣䙁䘸崵眠昭汵⁬慭⵸⵷破⁬潲湵敤ⵤ砳⁬潢摲牥戠牯敤⵲⍛㡃㡄䕃⁝桳摡睯㈭汸漠敶晲潬⵷楨摤湥映敬⁸汦硥挭汯洠硡栭嬭㈹桶⁝祭愭瑵≯ਾ†††† †††笠⨯䔠据扡穥摡⁯潃灲牯瑡癩⁯敖摲⁥慓癬慩⨠累 †††㰠敨摡牥挠慬獳慎敭∽杢嬭㔣㜲㘹嵆琠硥⵴桷瑩⁥⵰‵汦硥樠獵楴祦戭瑥敷湥椠整獭挭湥整⁲潢摲牥戭戠牯敤⵲⍛㐸㕁䐹⁝敲慬楴敶漠敶晲潬⵷楨摤湥㸢 ††††㰠楤⁶汣獡乳浡㵥昢敬⁸瑩浥⵳散瑮牥朠灡㌭㔮稠ㄭ∰ਾ††††††搼癩挠慬獳慎敭∽⵷㈱栠ㄭ′潲湵敤ⵤ砲⁬杢眭楨整瀠ㄭ戠牯敤⁲潢摲牥嬭㠣䄴㤵嵄映敬⁸瑩浥⵳散瑮牥樠獵楴祦挭湥整⁲桳摡睯猭⁭癯牥汦睯栭摩敤≮ਾ†††††††椼杭猠捲笽灡䱰杯絯愠瑬笽灡买浡絥挠慬獳慎敭∽慭⵸⵨畦汬洠硡眭昭汵⁬扯敪瑣挭湯慴湩•㸯 †††††㰠搯癩ਾ††††††搼癩ਾ†††††††猼慰⁮汣獡乳浡㵥琢硥⵴ㅛ瀰嵸映湯⵴潢摬琠慲正湩ⵧ楷敤⁲灵数捲獡⁥杢嬭䘣䙁䘸崵㈯‰硰㈭㔮瀠⵹⸰‵潲湵敤ⵤ畦汬琠硥⵴桷瑩≥ਾ††††††††十⁌摉慥⁳灓⁁胢ₔ慻灰慎敭੽†††††††⼼灳湡ਾ†††††††格′汣獡乳浡㵥琢硥⵴杬映湯⵴潢摬洠⵴⸰‵整瑸眭楨整㸢慓慬嘠物畴污䌠牯潰慲楴慶☠䄠敧摮浡敩瑮㱯栯㸲 ††††††㰠⁰汣獡乳浡㵥琢硥⵴獸琠硥⵴⍛㡅う䍅≝ਾ††††††††楖敤汯慬慭慤䈠䈲‬慣敬摮牡潩椠瑮牥捡楴潶搠⁥楣慴⁳⁹敧瑳牯搠⁥捡敵摲獯ਮ†††††††⼼㹰 †††††㰠搯癩ਾ†††††⼼楤㹶ਊ†††††戼瑵潴⁮湯汃捩㵫潻䍮潬敳⁽汣獡乳浡㵥琢硥⵴桷瑩⽥〹栠癯牥琺硥⵴桷瑩⁥杢戭慬正㈯‰潨敶㩲杢戭慬正㌯‰整瑸砭⁳硰㌭㔮瀠⵹′潲湵敤ⵤ畦汬映湯⵴潢摬琠慲獮瑩潩≮ਾ††††††鳢ₕ敃牲牡 ††††㰠戯瑵潴㹮 †††㰠栯慥敤㹲ਊ††††⽻‪敐瑳썡憱⁳⼪੽††††搼癩挠慬獳慎敭∽汦硥戠牯敤⵲⁢潢摲牥嬭䌣䐸䌸嵅戠ⵧ⍛㡅う䍅≝ਾ†††††戼瑵潴⁮湯汃捩㵫⡻ 㸽猠瑥慔⡢瘧摩潥⤧⁽汣獡乳浡㵥恻汦硥ㄭ瀠⵹″整瑸砭⁳潦瑮戭汯⁤牴湡楳楴湯␠瑻扡㴠㴽✠楶敤❯㼠✠杢嬭䘣䙁䘸崵琠硥⵴⍛䌲䄴䔳⁝潢摲牥戭㈭戠牯敤⵲⍛㈵㤷䘶❝㨠✠整瑸嬭㔣㜲㘹嵆紧絠ਾ††††††뿯붿뿯₽楖敤汯慬慭慤 ††††㰠戯瑵潴㹮 ††††㰠畢瑴湯漠䍮楬正笽⤨㴠‾敳呴扡✨条湥慤❲紩挠慬獳慎敭笽晠敬⵸‱祰㌭琠硥⵴獸映湯⵴潢摬琠慲獮瑩潩⁮笤慴⁢㴽‽愧敧摮牡‧‿戧ⵧ⍛䅆㡆㕆⁝整瑸嬭㈣㑃㍁嵅戠牯敤⵲ⵢ′潢摲牥嬭㔣㜲㘹嵆‧›琧硥⵴⍛㈵㤷䘶❝恽㹽 †††††붿뿯붿䌠污湥慤楲⁯…潈慲楲獯 ††††㰠戯瑵潴㹮 ††††㰠畢瑴湯漠䍮楬正笽⤨㴠‾敳呴扡✨牡档癩獯⤧⁽汣獡乳浡㵥恻汦硥ㄭ瀠⵹″整瑸砭⁳潦瑮戭汯⁤牴湡楳楴湯␠瑻扡㴠㴽✠牡档癩獯‧‿戧ⵧ⍛䅆㡆㕆⁝整瑸嬭㈣㑃㍁嵅戠牯敤⵲ⵢ′潢摲牥嬭㔣㜲㘹嵆‧›琧硥⵴⍛㈵㤷䘶❝恽㹽 †††††붿뿯붿匠扵物倠潲異獥慴⠠䑐⥆ ††††㰠戯瑵潴㹮 ††††㰠畢瑴湯漠䍮楬正笽⤨㴠‾敳呴扡✨潮慴❳紩挠慬獳慎敭笽晠敬⵸‱祰㌭琠硥⵴獸映湯⵴潢摬琠慲獮瑩潩⁮笤慴⁢㴽‽渧瑯獡‧‿戧ⵧ⍛䅆㡆㕆⁝整瑸嬭㈣㑃㍁嵅戠牯敤⵲ⵢ′潢摲牥嬭㔣㜲㘹嵆‧›琧硥⵴⍛㈵㤷䘶❝恽㹽 †††††붿뿯붿丠瑯獡搠⁥敓楳돃੮†††††⼼畢瑴湯ਾ††††⼼楤㹶ਊ††††⽻‪潃瑮湥摩⁯⼪੽††††搼癩挠慬獳慎敭∽⵰‶癯牥汦睯礭愭瑵⁯汦硥ㄭ㸢 ††††笠慴⁢㴽‽瘧摩潥‧☦⠠ †††††㰠楤⁶汣獡乳浡㵥眢昭汵⁬⵨㍛〸硰⁝杢嬭䔣䘸䔰嵃爠畯摮摥㈭汸戠牯敤⁲潢摲牥嬭䌣䐸䌸嵅漠敶晲潬⵷楨摤湥㸢 ††††††㰠晩慲敭猠捲∽獛獵楰楣畯⁳楬歮爠浥癯摥≝挠慬獳慎敭∽⵷畦汬栠昭汵⁬潢摲牥〭•楴汴㵥匢污⁡楖瑲慵≬⼠ਾ††††††⼼楤㹶 ††††⤠੽ ††††笠慴⁢㴽‽愧敧摮牡‧☦⠠ †††††㰠楤⁶汣獡乳浡㵥洢硡眭砭⁬硭愭瑵⁯灳捡ⵥ⵹‴杢眭楨整瀠㘭爠畯摮摥㌭汸戠牯敤⁲潢摲牥嬭䌣䐸䌸嵅㸢 ††††††㰠㍨挠慬獳慎敭∽整瑸猭⁭潦瑮戭汯⁤整瑸嬭㈣㑃㍁嵅琠硥⵴散瑮牥㸢杁湥慤⁲楖敤汯慬慭慤⼠䐠浥獯牴捡썩溳⼼㍨ਾ†††††††扻潯楫杮畓捣獥⁳‿ਨ††††††††搼癩挠慬獳慎敭∽⵰‴杢嬭䔣䘸䔰嵃爠畯摮摥㈭汸琠硥⵴散瑮牥琠硥⵴獸映湯⵴潢摬琠硥⵴⍛㈵㤷䘶≝ਾ†††††††††뿯붿뿯₽ꇂ敒湵썩溳愠敧摮摡⁡慰慲攠⁬獻汥捥整䑤瑡絥愠氠獡笠敳敬瑣摥楔敭⁽牨ⅳ †††††††㰠搯癩ਾ††††††† ›ਨ††††††††昼牯⁭湯畓浢瑩笽慨摮敬杁湥慤絲挠慬獳慎敭∽灳捡ⵥ⵹∳ਾ†††††††††椼灮瑵琠灹㵥琢硥≴爠煥極敲⁤慶畬㵥畻敳乲浡絥漠䍮慨杮㵥⡻⥥㴠‾敳啴敳乲浡⡥敛汮捡⁥潳灳捥潨潳攠楬業慮潤⹝慶畬⥥⁽汰捡桥汯敤㵲丢浯牢⁥潃灭敬潴⨠•汣獡乳浡㵥眢昭汵⁬整瑸砭⁳⵰⸲‵潢摲牥戠牯敤⵲⍛㡃㡄䕃⁝潲湵敤ⵤ汸•㸯 ††††††††㰠湩異⁴祴数∽浥楡≬爠煥極敲⁤慶畬㵥畻敳䕲慭汩⁽湯桃湡敧笽攨 㸽猠瑥獕牥浅楡⡬敛汮捡⁥潳灳捥潨潳攠楬業慮潤⹝慶畬⥥⁽汰捡桥汯敤㵲䌢牯敲⁯汅捥牴돃楮潣⨠•汣獡乳浡㵥眢昭汵⁬整瑸砭⁳⵰⸲‵潢摲牥戠牯敤⵲⍛㡃㡄䕃⁝潲湵敤ⵤ汸•㸯 ††††††††㰠楤⁶汣獡乳浡㵥朢楲⁤牧摩挭汯⵳′慧⵰∳ਾ††††††††††搼癩ਾ†††††††††††氼扡汥挠慬獳慎敭∽汢捯⁫整瑸嬭ㄱ硰⁝潦瑮戭汯⁤扭ㄭ㸢뿯붿뿯₽敆档㱡氯扡汥ਾ†††††††††††椼灮瑵琠灹㵥搢瑡≥爠煥極敲⁤慶畬㵥獻汥捥整䑤瑡絥漠䍮慨杮㵥⡻⥥㴠‾敳却汥捥整䑤瑡⡥敛汮捡⁥潳灳捥潨潳攠楬業慮潤⹝慶畬⥥⁽汣獡乳浡㵥眢昭汵⁬整瑸砭⁳⵰⸲‵潢摲牥戠牯敤⵲⍛㡃㡄䕃⁝潲湵敤ⵤ汸•㸯 †††††††††㰠搯癩ਾ††††††††††搼癩ਾ†††††††††††氼扡汥挠慬獳慎敭∽汢捯⁫整瑸嬭ㄱ硰⁝潦瑮戭汯⁤扭ㄭ㸢迢₰潈慲⼼慬敢㹬 ††††††††††㰠敳敬瑣瘠污敵笽敳敬瑣摥楔敭⁽湯桃湡敧笽攨 㸽猠瑥敓敬瑣摥楔敭嬨湥慬散猠獯数档獯⁯汥浩湩摡嵯瘮污敵紩挠慬獳慎敭∽⵷畦汬琠硥⵴獸瀠㈭㔮戠牯敤⁲潢摲牥嬭䌣䐸䌸嵅爠畯摮摥砭⁬杢眭楨整㸢 †††††††††††笠敛汮捡⁥潳灳捥潨潳攠楬業慮潤⡝⁨㸽㰠灯楴湯欠祥笽絨瘠污敵笽絨笾絨栠獲⼼灯楴湯⤾੽†††††††††††⼼敳敬瑣ਾ††††††††††⼼楤㹶 ††††††††㰠搯癩ਾ†††††††††戼瑵潴⁮祴数∽畳浢瑩•楤慳汢摥笽灵潬摡湩絧挠慬獳慎敭∽⵷畦汬戠ⵧ⍛㈵㤷䘶⁝整瑸眭楨整琠硥⵴獸映湯⵴潢摬瀠⵹″潲湵敤ⵤ汸栠癯牥戺ⵧ⍛䌲䄴䔳≝ਾ††††††††††畻汰慯楤杮㼠✠畇牡慤摮⹯⸮‧›䌧湯楦浲牡删獥牥慶紧 ††††††††㰠戯瑵潴㹮 †††††††㰠是牯㹭 ††††††⤠੽††††††⼼楤㹶 ††††⤠੽ ††††笠慴⁢㴽‽愧捲楨潶❳☠…ਨ††††††搼癩挠慬獳慎敭∽慭⵸⵷汸洠⵸畡潴猠慰散礭㌭戠ⵧ桷瑩⁥⵰‶潲湵敤ⵤ砳⁬潢摲牥戠牯敤⵲⍛㡃㡄䕃≝ਾ†††††††格″汣獡乳浡㵥琢硥⵴浳映湯⵴潢摬琠硥⵴⍛䌲䄴䔳⁝整瑸挭湥整≲匾扵物倠潲異獥慴倠䙄⠠畓慰慢敳㰩栯㸳 ††††††㰠湩異⁴祴数∽楦敬•捡散瑰∽瀮晤⸬潤Ᵽ搮捯≸漠䍮慨杮㵥⡻⥥㴠‾敳䙴汩⡥敛汮捡⁥潳灳捥潨潳攠楬業慮潤⹝楦敬㽳嬮崰簠⁼畮汬紩挠慬獳慎敭∽汢捯⁫⵷畦汬琠硥⵴獸琠硥⵴牧祡㘭〰•㸯 ††††††㰠畢瑴湯漠䍮楬正笽⤨㴠‾⁻敳啴汰慯楤杮琨畲⥥※敳呴浩潥瑵⠨ 㸽猠瑥灕潬摡湩⡧慦獬⥥‬〱〰㬩素⁽楤慳汢摥笽昡汩⁥籼甠汰慯楤杮⁽汣獡乳浡㵥眢昭汵⁬杢嬭㔣㜲㘹嵆琠硥⵴桷瑩⁥整瑸砭⁳潦瑮戭汯⁤祰㈭㔮爠畯摮摥砭≬ਾ††††††††畻汰慯楤杮㼠✠湅楶湡潤⸮✮㨠✠畓楢⁲⁡畢正瑥∠潤畣敭瑮獯瀭瑥捩潩敮≳紧 ††††††㰠戯瑵潴㹮 †††††㰠搯癩ਾ†††††紩ਊ†††††瑻扡㴠㴽✠潮慴❳☠…ਨ††††††搼癩挠慬獳慎敭∽慭⵸⵷汸洠⵸畡潴猠慰散礭㌭戠ⵧ桷瑩⁥⵰‶潲湵敤ⵤ砳⁬潢摲牥戠牯敤⵲⍛㡃㡄䕃≝ਾ†††††††格″汣獡乳浡㵥琢硥⵴浳映湯⵴潢摬琠硥⵴⍛䌲䄴䔳≝䄾畣牥潤⁳敤匠獥썩溳⼼㍨ਾ†††††††搼癩挠慬獳慎敭∽汦硥朠灡㈭㸢 †††††††㰠湩異⁴祴数∽整瑸•慶畬㵥湻敵慶潎慴⁽湯桃湡敧笽攨 㸽猠瑥畎癥乡瑯⡡敛汮捡⁥潳灳捥潨潳攠楬業慮潤⹝慶畬⥥⁽汰捡桥汯敤㵲䔢捳楲楢⁲潮慴⸮∮挠慬獳慎敭∽汦硥ㄭ琠硥⵴獸瀠㈭戠牯敤⁲潢摲牥嬭䌣䐸䌸嵅爠畯摮摥砭≬⼠ਾ††††††††戼瑵潴⁮湯汃捩㵫桻湡汤䅥牧来牡潎慴⁽汣獡乳浡㵥戢ⵧ⍛㈵㤷䘶⁝整瑸眭楨整琠硥⵴獸映湯⵴潢摬瀠⵸″祰㈭爠畯摮摥砭≬䜾慵摲牡⼼畢瑴湯ਾ†††††††⼼楤㹶 ††††††㰠汵挠慬獳慎敭∽整瑸砭⁳灳捡ⵥ⵹‱整瑸嬭㈣㑃㍁嵅㸢 †††††††笠敛汮捡⁥潳灳捥潨潳攠楬業慮潤⡝渨‬⥩㴠‾氼⁩敫㵹楻⁽汣獡乳浡㵥瀢㈭戠ⵧ⍛䅆㡆㕆⁝潲湵敤ⵤ杬戠牯敤⁲潢摲牥嬭䌣䐸䌸嵅㸢뿯붿뿯₽湻㱽氯㹩紩 ††††††㰠甯㹬 †††††㰠搯癩ਾ†††††紩 †††㰠搯癩ਾ†††⼼楤㹶 †㰠搯癩ਾ†㬩紊
+'use client';
+
+import React, { useState } from 'react';
+
+interface Props {
+  isOpen: boolean;
+  onClose: () => void;
+  appName?: string;
+  appLogo?: string;
+}
+
+export default function SalaVirtualB2B({ 
+  isOpen, 
+  onClose, 
+  appName = 'Casa Matriz B2B', 
+  appLogo = '/LOGO_asl.png' 
+}: Props) {
+  const [tab, setTab] = useState<'video' | 'agendar' | 'archivos' | 'notas'>('video');
+  const [selectedDate, setSelectedDate] = useState<string>('');
+  const [selectedTime, setSelectedTime] = useState<string>('10:30');
+  const [userName, setUserName] = useState<string>('');
+  const [userEmail, setUserEmail] = useState<string>('');
+  const [userOrg, setUserOrg] = useState<string>('');
+  const [file, setFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [bookingSuccess, setBookingSuccess] = useState(false);
+  
+  const [notas, setNotas] = useState<string[]>([
+    'Acuerdo preliminar: Demostración de interfaz accesible.',
+    'Revisión de requerimientos para Ley N° 21.663 y Ley TEA.'
+  ]);
+  const [nuevaNota, setNuevaNota] = useState('');
+
+  if (!isOpen) return null;
+
+  const horariosDisponibles = ['09:00', '10:30', '12:00', '15:00', '16:30', '18:00'];
+
+  const handleAgendar = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedDate || !userName || !userEmail) return;
+    setUploading(true);
+    setTimeout(() => {
+      setUploading(false);
+      setBookingSuccess(true);
+    }, 1200);
+  };
+
+  const handleAgregarNota = () => {
+    if (!nuevaNota.trim()) return;
+    setNotas([...notas, nuevaNota.trim()]);
+    setNuevaNota('');
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-[#2C4A3E]/60 backdrop-blur-md flex items-center justify-center p-3 md:p-6 overflow-y-auto">
+      <div className="bg-[#FAF8F5] w-full max-w-4xl rounded-3xl border border-[#C8D8CE] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] my-auto">
+        
+        {/* Encabezado Corporativo Verde Salvia */}
+        <header className="bg-[#52796F] text-white p-5 flex justify-between items-center border-b border-[#84A59D] relative overflow-hidden">
+          <div className="flex items-center gap-3.5 z-10">
+            <div className="w-12 h-12 rounded-2xl bg-white p-1 border border-[#84A59D] flex items-center justify-center shadow-sm overflow-hidden">
+              <img src={appLogo} alt={appName} className="max-h-full max-w-full object-contain" />
+            </div>
+            <div>
+              <span className="text-[10px] font-bold tracking-wider uppercase bg-[#FAF8F5]/20 px-2.5 py-0.5 rounded-full text-white">
+                ASL Ideas SpA — {appName}
+              </span>
+              <h2 className="text-lg font-bold mt-0.5 text-white">Sala Virtual & Agendamiento de Reunión</h2>
+              <p className="text-xs text-[#E8F0EC]">
+                Videollamada en vivo, calendario de citas y gestor de acuerdos.
+              </p>
+            </div>
+          </div>
+
+          <button 
+            onClick={onClose} 
+            className="text-white/90 hover:text-white bg-black/20 hover:bg-black/30 text-xs px-3.5 py-2 rounded-full font-bold transition"
+          >
+            ✕ Cerrar
+          </button>
+        </header>
+
+        {/* Pestañas de la Sala Virtual */}
+        <div className="flex border-b border-[#C8D8CE] bg-[#E8F0EC]">
+          <button 
+            onClick={() => setTab('video')} 
+            className={`flex-1 py-3 text-xs font-bold transition ${tab === 'video' ? 'bg-[#FAF8F5] text-[#2C4A3E] border-b-2 border-[#52796F]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+          >
+            ��� Videollamada
+          </button>
+          <button 
+            onClick={() => setTab('agendar')} 
+            className={`flex-1 py-3 text-xs font-bold transition ${tab === 'agendar' ? 'bg-[#FAF8F5] text-[#2C4A3E] border-b-2 border-[#52796F]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+          >
+            ��� Calendario & Agendar Hora
+          </button>
+          <button 
+            onClick={() => setTab('archivos')} 
+            className={`flex-1 py-3 text-xs font-bold transition ${tab === 'archivos' ? 'bg-[#FAF8F5] text-[#2C4A3E] border-b-2 border-[#52796F]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+          >
+            ��� Subir Documento / PDF
+          </button>
+          <button 
+            onClick={() => setTab('notas')} 
+            className={`flex-1 py-3 text-xs font-bold transition ${tab === 'notas' ? 'bg-[#FAF8F5] text-[#2C4A3E] border-b-2 border-[#52796F]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+          >
+            ��� Notas de Sesión
+          </button>
+        </div>
+
+        {/* Contenido de cada pestaña */}
+        <div className="p-6 overflow-y-auto flex-1">
+          {tab === 'video' && (
+            <div className="space-y-3">
+              <div className="bg-[#E8F0EC] p-3 rounded-2xl border border-[#84A59D]/40 flex items-center justify-between text-xs text-[#2C4A3E]">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#84A59D] animate-pulse"></span>
+                  <span className="font-bold">Canal Activo:</span> Sala Virtual para {appName}
+                </div>
+                <span className="text-[11px] font-bold text-[#52796F]">Conexión Encriptada</span>
+              </div>
+              <div className="w-full h-[380px] bg-[#E8F0EC] rounded-2xl border border-[#C8D8CE] overflow-hidden shadow-inner">
+                <iframe 
+                  src="[suspicious link removed]" 
+                  className="w-full h-full border-0" 
+                  title="Sala Virtual ASL Ideas SpA" 
+                  allow="camera; microphone; display-capture; autoplay"
+                />
+              </div>
+            </div>
+          )}
+
+          {tab === 'agendar' && (
+            <div className="max-w-xl mx-auto space-y-4 bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-sm">
+              <div className="text-center space-y-1">
+                <h3 className="text-sm font-bold text-[#2C4A3E]">Agendar Hora de Reunión — {appName}</h3>
+                <p className="text-xs text-[#52796F]">Selecciona la fecha y la hora para coordinar la videollamada.</p>
+              </div>
+
+              {bookingSuccess ? (
+                <div className="p-5 bg-[#E8F0EC] rounded-2xl border border-[#84A59D] text-center space-y-2">
+                  <span className="text-3xl">���</span>
+                  <h4 className="text-sm font-bold text-[#2C4A3E]">¡Reunión Agendada con Éxito!</h4>
+                  <p className="text-xs text-[#52796F]">
+                    Confirmación enviada a <strong className="text-[#2C4A3E]">{userEmail}</strong> para la fecha <strong className="text-[#2C4A3E]">{selectedDate}</strong> a las <strong className="text-[#2C4A3E]">{selectedTime} hrs</strong>.
+                  </p>
+                  <button 
+                    onClick={() => setBookingSuccess(false)} 
+                    className="text-xs font-bold text-[#52796F] underline hover:text-[#2C4A3E] pt-2 block mx-auto"
+                  >
+                    Agendar otra cita
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleAgendar} className="space-y-3.5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-bold text-[#2C4A3E] mb-1">Nombre Completo *</label>
+                      <input 
+                        type="text" 
+                        required 
+                        value={userName} 
+                        onChange={(e) => setUserName([enlace sospechoso eliminado].value)} 
+                        placeholder="Ej: María González" 
+                        className="w-full text-xs p-2.5 border border-[#C8D8CE] rounded-xl focus:outline-none focus:border-[#52796F]" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-[#2C4A3E] mb-1">Correo Electrónico *</label>
+                      <input 
+                        type="email" 
+                        required 
+                        value={userEmail} 
+                        onChange={(e) => setUserEmail([enlace sospechoso eliminado].value)} 
+                        placeholder="ejemplo@correo.cl" 
+                        className="w-full text-xs p-2.5 border border-[#C8D8CE] rounded-xl focus:outline-none focus:border-[#52796F]" 
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-[#2C4A3E] mb-1">Institución / Empresa / Particular</label>
+                    <input 
+                      type="text" 
+                      value={userOrg} 
+                      onChange={(e) => setUserOrg([enlace sospechoso eliminado].value)} 
+                      placeholder="Ej: Municipalidad, Empresa, Consulta Personal" 
+                      className="w-full text-xs p-2.5 border border-[#C8D8CE] rounded-xl focus:outline-none focus:border-[#52796F]" 
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-bold text-[#2C4A3E] mb-1">��� Seleccionar Fecha *</label>
+                      <input 
+                        type="date" 
+                        required 
+                        value={selectedDate} 
+                        onChange={(e) => setSelectedDate([enlace sospechoso eliminado].value)} 
+                        className="w-full text-xs p-2.5 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] focus:outline-none focus:border-[#52796F]" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-[#2C4A3E] mb-1">⏰ Seleccionar Hora *</label>
+                      <div className="grid grid-cols-3 gap-1">
+                        {[enlace sospechoso eliminado]((hora) => (
+                          <button
+                            key={hora}
+                            type="button"
+                            onClick={() => setSelectedTime(hora)}
+                            className={`py-2 text-[11px] font-bold rounded-lg border transition ${
+                              selectedTime === hora
+                                ? 'bg-[#52796F] text-white border-[#52796F]'
+                                : 'bg-[#FAF8F5] text-[#2C4A3E] border-[#C8D8CE] hover:bg-[#E8F0EC]'
+                            }`}
+                          >
+                            {hora}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <button 
+                    type="submit" 
+                    disabled={uploading} 
+                    className="w-full bg-[#52796F] text-white text-xs font-bold py-3 rounded-xl hover:bg-[#2C4A3E] transition shadow-xs disabled:opacity-50 mt-2"
+                  >
+                    {uploading ? 'Confirmando Cita...' : 'Confirmar y Reservar Hora de Reunión'}
+                  </button>
+                </form>
+              )}
+            </div>
+          )}
+
+          {tab === 'archivos' && (
+            <div className="max-w-xl mx-auto space-y-4 bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-sm">
+              <div className="text-center space-y-1">
+                <h3 className="text-sm font-bold text-[#2C4A3E]">Adjuntar Propuesta o Antecedentes PDF</h3>
+                <p className="text-xs text-[#52796F]">Sube tus documentos al almacenamiento seguro de Supabase.</p>
+              </div>
+              <input 
+                type="file" 
+                accept=".pdf,.doc,.docx,.png,.jpg" 
+                onChange={(e) => setFile([enlace sospechoso eliminado].files?.[0] || null)} 
+                className="block w-full text-xs text-gray-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#E8F0EC] file:text-[#52796F] hover:file:bg-[#52796F] hover:file:text-white transition" 
+              />
+              <button 
+                onClick={() => { setUploading(true); setTimeout(() => setUploading(false), 1200); }} 
+                disabled={!file || uploading} 
+                className="w-full bg-[#52796F] text-white text-xs font-bold py-2.5 rounded-xl hover:bg-[#2C4A3E] transition disabled:opacity-50"
+              >
+                {uploading ? 'Cargando archivo...' : 'Enviar Documento a la Sala Virtual'}
+              </button>
+            </div>
+          )}
+
+          {tab === 'notas' && (
+            <div className="max-w-xl mx-auto space-y-3 bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-sm">
+              <h3 className="text-sm font-bold text-[#2C4A3E]">Acuerdos de Sesión — {appName}</h3>
+              <div className="flex gap-2">
+                <input 
+                  type="text" 
+                  value={nuevaNota} 
+                  onChange={(e) => setNuevaNota([enlace sospechoso eliminado].value)} 
+                  placeholder="Escribir acuerdo o compromiso..." 
+                  className="flex-1 text-xs p-2.5 border border-[#C8D8CE] rounded-xl focus:outline-none focus:border-[#52796F]" 
+                />
+                <button onClick={handleAgregarNota} className="bg-[#52796F] text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-[#2C4A3E] transition">
+                  Guardar
+                </button>
+              </div>
+              <ul className="text-xs space-y-2 pt-2">
+                {[enlace sospechoso eliminado]((n, i) => (
+                  <li key={i} className="p-3 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[#2C4A3E] flex items-center justify-between">
+                    <span>��� {n}</span>
+                    <span className="text-[10px] text-[#84A59D]">Nota #{i + 1}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
