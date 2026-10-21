@@ -47,7 +47,7 @@ export default function Home() {
           </div>
 
           <button onClick={() => handleOpenRoom('Casa Matriz B2B', '/LOGO_asl.png')} className="bg-[#52796F] text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-[#2C4A3E] transition shadow-xs flex items-center gap-2">
-            <span>í´</span> Agendar ReuniÃ³n B2B
+            <span>ï¿½ï¿½ï¿½</span> Agendar ReuniÃ³n B2B
           </button>
         </div>
       </header>
@@ -76,11 +76,11 @@ export default function Home() {
                   <h3 className="text-base font-bold text-[#2C4A3E]">ASL Ideas SpA â€” Casa Matriz</h3>
                 </div>
               </div>
-              <p className="text-xs text-[#52796F]"><strong>í²¡ Â¿Por quÃ© se creÃ³?</strong> Fundada por DiseÃ±adora GrÃ¡fica con TEA Grado 1 y TDAH para humanizar la salud digital.</p>
+              <p className="text-xs text-[#52796F]"><strong>ï¿½ï¿½ï¿½ Â¿Por quÃ© se creÃ³?</strong> Fundada por DiseÃ±adora GrÃ¡fica con TEA Grado 1 y TDAH para humanizar la salud digital.</p>
               <p className="text-xs text-[#52796F]"><strong>âœ¨ Beneficios:</strong> ConsultorÃ­a UI/UX inclusiva, licencias corporativas B2B y convenios institucionales.</p>
             </div>
             <button onClick={() => handleOpenRoom('Casa Matriz B2B', '/LOGO_asl.png')} className="w-full bg-[#52796F] text-white text-xs font-bold py-2.5 rounded-xl hover:bg-[#2C4A3E] transition">
-              í¾¥ Abrir Sala Virtual / Calendario B2B
+              ï¿½ï¿½ï¿½ Abrir Sala Virtual / Calendario B2B
             </button>
           </div>
 
@@ -94,11 +94,11 @@ export default function Home() {
                   <h3 className="text-base font-bold text-[#2C4A3E]">LAWENMOLL â€” Salud Integrativa</h3>
                 </div>
               </div>
-              <p className="text-xs text-[#52796F]"><strong>í²¡ Â¿Por quÃ© se creÃ³?</strong> DiagnÃ³stico preventivo amable sin juicios punitivos sobre el peso corporal ni estrÃ©s.</p>
+              <p className="text-xs text-[#52796F]"><strong>ï¿½ï¿½ï¿½ Â¿Por quÃ© se creÃ³?</strong> DiagnÃ³stico preventivo amable sin juicios punitivos sobre el peso corporal ni estrÃ©s.</p>
               <p className="text-xs text-[#52796F]"><strong>âœ¨ Beneficios:</strong> Test metabÃ³lico inteligente, Fichas ClÃ­nicas encriptadas (Ley NÂ° 21.663) y telemedicina.</p>
             </div>
             <button onClick={() => handleOpenRoom('LAWENMOLL â€” Salud Integrativa', '/lawenmoll_logo.jpg')} className="w-full bg-[#52796F] text-white text-xs font-bold py-2.5 rounded-xl hover:bg-[#2C4A3E] transition">
-              í¾¥ Abrir Sala Telemedicina / Calendario Citas
+              ï¿½ï¿½ï¿½ Abrir Sala Telemedicina / Calendario Citas
             </button>
           </div>
 
@@ -112,11 +112,11 @@ export default function Home() {
                   <h3 className="text-base font-bold text-[#2C4A3E]">Wellness Web App</h3>
                 </div>
               </div>
-              <p className="text-xs text-[#52796F]"><strong>í²¡ Â¿Por quÃ© se creÃ³?</strong> Ejercicio adaptado sin impacto para personas con dolor articular, sobrepeso o movilidad reducida.</p>
+              <p className="text-xs text-[#52796F]"><strong>ï¿½ï¿½ï¿½ Â¿Por quÃ© se creÃ³?</strong> Ejercicio adaptado sin impacto para personas con dolor articular, sobrepeso o movilidad reducida.</p>
               <p className="text-xs text-[#52796F]"><strong>âœ¨ Beneficios:</strong> Pausas activas, videoteca, salas temÃ¡ticas (Lotus, Cielo, Bosque) y cocina demostrativa.</p>
             </div>
             <button onClick={() => handleOpenRoom('Wellness Web App', '/logo_wellness.jpg')} className="w-full bg-[#52796F] text-white text-xs font-bold py-2.5 rounded-xl hover:bg-[#2C4A3E] transition">
-              í¾¥ Abrir Sala Taller Wellness / Calendario
+              ï¿½ï¿½ï¿½ Abrir Sala Taller Wellness / Calendario
             </button>
           </div>
 
@@ -130,11 +130,11 @@ export default function Home() {
                   <h3 className="text-base font-bold text-[#2C4A3E]">SabidurÃ­a Ancestral</h3>
                 </div>
               </div>
-              <p className="text-xs text-[#52796F]"><strong>í²¡ Â¿Por quÃ© se creÃ³?</strong> Para preservar la herbolaria nativa y remedios populares en un entorno comunitario seguro.</p>
+              <p className="text-xs text-[#52796F]"><strong>ï¿½ï¿½ï¿½ Â¿Por quÃ© se creÃ³?</strong> Para preservar la herbolaria nativa y remedios populares en un entorno comunitario seguro.</p>
               <p className="text-xs text-[#52796F]"><strong>âœ¨ Beneficios:</strong> Diario Mural de Secretos de la Abuela, recetarios PDF y agente de conversaciÃ³n empÃ¡tica.</p>
             </div>
             <button onClick={() => handleOpenRoom('SabidurÃ­a Ancestral', '/LOGO_BIENESTAR.png')} className="w-full bg-[#52796F] text-white text-xs font-bold py-2.5 rounded-xl hover:bg-[#2C4A3E] transition">
-              í¾¥ Abrir Sala Herbolario / Calendario
+              ï¿½ï¿½ï¿½ Abrir Sala Herbolario / Calendario
             </button>
           </div>
 
@@ -143,12 +143,12 @@ export default function Home() {
         {/* PRÃ“XIMAMENTE / APPS EN CONSTRUCCIÃ“N */}
         <section className="bg-white border-2 border-[#C8D8CE] rounded-3xl p-6 space-y-4 shadow-xs">
           <div className="flex justify-between items-center border-b border-[#E8F0EC] pb-3">
-            <h3 className="text-base font-bold text-[#2C4A3E]">PrÃ³ximamente en ASL Ideas SpA íº€</h3>
+            <h3 className="text-base font-bold text-[#2C4A3E]">PrÃ³ximamente en ASL Ideas SpA ï¿½ï¿½ï¿½</h3>
             <span className="text-xs font-bold text-[#52796F] bg-[#E8F0EC] px-3 py-1 rounded-full">En Desarrollo</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE] space-y-1">
-              <h4 className="text-xs font-bold text-[#2C4A3E]">í»¡ï¸ Vikingos Talleres</h4>
+              <h4 className="text-xs font-bold text-[#2C4A3E]">ï¿½ï¿½ï¿½ï¸ Vikingos Talleres</h4>
               <p className="text-[11px] text-[#52796F]">FormaciÃ³n prÃ¡ctica en oficios, autonomÃ­a y adaptabilidad personal.</p>
             </div>
             <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE] space-y-1">
@@ -156,7 +156,7 @@ export default function Home() {
               <p className="text-[11px] text-[#52796F]">Red de orientaciÃ³n y contenciÃ³n estratÃ©gica para familias TEA/TDAH.</p>
             </div>
             <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE] space-y-1">
-              <h4 className="text-xs font-bold text-[#2C4A3E]">íµ¾ Patiperros Rutas</h4>
+              <h4 className="text-xs font-bold text-[#2C4A3E]">ï¿½ï¿½ï¿½ Patiperros Rutas</h4>
               <p className="text-[11px] text-[#52796F]">Senderismo adaptado y rutas sensoriales al aire libre sin barreras.</p>
             </div>
           </div>

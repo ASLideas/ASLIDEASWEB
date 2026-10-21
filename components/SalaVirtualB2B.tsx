@@ -75,16 +75,16 @@ export default function SalaVirtualB2B({ isOpen, onClose, appName = 'Casa Matriz
         {/* PestaÃ±as */}
         <div className="flex border-b border-[#C8D8CE] bg-[#E8F0EC]">
           <button onClick={() => setTab('video')} className={`flex-1 py-3 text-xs font-bold transition ${tab === 'video' ? 'bg-[#FAF8F5] text-[#2C4A3E] border-b-2 border-[#52796F]' : 'text-[#52796F]'}`}>
-            í¾¥ Videollamada
+            ï¿½ï¿½ï¿½ Videollamada
           </button>
           <button onClick={() => setTab('agendar')} className={`flex-1 py-3 text-xs font-bold transition ${tab === 'agendar' ? 'bg-[#FAF8F5] text-[#2C4A3E] border-b-2 border-[#52796F]' : 'text-[#52796F]'}`}>
-            í³… Calendario & Horarios
+            ï¿½ï¿½ï¿½ Calendario & Horarios
           </button>
           <button onClick={() => setTab('archivos')} className={`flex-1 py-3 text-xs font-bold transition ${tab === 'archivos' ? 'bg-[#FAF8F5] text-[#2C4A3E] border-b-2 border-[#52796F]' : 'text-[#52796F]'}`}>
-            í³ Subir Propuesta (PDF)
+            ï¿½ï¿½ï¿½ Subir Propuesta (PDF)
           </button>
           <button onClick={() => setTab('notas')} className={`flex-1 py-3 text-xs font-bold transition ${tab === 'notas' ? 'bg-[#FAF8F5] text-[#2C4A3E] border-b-2 border-[#52796F]' : 'text-[#52796F]'}`}>
-            í³ Notas de SesiÃ³n
+            ï¿½ï¿½ï¿½ Notas de SesiÃ³n
           </button>
         </div>
 
@@ -101,7 +101,7 @@ export default function SalaVirtualB2B({ isOpen, onClose, appName = 'Casa Matriz
               <h3 className="text-sm font-bold text-[#2C4A3E] text-center">Agendar Videollamada / DemostraciÃ³n</h3>
               {bookingSuccess ? (
                 <div className="p-4 bg-[#E8F0EC] rounded-2xl text-center text-xs font-bold text-[#52796F]">
-                  í¾‰ Â¡ReuniÃ³n agendada para el {selectedDate} a las {selectedTime} hrs!
+                  ï¿½ï¿½ï¿½ Â¡ReuniÃ³n agendada para el {selectedDate} a las {selectedTime} hrs!
                 </div>
               ) : (
                 <form onSubmit={handleAgendar} className="space-y-3">
@@ -109,7 +109,7 @@ export default function SalaVirtualB2B({ isOpen, onClose, appName = 'Casa Matriz
                   <input type="email" required value={userEmail} onChange={(e) => setUserEmail([enlace sospechoso eliminado].value)} placeholder="Correo ElectrÃ³nico *" className="w-full text-xs p-2.5 border border-[#C8D8CE] rounded-xl" />
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] font-bold mb-1">í³… Fecha</label>
+                      <label className="block text-[11px] font-bold mb-1">ï¿½ï¿½ï¿½ Fecha</label>
                       <input type="date" required value={selectedDate} onChange={(e) => setSelectedDate([enlace sospechoso eliminado].value)} className="w-full text-xs p-2.5 border border-[#C8D8CE] rounded-xl" />
                     </div>
                     <div>
@@ -145,7 +145,7 @@ export default function SalaVirtualB2B({ isOpen, onClose, appName = 'Casa Matriz
                 <button onClick={handleAgregarNota} className="bg-[#52796F] text-white text-xs font-bold px-3 py-2 rounded-xl">Guardar</button>
               </div>
               <ul className="text-xs space-y-1 text-[#2C4A3E]">
-                {[enlace sospechoso eliminado]((n, i) => <li key={i} className="p-2 bg-[#FAF8F5] rounded-lg border border-[#C8D8CE]">í³Œ {n}</li>)}
+                {[enlace sospechoso eliminado]((n, i) => <li key={i} className="p-2 bg-[#FAF8F5] rounded-lg border border-[#C8D8CE]">ï¿½ï¿½ï¿½ {n}</li>)}
               </ul>
             </div>
           )}
