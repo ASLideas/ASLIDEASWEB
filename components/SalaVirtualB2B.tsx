@@ -55,7 +55,6 @@ export default function SalaVirtualB2B({
     <div className="fixed inset-0 z-50 bg-[#2C4A3E]/60 backdrop-blur-md flex items-center justify-center p-3 md:p-6 overflow-y-auto">
       <div className="bg-[#FAF8F5] w-full max-w-4xl rounded-3xl border border-[#C8D8CE] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] my-auto">
         
-        {/* Encabezado Corporativo Verde Salvia */}
         <header className="bg-[#52796F] text-white p-5 flex justify-between items-center border-b border-[#84A59D] relative overflow-hidden">
           <div className="flex items-center gap-3.5 z-10">
             <div className="w-12 h-12 rounded-2xl bg-white p-1 border border-[#84A59D] flex items-center justify-center shadow-sm overflow-hidden">
@@ -80,7 +79,6 @@ export default function SalaVirtualB2B({
           </button>
         </header>
 
-        {/* Pestañas de la Sala Virtual */}
         <div className="flex border-b border-[#C8D8CE] bg-[#E8F0EC]">
           <button 
             onClick={() => setTab('video')} 
@@ -108,7 +106,6 @@ export default function SalaVirtualB2B({
           </button>
         </div>
 
-        {/* Contenido de cada pestaña */}
         <div className="p-6 overflow-y-auto flex-1">
           {tab === 'video' && (
             <div className="space-y-3">
