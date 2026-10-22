@@ -91,7 +91,7 @@ export default function SalaVirtualB2B({
             </div>
             <div>
               <span className="text-[10px] font-bold tracking-wider uppercase bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] px-3 py-1 rounded-full inline-block mb-1">
-                ASL Ideas SpA — Sala Virtual Unificada B2B
+                ASL Ideas SpA — Sala Virtual Unificada
               </span>
               <h2 className="text-lg md:text-xl font-bold text-white">Sala Virtual de Reuniones & Citas</h2>
               <p className="text-xs text-[#E8F0EC]">Gestión integrada de videollamadas, agendamiento y acuerdos</p>
@@ -169,8 +169,6 @@ export default function SalaVirtualB2B({
                 </div>
               ) : (
                 <form onSubmit={handleAgendar} className="space-y-4">
-                  
-                  {/* SELECCIÓN DE OFICINA */}
                   <div>
                     <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Plataforma u Oficina de Interés *</label>
                     <select
@@ -184,7 +182,6 @@ export default function SalaVirtualB2B({
                     </select>
                   </div>
 
-                  {/* MOTIVO DE CONSULTA */}
                   <div>
                     <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Motivo de la Consulta *</label>
                     <select
@@ -198,7 +195,6 @@ export default function SalaVirtualB2B({
                     </select>
                   </div>
 
-                  {/* DATOS DE CONTACTO */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Nombre Completo *</label>
@@ -224,7 +220,6 @@ export default function SalaVirtualB2B({
                     </div>
                   </div>
 
-                  {/* EMPRESA O INSTITUCIÓN */}
                   <div>
                     <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Empresa / Municipalidad / Particular</label>
                     <input 
@@ -236,7 +231,6 @@ export default function SalaVirtualB2B({
                     />
                   </div>
 
-                  {/* FECHA Y HORARIO */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Fecha Preferente *</label>
@@ -262,7 +256,6 @@ export default function SalaVirtualB2B({
                     </div>
                   </div>
 
-                  {/* BOTONES */}
                   <div className="flex items-center gap-3 pt-3 border-t border-[#E8F0EC]">
                     <button 
                       type="button"
@@ -284,7 +277,7 @@ export default function SalaVirtualB2B({
             </div>
           )}
 
-          {/* TAB 2: VIDEOLLAMADA EN VIVO CON MARCO DORADO Y DETALLES ROSADOS */}
+          {/* TAB 2: VIDEOLLAMADA EN VIVO CON MARCO DORADO Y ACCESORIOS ROSADOS */}
           {tab === 'video' && (
             <div className="space-y-4">
               <div className="bg-[#FFF0F2] p-3.5 rounded-2xl border border-[#FF8894] flex items-center justify-between text-xs text-[#D85260]">
@@ -295,7 +288,6 @@ export default function SalaVirtualB2B({
                 <span className="text-[11px] font-bold text-[#D85260] bg-white px-2.5 py-0.5 rounded-full border border-[#FF8894]">Conexión Encriptada TLS 1.3</span>
               </div>
 
-              {/* SALA VIRTUAL CON MARCO DORADO */}
               <div className="w-full h-[380px] bg-[#FAF8F5] rounded-3xl border-4 border-[#D4AF37] overflow-hidden shadow-md flex flex-col items-center justify-center p-8 text-center space-y-3 relative">
                 <div className="px-4 py-1.5 rounded-full bg-[#FFF0F2] border border-[#FF8894] text-[#D85260] font-bold text-xs">
                   SALA EN VIVO
@@ -322,7 +314,7 @@ export default function SalaVirtualB2B({
               <input 
                 type="file" 
                 accept=".pdf,.doc,.docx,.png,.jpg" 
-                onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)} 
+                onChange={(e) => setFile(e.target.files && e.target.files[0] ? e.target.files[0] : null)} 
                 className="block w-full text-xs text-gray-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#E8F0EC] file:text-[#2D6A4F] hover:file:bg-[#52796F] hover:file:text-white transition" 
               />
               <button 
