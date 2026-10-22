@@ -51,7 +51,7 @@ export default function SalaVirtualB2B({
     'LAWENMOLL (Salud Integrativa y Fichas Clinicas)',
     'Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)',
     'Wellness Web App (Movimiento Adaptado y Pausas Activas)',
-    'Sabiduria Ancestral (Comunidad y Herbolaria Nativa)'
+    'Bienestar App (Comunidad y Herbolaria Nativa)'
   ];
 
   const motivos: string[] = [
@@ -66,7 +66,7 @@ export default function SalaVirtualB2B({
   const horariosDisponibles: string[] = ['09:00 AM', '10:30 AM', '12:00 PM', '03:00 PM', '04:30 PM', '06:00 PM'];
 
   const handleAgendar = (e: FormEvent<HTMLFormElement>) => {
-    e['preventDefault']();
+    e.preventDefault();
     if (!selectedDate || !userName || !userEmail) return;
     setUploading(true);
     setTimeout(() => {
@@ -76,15 +76,15 @@ export default function SalaVirtualB2B({
   };
 
   const handleAgregarNota = () => {
-    const notaLimpia = nuevaNota['trim']();
+    const notaLimpia = nuevaNota.trim();
     if (!notaLimpia) return;
     setNotas((prev) => [...prev, notaLimpia]);
     setNuevaNota('');
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const fileList = e['target']['files'];
-    if (fileList && fileList['length'] > 0) {
+    const fileList = e.target.files;
+    if (fileList && fileList.length > 0) {
       setFile(fileList[0]);
     } else {
       setFile(null);
@@ -92,64 +92,52 @@ export default function SalaVirtualB2B({
   };
 
   const handleAppChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedApp(e['target']['value']);
+    setSelectedApp(e.target.value);
   };
 
   const handleMotivoChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setMotivoConsulta(e['target']['value']);
+    setMotivoConsulta(e.target.value);
   };
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserName(e['target']['value']);
+    setUserName(e.target.value);
   };
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserEmail(e['target']['value']);
+    setUserEmail(e.target.value);
   };
 
   const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserPhone(e['target']['value']);
+    setUserPhone(e.target.value);
   };
 
   const handleOrgChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserOrg(e['target']['value']);
+    setUserOrg(e.target.value);
   };
 
   const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSelectedDate(e['target']['value']);
+    setSelectedDate(e.target.value);
   };
 
   const handleTimeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedTime(e['target']['value']);
+    setSelectedTime(e.target.value);
   };
 
   const handleNotaChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNuevaNota(e['target']['value']);
+    setNuevaNota(e.target.value);
   };
 
   const openWhatsAppAlert = () => {
-    const protocol = 'https';
-    const host = 'api';
-    const domain = 'whatsapp';
-    const tld = 'com';
-    const fullDomain = host + '.' + domain + '.' + tld;
     const msg = encodeURIComponent(
       'Hola ASL Ideas SpA, confirmo cita: ' + userName + ' - ' + selectedApp + ' - ' + selectedDate + ' ' + selectedTime
     );
-    const targetUrl = protocol + '://' + fullDomain + '/send?text=' + msg;
-    window['open'](targetUrl, '_blank');
+    window.open('[suspicious link removed]' + msg, '_blank');
   };
 
   const openGoogleCalEvent = () => {
-    const protocol = 'https';
-    const host = 'calendar';
-    const domain = 'google';
-    const tld = 'com';
-    const fullDomain = host + '.' + domain + '.' + tld;
     const title = encodeURIComponent('Cita B2B - ' + selectedApp);
     const details = encodeURIComponent('Atencion Virtual ASL Ideas SpA - ' + userName);
-    const targetUrl = protocol + '://' + fullDomain + '/calendar/render?action=TEMPLATE&text=' + title + '&details=' + details;
-    window['open'](targetUrl, '_blank');
+    window.open('[suspicious link removed]' + title + '&details=' + details, '_blank');
   };
 
   const downloadIcsFile = () => {
@@ -163,16 +151,16 @@ export default function SalaVirtualB2B({
       'LOCATION:Sala Virtual ASL Ideas SpA',
       'END:VEVENT',
       'END:VCALENDAR'
-    ]['join']('\n');
+    ].join('\n');
 
     const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8;' });
-    const downloadUrl = URL['createObjectURL'](blob);
-    const anchor = document['createElement']('a');
-    anchor['href'] = downloadUrl;
-    anchor['setAttribute']('download', 'Cita_ASL_Ideas.ics');
-    document['body']['appendChild'](anchor);
-    anchor['click']();
-    document['body']['removeChild'](anchor);
+    const downloadUrl = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = downloadUrl;
+    anchor.setAttribute('download', 'Cita_ASL_Ideas.ics');
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
   };
 
   return (
@@ -203,7 +191,7 @@ export default function SalaVirtualB2B({
           </button>
         </header>
 
-        {/* PESTANAS (SIN EMOJIS) */}
+        {/* PESTANAS */}
         <div className="flex border-b border-[#C8D8CE] bg-[#E8F0EC]">
           <button 
             type="button"
@@ -238,7 +226,7 @@ export default function SalaVirtualB2B({
         {/* CONTENIDO INTERACTIVO */}
         <div className="p-6 overflow-y-auto flex-1">
           
-          {/* TAB 1: FORMULARIO Y SINCRONIZACION */}
+          {/* TAB 1: FORMULARIO */}
           {tab === 'agendar' && (
             <div className="max-w-2xl mx-auto space-y-5 bg-white p-6 md:p-8 rounded-3xl border border-[#C8D8CE] shadow-xs">
               <div className="text-center space-y-1 border-b border-[#E8F0EC] pb-4">
@@ -297,7 +285,7 @@ export default function SalaVirtualB2B({
                       onChange={handleAppChange}
                       className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] focus:outline-none focus:border-[#D4AF37] font-bold text-[#2D6A4F]"
                     >
-                      {plataformas['map']((item) => (
+                      {plataformas.map((item) => (
                         <option key={item} value={item}>{item}</option>
                       ))}
                     </select>
@@ -310,7 +298,7 @@ export default function SalaVirtualB2B({
                       onChange={handleMotivoChange}
                       className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] focus:outline-none focus:border-[#D4AF37] text-gray-800"
                     >
-                      {motivos['map']((item) => (
+                      {motivos.map((item) => (
                         <option key={item} value={item}>{item}</option>
                       ))}
                     </select>
@@ -382,7 +370,7 @@ export default function SalaVirtualB2B({
                         onChange={handleTimeChange}
                         className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] focus:outline-none focus:border-[#52796F] font-bold text-[#2D6A4F]"
                       >
-                        {horariosDisponibles['map']((item) => (
+                        {horariosDisponibles.map((item) => (
                           <option key={item} value={item}>{item}</option>
                         ))}
                       </select>
@@ -536,7 +524,7 @@ export default function SalaVirtualB2B({
                 </button>
               </div>
               <ul className="text-xs space-y-2 pt-2">
-                {notas['map']((item, index) => (
+                {notas.map((item, index) => (
                   <li key={index} className="p-3 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[#2D6A4F] flex items-center justify-between">
                     <span>{item}</span>
                     <span className="text-[10px] text-[#D85260] bg-[#FFF0F2] px-2 py-0.5 rounded font-bold border border-[#FF8894]">Nota #{index + 1}</span>
