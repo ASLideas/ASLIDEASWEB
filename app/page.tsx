@@ -11,7 +11,7 @@ export default function HomePage() {
   const [adminPass, setAdminPass] = useState<string>('');
   const [adminError, setAdminError] = useState<boolean>(false);
 
-  // Datos detallados de las 4 Oficinas Virtuales
+  // Información estructurada de los 4 Portales Interactivos
   const portalesData: Record<string, {
     id: string;
     nombre: string;
@@ -136,7 +136,7 @@ export default function HomePage() {
               Agendar Cita B2B
             </button>
 
-            {/* BOTON DE ACCESO ADMINISTRADOR (O SALA VIRTUAL TELEMEDICINA SI ES ADMIN) */}
+            {/* BOTON DE ACCESO ADMINISTRADOR */}
             {isAdminMode ? (
               <div className="flex items-center gap-2">
                 <button
@@ -173,7 +173,7 @@ export default function HomePage() {
           <div className="bg-white p-6 rounded-3xl border-2 border-[#D4AF37] max-w-sm w-full space-y-4 shadow-xl">
             <h3 className="text-base font-bold text-[#2D6A4F] text-center">Acceso Privado Administrador</h3>
             <p className="text-xs text-[#52796F] text-center">
-              Ingresa la clave de administración para acceder a la Sala Virtual Telemedicina y funciones avanzadas.
+              Ingresa la clave de administración para acceder a la Sala Virtual Telemedicina.
             </p>
             <form onSubmit={handleAdminLogin} className="space-y-3">
               <input
@@ -209,7 +209,7 @@ export default function HomePage() {
       {/* CONTENIDO PRINCIPAL */}
       <main className="max-w-6xl mx-auto p-4 md:p-8 space-y-8 flex-1 w-full">
         
-        {/* BANNER INSTITUCIONAL CON REDACCION EXACTA */}
+        {/* BANNER INSTITUCIONAL CON TEXTO EXACTO */}
         <section className="bg-white p-6 md:p-8 rounded-3xl border-2 border-[#C8D8CE] shadow-sm text-center space-y-3">
           <div className="flex justify-center gap-2 flex-wrap">
             <span className="text-[11px] font-bold uppercase tracking-wider bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] px-3 py-1 rounded-full">
@@ -241,49 +241,26 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs leading-relaxed text-[#52796F]">
-            
             <div className="space-y-3 bg-[#FAF8F5] p-5 rounded-2xl border border-[#C8D8CE]">
               <h4 className="font-bold text-[#2D6A4F] text-sm">Historia Fundacional y Perspectiva Única</h4>
               <p>
                 ASL Ideas SpA nace de una vivencia real: fue fundada por una Diseñadora Gráfica de 47 años con neurodivergencia —Condición del Espectro Autista (TEA Grado 1) y Trastorno por Déficit de Atención e Hiperactividad (TDAH)—, quien vive cotidianamente con enfermedades crónicas no transmisibles y sobrepeso.
               </p>
               <p>
-                Esta perspectiva aporta un conocimiento empírico de las fricciones, el estrés urbano y la sobrecarga sensorial que generan las aplicaciones médicas convencionales y el sistema de salud tradicional.
+                Esta perspectiva aporta un conocimiento empírico de las fricciones, el estrés urbano y la sobrecarga sensorial que generan las aplicaciones médicas convencionales.
               </p>
             </div>
 
             <div className="space-y-3 bg-[#FAF8F5] p-5 rounded-2xl border border-[#C8D8CE]">
               <h4 className="font-bold text-[#2D6A4F] text-sm">El Propósito Central y Principios UI/UX</h4>
               <p>
-                El propósito fundamental es demostrar que existen múltiples posibilidades integrativas para abordar afecciones crónicas y elevar la calidad de vida mediante interfaces amables, intuitivas y sostenibles.
+                Demostrar que existen múltiples posibilidades integrativas para abordar afecciones crónicas y elevar la calidad de vida mediante interfaces amables e intuitivas.
               </p>
               <ul className="space-y-1.5 list-disc list-inside text-[11px]">
-                <li><strong>Reducción de Sobrecarga Sensorial:</strong> Paletas suaves (#FAF8F5, #52796F y #84A59D) sin contrastes agresivos.</li>
-                <li><strong>Claridad Cognitiva (TDAH/TEA):</strong> Navegación lineal, microinteracciones previsibles y tipografía clara.</li>
-                <li><strong>Empatía y Dignidad:</strong> Lenguaje libre de juicios punitivos sobre el peso o la salud corporal.</li>
+                <li><strong>Reducción de Sobrecarga Sensorial:</strong> Paletas suaves (#FAF8F5, #52796F y #84A59D).</li>
+                <li><strong>Claridad Cognitiva (TDAH/TEA):</strong> Navegación lineal y microinteracciones previsibles.</li>
+                <li><strong>Empatía y Dignidad:</strong> Lenguaje libre de juicios punitivos.</li>
               </ul>
-            </div>
-
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs pt-2">
-            <div className="p-4 bg-[#E8F0EC] rounded-2xl border border-[#C8D8CE]">
-              <span className="font-bold text-[#2D6A4F] block mb-1">Prevalencia Médica</span>
-              <p className="text-gray-700 text-[11px]">
-                El 74% de la población adulta vive con sobrepeso/obesidad y más del 68% padece al menos una condición crónica de salud.
-              </p>
-            </div>
-            <div className="p-4 bg-[#E8F0EC] rounded-2xl border border-[#C8D8CE]">
-              <span className="font-bold text-[#2D6A4F] block mb-1">Adherencia sin Estrés</span>
-              <p className="text-gray-700 text-[11px]">
-                Resolvemos la deserción del 55% en apps tradicionales eliminando la sobrecarga de información y pautas rígidas.
-              </p>
-            </div>
-            <div className="p-4 bg-[#FFF0F2] rounded-2xl border border-[#FF8894]">
-              <span className="font-bold text-[#D85260] block mb-1">Inclusión Neurodivergente</span>
-              <p className="text-gray-700 text-[11px]">
-                Pioneros en incorporar la accesibilidad cognitiva para TEA y TDAH como valor intrínseco de arquitectura de software.
-              </p>
             </div>
           </div>
         </section>
@@ -295,7 +272,7 @@ export default function HomePage() {
               Ecosistema de Portales Interactivos
             </span>
             <h3 className="text-lg font-bold text-[#2D6A4F]">Acceso a las 4 Oficinas Virtuales</h3>
-            <p className="text-xs text-[#52796F]">Haz clic en cualquiera de las oficinas para conocer sus detalles, servicios y acceder a su portal.</p>
+            <p className="text-xs text-[#52796F]">Haz clic en cualquiera de las oficinas para ingresar a su portal descriptivo.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -413,7 +390,7 @@ export default function HomePage() {
         </p>
       </footer>
 
-      {/* COMPONENTE MODAL INTERACTIVO DE PORTAL + AGENDA INTERNA */}
+      {/* MODAL DEL PORTAL INTERACTIVO */}
       <SalaVirtualB2B
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
