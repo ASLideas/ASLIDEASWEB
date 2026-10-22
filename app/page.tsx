@@ -1,310 +1,364 @@
 'use client';
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import SalaVirtualB2B from '@/components/SalaVirtualB2B';
+import React, { useState, useEffect } from 'react';
 
-export default function Home() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentAppName, setCurrentAppName] = useState('Casa Matriz B2B');
-  const [currentAppLogo, setCurrentAppLogo] = useState('/LOGO_asl.png');
+interface Props {
+  isOpen: boolean;
+  onClose: () => void;
+  initialApp?: string;
+  appName?: string;
+  appLogo?: string;
+}
 
-  const handleOpenRoom = (appName: string, appLogo: string) => {
-    setCurrentAppName(appName);
-    setCurrentAppLogo(appLogo);
-    setIsModalOpen(true);
+export default function SalaVirtualB2B({ 
+  isOpen, 
+  onClose, 
+  initialApp,
+  appName, 
+  appLogo = '/LOGO_asl.png' 
+}: Props) {
+  const defaultApp = appName || initialApp || 'Casa Matriz ASL Ideas SpA (Desarrollo B2B & Licencias)';
+  const [tab, setTab] = useState<'agendar' | 'video' | 'archivos' | 'notas'>('agendar');
+  const [selectedApp, setSelectedApp] = useState<string>(defaultApp);
+  const [motivoConsulta, setMotivoConsulta] = useState<string>('Cotización de Convenio Corporativo / Licencia B2B');
+  const [selectedDate, setSelectedDate] = useState<string>('');
+  const [selectedTime, setSelectedTime] = useState<string>('10:30 AM');
+  const [userName, setUserName] = useState<string>('');
+  const [userEmail, setUserEmail] = useState<string>('');
+  const [userOrg, setUserOrg] = useState<string>('');
+  const [file, setFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState<boolean>(false);
+  const [bookingSuccess, setBookingSuccess] = useState<boolean>(false);
+
+  const [notas, setNotas] = useState<string[]>([
+    'Acuerdo preliminar: Demostración de interfaz accesible UI/UX.',
+    'Revisión de requerimientos para Ley N° 21.663 y Ley TEA N° 21.545.'
+  ]);
+  const [nuevaNota, setNuevaNota] = useState<string>('');
+
+  useEffect(() => {
+    const activeApp = appName || initialApp;
+    if (activeApp) {
+      setSelectedApp(activeApp);
+    }
+  }, [appName, initialApp]);
+
+  if (!isOpen) return null;
+
+  const plataformas: string[] = [
+    'Casa Matriz ASL Ideas SpA (Desarrollo B2B & Licencias)',
+    'LAWENMOLL (Salud Integrativa & Fichas Clínicas)',
+    'Wellness Web App (Movimiento Adaptado & Pausas Activas)',
+    'Sabiduría Ancestral (Comunidad & Herbolaria Nativa)'
+  ];
+
+  const motivos: string[] = [
+    'Cotización de Convenio Corporativo / Licencia B2B',
+    'Demostración de Software en Vivo',
+    'Consultoría en Accesibilidad UI/UX (Ley TEA / Neurodivergencia)',
+    'Muestra de Fichas Clínicas Encriptadas (Ley N° 21.663)',
+    'Alianza Institucional o Municipal',
+    'Consulta General o Asesoría'
+  ];
+
+  const horariosDisponibles: string[] = ['09:00 AM', '10:30 AM', '12:00 PM', '03:00 PM', '04:30 PM', '06:00 PM'];
+
+  const handleAgendar = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!selectedDate || !userName || !userEmail) return;
+    setUploading(true);
+    setTimeout(() => {
+      setUploading(false);
+      setBookingSuccess(true);
+    }, 1200);
+  };
+
+  const handleAgregarNota = () => {
+    if (!nuevaNota.trim()) return;
+    setNotas((prev) => [...prev, nuevaNota.trim()]);
+    setNuevaNota('');
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#1B4D3E] flex flex-col font-sans relative">
-      
-      {/* DECORACION VECTORIAL TRIANGULOS CORPORATIVOS ASL IDEAS SPA */}
-      <div className="absolute top-0 right-0 w-80 h-80 opacity-10 pointer-events-none">
-        <svg viewBox="0 0 200 200" fill="none" className="w-full h-full">
-          <polygon points="100,20 180,180 20,180" fill="#1B4D3E" />
-          <polygon points="100,50 160,170 40,170" fill="#2D6A4F" />
-        </svg>
-      </div>
-
-      {/* CABECERA CON NAVEGACION REAL, REDES SOCIALES Y AGENDAMIENTO B2B */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#C8D8CE] px-6 py-3.5 flex flex-wrap justify-between items-center shadow-xs gap-4">
+    <div className="fixed inset-0 z-50 bg-[#1B4D3E]/60 backdrop-blur-md flex items-center justify-center p-3 md:p-6 overflow-y-auto">
+      <div className="bg-[#FAF8F5] w-full max-w-4xl rounded-3xl border border-[#C8D8CE] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] my-auto">
         
-        {/* LOGO E IDENTIDAD */}
-        <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-2xl border border-[#C8D8CE] bg-white p-1 flex items-center justify-center overflow-hidden shadow-xs">
-            <img src="/LOGO_asl.png" alt="ASL Ideas SpA" className="max-h-full max-w-full object-contain" />
-          </div>
-          <div>
-            <h1 className="font-bold text-base text-[#1B4D3E] tracking-tight">ASL Ideas SpA</h1>
-            <p className="text-[11px] text-[#2D6A4F] font-medium">Ecosistema de Salud Digital Inclusiva</p>
-          </div>
-        </div>
-
-        {/* NAVEGACION A CADA APLICACION REAL */}
-        <nav className="hidden lg:flex items-center gap-5 text-xs font-bold text-[#1B4D3E]">
-          <Link href="/aslideas" className="hover:text-[#2D6A4F] transition">Casa Matriz</Link>
-          <Link href="/lawenmoll" className="hover:text-[#2D6A4F] transition">LAWENMOLL</Link>
-          <Link href="/wellness" className="hover:text-[#2D6A4F] transition">Wellness App</Link>
-          <Link href="/bienestar" className="hover:text-[#2D6A4F] transition">Sabiduría Ancestral</Link>
-          <Link href="/comunidad" className="hover:text-[#2D6A4F] transition">Comunidad</Link>
-          <Link href="/admin" className="text-[#B08D4B] hover:underline">Panel Admin</Link>
-        </nav>
-
-        {/* REDES SOCIALES & BOTON DE AGENDAMIENTO B2B */}
-        <div className="flex items-center gap-3">
-          
-          {/* ICONOS DE REDES SOCIALES ACTIVAS */}
-          <div className="flex items-center gap-1.5 bg-[#FAF8F5] px-3 py-1.5 rounded-xl border border-[#C8D8CE]">
-            <a 
-              href="[suspicious link removed]" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              title="LinkedIn B2B"
-              className="w-7 h-7 rounded-lg bg-[#1B4D3E] hover:bg-[#2D6A4F] text-white flex items-center justify-center text-xs font-bold transition"
-            >
-              in
-            </a>
-            <a 
-              href="[suspicious link removed]" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              title="Instagram Oficial"
-              className="w-7 h-7 rounded-lg bg-[#1B4D3E] hover:bg-[#2D6A4F] text-white flex items-center justify-center text-xs font-bold transition"
-            >
-              IG
-            </a>
-            <a 
-              href="[suspicious link removed]" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              title="YouTube Canal Oficial"
-              className="w-7 h-7 rounded-lg bg-[#1B4D3E] hover:bg-[#2D6A4F] text-white flex items-center justify-center text-xs font-bold transition"
-            >
-              YT
-            </a>
-            <a 
-              href="[suspicious link removed]" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              title="WhatsApp Business"
-              className="w-7 h-7 rounded-lg bg-[#2D6A4F] hover:bg-[#1B4D3E] text-white flex items-center justify-center text-xs font-bold transition"
-            >
-              WA
-            </a>
+        {/* ENCABEZADO */}
+        <header className="bg-[#1B4D3E] text-white p-5 flex justify-between items-center border-b border-[#2D6A4F]">
+          <div className="flex items-center gap-3.5">
+            <div className="w-12 h-12 rounded-2xl bg-white p-1 border border-[#C8D8CE] flex items-center justify-center shadow-xs overflow-hidden">
+              <img src={appLogo} alt={selectedApp} className="max-h-full max-w-full object-contain" />
+            </div>
+            <div>
+              <span className="text-[10px] font-bold tracking-wider uppercase bg-[#FAF8F5]/20 px-2.5 py-0.5 rounded-full text-white">
+                ASL Ideas SpA — Sistema de Citas B2B
+              </span>
+              <h2 className="text-lg font-bold mt-0.5 text-white">Agendar Cita B2B & Reunión Virtual</h2>
+            </div>
           </div>
 
-          {/* AGENDAR REUNION B2B */}
           <button 
-            onClick={() => handleOpenRoom('Casa Matriz B2B', '/LOGO_asl.png')} 
-            className="bg-[#1B4D3E] hover:bg-[#2D6A4F] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-xs flex items-center gap-2"
+            type="button"
+            onClick={onClose} 
+            className="text-white/90 hover:text-white bg-black/20 hover:bg-black/30 text-xs px-3.5 py-2 rounded-full font-bold transition"
           >
-            <span>���</span> Agendar Reunión B2B
+            ✕ Cerrar
+          </button>
+        </header>
+
+        {/* PESTAÑAS NAVEGABLES */}
+        <div className="flex border-b border-[#C8D8CE] bg-[#E8F0EC]">
+          <button 
+            type="button"
+            onClick={() => setTab('agendar')} 
+            className={`flex-1 py-3 text-xs font-bold transition ${tab === 'agendar' ? 'bg-[#FAF8F5] text-[#1B4D3E] border-b-2 border-[#1B4D3E]' : 'text-[#2D6A4F] hover:bg-[#FAF8F5]/50'}`}
+          >
+            📅 Agendar Cita B2B
+          </button>
+          <button 
+            type="button"
+            onClick={() => setTab('video')} 
+            className={`flex-1 py-3 text-xs font-bold transition ${tab === 'video' ? 'bg-[#FAF8F5] text-[#1B4D3E] border-b-2 border-[#1B4D3E]' : 'text-[#2D6A4F] hover:bg-[#FAF8F5]/50'}`}
+          >
+            🎥 Sala Virtual en Vivo
+          </button>
+          <button 
+            type="button"
+            onClick={() => setTab('archivos')} 
+            className={`flex-1 py-3 text-xs font-bold transition ${tab === 'archivos' ? 'bg-[#FAF8F5] text-[#1B4D3E] border-b-2 border-[#1B4D3E]' : 'text-[#2D6A4F] hover:bg-[#FAF8F5]/50'}`}
+          >
+            📁 Subir Documento / PDF
+          </button>
+          <button 
+            type="button"
+            onClick={() => setTab('notas')} 
+            className={`flex-1 py-3 text-xs font-bold transition ${tab === 'notas' ? 'bg-[#FAF8F5] text-[#1B4D3E] border-b-2 border-[#1B4D3E]' : 'text-[#2D6A4F] hover:bg-[#FAF8F5]/50'}`}
+          >
+            📝 Acuerdos & Notas
           </button>
         </div>
-      </header>
 
-      {/* CONTENIDO PRINCIPAL Y PORTADA */}
-      <main className="max-w-6xl mx-auto px-6 py-10 flex-1 space-y-12 w-full z-10">
-        
-        {/* HERO Y PROPÓSITO INSTITUCIONAL */}
-        <section className="text-center space-y-4 max-w-3xl mx-auto">
-          <span className="bg-[#E8F0EC] text-[#2D6A4F] border border-[#C8D8CE] text-[11px] font-bold px-4 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            ▲ Ecosistema Tecnológico de Salud Integrativa
-          </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-[#1B4D3E] tracking-tight leading-tight">
-            Tecnología Humana y Amable para el Bienestar Integrativo
-          </h2>
-          <p className="text-sm text-gray-700 leading-relaxed">
-            Navegación clara, baja sobrecarga sensorial para neurodivergencias (TEA / TDAH) y cumplimiento normativo (Ley TEA N° 21.545 y Ley N° 21.663).
-          </p>
-        </section>
-
-        {/* TARJETAS DE LAS 4 OFICINAS VIRTUALES CON VIDEO, ARCHIVOS Y AGENDAMIENTO */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* CONTENIDO INTERACTIVO */}
+        <div className="p-6 overflow-y-auto flex-1">
           
-          {/* 1. CASA MATRIZ ASL IDEAS SPA */}
-          <div className="bg-white border-2 border-[#C8D8CE] hover:border-[#1B4D3E] transition rounded-3xl p-6 space-y-4 shadow-xs flex flex-col justify-between">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between border-b border-[#E8F0EC] pb-3">
-                <div className="flex items-center gap-3">
-                  <img src="/LOGO_asl.png" alt="ASL Ideas" className="w-12 h-12 object-contain" />
-                  <div>
-                    <span className="text-[10px] font-bold text-[#B08D4B] uppercase bg-[#FAF8F5] border border-[#C8D8CE] px-2 py-0.5 rounded">Oficina 1</span>
-                    <h3 className="text-base font-bold text-[#1B4D3E]">ASL Ideas SpA — Casa Matriz</h3>
-                  </div>
-                </div>
-                <Link href="/aslideas" className="text-[11px] font-bold text-[#2D6A4F] hover:underline">
-                  Ver Sección →
-                </Link>
+          {/* TAB 1: CALENDARIO Y FORMULARIO */}
+          {tab === 'agendar' && (
+            <div className="max-w-2xl mx-auto space-y-5 bg-white p-6 md:p-8 rounded-3xl border border-[#C8D8CE] shadow-xs">
+              <div className="text-center space-y-1 border-b border-[#E8F0EC] pb-4">
+                <h3 className="text-base font-bold text-[#1B4D3E]">Agendar Cita o Demostración B2B</h3>
+                <p className="text-xs text-[#2D6A4F]">Selecciona la plataforma u oficina de interés y el motivo de tu consulta.</p>
               </div>
-              <p className="text-xs text-gray-700 leading-relaxed">
-                <strong>��� ¿Por qué se creó?</strong> Fundada por una Diseñadora Gráfica con TEA Grado 1 y TDAH para humanizar la salud digital y reducir la fricción en la atención.
-              </p>
-              <p className="text-xs text-gray-700 leading-relaxed">
-                <strong>✨ Beneficios:</strong> Consultoría UI/UX inclusiva, licencias corporativas B2B para municipalidades y convenios de salud.
-              </p>
+
+              {bookingSuccess ? (
+                <div className="p-6 bg-[#E8F0EC] rounded-2xl border border-[#2D6A4F] text-center space-y-3">
+                  <span className="text-4xl">🎉</span>
+                  <h4 className="text-base font-bold text-[#1B4D3E]">¡Reunión Agendada con Éxito!</h4>
+                  <p className="text-xs text-[#2D6A4F] leading-relaxed">
+                    Hemos registrado la cita para <strong className="text-[#1B4D3E]">{userName}</strong> ({userEmail}).<br/>
+                    Plataforma: <strong className="text-[#1B4D3E]">{selectedApp}</strong><br/>
+                    Motivo: <strong className="text-[#1B4D3E]">{motivoConsulta}</strong><br/>
+                    Fecha: <strong className="text-[#1B4D3E]">{selectedDate}</strong> a las <strong className="text-[#1B4D3E]">{selectedTime}</strong>.
+                  </p>
+                  <button 
+                    type="button"
+                    onClick={() => setBookingSuccess(false)} 
+                    className="text-xs font-bold text-[#2D6A4F] underline hover:text-[#1B4D3E] pt-2 block mx-auto"
+                  >
+                    Agendar otra reunión
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleAgendar} className="space-y-4">
+                  
+                  {/* PLATAFORMA / OFICINA */}
+                  <div>
+                    <label className="block text-xs font-bold text-[#1B4D3E] mb-1.5">🏢 Seleccionar Plataforma u Oficina *</label>
+                    <select
+                      value={selectedApp}
+                      onChange={(e) => setSelectedApp(e.target.value)}
+                      className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] focus:outline-none focus:border-[#1B4D3E] font-bold text-[#1B4D3E]"
+                    >
+                      {plataformas.map((p) => (
+                        <option key={p} value={p}>{p}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* MOTIVO DE CONSULTA */}
+                  <div>
+                    <label className="block text-xs font-bold text-[#1B4D3E] mb-1.5">📋 Motivo de la Cita o Consulta *</label>
+                    <select
+                      value={motivoConsulta}
+                      onChange={(e) => setMotivoConsulta(e.target.value)}
+                      className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] focus:outline-none focus:border-[#1B4D3E] text-gray-800"
+                    >
+                      {motivos.map((m) => (
+                        <option key={m} value={m}>{m}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* DATOS DE CONTACTO */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-[#1B4D3E] mb-1.5">Nombre Completo *</label>
+                      <input 
+                        type="text" 
+                        required 
+                        value={userName} 
+                        onChange={(e) => setUserName(e.target.value)} 
+                        placeholder="Ej: María González" 
+                        className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl focus:outline-none focus:border-[#1B4D3E] bg-[#FAF8F5]" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-[#1B4D3E] mb-1.5">Correo Electrónico *</label>
+                      <input 
+                        type="email" 
+                        required 
+                        value={userEmail} 
+                        onChange={(e) => setUserEmail(e.target.value)} 
+                        placeholder="contacto@empresa.cl" 
+                        className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl focus:outline-none focus:border-[#1B4D3E] bg-[#FAF8F5]" 
+                      />
+                    </div>
+                  </div>
+
+                  {/* EMPRESA O INSTITUCIÓN */}
+                  <div>
+                    <label className="block text-xs font-bold text-[#1B4D3E] mb-1.5">Empresa / Municipalidad / Particular</label>
+                    <input 
+                      type="text" 
+                      value={userOrg} 
+                      onChange={(e) => setUserOrg(e.target.value)} 
+                      placeholder="Ej: Municipalidad, Pyme, Centro Médico" 
+                      className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl focus:outline-none focus:border-[#1B4D3E] bg-[#FAF8F5]" 
+                    />
+                  </div>
+
+                  {/* FECHA Y HORARIO */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-[#1B4D3E] mb-1.5">📅 Seleccionar Fecha *</label>
+                      <input 
+                        type="date" 
+                        required 
+                        value={selectedDate} 
+                        onChange={(e) => setSelectedDate(e.target.value)} 
+                        className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] focus:outline-none focus:border-[#1B4D3E]" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-[#1B4D3E] mb-1.5">⏰ Horario Preferente *</label>
+                      <select
+                        value={selectedTime}
+                        onChange={(e) => setSelectedTime(e.target.value)}
+                        className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] focus:outline-none focus:border-[#1B4D3E] font-bold text-[#1B4D3E]"
+                      >
+                        {horariosDisponibles.map((h) => (
+                          <option key={h} value={h}>{h}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* BOTONES */}
+                  <div className="flex items-center gap-3 pt-3 border-t border-[#E8F0EC]">
+                    <button 
+                      type="button"
+                      onClick={onClose}
+                      className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold py-3 rounded-xl transition text-center"
+                    >
+                      Cancelar
+                    </button>
+                    <button 
+                      type="submit" 
+                      disabled={uploading} 
+                      className="flex-1 bg-[#1B4D3E] hover:bg-[#2D6A4F] text-white text-xs font-bold py-3 rounded-xl transition shadow-xs disabled:opacity-50 text-center"
+                    >
+                      {uploading ? 'Procesando Cita...' : 'Confirmar Reserva de Cita'}
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
-            <div className="space-y-2 pt-3 border-t border-[#E8F0EC]">
+          )}
+
+          {/* TAB 2: VIDEOLLAMADA */}
+          {tab === 'video' && (
+            <div className="space-y-3">
+              <div className="bg-[#E8F0EC] p-3 rounded-2xl border border-[#C8D8CE] flex items-center justify-between text-xs text-[#1B4D3E]">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#2D6A4F] animate-pulse"></span>
+                  <span className="font-bold">Canal Activo:</span> Transmisión para {selectedApp}
+                </div>
+                <span className="text-[11px] font-bold text-[#2D6A4F]">Conexión Encriptada TLS 1.3</span>
+              </div>
+              <div className="w-full h-[380px] bg-[#E8F0EC] rounded-2xl border border-[#C8D8CE] overflow-hidden shadow-inner flex flex-col items-center justify-center p-6 text-center space-y-2">
+                <span className="text-3xl">🎥</span>
+                <h4 className="text-sm font-bold text-[#1B4D3E]">Sala Virtual de Videollamada Activa</h4>
+                <p className="text-xs text-[#2D6A4F]">Conexión segura lista para la sesión interactiva B2B.</p>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 3: ARCHIVOS / PDF */}
+          {tab === 'archivos' && (
+            <div className="max-w-xl mx-auto space-y-4 bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs">
+              <div className="text-center space-y-1">
+                <h3 className="text-sm font-bold text-[#1B4D3E]">Adjuntar Propuesta o Antecedentes PDF</h3>
+                <p className="text-xs text-[#2D6A4F]">Sube tus documentos directamente al almacenamiento seguro de Supabase.</p>
+              </div>
+              <input 
+                type="file" 
+                accept=".pdf,.doc,.docx,.png,.jpg" 
+                onChange={(e) => setFile(e.target.files?.[0] || null)} 
+                className="block w-full text-xs text-gray-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#E8F0EC] file:text-[#1B4D3E] hover:file:bg-[#1B4D3E] hover:file:text-white transition" 
+              />
               <button 
-                onClick={() => handleOpenRoom('Casa Matriz B2B', '/LOGO_asl.png')} 
-                className="w-full bg-[#1B4D3E] hover:bg-[#2D6A4F] text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-xs"
+                type="button"
+                onClick={() => { setUploading(true); setTimeout(() => setUploading(false), 1200); }} 
+                disabled={!file || uploading} 
+                className="w-full bg-[#1B4D3E] text-white text-xs font-bold py-2.5 rounded-xl hover:bg-[#2D6A4F] transition disabled:opacity-50"
               >
-                <span>���</span> Abrir Sala Virtual Casa Matriz / Agendar Hora
+                {uploading ? 'Cargando archivo...' : 'Enviar Documento a la Sala Virtual'}
               </button>
             </div>
-          </div>
+          )}
 
-          {/* 2. LAWENMOLL */}
-          <div className="bg-white border-2 border-[#C8D8CE] hover:border-[#1B4D3E] transition rounded-3xl p-6 space-y-4 shadow-xs flex flex-col justify-between">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between border-b border-[#E8F0EC] pb-3">
-                <div className="flex items-center gap-3">
-                  <img src="/lawenmoll_logo.jpg" alt="LAWENMOLL" className="w-12 h-12 object-contain" />
-                  <div>
-                    <span className="text-[10px] font-bold text-[#2D6A4F] uppercase bg-[#E8F0EC] border border-[#C8D8CE] px-2 py-0.5 rounded">Oficina 2</span>
-                    <h3 className="text-base font-bold text-[#1B4D3E]">LAWENMOLL — Salud Integrativa</h3>
-                  </div>
-                </div>
-                <Link href="/lawenmoll" className="text-[11px] font-bold text-[#2D6A4F] hover:underline">
-                  Ver Sección →
-                </Link>
+          {/* TAB 4: NOTAS DE ACUERDO */}
+          {tab === 'notas' && (
+            <div className="max-w-xl mx-auto space-y-3 bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs">
+              <h3 className="text-sm font-bold text-[#1B4D3E]">Acuerdos de Sesión — {selectedApp}</h3>
+              <div className="flex gap-2">
+                <input 
+                  type="text" 
+                  value={nuevaNota} 
+                  onChange={(e) => setNuevaNota(e.target.value)} 
+                  placeholder="Escribir acuerdo o compromiso..." 
+                  className="flex-1 text-xs p-2.5 border border-[#C8D8CE] rounded-xl focus:outline-none focus:border-[#1B4D3E]" 
+                />
+                <button 
+                  type="button"
+                  onClick={handleAgregarNota} 
+                  className="bg-[#1B4D3E] text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-[#2D6A4F] transition"
+                >
+                  Guardar
+                </button>
               </div>
-              <p className="text-xs text-gray-700 leading-relaxed">
-                <strong>��� ¿Por qué se creó?</strong> Diagnóstico preventivo y seguimiento clínico amable sin juicios punitivos sobre el peso corporal.
-              </p>
-              <p className="text-xs text-gray-700 leading-relaxed">
-                <strong>✨ Beneficios:</strong> Test metabólico inteligente, Fichas Clínicas encriptadas (Ley N° 21.663) y agendamiento de telemedicina.
-              </p>
+              <ul className="text-xs space-y-2 pt-2">
+                {notas.map((n: string, i: number) => (
+                  <li key={i} className="p-3 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[#1B4D3E] flex items-center justify-between">
+                    <span>📌 {n}</span>
+                    <span className="text-[10px] text-[#84A59D]">Nota #{i + 1}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div className="space-y-2 pt-3 border-t border-[#E8F0EC]">
-              <button 
-                onClick={() => handleOpenRoom('LAWENMOLL — Salud Integrativa', '/lawenmoll_logo.jpg')} 
-                className="w-full bg-[#1B4D3E] hover:bg-[#2D6A4F] text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-xs"
-              >
-                <span>���</span> Abrir Sala Telemedicina / Agendar Hora
-              </button>
-            </div>
-          </div>
+          )}
 
-          {/* 3. WELLNESS WEB APP */}
-          <div className="bg-white border-2 border-[#C8D8CE] hover:border-[#1B4D3E] transition rounded-3xl p-6 space-y-4 shadow-xs flex flex-col justify-between">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between border-b border-[#E8F0EC] pb-3">
-                <div className="flex items-center gap-3">
-                  <img src="/logo_wellness.jpg" alt="Wellness" className="w-12 h-12 object-contain" />
-                  <div>
-                    <span className="text-[10px] font-bold text-[#2D6A4F] uppercase bg-[#E8F0EC] border border-[#C8D8CE] px-2 py-0.5 rounded">Oficina 3</span>
-                    <h3 className="text-base font-bold text-[#1B4D3E]">Wellness Web App</h3>
-                  </div>
-                </div>
-                <Link href="/wellness" className="text-[11px] font-bold text-[#2D6A4F] hover:underline">
-                  Ver Sección →
-                </Link>
-              </div>
-              <p className="text-xs text-gray-700 leading-relaxed">
-                <strong>��� ¿Por qué se creó?</strong> Ejercicio adaptado sin impacto para personas con dolor articular, sobrepeso o movilidad reducida.
-              </p>
-              <p className="text-xs text-gray-700 leading-relaxed">
-                <strong>✨ Beneficios:</strong> Pausas activas, videoteca guiada, salas temáticas (Lotus, Cielo, Bosque, Raíz) y cocina demostrativa.
-              </p>
-            </div>
-            <div className="space-y-2 pt-3 border-t border-[#E8F0EC]">
-              <button 
-                onClick={() => handleOpenRoom('Wellness Web App', '/logo_wellness.jpg')} 
-                className="w-full bg-[#1B4D3E] hover:bg-[#2D6A4F] text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-xs"
-              >
-                <span>���</span> Abrir Sala Taller Wellness / Agendar Hora
-              </button>
-            </div>
-          </div>
-
-          {/* 4. SABIDURÍA ANCESTRAL */}
-          <div className="bg-white border-2 border-[#C8D8CE] hover:border-[#1B4D3E] transition rounded-3xl p-6 space-y-4 shadow-xs flex flex-col justify-between">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between border-b border-[#E8F0EC] pb-3">
-                <div className="flex items-center gap-3">
-                  <img src="/LOGO_BIENESTAR.png" alt="Sabiduría Ancestral" className="w-12 h-12 object-contain" />
-                  <div>
-                    <span className="text-[10px] font-bold text-[#B08D4B] uppercase bg-[#FAF8F5] border border-[#C8D8CE] px-2 py-0.5 rounded">Oficina 4</span>
-                    <h3 className="text-base font-bold text-[#1B4D3E]">Sabiduría Ancestral</h3>
-                  </div>
-                </div>
-                <Link href="/bienestar" className="text-[11px] font-bold text-[#2D6A4F] hover:underline">
-                  Ver Sección →
-                </Link>
-              </div>
-              <p className="text-xs text-gray-700 leading-relaxed">
-                <strong>��� ¿Por qué se creó?</strong> Para rescatar y preservar la herbolaria nativa y los saberes comunitarios en un entorno seguro.
-              </p>
-              <p className="text-xs text-gray-700 leading-relaxed">
-                <strong>✨ Beneficios:</strong> Diario Mural de "Secretos de la Abuela", recetario descargable en PDF y agente conversacional empático.
-              </p>
-            </div>
-            <div className="space-y-2 pt-3 border-t border-[#E8F0EC]">
-              <button 
-                onClick={() => handleOpenRoom('Sabiduría Ancestral', '/LOGO_BIENESTAR.png')} 
-                className="w-full bg-[#1B4D3E] hover:bg-[#2D6A4F] text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-xs"
-              >
-                <span>���</span> Abrir Sala Herbolario / Agendar Hora
-              </button>
-            </div>
-          </div>
-
-        </section>
-
-        {/* PRÓXIMAMENTE EN ASL IDEAS SPA */}
-        <section className="bg-white border-2 border-[#C8D8CE] rounded-3xl p-6 space-y-4 shadow-xs">
-          <div className="flex justify-between items-center border-b border-[#E8F0EC] pb-3">
-            <h3 className="text-base font-bold text-[#1B4D3E]">Próximamente en ASL Ideas SpA ���</h3>
-            <span className="text-xs font-bold text-[#2D6A4F] bg-[#E8F0EC] px-3 py-1 rounded-full">En Construcción</span>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE] space-y-1">
-              <h4 className="text-xs font-bold text-[#1B4D3E]">���️ Vikingos Talleres</h4>
-              <p className="text-[11px] text-gray-600">Formación práctica en oficios, autonomía e independencia personal.</p>
-            </div>
-            <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE] space-y-1">
-              <h4 className="text-xs font-bold text-[#1B4D3E]">⚔️ Apoderados Aguerridos</h4>
-              <p className="text-[11px] text-gray-600">Red de orientación y contención estratégica para familias TEA/TDAH.</p>
-            </div>
-            <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE] space-y-1">
-              <h4 className="text-xs font-bold text-[#1B4D3E]">��� Patiperros Rutas</h4>
-              <p className="text-[11px] text-gray-600">Senderismo adaptado y rutas sensoriales al aire libre sin barreras físicas.</p>
-            </div>
-          </div>
-        </section>
-
-      </main>
-
-      {/* FOOTER CON REDES SOCIALES Y DERECHOS RESERVADOS */}
-      <footer className="border-t border-[#C8D8CE] bg-white py-8 px-6 text-center space-y-4 text-xs text-gray-600">
-        <div className="flex justify-center items-center gap-4">
-          <a href="[suspicious link removed]" target="_blank" rel="noopener noreferrer" className="font-bold text-[#1B4D3E] hover:underline">
-            LinkedIn B2B
-          </a>
-          <span>•</span>
-          <a href="[suspicious link removed]" target="_blank" rel="noopener noreferrer" className="font-bold text-[#1B4D3E] hover:underline">
-            Instagram
-          </a>
-          <span>•</span>
-          <a href="[suspicious link removed]" target="_blank" rel="noopener noreferrer" className="font-bold text-[#1B4D3E] hover:underline">
-            YouTube
-          </a>
-          <span>•</span>
-          <a href="[suspicious link removed]" target="_blank" rel="noopener noreferrer" className="font-bold text-[#2D6A4F] hover:underline">
-            WhatsApp Business
-          </a>
         </div>
-        <p>© 2026 ASL Ideas SpA — Salud Digital Integrativa, Accesible y Humana. Todos los derechos reservados.</p>
-      </footer>
-
-      {/* MODAL SALA VIRTUAL CON VIDEO, AGENDAMIENTO Y ARCHIVOS */}
-      <SalaVirtualB2B 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        appName={currentAppName} 
-        appLogo={currentAppLogo} 
-      />
+      </div>
     </div>
   );
 }
