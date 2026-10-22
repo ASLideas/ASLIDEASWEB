@@ -81,59 +81,59 @@ export default function SalaVirtualB2B({
 
   return (
     <div className="fixed inset-0 z-50 bg-[#2D6A4F]/60 backdrop-blur-md flex items-center justify-center p-3 md:p-6 overflow-y-auto">
-      <div className="bg-[#FAF8F5] w-full max-w-4xl rounded-3xl border-2 border-[#D4AF37] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] my-auto">
+      <div className="bg-[#FAF8F5] w-full max-w-4xl rounded-3xl border-4 border-[#D4AF37] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] my-auto">
         
-        {/* ENCABEZADO CON VERDE CLARO, ROSADO Y LOGO CIRCULAR GRANDE */}
+        {/* ENCABEZADO CON VERDE SUAVE, DORADO, ROSADO Y LOGO CIRCULAR GRANDE */}
         <header className="bg-[#52796F] text-white p-5 flex justify-between items-center border-b-2 border-[#D4AF37]">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white p-1.5 border-2 border-[#D4AF37] flex items-center justify-center shadow-md overflow-hidden flex-shrink-0">
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white p-1 border-2 border-[#D4AF37] flex items-center justify-center shadow-md overflow-hidden flex-shrink-0">
               <img src={appLogo} alt={selectedApp} className="w-full h-full object-cover rounded-full" />
             </div>
             <div>
               <span className="text-[10px] font-bold tracking-wider uppercase bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] px-3 py-1 rounded-full inline-block mb-1">
-                ASL Ideas SpA — Sistema B2B
+                ASL Ideas SpA — Sala Virtual Unificada B2B
               </span>
-              <h2 className="text-lg md:text-xl font-bold text-white">Agendar Cita B2B & Sala Virtual</h2>
-              <p className="text-xs text-[#E8F0EC]">Coordinación directa de reuniones e interacción remota</p>
+              <h2 className="text-lg md:text-xl font-bold text-white">Sala Virtual de Reuniones & Citas</h2>
+              <p className="text-xs text-[#E8F0EC]">Gestión integrada de videollamadas, agendamiento y acuerdos</p>
             </div>
           </div>
 
           <button 
             type="button"
             onClick={onClose} 
-            className="text-[#1B4D3E] hover:text-white bg-[#FFF0F2] hover:bg-[#FF8894] border border-[#FF8894] text-xs px-4 py-2 rounded-full font-bold transition flex items-center gap-1 shadow-xs"
+            className="text-[#D85260] hover:text-white bg-[#FFF0F2] hover:bg-[#FF8894] border border-[#FF8894] text-xs px-4 py-2 rounded-full font-bold transition shadow-xs"
           >
             ← Volver Atrás
           </button>
         </header>
 
-        {/* PESTAÑAS NAVEGABLES SIN EMOJIS */}
+        {/* PESTAÑAS INTERNAS SIN EMOJIS */}
         <div className="flex border-b border-[#C8D8CE] bg-[#E8F0EC]">
           <button 
             type="button"
             onClick={() => setTab('agendar')} 
-            className={`flex-1 py-3.5 text-xs font-bold transition ${tab === 'agendar' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#52796F]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+            className={`flex-1 py-3.5 text-xs font-bold transition ${tab === 'agendar' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
           >
             Agendar Cita B2B
           </button>
           <button 
             type="button"
             onClick={() => setTab('video')} 
-            className={`flex-1 py-3.5 text-xs font-bold transition ${tab === 'video' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#52796F]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+            className={`flex-1 py-3.5 text-xs font-bold transition ${tab === 'video' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
           >
-            Sala Virtual en Vivo
+            Videollamada en Vivo
           </button>
           <button 
             type="button"
             onClick={() => setTab('archivos')} 
-            className={`flex-1 py-3.5 text-xs font-bold transition ${tab === 'archivos' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#52796F]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+            className={`flex-1 py-3.5 text-xs font-bold transition ${tab === 'archivos' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
           >
-            Subir Documento / PDF
+            Documentos / PDF
           </button>
           <button 
             type="button"
             onClick={() => setTab('notas')} 
-            className={`flex-1 py-3.5 text-xs font-bold transition ${tab === 'notas' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#52796F]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+            className={`flex-1 py-3.5 text-xs font-bold transition ${tab === 'notas' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
           >
             Acuerdos & Notas
           </button>
@@ -142,17 +142,17 @@ export default function SalaVirtualB2B({
         {/* CONTENIDO INTERACTIVO */}
         <div className="p-6 overflow-y-auto flex-1">
           
-          {/* TAB 1: CALENDARIO Y FORMULARIO */}
+          {/* TAB 1: FORMULARIO DE AGENDAMIENTO */}
           {tab === 'agendar' && (
             <div className="max-w-2xl mx-auto space-y-5 bg-white p-6 md:p-8 rounded-3xl border border-[#C8D8CE] shadow-xs">
               <div className="text-center space-y-1 border-b border-[#E8F0EC] pb-4">
-                <h3 className="text-base font-bold text-[#2D6A4F]">Agendar Cita o Demostración B2B</h3>
-                <p className="text-xs text-[#52796F]">Selecciona la plataforma u oficina de interés y el motivo de tu consulta.</p>
+                <h3 className="text-base font-bold text-[#2D6A4F]">Reserva de Cita o Demostración B2B</h3>
+                <p className="text-xs text-[#52796F]">Selecciona la oficina de interés y confirma tus datos de contacto.</p>
               </div>
 
               {bookingSuccess ? (
                 <div className="p-6 bg-[#FFF0F2] rounded-2xl border border-[#FF8894] text-center space-y-3">
-                  <h4 className="text-base font-bold text-[#D85260]">¡Reunión Agendada con Éxito!</h4>
+                  <h4 className="text-base font-bold text-[#D85260]">Reunión Agendada con Éxito</h4>
                   <p className="text-xs text-[#52796F] leading-relaxed">
                     Hemos registrado la cita para <strong className="text-[#2D6A4F]">{userName}</strong> ({userEmail}).<br/>
                     Plataforma: <strong className="text-[#2D6A4F]">{selectedApp}</strong><br/>
@@ -170,13 +170,13 @@ export default function SalaVirtualB2B({
               ) : (
                 <form onSubmit={handleAgendar} className="space-y-4">
                   
-                  {/* PLATAFORMA / OFICINA */}
+                  {/* SELECCIÓN DE OFICINA */}
                   <div>
-                    <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Seleccionar Plataforma u Oficina *</label>
+                    <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Plataforma u Oficina de Interés *</label>
                     <select
                       value={selectedApp}
                       onChange={(e) => setSelectedApp(e.target.value)}
-                      className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] focus:outline-none focus:border-[#52796F] font-bold text-[#2D6A4F]"
+                      className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] focus:outline-none focus:border-[#D4AF37] font-bold text-[#2D6A4F]"
                     >
                       {plataformas.map((p) => (
                         <option key={p} value={p}>{p}</option>
@@ -186,11 +186,11 @@ export default function SalaVirtualB2B({
 
                   {/* MOTIVO DE CONSULTA */}
                   <div>
-                    <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Motivo de la Cita o Consulta *</label>
+                    <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Motivo de la Consulta *</label>
                     <select
                       value={motivoConsulta}
                       onChange={(e) => setMotivoConsulta(e.target.value)}
-                      className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] focus:outline-none focus:border-[#52796F] text-gray-800"
+                      className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] focus:outline-none focus:border-[#D4AF37] text-gray-800"
                     >
                       {motivos.map((m) => (
                         <option key={m} value={m}>{m}</option>
@@ -239,7 +239,7 @@ export default function SalaVirtualB2B({
                   {/* FECHA Y HORARIO */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Seleccionar Fecha *</label>
+                      <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Fecha Preferente *</label>
                       <input 
                         type="date" 
                         required 
@@ -249,7 +249,7 @@ export default function SalaVirtualB2B({
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Horario Preferente *</label>
+                      <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Horario Disponible *</label>
                       <select
                         value={selectedTime}
                         onChange={(e) => setSelectedTime(e.target.value)}
@@ -284,25 +284,25 @@ export default function SalaVirtualB2B({
             </div>
           )}
 
-          {/* TAB 2: VIDEOLLAMADA CON BORDE DORADO Y ACCESORIOS ROSADOS */}
+          {/* TAB 2: VIDEOLLAMADA EN VIVO CON MARCO DORADO Y DETALLES ROSADOS */}
           {tab === 'video' && (
             <div className="space-y-4">
               <div className="bg-[#FFF0F2] p-3.5 rounded-2xl border border-[#FF8894] flex items-center justify-between text-xs text-[#D85260]">
                 <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#FF8894] animate-pulse"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#D85260] animate-pulse"></span>
                   <span className="font-bold">Canal Activo:</span> Transmisión para {selectedApp}
                 </div>
                 <span className="text-[11px] font-bold text-[#D85260] bg-white px-2.5 py-0.5 rounded-full border border-[#FF8894]">Conexión Encriptada TLS 1.3</span>
               </div>
 
-              {/* CONTENEDOR VIDEOLLAMADA CON BORDE DORADO ESTRUCTURAL Y ACENTOS ROSADOS */}
-              <div className="w-full h-[400px] bg-[#FAF8F5] rounded-3xl border-4 border-[#D4AF37] overflow-hidden shadow-md flex flex-col items-center justify-center p-8 text-center space-y-3 relative">
-                <div className="w-16 h-16 rounded-full bg-[#FFF0F2] border-2 border-[#D4AF37] flex items-center justify-center text-[#D85260] font-bold text-xl shadow-xs">
-                  LIVE
+              {/* SALA VIRTUAL CON MARCO DORADO */}
+              <div className="w-full h-[380px] bg-[#FAF8F5] rounded-3xl border-4 border-[#D4AF37] overflow-hidden shadow-md flex flex-col items-center justify-center p-8 text-center space-y-3 relative">
+                <div className="px-4 py-1.5 rounded-full bg-[#FFF0F2] border border-[#FF8894] text-[#D85260] font-bold text-xs">
+                  SALA EN VIVO
                 </div>
                 <h4 className="text-base font-bold text-[#2D6A4F]">Sala Virtual de Videollamada Activa</h4>
                 <p className="text-xs text-[#52796F] max-w-md leading-relaxed">
-                  Conexión segura lista para la transmisión B2B interactiva con <strong className="text-[#2D6A4F]">{selectedApp}</strong>.
+                  Conexión encriptada lista para la transmisión interactiva B2B con <strong className="text-[#2D6A4F]">{selectedApp}</strong>.
                 </p>
                 <div className="pt-2 flex gap-3">
                   <span className="bg-[#E8F0EC] text-[#2D6A4F] text-[11px] font-bold px-3 py-1 rounded-full border border-[#C8D8CE]">Cámara Preparada</span>
@@ -312,7 +312,7 @@ export default function SalaVirtualB2B({
             </div>
           )}
 
-          {/* TAB 3: ARCHIVOS / PDF */}
+          {/* TAB 3: SUBIR DOCUMENTOS / PDF */}
           {tab === 'archivos' && (
             <div className="max-w-xl mx-auto space-y-4 bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs">
               <div className="text-center space-y-1">
@@ -336,7 +336,7 @@ export default function SalaVirtualB2B({
             </div>
           )}
 
-          {/* TAB 4: NOTAS DE ACUERDO */}
+          {/* TAB 4: ACUERDOS Y NOTAS */}
           {tab === 'notas' && (
             <div className="max-w-xl mx-auto space-y-3 bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs">
               <h3 className="text-sm font-bold text-[#2D6A4F]">Acuerdos de Sesión — {selectedApp}</h3>
