@@ -31,7 +31,7 @@ export interface Props {
   initialApp?: string;
   appName?: string;
   appLogo?: string;
-  [key: string]: any; // Firma de índice flexible para evitar errores de compilación en Vercel
+  [key: string]: any; // Firma flexible para evitar errores de TypeScript en Vercel
 }
 
 export default function SalaVirtualB2B({ 
@@ -204,7 +204,7 @@ export default function SalaVirtualB2B({
     <div className="fixed inset-0 z-50 bg-[#2D6A4F]/60 backdrop-blur-md flex items-center justify-center p-3 md:p-6 overflow-y-auto font-sans">
       <div className="bg-[#FAF8F5] w-full max-w-4xl rounded-3xl border-4 border-[#D4AF37] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] my-auto">
         
-        {/* ENCABEZADO SIN ICONOS */}
+        {/* ENCABEZADO */}
         <header className="bg-[#52796F] text-white p-5 flex justify-between items-center border-b-2 border-[#D4AF37]">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white p-1 border-2 border-[#D4AF37] flex items-center justify-center shadow-md overflow-hidden flex-shrink-0">
@@ -232,7 +232,7 @@ export default function SalaVirtualB2B({
           </button>
         </header>
 
-        {/* PESTAÑAS DE NAVEGACION TEXTUALES */}
+        {/* PESTAÑAS DE NAVEGACION */}
         <div className="flex border-b border-[#C8D8CE] bg-[#E8F0EC] overflow-x-auto">
           <button 
             type="button"
@@ -352,10 +352,8 @@ export default function SalaVirtualB2B({
                   </span>
                 </div>
 
-                {/* BOTONES DE LAS 5 ACCIONES */}
+                {/* BOTONES DE ACCIÓN */}
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-3 pt-2">
-                  
-                  {/* ACCION 1: AÑADIR DOCUMENTO */}
                   <label className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl text-center cursor-pointer transition flex flex-col justify-center items-center gap-1">
                     <span className="text-xs font-bold text-[#2D6A4F]">Añadir Documento</span>
                     <span className="text-[10px] text-[#52796F]">Subir PDF o Ficha</span>
@@ -367,7 +365,6 @@ export default function SalaVirtualB2B({
                     />
                   </label>
 
-                  {/* ACCION 2: CREAR NOTA */}
                   <button
                     type="button"
                     onClick={() => setTab('notas')}
@@ -377,7 +374,6 @@ export default function SalaVirtualB2B({
                     <span className="text-[10px] text-[#52796F]">Registrar Acuerdo</span>
                   </button>
 
-                  {/* ACCION 3: TRANSCRIBIR REUNIÓN */}
                   <button
                     type="button"
                     onClick={handleTranscribirReunion}
@@ -390,7 +386,6 @@ export default function SalaVirtualB2B({
                     <span className="text-[10px] text-[#52796F]">Exportar a PDF</span>
                   </button>
 
-                  {/* ACCION 4: ADJUNTAR IMAGEN */}
                   <label className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl text-center cursor-pointer transition flex flex-col justify-center items-center gap-1">
                     <span className="text-xs font-bold text-[#2D6A4F]">Adjuntar Imagen</span>
                     <span className="text-[10px] text-[#52796F]">Subir Esquema / JPG</span>
@@ -402,7 +397,6 @@ export default function SalaVirtualB2B({
                     />
                   </label>
 
-                  {/* ACCION 5: AGENDAR OTRA REUNIÓN */}
                   <button
                     type="button"
                     onClick={() => setTab('agendar')}
@@ -411,14 +405,11 @@ export default function SalaVirtualB2B({
                     <span className="text-xs font-bold text-[#2D6A4F]">Agendar Otra Reunión</span>
                     <span className="text-[10px] text-[#52796F]">Nueva Cita B2B</span>
                   </button>
-
                 </div>
               </div>
 
-              {/* DESGLOSE POR COLUMNAS */}
+              {/* COLUMNAS DE ARCHIVOS */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
-                {/* DOCUMENTOS */}
                 <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-3 shadow-xs">
                   <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#E8F0EC] pb-2">
                     Documentos ({documentosReunion.length})
@@ -433,7 +424,6 @@ export default function SalaVirtualB2B({
                   </ul>
                 </div>
 
-                {/* IMÁGENES */}
                 <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-3 shadow-xs">
                   <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#E8F0EC] pb-2">
                     Imágenes ({imagenesReunion.length})
@@ -448,7 +438,6 @@ export default function SalaVirtualB2B({
                   </ul>
                 </div>
 
-                {/* TRANSCRIPCIÓN */}
                 <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-3 shadow-xs">
                   <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#E8F0EC] pb-2">
                     Transcripción
@@ -465,7 +454,6 @@ export default function SalaVirtualB2B({
                     </p>
                   )}
                 </div>
-
               </div>
 
             </div>
