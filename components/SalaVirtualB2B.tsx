@@ -166,14 +166,14 @@ export default function SalaVirtualB2B({
 
   const handleSubirDocumento = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files && files.length > 0) {
+    if (files && files.length > 0 && files[0]) {
       setDocumentosReunion((prev) => [...prev, files[0].name]);
     }
   };
 
   const handleSubirImagen = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files && files.length > 0) {
+    if (files && files.length > 0 && files[0]) {
       setImagenesReunion((prev) => [...prev, files[0].name]);
     }
   };
