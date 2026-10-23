@@ -119,7 +119,12 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-4">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-white p-1 border-2 border-[#D4AF37] overflow-hidden flex items-center justify-center shadow-xs">
-              <img src="/LOGO_asl.png" alt="ASL Ideas SpA" className="w-full h-full object-cover rounded-full" />
+              <img 
+                src="/LOGO_asl.png" 
+                onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/LOGO%20asl.png'; }}
+                alt="ASL Ideas SpA" 
+                className="w-full h-full object-cover rounded-full" 
+              />
             </div>
             <div>
               <h1 className="text-lg md:text-xl font-bold tracking-tight text-white">ASL Ideas SpA</h1>
@@ -136,7 +141,7 @@ export default function HomePage() {
               Agendar Cita B2B
             </button>
 
-            {/* BOTON DE ACCESO ADMINISTRADOR */}
+            {/* ACCESO PRIVADO ADMINISTRADOR */}
             {isAdminMode ? (
               <div className="flex items-center gap-2">
                 <button
@@ -173,7 +178,7 @@ export default function HomePage() {
           <div className="bg-white p-6 rounded-3xl border-2 border-[#D4AF37] max-w-sm w-full space-y-4 shadow-xl">
             <h3 className="text-base font-bold text-[#2D6A4F] text-center">Acceso Privado Administrador</h3>
             <p className="text-xs text-[#52796F] text-center">
-              Ingresa la clave de administración para acceder a la Sala Virtual Telemedicina.
+              Ingresa la clave para acceder a la Sala Virtual Telemedicina.
             </p>
             <form onSubmit={handleAdminLogin} className="space-y-3">
               <input
@@ -209,7 +214,7 @@ export default function HomePage() {
       {/* CONTENIDO PRINCIPAL */}
       <main className="max-w-6xl mx-auto p-4 md:p-8 space-y-8 flex-1 w-full">
         
-        {/* BANNER INSTITUCIONAL CON TEXTO EXACTO */}
+        {/* BANNER INSTITUCIONAL CON REDACCION EXACTA */}
         <section className="bg-white p-6 md:p-8 rounded-3xl border-2 border-[#C8D8CE] shadow-sm text-center space-y-3">
           <div className="flex justify-center gap-2 flex-wrap">
             <span className="text-[11px] font-bold uppercase tracking-wider bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] px-3 py-1 rounded-full">
@@ -285,7 +290,12 @@ export default function HomePage() {
                     Oficina Virtual 01
                   </span>
                   <div className="w-14 h-14 rounded-full bg-white p-1 border-2 border-[#D4AF37] overflow-hidden flex items-center justify-center shadow-xs">
-                    <img src="/LOGO_asl.png" alt="Logo ASL Ideas" className="w-full h-full object-cover rounded-full" />
+                    <img 
+                      src="/LOGO_asl.png" 
+                      onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/LOGO%20asl.png'; }}
+                      alt="Logo ASL Ideas" 
+                      className="w-full h-full object-cover rounded-full" 
+                    />
                   </div>
                 </div>
                 <h4 className="text-lg font-bold text-[#2D6A4F]">Casa Matriz ASL Ideas SpA</h4>
@@ -310,7 +320,11 @@ export default function HomePage() {
                     Oficina Virtual 02
                   </span>
                   <div className="w-14 h-14 rounded-full bg-white p-1 border-2 border-[#D4AF37] overflow-hidden flex items-center justify-center shadow-xs">
-                    <img src="/lawenmoll_logo.jpg" alt="Logo Lawenmoll" className="w-full h-full object-cover rounded-full" />
+                    <img 
+                      src="/lawenmoll_logo.jpg" 
+                      alt="Logo Lawenmoll" 
+                      className="w-full h-full object-cover rounded-full" 
+                    />
                   </div>
                 </div>
                 <h4 className="text-lg font-bold text-[#2D6A4F]">LAWENMOLL Salud Integrativa</h4>
@@ -335,7 +349,12 @@ export default function HomePage() {
                     Oficina Virtual 03
                   </span>
                   <div className="w-14 h-14 rounded-full bg-white p-1 border-2 border-[#D4AF37] overflow-hidden flex items-center justify-center shadow-xs">
-                    <img src="/logo_wellness.jpg" alt="Logo Wellness" className="w-full h-full object-cover rounded-full" />
+                    <img 
+                      src="/logo_wellness.jpg" 
+                      onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/logo%20wellness.jpg'; }}
+                      alt="Logo Wellness" 
+                      className="w-full h-full object-cover rounded-full" 
+                    />
                   </div>
                 </div>
                 <h4 className="text-lg font-bold text-[#2D6A4F]">Wellness Web App</h4>
@@ -360,7 +379,12 @@ export default function HomePage() {
                     Oficina Virtual 04
                   </span>
                   <div className="w-14 h-14 rounded-full bg-white p-1 border-2 border-[#FF8894] overflow-hidden flex items-center justify-center shadow-xs">
-                    <img src="/LOGO_BIENESTAR.png" alt="Logo Bienestar" className="w-full h-full object-cover rounded-full" />
+                    <img 
+                      src="/LOGO_BIENESTAR.png" 
+                      onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/LOGO%20BIENESTAR.png'; }}
+                      alt="Logo Bienestar" 
+                      className="w-full h-full object-cover rounded-full" 
+                    />
                   </div>
                 </div>
                 <h4 className="text-lg font-bold text-[#2D6A4F]">Bienestar App</h4>
