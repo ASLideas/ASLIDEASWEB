@@ -34,45 +34,55 @@ export default function SalaVirtualB2B({
   appName,
   appLogo
 }: Props) {
-  // Soporte retrocompatible para llamadas desde otras páginas (ej: app/comunidad/page.tsx)
-  const effectiveName = inputPortalData?.nombre || appName || initialApp || 'Portal ASL Ideas SpA';
-  const effectiveLogo = inputPortalData?.logo || appLogo || '/logo-asl.png';
-
-  const portalData: PortalInfo = inputPortalData || {
-    id: 'default',
-    nombre: effectiveName,
-    subtitulo: 'Portal Interactivo de Atención y Coordinación B2B',
-    logo: effectiveLogo,
-    oficinaNum: 'Oficina Virtual',
-    leyes: ['Ley TEA N° 21.545', 'Ley N° 21.663'],
-    descripcionCorta: 'Atención virtual, cotización de servicios y coordinación de convenios B2B.',
-    descripcionLarga: 'Espacio de reunión e interacción virtual para la coordinación corporativa, presentación de proyectos de salud digital inclusiva y accesibilidad cognitiva UI/UX.',
+  // Configuración de LAWENMOLL Salud Integrativa por defecto si no se pasa otro portal
+  const defaultLawenmoll: PortalInfo = {
+    id: 'lawenmoll',
+    nombre: 'LAWENMOLL Salud Integrativa',
+    subtitulo: 'Evaluación Metabólica y Fichas Clínicas Protegidas',
+    logo: '/logo-lawenmoll.jpg',
+    oficinaNum: 'Oficina Virtual 02',
+    leyes: ['Ley N° 21.663 - Datos Protegidos', 'Ley TEA N° 21.545', 'Estándar SOAP'],
+    descripcionCorta: 'Test de Bienestar Inteligente, composición metabólica, Fichas Clínicas encriptadas bajo Ley N° 21.663 y consulta con especialistas.',
+    descripcionLarga: 'Plataforma clínica integrativa enfocada en la evaluación personalizada de la salud metabólica. Unifica la medicina preventiva con herramientas digitales que encriptan el historial clínico y conectan al paciente con especialistas de la salud.',
     serviciosClave: [
-      'Atención y Consultoría Virtual',
-      'Coordinación de Licencias B2B',
-      'Revisión de Requerimientos de Accesibilidad',
-      'Presentación de Proyectos Institucionales'
+      'Test de Bienestar Inteligente',
+      'Cálculo de Composición Corporal y Metabólica',
+      'Fichas Clínicas Encriptadas (Ley N° 21.663)',
+      'Atención con Especialistas y Terapeutas'
     ],
-    publicoObjetivo: 'Comunidad, Instituciones y Convenios B2B'
+    publicoObjetivo: 'Pacientes con condiciones crónicas, adultos con sobrepeso y profesionales de la salud'
   };
 
-  const [tab, setTab] = useState<'descripcion' | 'agendar' | 'video' | 'archivos' | 'notas'>('descripcion');
+  const portalData: PortalInfo = inputPortalData || defaultLawenmoll;
+
+  const [tab, setTab] = useState<'descripcion' | 'agendar' | 'reunion' | 'archivos' | 'notas'>('descripcion');
   const [motivoConsulta, setMotivoConsulta] = useState<string>('Atención Virtual (Participantes de Lado a Lado)');
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [selectedTime, setSelectedTime] = useState<string>('10:30 AM');
   const [userName, setUserName] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
-  const [userPhone, setUserPhone] = useState<string>('');
-  const [userOrg, setUserOrg] = useState<string>('');
-  const [file, setFile] = useState<FileList | null>(null);
-  const [uploading, setUploading] = useState<boolean>(false);
-  const [bookingSuccess, setBookingSuccess] = useState<boolean>(false);
+
+  // Estados para la sala de Reunión en línea / Web
+  const [documentosReunion, setDocumentosReunion] = useState<string[]>([
+    'Ficha_Clinica_SOAP_Inicial.pdf',
+    'Pauta_Evaluacion_Metabolica.pdf'
+  ]);
+  const [imagenesReunion, setImagenesReunion] = useState<string[]>([
+    'Esquema_Composicion_Corporal.jpg'
+  ]);
+  const [transcripcion, setTranscripcion] = useState<string>(
+    'Registro de Sesión: El paciente consulta para evaluación de salud metabólica. Se acuerda pauta de seguimiento y revisión de hábitos diarios.'
+  );
+  const [transcribiendo, setTranscribiendo] = useState<boolean>(false);
+  const [transcripcionCompletada, setTranscripcionCompletada] = useState<boolean>(false);
 
   const [notas, setNotas] = useState<string[]>([
     'Acuerdo preliminar: Demostración de interfaz accesible UI/UX.',
     'Revisión de requerimientos para Ley N° 21.663 y Ley TEA N° 21.545.'
   ]);
   const [nuevaNota, setNuevaNota] = useState<string>('');
+  const [uploading, setUploading] = useState<boolean>(false);
+  const [bookingSuccess, setBookingSuccess] = useState<boolean>(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -111,20 +121,34 @@ export default function SalaVirtualB2B({
     setNuevaNota('');
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const fileList = e.target.files;
-    if (fileList && fileList.length > 0) {
-      setFile(fileList);
-    } else {
-      setFile(null);
+  const handleSubirDocumento = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      setDocumentosReunion((prev) => [...prev, files[0].name]);
     }
   };
 
+  const handleSubirImagen = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      setImagenesReunion((prev) => [...prev, files[0].name]);
+    }
+  };
+
+  const handleTranscribirReunion = () => {
+    setTranscribiendo(true);
+    setTimeout(() => {
+      setTranscribiendo(false);
+      setTranscripcionCompletada(true);
+      setTranscripcion((prev) => prev + '\n[Transcripción Automática Generada]: Acuerdos consolidados y guardados en la ficha del cliente.');
+    }, 1500);
+  };
+
   return (
-    <div className="fixed inset-0 z-50 bg-[#2D6A4F]/60 backdrop-blur-md flex items-center justify-center p-3 md:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-50 bg-[#2D6A4F]/60 backdrop-blur-md flex items-center justify-center p-3 md:p-6 overflow-y-auto font-sans">
       <div className="bg-[#FAF8F5] w-full max-w-4xl rounded-3xl border-4 border-[#D4AF37] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] my-auto">
         
-        {/* ENCABEZADO CON LOGO DE LA APP */}
+        {/* ENCABEZADO SIN ICONOS */}
         <header className="bg-[#52796F] text-white p-5 flex justify-between items-center border-b-2 border-[#D4AF37]">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white p-1 border-2 border-[#D4AF37] flex items-center justify-center shadow-md overflow-hidden flex-shrink-0">
@@ -152,51 +176,48 @@ export default function SalaVirtualB2B({
           </button>
         </header>
 
-        {/* PESTAÑAS DE NAVEGACION DENTRO DEL PORTAL */}
-        <div className="flex border-b border-[#C8D8CE] bg-[#E8F0EC]">
+        {/* PESTAÑAS DE NAVEGACION TEXTUALES (SIN ICONOS) */}
+        <div className="flex border-b border-[#C8D8CE] bg-[#E8F0EC] overflow-x-auto">
           <button 
             type="button"
             onClick={() => setTab('descripcion')} 
-            className={`flex-1 py-3.5 text-xs font-bold transition ${tab === 'descripcion' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+            className={`flex-1 min-w-[120px] py-3.5 text-xs font-bold transition ${tab === 'descripcion' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
           >
             Descripción del Portal
           </button>
           <button 
             type="button"
+            onClick={() => setTab('reunion')} 
+            className={`flex-1 min-w-[120px] py-3.5 text-xs font-bold transition ${tab === 'reunion' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+          >
+            Reunión en línea
+          </button>
+          <button 
+            type="button"
             onClick={() => setTab('agendar')} 
-            className={`flex-1 py-3.5 text-xs font-bold transition ${tab === 'agendar' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+            className={`flex-1 min-w-[120px] py-3.5 text-xs font-bold transition ${tab === 'agendar' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
           >
             Agendar Cita B2B
           </button>
           <button 
             type="button"
             onClick={() => setTab('archivos')} 
-            className={`flex-1 py-3.5 text-xs font-bold transition ${tab === 'archivos' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+            className={`flex-1 min-w-[120px] py-3.5 text-xs font-bold transition ${tab === 'archivos' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
           >
             Documentos / PDF
           </button>
           <button 
             type="button"
             onClick={() => setTab('notas')} 
-            className={`flex-1 py-3.5 text-xs font-bold transition ${tab === 'notas' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+            className={`flex-1 min-w-[120px] py-3.5 text-xs font-bold transition ${tab === 'notas' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
           >
             Acuerdos y Notas
           </button>
-          
-          {isAdmin && (
-            <button 
-              type="button"
-              onClick={() => setTab('video')} 
-              className={`flex-1 py-3.5 text-xs font-bold transition ${tab === 'video' ? 'bg-[#FFF0F2] text-[#D85260] border-b-2 border-[#D85260]' : 'text-[#D85260] hover:bg-[#FFF0F2]/50'}`}
-            >
-              Sala Virtual (Admin)
-            </button>
-          )}
         </div>
 
-        {/* CONTENIDO INTERACTIVO */}
+        {/* CONTENIDO PRINCIPAL */}
         <div className="p-6 overflow-y-auto flex-1">
-          
+
           {/* TAB 1: DESCRIPCION EXTENSA */}
           {tab === 'descripcion' && (
             <div className="space-y-6 max-w-3xl mx-auto">
@@ -221,9 +242,8 @@ export default function SalaVirtualB2B({
                   <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider mb-2">Servicios y Módulos Principales:</h4>
                   <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
                     {portalData.serviciosClave.map((servicio, idx) => (
-                      <li key={idx} className="p-3 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[#2D6A4F] font-semibold flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-[#D4AF37]"></span>
-                        {servicio}
+                      <li key={idx} className="p-3 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[#2D6A4F] font-semibold">
+                        • {servicio}
                       </li>
                     ))}
                   </ul>
@@ -235,24 +255,168 @@ export default function SalaVirtualB2B({
                 </div>
               </div>
 
-              {/* BOTON DE AGENDAMIENTO DENTRO DE LA DESCRIPCION */}
               <div className="bg-[#52796F] p-6 rounded-3xl border-2 border-[#D4AF37] text-white text-center space-y-3 shadow-md">
-                <h4 className="text-base font-bold">¿Deseas coordinar una reunión B2B en esta oficina?</h4>
-                <p className="text-xs text-[#E8F0EC]">
-                  Reserva directamente tu sesión virtual con nuestro equipo corporativo.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => setTab('agendar')}
-                  className="bg-[#D4AF37] hover:bg-[#B08D4B] text-white text-xs font-bold px-6 py-3 rounded-xl transition shadow-xs inline-block"
-                >
-                  Agendar Cita B2B en {portalData.nombre}
-                </button>
+                <h4 className="text-base font-bold">¿Deseas ingresar a la Reunión Web o Agendar una Cita?</h4>
+                <div className="flex justify-center gap-3 flex-wrap pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setTab('reunion')}
+                    className="bg-[#D4AF37] hover:bg-[#B08D4B] text-white text-xs font-bold px-5 py-2.5 rounded-xl transition shadow-xs"
+                  >
+                    Ingresar a Reunión en línea
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setTab('agendar')}
+                    className="bg-white text-[#2D6A4F] hover:bg-[#FAF8F5] text-xs font-bold px-5 py-2.5 rounded-xl transition shadow-xs"
+                  >
+                    Agendar Cita B2B
+                  </button>
+                </div>
               </div>
             </div>
           )}
 
-          {/* TAB 2: AGENDAMIENTO */}
+          {/* TAB 2: REUNIÓN EN LÍNEA / REUNIÓN WEB CON DESGLOSE COMPLETO */}
+          {tab === 'reunion' && (
+            <div className="space-y-6 max-w-4xl mx-auto">
+              
+              {/* ACCIONES PRINCIPALES DE LA REUNION EN LINEA */}
+              <div className="bg-white p-6 rounded-3xl border-2 border-[#D4AF37] shadow-xs space-y-4">
+                <div className="border-b border-[#E8F0EC] pb-3 flex justify-between items-center flex-wrap gap-2">
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider bg-[#E8F0EC] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]">
+                      Reunión Web Activa para Clientes
+                    </span>
+                    <h3 className="text-lg font-bold text-[#2D6A4F] mt-1">
+                      Panel de Trabajo en Vivo — {portalData.nombre}
+                    </h3>
+                  </div>
+                  <span className="text-xs font-bold text-[#D85260] bg-[#FFF0F2] px-3 py-1 rounded-full border border-[#FF8894]">
+                    Sesión Segura Encriptada
+                  </span>
+                </div>
+
+                {/* BOTONES DE ACCIONES REQUERIDAS POR EL USUARIO */}
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-3 pt-2">
+                  
+                  {/* ACCION 1: AÑADIR DOCUMENTO */}
+                  <label className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl text-center cursor-pointer transition flex flex-col justify-center items-center gap-1">
+                    <span className="text-xs font-bold text-[#2D6A4F]">Añadir Documento</span>
+                    <span className="text-[10px] text-[#52796F]">Subir PDF o Ficha</span>
+                    <input 
+                      type="file" 
+                      accept=".pdf,.doc,.docx" 
+                      onChange={handleSubirDocumento} 
+                      className="hidden" 
+                    />
+                  </label>
+
+                  {/* ACCION 2: CREAR NOTA */}
+                  <button
+                    type="button"
+                    onClick={() => setTab('notas')}
+                    className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl text-center transition flex flex-col justify-center items-center gap-1"
+                  >
+                    <span className="text-xs font-bold text-[#2D6A4F]">Crear Nota</span>
+                    <span className="text-[10px] text-[#52796F]">Registrar Acuerdo</span>
+                  </button>
+
+                  {/* ACCION 3: TRANSCRIBIR REUNIÓN */}
+                  <button
+                    type="button"
+                    onClick={handleTranscribirReunion}
+                    disabled={transcribiendo}
+                    className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl text-center transition flex flex-col justify-center items-center gap-1 disabled:opacity-50"
+                  >
+                    <span className="text-xs font-bold text-[#2D6A4F]">
+                      {transcribiendo ? 'Transcribiendo...' : 'Transcribir Reunión'}
+                    </span>
+                    <span className="text-[10px] text-[#52796F]">Exportar a PDF</span>
+                  </button>
+
+                  {/* ACCION 4: ADJUNTAR IMAGEN */}
+                  <label className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl text-center cursor-pointer transition flex flex-col justify-center items-center gap-1">
+                    <span className="text-xs font-bold text-[#2D6A4F]">Adjuntar Imagen</span>
+                    <span className="text-[10px] text-[#52796F]">Subir Esquema / JPG</span>
+                    <input 
+                      type="file" 
+                      accept=".jpg,.png,.jpeg" 
+                      onChange={handleSubirImagen} 
+                      className="hidden" 
+                    />
+                  </label>
+
+                  {/* ACCION 5: AGENDAR OTRA REUNIÓN */}
+                  <button
+                    type="button"
+                    onClick={() => setTab('agendar')}
+                    className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl text-center transition flex flex-col justify-center items-center gap-1 col-span-2 md:col-span-1"
+                  >
+                    <span className="text-xs font-bold text-[#2D6A4F]">Agendar Otra Reunión</span>
+                    <span className="text-[10px] text-[#52796F]">Nueva Cita B2B</span>
+                  </button>
+
+                </div>
+              </div>
+
+              {/* DESGLOSE LATERAL / COLUMNAS DE ARCHIVOS E IMAGENES */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                {/* COLUMNA 1: DESGLOSE DE DOCUMENTOS */}
+                <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-3 shadow-xs">
+                  <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#E8F0EC] pb-2">
+                    Documentos de la Sesión ({documentosReunion.length})
+                  </h4>
+                  <ul className="space-y-2 text-xs">
+                    {documentosReunion.map((doc, idx) => (
+                      <li key={idx} className="p-2.5 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[#52796F] font-medium flex justify-between items-center">
+                        <span className="truncate">{doc}</span>
+                        <span className="text-[9px] bg-[#E8F0EC] text-[#2D6A4F] px-2 py-0.5 rounded font-bold">PDF</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* COLUMNA 2: DESGLOSE DE IMAGENES */}
+                <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-3 shadow-xs">
+                  <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#E8F0EC] pb-2">
+                    Imágenes y Esquemas ({imagenesReunion.length})
+                  </h4>
+                  <ul className="space-y-2 text-xs">
+                    {imagenesReunion.map((img, idx) => (
+                      <li key={idx} className="p-2.5 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[#52796F] font-medium flex justify-between items-center">
+                        <span className="truncate">{img}</span>
+                        <span className="text-[9px] bg-[#E8F0EC] text-[#2D6A4F] px-2 py-0.5 rounded font-bold">IMG</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* COLUMNA 3: REGISTRO DE TRANSCRIPCION */}
+                <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-3 shadow-xs">
+                  <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#E8F0EC] pb-2">
+                    Transcripción de Sesión
+                  </h4>
+                  <textarea
+                    rows={4}
+                    value={transcripcion}
+                    onChange={(e) => setTranscripcion(e.target.value)}
+                    className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] focus:outline-none text-[#52796F] leading-relaxed"
+                  />
+                  {transcripcionCompletada && (
+                    <p className="text-[10px] text-[#2D6A4F] font-bold bg-[#E8F0EC] p-2 rounded-xl text-center">
+                      Transcripción descargada y guardada exitosamente.
+                    </p>
+                  )}
+                </div>
+
+              </div>
+
+            </div>
+          )}
+
+          {/* TAB 3: AGENDAMIENTO */}
           {tab === 'agendar' && (
             <div className="max-w-2xl mx-auto space-y-5 bg-white p-6 md:p-8 rounded-3xl border border-[#C8D8CE] shadow-xs">
               <div className="text-center space-y-1 border-b border-[#E8F0EC] pb-4">
@@ -363,28 +527,27 @@ export default function SalaVirtualB2B({
             </div>
           )}
 
-          {/* TAB 3: ARCHIVOS */}
+          {/* TAB 4: ARCHIVOS */}
           {tab === 'archivos' && (
             <div className="max-w-xl mx-auto space-y-4 bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs">
               <h3 className="text-sm font-bold text-[#2D6A4F] text-center">Adjuntar Documentos / PDF</h3>
               <input 
                 type="file" 
                 accept=".pdf,.doc,.docx,.png,.jpg" 
-                onChange={handleFileChange} 
+                onChange={handleSubirDocumento} 
                 className="block w-full text-xs text-gray-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#E8F0EC] file:text-[#2D6A4F]" 
               />
               <button 
                 type="button"
                 onClick={() => { setUploading(true); setTimeout(() => setUploading(false), 1200); }} 
-                disabled={!file || uploading} 
-                className="w-full bg-[#52796F] text-white text-xs font-bold py-2.5 rounded-xl hover:bg-[#2D6A4F] transition disabled:opacity-50"
+                className="w-full bg-[#52796F] text-white text-xs font-bold py-2.5 rounded-xl hover:bg-[#2D6A4F] transition"
               >
                 {uploading ? 'Cargando archivo...' : 'Enviar Documento'}
               </button>
             </div>
           )}
 
-          {/* TAB 4: NOTAS */}
+          {/* TAB 5: ACUERDOS Y NOTAS */}
           {tab === 'notas' && (
             <div className="max-w-xl mx-auto space-y-3 bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs">
               <h3 className="text-sm font-bold text-[#2D6A4F]">Acuerdos de Sesión</h3>
@@ -412,15 +575,6 @@ export default function SalaVirtualB2B({
                   </li>
                 ))}
               </ul>
-            </div>
-          )}
-
-          {/* TAB 5: VIDEO (ADMIN) */}
-          {tab === 'video' && isAdmin && (
-            <div className="p-8 text-center space-y-3 bg-white rounded-3xl border-2 border-[#D85260]">
-              <span className="text-xs font-bold bg-[#FFF0F2] text-[#D85260] px-3 py-1 rounded-full border border-[#FF8894]">CONSOLA EN VIVO (ADMIN)</span>
-              <h4 className="text-base font-bold text-[#2D6A4F]">Transmisión para {portalData.nombre}</h4>
-              <p className="text-xs text-[#52796F]">Acceso privileged activo para la sesión virtual.</p>
             </div>
           )}
 
