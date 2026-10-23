@@ -34,9 +34,9 @@ export default function SalaVirtualB2B({
   appName,
   appLogo
 }: Props) {
-  // Construcción retrocompatible en caso de llamarse desde app/comunidad/page.tsx
+  // Soporte retrocompatible para llamadas desde otras páginas (ej: app/comunidad/page.tsx)
   const effectiveName = inputPortalData?.nombre || appName || initialApp || 'Portal ASL Ideas SpA';
-  const effectiveLogo = inputPortalData?.logo || appLogo || '/LOGO_asl.png';
+  const effectiveLogo = inputPortalData?.logo || appLogo || '/logo-asl.png';
 
   const portalData: PortalInfo = inputPortalData || {
     id: 'default',
@@ -64,7 +64,7 @@ export default function SalaVirtualB2B({
   const [userEmail, setUserEmail] = useState<string>('');
   const [userPhone, setUserPhone] = useState<string>('');
   const [userOrg, setUserOrg] = useState<string>('');
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<FileList | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
   const [bookingSuccess, setBookingSuccess] = useState<boolean>(false);
 
@@ -114,7 +114,7 @@ export default function SalaVirtualB2B({
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
     if (fileList && fileList.length > 0) {
-      setFile(fileList[0]);
+      setFile(fileList);
     } else {
       setFile(null);
     }
@@ -420,7 +420,7 @@ export default function SalaVirtualB2B({
             <div className="p-8 text-center space-y-3 bg-white rounded-3xl border-2 border-[#D85260]">
               <span className="text-xs font-bold bg-[#FFF0F2] text-[#D85260] px-3 py-1 rounded-full border border-[#FF8894]">CONSOLA EN VIVO (ADMIN)</span>
               <h4 className="text-base font-bold text-[#2D6A4F]">Transmisión para {portalData.nombre}</h4>
-              <p className="text-xs text-[#52796F]">Acceso privilegiado activo para la sesión virtual.</p>
+              <p className="text-xs text-[#52796F]">Acceso privileged activo para la sesión virtual.</p>
             </div>
           )}
 

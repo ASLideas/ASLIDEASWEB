@@ -11,7 +11,7 @@ export default function HomePage() {
   const [adminPass, setAdminPass] = useState<string>('');
   const [adminError, setAdminError] = useState<boolean>(false);
 
-  // Información estructurada de los 4 Portales Interactivos
+  // Información estructurada de los 4 Portales Interactivos con las rutas de logos limpios
   const portalesData: Record<string, {
     id: string;
     nombre: string;
@@ -28,7 +28,7 @@ export default function HomePage() {
       id: 'asl',
       nombre: 'Casa Matriz ASL Ideas SpA',
       subtitulo: 'Desarrollo B2B, Licencias y Accesibilidad Cognitiva UI/UX',
-      logo: '/LOGO_asl.png',
+      logo: '/logo-asl.png',
       oficinaNum: 'Oficina Virtual 01',
       leyes: ['Ley TEA N° 21.545', 'Convenios Marco B2B'],
       descripcionCorta: 'Gestión corporativa, desarrollo de software a medida, licencias B2B, convenios municipales y consultoría en accesibilidad cognitiva UI/UX.',
@@ -45,7 +45,7 @@ export default function HomePage() {
       id: 'lawenmoll',
       nombre: 'LAWENMOLL Salud Integrativa',
       subtitulo: 'Evaluación Metabólica y Fichas Clínicas Protegidas',
-      logo: '/lawenmoll_logo.jpg',
+      logo: '/logo-lawenmoll.jpg',
       oficinaNum: 'Oficina Virtual 02',
       leyes: ['Ley N° 21.663 - Datos Protegidos', 'Estándar SOAP'],
       descripcionCorta: 'Test de Bienestar Inteligente, composición metabólica, Fichas Clínicas encriptadas bajo Ley N° 21.663 y consulta con especialistas.',
@@ -62,7 +62,7 @@ export default function HomePage() {
       id: 'wellness',
       nombre: 'Wellness Web App',
       subtitulo: 'Movimiento Adaptado, Pausas Activas y Cocina Demostrativa',
-      logo: '/logo_wellness.jpg',
+      logo: '/logo-wellness.jpg',
       oficinaNum: 'Oficina Virtual 03',
       leyes: ['Pausas Activas Laborales', 'Ergonomía Digital'],
       descripcionCorta: 'Movimiento adaptado sin impacto, pausas activas para el trabajo remoto, salas virtuales interactivas y cocina demostrativa.',
@@ -79,7 +79,7 @@ export default function HomePage() {
       id: 'bienestar',
       nombre: 'Bienestar App',
       subtitulo: 'Comunidad, Herbolaria Nativa y Descanso Consciente',
-      logo: '/LOGO_BIENESTAR.png',
+      logo: '/logo-bienestar.png',
       oficinaNum: 'Oficina Virtual 04',
       leyes: ['Fitoterapia Nativa', 'Preservación Patrimonial'],
       descripcionCorta: 'Red de comunidad, recetario herbolario nativo en PDF, seguimiento de hábitos saludables, fitoterapia tradicional y descanso consciente.',
@@ -120,8 +120,8 @@ export default function HomePage() {
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-white p-1 border-2 border-[#D4AF37] overflow-hidden flex items-center justify-center shadow-xs">
               <img 
-                src="/LOGO_asl.png" 
-                onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/LOGO%20asl.png'; }}
+                src="/logo-asl.png" 
+                onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/LOGO_asl.png'; }}
                 alt="ASL Ideas SpA" 
                 className="w-full h-full object-cover rounded-full" 
               />
@@ -291,8 +291,8 @@ export default function HomePage() {
                   </span>
                   <div className="w-14 h-14 rounded-full bg-white p-1 border-2 border-[#D4AF37] overflow-hidden flex items-center justify-center shadow-xs">
                     <img 
-                      src="/LOGO_asl.png" 
-                      onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/LOGO%20asl.png'; }}
+                      src="/logo-asl.png" 
+                      onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/LOGO_asl.png'; }}
                       alt="Logo ASL Ideas" 
                       className="w-full h-full object-cover rounded-full" 
                     />
@@ -321,7 +321,8 @@ export default function HomePage() {
                   </span>
                   <div className="w-14 h-14 rounded-full bg-white p-1 border-2 border-[#D4AF37] overflow-hidden flex items-center justify-center shadow-xs">
                     <img 
-                      src="/lawenmoll_logo.jpg" 
+                      src="/logo-lawenmoll.jpg" 
+                      onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/lawenmoll_logo.jpg'; }}
                       alt="Logo Lawenmoll" 
                       className="w-full h-full object-cover rounded-full" 
                     />
@@ -350,8 +351,8 @@ export default function HomePage() {
                   </span>
                   <div className="w-14 h-14 rounded-full bg-white p-1 border-2 border-[#D4AF37] overflow-hidden flex items-center justify-center shadow-xs">
                     <img 
-                      src="/logo_wellness.jpg" 
-                      onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/logo%20wellness.jpg'; }}
+                      src="/logo-wellness.jpg" 
+                      onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/logo_wellness.jpg'; }}
                       alt="Logo Wellness" 
                       className="w-full h-full object-cover rounded-full" 
                     />
@@ -380,8 +381,8 @@ export default function HomePage() {
                   </span>
                   <div className="w-14 h-14 rounded-full bg-white p-1 border-2 border-[#FF8894] overflow-hidden flex items-center justify-center shadow-xs">
                     <img 
-                      src="/LOGO_BIENESTAR.png" 
-                      onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/LOGO%20BIENESTAR.png'; }}
+                      src="/logo-bienestar.png" 
+                      onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/LOGO_BIENESTAR.png'; }}
                       alt="Logo Bienestar" 
                       className="w-full h-full object-cover rounded-full" 
                     />
