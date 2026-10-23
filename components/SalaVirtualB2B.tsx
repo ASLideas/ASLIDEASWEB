@@ -31,7 +31,7 @@ export interface Props {
   initialApp?: string;
   appName?: string;
   appLogo?: string;
-  [key: string]: any; // Firma flexible para evitar errores de TypeScript en Vercel
+  [key: string]: any; // Permite propiedades dinámicas para evitar bloqueos en Vercel
 }
 
 export default function SalaVirtualB2B({ 
@@ -49,7 +49,7 @@ export default function SalaVirtualB2B({
     id: 'lawenmoll',
     nombre: 'LAWENMOLL Salud Integrativa',
     subtitulo: 'Evaluación Metabólica y Fichas Clínicas Protegidas',
-    logo: '/logo-lawenmoll.jpg',
+    logo: '/lawenmoll_logo.jpg',
     oficinaNum: 'Oficina Virtual 02',
     leyes: ['Ley N° 21.663 - Datos Protegidos', 'Ley TEA N° 21.545', 'Estándar SOAP'],
     descripcionCorta: 'Test de Bienestar Inteligente, composición metabólica, Fichas Clínicas encriptadas bajo Ley N° 21.663 y consulta con especialistas.',
@@ -72,14 +72,14 @@ export default function SalaVirtualB2B({
     logo: effectiveLogo
   };
 
-  const [tab, setTab] = useState<'descripcion' | 'agendar' | 'reunion' | 'archivos' | 'notas'>('descripcion');
+  const [tab, setTab] = useState<'descripcion' | 'agendar' | 'reunion' | 'archivos' | 'notas'>('reunion');
   const [motivoConsulta, setMotivoConsulta] = useState<string>('Atención Virtual (Participantes de Lado a Lado)');
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [selectedTime, setSelectedTime] = useState<string>('10:30 AM');
   const [userName, setUserName] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
 
-  // Estados de la Reunión en línea
+  // Estados del Panel de Trabajo en Vivo / Reunión
   const [documentosReunion, setDocumentosReunion] = useState<string[]>([
     'Ficha_Clinica_SOAP_Inicial.pdf',
     'Pauta_Evaluacion_Metabolica.pdf'
@@ -88,13 +88,13 @@ export default function SalaVirtualB2B({
     'Esquema_Composicion_Corporal.jpg'
   ]);
   const [transcripcion, setTranscripcion] = useState<string>(
-    'Registro de Sesión: El paciente consulta para evaluación de salud metabólica. Se acuerda pauta de seguimiento y revisión de hábitos diarios.'
+    'Registro de Sesión: Paciente realiza consulta para evaluación de salud metabólica y hábitos. Se acuerda pauta de seguimiento integrativo.'
   );
   const [transcribiendo, setTranscribiendo] = useState<boolean>(false);
   const [transcripcionCompletada, setTranscripcionCompletada] = useState<boolean>(false);
 
   const [notas, setNotas] = useState<string[]>([
-    'Acuerdo preliminar: Demostración de interfaz accesible UI/UX.',
+    'Acuerdo de consulta: Demostración de interfaz accesible UI/UX.',
     'Revisión de requerimientos para Ley N° 21.663 y Ley TEA N° 21.545.'
   ]);
   const [nuevaNota, setNuevaNota] = useState<string>('');
@@ -103,7 +103,7 @@ export default function SalaVirtualB2B({
 
   useEffect(() => {
     if (isOpen) {
-      setTab('descripcion');
+      setTab('reunion');
       setBookingSuccess(false);
     }
   }, [isOpen, inputPortalData]);
@@ -168,14 +168,14 @@ export default function SalaVirtualB2B({
 
   const handleSubirDocumento = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files && files.length > 0 && files[0]) {
+    if (files && files.length > 0) {
       setDocumentosReunion((prev) => [...prev, files[0].name]);
     }
   };
 
   const handleSubirImagen = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files && files.length > 0 && files[0]) {
+    if (files && files.length > 0) {
       setImagenesReunion((prev) => [...prev, files[0].name]);
     }
   };
@@ -185,7 +185,7 @@ export default function SalaVirtualB2B({
     setTimeout(async () => {
       setTranscribiendo(false);
       setTranscripcionCompletada(true);
-      const textoActualizado = transcripcion + '\n\n[Transcripción Automática Generada]: Acuerdos consolidados y guardados en la ficha del cliente bajo Ley N° 21.663.';
+      const textoActualizado = transcripcion + '\n\n[Transcripción Automática Generada]: Acuerdos consolidados y respaldados bajo estándar Ley N° 21.663.';
       setTranscripcion(textoActualizado);
 
       try {
@@ -202,23 +202,23 @@ export default function SalaVirtualB2B({
 
   return (
     <div className="fixed inset-0 z-50 bg-[#2D6A4F]/60 backdrop-blur-md flex items-center justify-center p-3 md:p-6 overflow-y-auto font-sans">
-      <div className="bg-[#FAF8F5] w-full max-w-4xl rounded-3xl border-4 border-[#D4AF37] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] my-auto">
+      <div className="bg-[#FAF8F5] w-full max-w-5xl rounded-3xl border-2 border-[#D4AF37] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] my-auto">
         
-        {/* ENCABEZADO */}
+        {/* ENCABEZADO DEL PORTAL */}
         <header className="bg-[#52796F] text-white p-5 flex justify-between items-center border-b-2 border-[#D4AF37]">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white p-1 border-2 border-[#D4AF37] flex items-center justify-center shadow-md overflow-hidden flex-shrink-0">
+            <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white p-1.5 border border-[#D4AF37] flex items-center justify-center overflow-hidden flex-shrink-0 shadow-xs">
               <img 
                 src={portalData.logo} 
                 alt={portalData.nombre} 
-                className="w-full h-full object-cover rounded-full" 
+                className="w-full h-full object-contain" 
               />
             </div>
             <div>
-              <span className="text-[10px] font-bold tracking-wider uppercase bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] px-3 py-1 rounded-full inline-block mb-1">
+              <span className="text-[10px] font-bold tracking-wider uppercase bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] px-3 py-0.5 rounded-full inline-block mb-1">
                 {portalData.oficinaNum}
               </span>
-              <h2 className="text-lg md:text-xl font-bold text-white">{portalData.nombre}</h2>
+              <h2 className="text-base md:text-lg font-bold text-white">{portalData.nombre}</h2>
               <p className="text-xs text-[#E8F0EC]">{portalData.subtitulo}</p>
             </div>
           </div>
@@ -232,128 +232,70 @@ export default function SalaVirtualB2B({
           </button>
         </header>
 
-        {/* PESTAÑAS DE NAVEGACION */}
+        {/* NAVEGACIÓN POR PESTAÑAS */}
         <div className="flex border-b border-[#C8D8CE] bg-[#E8F0EC] overflow-x-auto">
           <button 
             type="button"
-            onClick={() => setTab('descripcion')} 
-            className={`flex-1 min-w-[120px] py-3.5 text-xs font-bold transition ${tab === 'descripcion' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
-          >
-            Descripción del Portal
-          </button>
-          <button 
-            type="button"
             onClick={() => setTab('reunion')} 
-            className={`flex-1 min-w-[120px] py-3.5 text-xs font-bold transition ${tab === 'reunion' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+            className={`flex-1 min-w-[130px] py-3.5 text-xs font-bold transition ${tab === 'reunion' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
           >
-            Reunión en línea
+            Reunión / Consulta en línea
           </button>
           <button 
             type="button"
             onClick={() => setTab('agendar')} 
-            className={`flex-1 min-w-[120px] py-3.5 text-xs font-bold transition ${tab === 'agendar' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+            className={`flex-1 min-w-[130px] py-3.5 text-xs font-bold transition ${tab === 'agendar' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
           >
             Agendar Cita B2B
           </button>
           <button 
             type="button"
-            onClick={() => setTab('archivos')} 
-            className={`flex-1 min-w-[120px] py-3.5 text-xs font-bold transition ${tab === 'archivos' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+            onClick={() => setTab('descripcion')} 
+            className={`flex-1 min-w-[130px] py-3.5 text-xs font-bold transition ${tab === 'descripcion' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
           >
-            Documentos / PDF
+            Información del Portal
+          </button>
+          <button 
+            type="button"
+            onClick={() => setTab('archivos')} 
+            className={`flex-1 min-w-[130px] py-3.5 text-xs font-bold transition ${tab === 'archivos' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+          >
+            Adjuntar Documentos
           </button>
           <button 
             type="button"
             onClick={() => setTab('notas')} 
-            className={`flex-1 min-w-[120px] py-3.5 text-xs font-bold transition ${tab === 'notas' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
+            className={`flex-1 min-w-[130px] py-3.5 text-xs font-bold transition ${tab === 'notas' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
           >
             Acuerdos y Notas
           </button>
         </div>
 
-        {/* CONTENIDO PRINCIPAL */}
+        {/* CONTENIDO INTERNO DE LA APP */}
         <div className="p-6 overflow-y-auto flex-1">
 
-          {/* TAB 1: DESCRIPCION EXTENSA */}
-          {tab === 'descripcion' && (
-            <div className="space-y-6 max-w-3xl mx-auto">
-              <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-4">
-                <div className="flex flex-wrap gap-2">
-                  {portalData.leyes.map((ley, idx) => (
-                    <span key={idx} className="text-[10px] font-bold uppercase tracking-wider bg-[#E8F0EC] text-[#2D6A4F] border border-[#C8D8CE] px-3 py-1 rounded-full">
-                      {ley}
-                    </span>
-                  ))}
-                </div>
-
-                <h3 className="text-lg font-bold text-[#2D6A4F] border-b border-[#E8F0EC] pb-2">
-                  Propósito y Funcionalidades de {portalData.nombre}
-                </h3>
-
-                <p className="text-xs md:text-sm text-[#52796F] leading-relaxed">
-                  {portalData.descripcionLarga}
-                </p>
-
-                <div className="pt-2">
-                  <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider mb-2">Servicios y Módulos Principales:</h4>
-                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
-                    {portalData.serviciosClave.map((servicio, idx) => (
-                      <li key={idx} className="p-3 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[#2D6A4F] font-semibold">
-                        • {servicio}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="p-3 bg-[#E8F0EC] rounded-2xl border border-[#C8D8CE] text-xs">
-                  <span className="font-bold text-[#2D6A4F]">Público Objetivo:</span>{' '}
-                  <span className="text-[#52796F]">{portalData.publicoObjetivo}</span>
-                </div>
-              </div>
-
-              <div className="bg-[#52796F] p-6 rounded-3xl border-2 border-[#D4AF37] text-white text-center space-y-3 shadow-md">
-                <h4 className="text-base font-bold">¿Deseas ingresar a la Reunión Web o Agendar una Cita?</h4>
-                <div className="flex justify-center gap-3 flex-wrap pt-1">
-                  <button
-                    type="button"
-                    onClick={() => setTab('reunion')}
-                    className="bg-[#D4AF37] hover:bg-[#B08D4B] text-white text-xs font-bold px-5 py-2.5 rounded-xl transition shadow-xs"
-                  >
-                    Ingresar a Reunión en línea
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setTab('agendar')}
-                    className="bg-white text-[#2D6A4F] hover:bg-[#FAF8F5] text-xs font-bold px-5 py-2.5 rounded-xl transition shadow-xs"
-                  >
-                    Agendar Cita B2B
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 2: REUNIÓN EN LÍNEA */}
+          {/* TAB 1: REUNIÓN EN LÍNEA / PANEL DE TRABAJO */}
           {tab === 'reunion' && (
             <div className="space-y-6 max-w-4xl mx-auto">
               
-              <div className="bg-white p-6 rounded-3xl border-2 border-[#D4AF37] shadow-xs space-y-4">
+              <div className="bg-white p-6 rounded-3xl border border-[#D4AF37] shadow-xs space-y-4">
                 <div className="border-b border-[#E8F0EC] pb-3 flex justify-between items-center flex-wrap gap-2">
                   <div>
                     <span className="text-[10px] font-bold uppercase tracking-wider bg-[#E8F0EC] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]">
-                      Reunión Web Activa para Clientes
+                      Consulta Activa — Participantes de Lado a Lado
                     </span>
-                    <h3 className="text-lg font-bold text-[#2D6A4F] mt-1">
-                      Panel de Trabajo en Vivo — {portalData.nombre}
+                    <h3 className="text-base md:text-lg font-bold text-[#2D6A4F] mt-1">
+                      Panel de Trabajo Virtual — {portalData.nombre}
                     </h3>
                   </div>
                   <span className="text-xs font-bold text-[#D85260] bg-[#FFF0F2] px-3 py-1 rounded-full border border-[#FF8894]">
-                    Sesión Segura Encriptada
+                    Sesión Encriptada Ley N° 21.663
                   </span>
                 </div>
 
-                {/* BOTONES DE ACCIÓN */}
+                {/* BOTONES DE ACCIÓN RÁPIDA */}
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-3 pt-2">
+                  
                   <label className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl text-center cursor-pointer transition flex flex-col justify-center items-center gap-1">
                     <span className="text-xs font-bold text-[#2D6A4F]">Añadir Documento</span>
                     <span className="text-[10px] text-[#52796F]">Subir PDF o Ficha</span>
@@ -381,9 +323,9 @@ export default function SalaVirtualB2B({
                     className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl text-center transition flex flex-col justify-center items-center gap-1 disabled:opacity-50"
                   >
                     <span className="text-xs font-bold text-[#2D6A4F]">
-                      {transcribiendo ? 'Transcribiendo...' : 'Transcribir Reunión'}
+                      {transcribiendo ? 'Transcribiendo...' : 'Transcribir Sesión'}
                     </span>
-                    <span className="text-[10px] text-[#52796F]">Exportar a PDF</span>
+                    <span className="text-[10px] text-[#52796F]">Respaldar Registro</span>
                   </button>
 
                   <label className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl text-center cursor-pointer transition flex flex-col justify-center items-center gap-1">
@@ -402,17 +344,20 @@ export default function SalaVirtualB2B({
                     onClick={() => setTab('agendar')}
                     className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl text-center transition flex flex-col justify-center items-center gap-1 col-span-2 md:col-span-1"
                   >
-                    <span className="text-xs font-bold text-[#2D6A4F]">Agendar Otra Reunión</span>
-                    <span className="text-[10px] text-[#52796F]">Nueva Cita B2B</span>
+                    <span className="text-xs font-bold text-[#2D6A4F]">Agendar Cita</span>
+                    <span className="text-[10px] text-[#52796F]">Nueva Sesión B2B</span>
                   </button>
+
                 </div>
               </div>
 
-              {/* COLUMNAS DE ARCHIVOS */}
+              {/* TRES COLUMNAS PRINCIPALES */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                {/* DOCUMENTOS */}
                 <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-3 shadow-xs">
                   <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#E8F0EC] pb-2">
-                    Documentos ({documentosReunion.length})
+                    Documentos de la Sesión ({documentosReunion.length})
                   </h4>
                   <ul className="space-y-2 text-xs">
                     {documentosReunion.map((doc, idx) => (
@@ -424,9 +369,10 @@ export default function SalaVirtualB2B({
                   </ul>
                 </div>
 
+                {/* IMÁGENES */}
                 <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-3 shadow-xs">
                   <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#E8F0EC] pb-2">
-                    Imágenes ({imagenesReunion.length})
+                    Imágenes y Esquemas ({imagenesReunion.length})
                   </h4>
                   <ul className="space-y-2 text-xs">
                     {imagenesReunion.map((img, idx) => (
@@ -438,9 +384,10 @@ export default function SalaVirtualB2B({
                   </ul>
                 </div>
 
+                {/* TRANSCRIPCIÓN */}
                 <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-3 shadow-xs">
                   <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#E8F0EC] pb-2">
-                    Transcripción
+                    Transcripción y Apuntes
                   </h4>
                   <textarea
                     rows={4}
@@ -454,24 +401,25 @@ export default function SalaVirtualB2B({
                     </p>
                   )}
                 </div>
+
               </div>
 
             </div>
           )}
 
-          {/* TAB 3: AGENDAMIENTO */}
+          {/* TAB 2: AGENDAMIENTO B2B */}
           {tab === 'agendar' && (
             <div className="max-w-2xl mx-auto space-y-5 bg-white p-6 md:p-8 rounded-3xl border border-[#C8D8CE] shadow-xs">
               <div className="text-center space-y-1 border-b border-[#E8F0EC] pb-4">
-                <h3 className="text-base font-bold text-[#2D6A4F]">Agendamiento B2B — {portalData.nombre}</h3>
+                <h3 className="text-base font-bold text-[#2D6A4F]">Agendamiento de Cita — {portalData.nombre}</h3>
                 <p className="text-xs text-[#52796F]">Completa los datos para reservar tu sesión en esta oficina virtual.</p>
               </div>
 
               {bookingSuccess ? (
                 <div className="p-6 bg-[#FFF0F2] rounded-2xl border border-[#FF8894] text-center space-y-4">
-                  <h4 className="text-base font-bold text-[#D85260]">Reunión Agendada con Éxito</h4>
+                  <h4 className="text-base font-bold text-[#D85260]">Cita Agendada Exitosamente</h4>
                   <p className="text-xs text-[#52796F] leading-relaxed">
-                    Hemos registrado la cita para <strong className="text-[#2D6A4F]">{userName}</strong> ({userEmail}).<br/>
+                    Registrado para <strong className="text-[#2D6A4F]">{userName}</strong> ({userEmail}).<br/>
                     Portal: <strong className="text-[#2D6A4F]">{portalData.nombre}</strong><br/>
                     Motivo: <strong className="text-[#2D6A4F]">{motivoConsulta}</strong><br/>
                     Fecha: <strong className="text-[#2D6A4F]">{selectedDate}</strong> a las <strong className="text-[#2D6A4F]">{selectedTime}</strong>.
@@ -552,17 +500,17 @@ export default function SalaVirtualB2B({
                   <div className="flex items-center gap-3 pt-3 border-t border-[#E8F0EC]">
                     <button 
                       type="button"
-                      onClick={() => setTab('descripcion')}
+                      onClick={() => setTab('reunion')}
                       className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold py-3 rounded-xl transition text-center"
                     >
-                      Volver a Descripción
+                      Volver a la Sesión
                     </button>
                     <button 
                       type="submit" 
                       disabled={uploading} 
                       className="flex-1 bg-[#52796F] hover:bg-[#2D6A4F] text-white text-xs font-bold py-3 rounded-xl transition text-center"
                     >
-                      {uploading ? 'Procesando Cita...' : 'Confirmar Cita B2B'}
+                      {uploading ? 'Procesando...' : 'Confirmar Cita'}
                     </button>
                   </div>
                 </form>
@@ -570,10 +518,49 @@ export default function SalaVirtualB2B({
             </div>
           )}
 
-          {/* TAB 4: ARCHIVOS */}
+          {/* TAB 3: INFORMACIÓN DEL PORTAL */}
+          {tab === 'descripcion' && (
+            <div className="space-y-6 max-w-3xl mx-auto">
+              <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-4">
+                <div className="flex flex-wrap gap-2">
+                  {portalData.leyes.map((ley, idx) => (
+                    <span key={idx} className="text-[10px] font-bold uppercase tracking-wider bg-[#E8F0EC] text-[#2D6A4F] border border-[#C8D8CE] px-3 py-1 rounded-full">
+                      {ley}
+                    </span>
+                  ))}
+                </div>
+
+                <h3 className="text-lg font-bold text-[#2D6A4F] border-b border-[#E8F0EC] pb-2">
+                  Propósito y Funcionalidades de {portalData.nombre}
+                </h3>
+
+                <p className="text-xs md:text-sm text-[#52796F] leading-relaxed">
+                  {portalData.descripcionLarga}
+                </p>
+
+                <div className="pt-2">
+                  <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider mb-2">Servicios y Módulos Principales:</h4>
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+                    {portalData.serviciosClave.map((servicio, idx) => (
+                      <li key={idx} className="p-3 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[#2D6A4F] font-semibold">
+                        • {servicio}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="p-3 bg-[#E8F0EC] rounded-2xl border border-[#C8D8CE] text-xs">
+                  <span className="font-bold text-[#2D6A4F]">Público Objetivo:</span>{' '}
+                  <span className="text-[#52796F]">{portalData.publicoObjetivo}</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: ADJUNTAR ARCHIVOS */}
           {tab === 'archivos' && (
             <div className="max-w-xl mx-auto space-y-4 bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs">
-              <h3 className="text-sm font-bold text-[#2D6A4F] text-center">Adjuntar Documentos / PDF</h3>
+              <h3 className="text-sm font-bold text-[#2D6A4F] text-center">Adjuntar Documentos / Fichas Clínicas</h3>
               <input 
                 type="file" 
                 accept=".pdf,.doc,.docx,.png,.jpg" 
@@ -585,7 +572,7 @@ export default function SalaVirtualB2B({
                 onClick={() => { setUploading(true); setTimeout(() => setUploading(false), 1200); }} 
                 className="w-full bg-[#52796F] text-white text-xs font-bold py-2.5 rounded-xl hover:bg-[#2D6A4F] transition"
               >
-                {uploading ? 'Cargando archivo...' : 'Enviar Documento'}
+                {uploading ? 'Cargando archivo...' : 'Guardar en Ficha del Cliente'}
               </button>
             </div>
           )}
@@ -593,13 +580,13 @@ export default function SalaVirtualB2B({
           {/* TAB 5: ACUERDOS Y NOTAS */}
           {tab === 'notas' && (
             <div className="max-w-xl mx-auto space-y-3 bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs">
-              <h3 className="text-sm font-bold text-[#2D6A4F]">Acuerdos de Sesión</h3>
+              <h3 className="text-sm font-bold text-[#2D6A4F]">Acuerdos y Notas de Sesión</h3>
               <div className="flex gap-2">
                 <input 
                   type="text" 
                   value={nuevaNota} 
                   onChange={(e) => setNuevaNota(e.target.value)} 
-                  placeholder="Escribir acuerdo..." 
+                  placeholder="Escribir acuerdo de consulta..." 
                   className="flex-1 text-xs p-2.5 border border-[#C8D8CE] rounded-xl focus:outline-none" 
                 />
                 <button 
