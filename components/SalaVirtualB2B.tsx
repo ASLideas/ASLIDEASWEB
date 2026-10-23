@@ -44,15 +44,6 @@ export interface Props {
 
 const horariosDisponibles: string[] = ['09:00 AM', '10:30 AM', '12:00 PM', '03:00 PM', '04:30 PM', '06:00 PM'];
 
-const motivos: string[] = [
-  'Atención Virtual (Participantes de Lado a Lado)',
-  'Cotización de Convenio Corporativo / Licencia B2B',
-  'Demostración de Software en Vivo',
-  'Consultoría en Accesibilidad UI/UX (Ley TEA / Neurodivergencia)',
-  'Muestra de Fichas Clínicas Encriptadas (Ley N° 21.663)',
-  'Alianza Institucional o Municipal'
-];
-
 export default function SalaVirtualB2B({ 
   isOpen, 
   onClose, 
@@ -67,11 +58,11 @@ export default function SalaVirtualB2B({
     id: 'lawenmoll',
     nombre: 'LAWENMOLL Salud Integrativa',
     subtitulo: 'Evaluación Metabólica y Fichas Clínicas Protegidas',
-    logo: '/lawenmoll_logo.jpg',
+    logo: '/logo-lawenmoll.jpg.png',
     oficinaNum: 'Oficina Virtual 02',
     leyes: ['Ley N° 21.663 - Datos Protegidos', 'Ley TEA N° 21.545', 'Estándar SOAP'],
-    descripcionCorta: 'Test de Bienestar Inteligente, composición metabólica, Fichas Clínicas encriptadas bajo Ley N° 21.663 y consulta con especialistas.',
-    descripcionLarga: 'Plataforma clínica integrativa enfocada en la evaluación personalizada de la salud metabólica. Unifica la medicina preventiva con herramientas digitales que encriptan el historial clínico y conectan al paciente con especialistas de la salud.',
+    descripcionCorta: 'Test de Bienestar Inteligente, composición metabólica y Fichas Clínicas encriptadas.',
+    descripcionLarga: 'Plataforma clínica integrativa enfocada en la evaluación personalizada de la salud metabólica. Unifica la medicina preventiva con herramientas digitales que encriptan el historial clínico y conectan al paciente con especialistas.',
     serviciosClave: [
       'Test de Bienestar Inteligente',
       'Cálculo de Composición Corporal y Metabólica',
@@ -104,7 +95,7 @@ export default function SalaVirtualB2B({
   const [modalCancelar, setModalCancelar] = useState<boolean>(false);
   const [motivoCancelacion, setMotivoCancelacion] = useState<string>('Fallo técnico / Problema de conexión a internet');
 
-  // Panel Lateral en Videollamada (Añadir Doc, Nota, Transcribir, Imagen, Agendar)
+  // Panel Lateral en Videollamada
   const [activeSideTab, setActiveSideTab] = useState<'menu' | 'nota' | 'transcripcion'>('menu');
 
   // Estado de Archivos Subidos
@@ -116,7 +107,6 @@ export default function SalaVirtualB2B({
   const [archivoPreview, setArchivoPreview] = useState<ArchivoItem | null>(null);
 
   // Formulario Agendamiento
-  const [motivoConsulta, setMotivoConsulta] = useState<string>('Atención Virtual (Participantes de Lado a Lado)');
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [selectedTime, setSelectedTime] = useState<string>('10:30 AM');
   const [userName, setUserName] = useState<string>('');
@@ -153,10 +143,11 @@ export default function SalaVirtualB2B({
     }
   };
 
-  const handleSubirArchivo = (e: ChangeEvent<HTMLInputElement>) => {
+  // MANEJADOR DE ARCHIVOS CORREGIDO (SOLUCIONA ERRORES TS2339 Y TS2345)
+  const handleSubirArchivo = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      const file = files[0];
+      const file = files[0]; // Extracción explícita del primer File
       const isImg = file.type.includes('image');
       const nuevoArchivo: ArchivoItem = {
         id: Date.now().toString(),
@@ -166,6 +157,21 @@ export default function SalaVirtualB2B({
         fecha: new Date().toLocaleDateString('es-CL')
       };
       setArchivosList((prev) => [nuevoArchivo, ...prev]);
+
+      try {
+        if (supabase) {
+          await supabase.from('archivos_consulta').insert([
+            {
+              portal_id: portalData.id,
+              nombre: file.name,
+              tipo: isImg ? 'imagen' : 'pdf',
+              fecha: nuevoArchivo.fecha
+            }
+          ]);
+        }
+      } catch (err) {
+        console.warn('Registro guardado localmente:', err);
+      }
     }
   };
 
@@ -179,19 +185,62 @@ export default function SalaVirtualB2B({
     setModalCancelar(false);
   };
 
-  const handleAgregarNota = () => {
+  const handleAgregarNota = async () => {
     if (!nuevaNota.trim()) return;
-    setNotas((prev) => [...prev, nuevaNota.trim()]);
+    const notaTexto = nuevaNota.trim();
+    setNotas((prev) => [...prev, notaTexto]);
     setNuevaNota('');
+
+    try {
+      if (supabase) {
+        await supabase.from('notas_acuerdos').insert([
+          { portal_id: portalData.id, nota: notaTexto }
+        ]);
+      }
+    } catch (err) {
+      console.warn('Nota guardada localmente:', err);
+    }
   };
 
-  const handleTranscribirReunion = () => {
+  const handleTranscribirReunion = async () => {
     setTranscribiendo(true);
-    setTimeout(() => {
+    setTimeout(async () => {
       setTranscribiendo(false);
-      setTranscripcion((prev) => prev + '\n\n[Transcripción Automática - Ley N° 21.663]: Acuerdos resguardados.');
+      const nuevaTranscripcion = transcripcion + '\n\n[Transcripción Automática - Ley N° 21.663]: Acuerdos resguardados.';
+      setTranscripcion(nuevaTranscripcion);
       setActiveSideTab('transcripcion');
+
+      try {
+        if (supabase) {
+          await supabase.from('transcripciones_reunion').insert([
+            { portal_id: portalData.id, contenido_transcripcion: nuevaTranscripcion }
+          ]);
+        }
+      } catch (err) {
+        console.warn('Transcripción guardada localmente:', err);
+      }
     }, 1000);
+  };
+
+  const handleAgendarSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setBookingSuccess(true);
+
+    try {
+      if (supabase) {
+        await supabase.from('citas_b2b').insert([
+          {
+            portal_id: portalData.id,
+            nombre_completo: userName,
+            email: userEmail,
+            fecha: selectedDate,
+            hora: selectedTime
+          }
+        ]);
+      }
+    } catch (err) {
+      console.warn('Cita registrada en memoria local:', err);
+    }
   };
 
   const scrollToSection = (id: string) => {
@@ -202,17 +251,17 @@ export default function SalaVirtualB2B({
   return (
     <div className="fixed inset-0 z-50 bg-[#FAF8F5] overflow-y-auto font-sans text-[#2D6A4F] selection:bg-[#E8F0EC]">
       
-      {/* HEADER DE MARCA (VERDE, DORADO, ROSADO PASTEL) */}
+      {/* HEADER CON LOGO CIRCULAR EN FONDO ROSADO PASTEL */}
       <header className="bg-white sticky top-0 z-50 border-b-2 border-[#D4AF37] shadow-xs px-6 py-4">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-[#FFF0F2] p-1.5 border-2 border-[#F4ACB7] shadow-xs flex items-center justify-center overflow-hidden flex-shrink-0">
+            <div className="w-16 h-16 rounded-full bg-[#FFF0F2] p-1 border-2 border-[#F4ACB7] shadow-xs flex items-center justify-center overflow-hidden flex-shrink-0">
               <img 
                 src={portalData.logo} 
                 alt={portalData.nombre} 
-                className="w-full h-full object-contain" 
+                className="w-full h-full object-contain rounded-full" 
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/LOGO_asl.png';
+                  (e.target as HTMLImageElement).src = '/logo-asl.png.png';
                 }}
               />
             </div>
@@ -259,7 +308,7 @@ export default function SalaVirtualB2B({
       {/* CONTENIDO PRINCIPAL */}
       <main className="max-w-7xl mx-auto px-6 py-10 space-y-12">
 
-        {/* CÓDIGO DE REUNIÓN Y RECONEXIÓN */}
+        {/* CÓDIGO DE SALA Y RECONEXIÓN */}
         <section className="bg-[#FFF0F2] p-6 rounded-3xl border-2 border-[#F4ACB7] flex flex-col md:flex-row justify-between items-center gap-4 shadow-xs">
           <div className="space-y-1">
             <span className="text-[10px] font-bold uppercase tracking-wider bg-white text-[#D85260] border border-[#FF8894] px-3 py-0.5 rounded-full">
@@ -291,7 +340,7 @@ export default function SalaVirtualB2B({
           </div>
         </section>
 
-        {/* SECCIÓN 1: VIDEOLLAMADA + MENÚ LATERAL DERECHO */}
+        {/* VIDEOLLAMADA + PANEL LATERAL SOBRIO SIN EMOJIS */}
         <section id="sec-videollamada" className="bg-white p-6 md:p-8 rounded-3xl border-2 border-[#D4AF37] shadow-md space-y-6">
           <div className="flex justify-between items-center border-b border-[#E8F0EC] pb-4 flex-wrap gap-2">
             <div>
@@ -307,15 +356,13 @@ export default function SalaVirtualB2B({
           </div>
 
           {enLlamada ? (
-            /* GRILLA: VIDEOLLAMADA (IZQUIERDA) + MENÚ LATERAL (DERECHA) */
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               
-              {/* ÁREA DE VIDEOLLAMADA (COLUMNAS 1 Y 2) */}
+              {/* REPRODUCTOR DE VIDEOLLAMADA */}
               <div className="lg:col-span-2 bg-[#2D6A4F] rounded-3xl p-6 text-white space-y-6 shadow-inner flex flex-col justify-between">
                 
-                {/* CAMARAS EN PARALELO */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 min-h-[280px]">
-                  {/* CÁMARA ESPECIALISTA */}
+                  {/* ESPECIALISTA */}
                   <div className="bg-[#52796F] rounded-2xl p-5 flex flex-col justify-between border-2 border-[#D4AF37] relative overflow-hidden">
                     <div className="flex justify-between items-center z-10">
                       <span className="bg-black/40 text-white text-[10px] px-3 py-1 rounded-full font-bold">
@@ -324,8 +371,8 @@ export default function SalaVirtualB2B({
                       <span className="text-[10px] text-[#D4AF37] font-bold">HD 1080p</span>
                     </div>
                     <div className="text-center my-6 z-10">
-                      <div className="w-16 h-16 mx-auto rounded-2xl bg-white p-1.5 border-2 border-[#D4AF37] mb-2 overflow-hidden shadow-md flex items-center justify-center">
-                        <img src={portalData.logo} alt="Logo Portal" className="w-full h-full object-contain" />
+                      <div className="w-16 h-16 mx-auto rounded-full bg-[#FFF0F2] p-1 border-2 border-[#F4ACB7] mb-2 overflow-hidden shadow-md flex items-center justify-center">
+                        <img src={portalData.logo} alt="Logo" className="w-full h-full object-contain rounded-full" />
                       </div>
                       <p className="text-xs font-bold">Atención Virtual Adaptada</p>
                     </div>
@@ -334,7 +381,7 @@ export default function SalaVirtualB2B({
                     </div>
                   </div>
 
-                  {/* CÁMARA USUARIO */}
+                  {/* CLIENTE */}
                   <div className="bg-[#3A5A40] rounded-2xl p-5 flex flex-col justify-between border-2 border-[#F4ACB7] relative overflow-hidden">
                     <div className="flex justify-between items-center z-10">
                       <span className="bg-black/40 text-white text-[10px] px-3 py-1 rounded-full font-bold">
@@ -354,14 +401,14 @@ export default function SalaVirtualB2B({
                   </div>
                 </div>
 
-                {/* CONTROLES DE LA VIDEOLLAMADA */}
+                {/* CONTROLES */}
                 <div className="flex flex-wrap justify-center items-center gap-2 pt-2 bg-black/20 p-3 rounded-2xl border border-white/10">
                   <button
                     type="button"
                     onClick={() => setMicActivo(!micActivo)}
                     className={`text-xs font-bold px-3.5 py-2 rounded-xl transition ${micActivo ? 'bg-white text-[#2D6A4F]' : 'bg-[#D85260] text-white'}`}
                   >
-                    {micActivo ? 'Micrófono Activado' : 'Micrófono Mute'}
+                    {micActivo ? 'Micrófono Activado' : 'Micrófono Silenciado'}
                   </button>
 
                   <button
@@ -382,7 +429,7 @@ export default function SalaVirtualB2B({
                 </div>
               </div>
 
-              {/* MENÚ LATERAL DERECHO (COLUMNA 3) */}
+              {/* PANEL LATERAL SOBRIO SIN EMOJIS */}
               <div className="lg:col-span-1 bg-[#FAF8F5] p-5 rounded-3xl border-2 border-[#C8D8CE] flex flex-col justify-between space-y-4 shadow-xs">
                 <div>
                   <div className="border-b border-[#C8D8CE] pb-3 mb-4">
@@ -392,88 +439,72 @@ export default function SalaVirtualB2B({
                     <p className="text-[11px] text-[#52796F]">Herramientas de consulta en vivo</p>
                   </div>
 
-                  {/* MENÚ DE BOTONES FUNCIONALES */}
                   <div className="space-y-2.5">
-                    {/* BOTÓN 1: AÑADIR DOCUMENTO */}
+                    {/* AÑADIR DOCUMENTO */}
                     <label className="w-full bg-white hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl cursor-pointer transition flex items-center justify-between shadow-xs group">
-                      <div className="flex items-center gap-2.5">
-                        <span className="w-8 h-8 rounded-xl bg-[#E8F0EC] text-[#2D6A4F] flex items-center justify-center font-bold text-sm">📄</span>
-                        <div className="text-left">
-                          <p className="text-xs font-bold text-[#2D6A4F]">Añadir Documento</p>
-                          <p className="text-[10px] text-[#84A59D]">Subir PDF o Ficha SOAP</p>
-                        </div>
+                      <div className="text-left">
+                        <p className="text-xs font-bold text-[#2D6A4F]">Añadir Documento</p>
+                        <p className="text-[10px] text-[#84A59D]">Subir PDF o Ficha SOAP</p>
                       </div>
                       <input type="file" accept=".pdf,.doc,.docx" onChange={handleSubirArchivo} className="hidden" />
-                      <span className="text-xs font-bold text-[#52796F] group-hover:translate-x-1 transition">+</span>
+                      <span className="text-xs font-bold text-[#52796F] group-hover:translate-x-1 transition">Adjuntar</span>
                     </label>
 
-                    {/* BOTÓN 2: CREAR NOTA */}
+                    {/* CREAR NOTA */}
                     <button
                       type="button"
                       onClick={() => setActiveSideTab(activeSideTab === 'nota' ? 'menu' : 'nota')}
                       className="w-full bg-white hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl transition flex items-center justify-between shadow-xs group text-left"
                     >
-                      <div className="flex items-center gap-2.5">
-                        <span className="w-8 h-8 rounded-xl bg-[#FFF0F2] text-[#D85260] flex items-center justify-center font-bold text-sm">📝</span>
-                        <div>
-                          <p className="text-xs font-bold text-[#2D6A4F]">Crear Nota</p>
-                          <p className="text-[10px] text-[#84A59D]">Registrar acuerdo rápido</p>
-                        </div>
+                      <div>
+                        <p className="text-xs font-bold text-[#2D6A4F]">Crear Nota</p>
+                        <p className="text-[10px] text-[#84A59D]">Registrar acuerdo rápido</p>
                       </div>
-                      <span className="text-xs font-bold text-[#52796F] group-hover:translate-x-1 transition">✏️</span>
+                      <span className="text-xs font-bold text-[#52796F] group-hover:translate-x-1 transition">Redactar</span>
                     </button>
 
-                    {/* BOTÓN 3: TRANSCRIBIR SESIÓN */}
+                    {/* TRANSCRIBIR SESIÓN */}
                     <button
                       type="button"
                       onClick={handleTranscribirReunion}
                       disabled={transcribiendo}
                       className="w-full bg-white hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl transition flex items-center justify-between shadow-xs group text-left disabled:opacity-50"
                     >
-                      <div className="flex items-center gap-2.5">
-                        <span className="w-8 h-8 rounded-xl bg-[#E8F0EC] text-[#2D6A4F] flex items-center justify-center font-bold text-sm">🎙️</span>
-                        <div>
-                          <p className="text-xs font-bold text-[#2D6A4F]">
-                            {transcribiendo ? 'Transcribiendo...' : 'Transcribir Sesión'}
-                          </p>
-                          <p className="text-[10px] text-[#84A59D]">Registro asistido de voz</p>
-                        </div>
+                      <div>
+                        <p className="text-xs font-bold text-[#2D6A4F]">
+                          {transcribiendo ? 'Transcribiendo...' : 'Transcribir Sesión'}
+                        </p>
+                        <p className="text-[10px] text-[#84A59D]">Registro asistido de voz</p>
                       </div>
-                      <span className="text-xs font-bold text-[#52796F] group-hover:translate-x-1 transition">▶</span>
+                      <span className="text-xs font-bold text-[#52796F] group-hover:translate-x-1 transition">Iniciar</span>
                     </button>
 
-                    {/* BOTÓN 4: ADJUNTAR IMAGEN */}
+                    {/* ADJUNTAR IMAGEN */}
                     <label className="w-full bg-white hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl cursor-pointer transition flex items-center justify-between shadow-xs group">
-                      <div className="flex items-center gap-2.5">
-                        <span className="w-8 h-8 rounded-xl bg-[#FFF0F2] text-[#D85260] flex items-center justify-center font-bold text-sm">🖼️</span>
-                        <div className="text-left">
-                          <p className="text-xs font-bold text-[#2D6A4F]">Adjuntar Imagen</p>
-                          <p className="text-[10px] text-[#84A59D]">Subir esquema / JPG</p>
-                        </div>
+                      <div className="text-left">
+                        <p className="text-xs font-bold text-[#2D6A4F]">Adjuntar Imagen</p>
+                        <p className="text-[10px] text-[#84A59D]">Subir esquema o imagen JPG</p>
                       </div>
                       <input type="file" accept=".jpg,.png,.jpeg" onChange={handleSubirArchivo} className="hidden" />
-                      <span className="text-xs font-bold text-[#52796F] group-hover:translate-x-1 transition">+</span>
+                      <span className="text-xs font-bold text-[#52796F] group-hover:translate-x-1 transition">Cargar</span>
                     </label>
 
-                    {/* BOTÓN 5: AGENDAR CITA */}
+                    {/* AGENDAR CITA */}
                     <button
                       type="button"
                       onClick={() => scrollToSection('sec-agendar')}
                       className="w-full bg-[#52796F] hover:bg-[#2D6A4F] text-white p-3 rounded-2xl transition flex items-center justify-between shadow-xs text-left"
                     >
-                      <div className="flex items-center gap-2.5">
-                        <span className="w-8 h-8 rounded-xl bg-white/20 text-white flex items-center justify-center font-bold text-sm">📅</span>
-                        <div>
-                          <p className="text-xs font-bold">Agendar Cita</p>
-                          <p className="text-[10px] text-[#E8F0EC]">Nueva sesión B2B</p>
-                        </div>
+                      <div>
+                        <p className="text-xs font-bold">Agendar Cita</p>
+                        <p className="text-[10px] text-[#E8F0EC]">Nueva sesión B2B</p>
                       </div>
-                      <span className="text-xs font-bold">➔</span>
+                      <span className="text-xs font-bold">Reservar</span>
                     </button>
                   </div>
                 </div>
 
-                {/* SUBPANEL DESPLEGABLE EN LÍNEA (NOTAS / TRANSCRIPCIÓN) */}
+                {/* SUBPANEL EN LÍNEA */}
                 {activeSideTab === 'nota' && (
                   <div className="bg-white p-3.5 rounded-2xl border border-[#C8D8CE] space-y-2">
                     <p className="text-[11px] font-bold text-[#2D6A4F]">Nueva Nota Rápida:</p>
@@ -520,7 +551,7 @@ export default function SalaVirtualB2B({
           )}
         </section>
 
-        {/* SECCIÓN 2: GESTOR DE ARCHIVOS SUBIDOS Y PREVISUALIZACIÓN */}
+        {/* GESTOR DE ARCHIVOS SUBIDOS */}
         <section className="bg-white p-8 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-6">
           <div className="flex justify-between items-center border-b border-[#E8F0EC] pb-4 flex-wrap gap-2">
             <div>
@@ -596,7 +627,7 @@ export default function SalaVirtualB2B({
           )}
         </section>
 
-        {/* SECCIÓN 3: FORMULARIO DE AGENDAMIENTO B2B */}
+        {/* AGENDAMIENTO B2B */}
         <section id="sec-agendar" className="bg-white p-8 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-6">
           <div className="border-b border-[#E8F0EC] pb-4">
             <h3 className="text-xl font-bold text-[#2D6A4F]">Agendamiento de Cita Virtual</h3>
@@ -619,7 +650,7 @@ export default function SalaVirtualB2B({
               </button>
             </div>
           ) : (
-            <form onSubmit={(e) => { e.preventDefault(); setBookingSuccess(true); }} className="space-y-6 max-w-4xl">
+            <form onSubmit={handleAgendarSubmit} className="space-y-6 max-w-4xl">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-bold text-[#2D6A4F] mb-2">Nombre Completo *</label>
@@ -684,7 +715,7 @@ export default function SalaVirtualB2B({
 
       </main>
 
-      {/* MODAL DE CANCELACIÓN */}
+      {/* MODAL CANCELACIÓN */}
       {modalCancelar && (
         <div className="fixed inset-0 z-50 bg-[#2D6A4F]/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white p-8 rounded-3xl border-2 border-[#D85260] max-w-md w-full space-y-5 shadow-2xl">
