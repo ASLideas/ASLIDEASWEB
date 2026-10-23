@@ -11,7 +11,7 @@ export default function HomePage() {
   const [adminPass, setAdminPass] = useState<string>('');
   const [adminError, setAdminError] = useState<boolean>(false);
 
-  // Datos de las 4 Oficinas Virtuales de ASL Ideas SpA
+  // Mapeo con rutas exactas de logotipos
   const portalesData: Record<string, PortalInfo> = {
     asl: {
       id: 'asl',
@@ -103,8 +103,8 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#2D6A4F] font-sans flex flex-col justify-between selection:bg-[#E8F0EC]">
       
-      {/* HEADER SUPERIOR AMPLIO Y ELEGANTE */}
-      <header className="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-[#C8D8CE]/50 shadow-xs transition-all">
+      {/* HEADER SUPERIOR */}
+      <header className="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-[#C8D8CE]/50 shadow-xs">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-2xl bg-white p-1.5 border border-[#C8D8CE] shadow-xs flex items-center justify-center overflow-hidden">
@@ -140,7 +140,7 @@ export default function HomePage() {
 
       {/* MODAL ADMIN */}
       {showAdminLogin && (
-        <div className="fixed inset-0 z-50 bg-[#2D6A4F]/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-[#2D6A4F]/50 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white p-8 rounded-3xl border border-[#D4AF37] shadow-2xl max-w-sm w-full space-y-5">
             <div className="text-center space-y-1">
               <h3 className="text-base font-bold text-[#2D6A4F]">Autenticación Administrador</h3>
@@ -153,7 +153,7 @@ export default function HomePage() {
                   value={adminPass}
                   onChange={(e) => setAdminPass(e.target.value)}
                   placeholder="Contraseña admin..."
-                  className="w-full text-xs p-3.5 border border-[#C8D8CE] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#52796F] bg-[#FAF8F5]"
+                  className="w-full text-xs p-3.5 border border-[#C8D8CE] rounded-xl focus:outline-none bg-[#FAF8F5]"
                   autoFocus
                 />
                 {adminError && (
@@ -180,10 +180,10 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* CONTENIDO PRINCIPAL EN HOJA ARMÓNICA Y ESPACIOSA */}
+      {/* CONTENIDO PRINCIPAL */}
       <main className="max-w-7xl mx-auto px-6 py-12 md:py-16 space-y-16 flex-1 w-full">
         
-        {/* HERO ESTRUCTURADO Y ARMÓNICO */}
+        {/* HERO */}
         <section className="bg-white p-8 md:p-12 rounded-3xl border border-[#C8D8CE]/60 shadow-sm space-y-6">
           <div className="max-w-3xl space-y-4">
             <span className="text-[11px] font-bold uppercase tracking-wider bg-[#E8F0EC] text-[#2D6A4F] border border-[#C8D8CE] px-3.5 py-1.5 rounded-full inline-block">
@@ -193,32 +193,17 @@ export default function HomePage() {
               Ecosistema Integrativo de Salud Digital Inclusiva
             </h2>
             <p className="text-sm md:text-base text-[#52796F] leading-relaxed">
-              Propuesta tecnológica concebida por <strong>ASL Ideas SpA</strong> para reducir la sobrecarga sensorial, unificar la evaluación metabólica y brindar una experiencia digital accesible, intuitiva y humana.
+              Propuesta tecnológica concebida por <strong>ASL Ideas SpA</strong> para reducir la sobrecarga sensorial, unificar la evaluación metabólica y brindar una experiencia digital accesible e intuitiva [1].
             </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-[#E8F0EC]">
-            <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE]/40">
-              <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider">01. Accesibilidad Cognitiva</h4>
-              <p className="text-xs text-[#52796F] mt-1">Interfaces de baja carga sensorial pensadas para usuarios con TEA y TDAH.</p>
-            </div>
-            <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE]/40">
-              <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider">02. Datos Encriptados</h4>
-              <p className="text-xs text-[#52796F] mt-1">Fichas clínicas resguardadas bajo el estándar estricto de la Ley N° 21.663.</p>
-            </div>
-            <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE]/40">
-              <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider">03. Salud Integrativa</h4>
-              <p className="text-xs text-[#52796F] mt-1">Medicina preventiva, movimiento adaptado sin impacto y fitoterapia nativa.</p>
-            </div>
           </div>
         </section>
 
-        {/* SECCIÓN DE LAS 4 OFICINAS VIRTUALES CON ARQUITECTURA LIMPIA */}
+        {/* TARJETAS DE LAS 4 OFICINAS VIRTUALES */}
         <section className="space-y-8">
           <div className="space-y-2 border-b border-[#C8D8CE]/60 pb-4">
             <h3 className="text-xl md:text-2xl font-bold text-[#2D6A4F]">Las 4 Oficinas Virtuales Interactivas</h3>
             <p className="text-xs md:text-sm text-[#52796F]">
-              Haz clic en cualquier portal para acceder a la sala de trabajo en vivo, agendar reuniones o consultar documentos.
+              Haz clic en cualquier portal para acceder al panel de trabajo en pantalla completa.
             </p>
           </div>
 
@@ -229,7 +214,6 @@ export default function HomePage() {
                 className="bg-white rounded-3xl border border-[#C8D8CE]/70 hover:border-[#D4AF37] transition-all duration-200 shadow-xs hover:shadow-md p-8 flex flex-col justify-between space-y-6 group"
               >
                 <div className="space-y-5">
-                  {/* LOGO EN CONTENEDOR AMPLIO CON OBJECT-CONTAIN */}
                   <div className="flex items-center justify-between gap-4">
                     <span className="text-[10px] font-bold tracking-wider uppercase bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] px-3.5 py-1 rounded-full">
                       {portal.oficinaNum}
@@ -275,17 +259,15 @@ export default function HomePage() {
 
       </main>
 
-      {/* PIE DE PÁGINA LIMPIO Y ESPACIOSO */}
+      {/* PIE DE PÁGINA */}
       <footer className="bg-[#52796F] text-white py-10 px-6 border-t-2 border-[#D4AF37] text-center space-y-3 mt-12">
-        <div className="max-w-7xl mx-auto space-y-2">
-          <p className="text-sm font-bold tracking-wide">ASL Ideas SpA — Salud Digital Inclusiva & Tecnología Amable</p>
-          <p className="text-xs text-[#E8F0EC] max-w-2xl mx-auto leading-relaxed">
-            Ecosistema desarrollado bajo el cumplimiento de la Ley N° 21.663 (Ciberseguridad y Protección de Datos Personales) y Ley N° 21.545 (Inclusión de Personas con Condición del Espectro Autista).
-          </p>
-        </div>
+        <p className="text-sm font-bold tracking-wide">ASL Ideas SpA — Salud Digital Inclusiva & Tecnología Amable</p>
+        <p className="text-xs text-[#E8F0EC] max-w-2xl mx-auto leading-relaxed">
+          Cumplimiento Ley N° 21.663 (Ciberseguridad y Protección de Datos Personales) y Ley N° 21.545 (Inclusión TEA) [1].
+        </p>
       </footer>
 
-      {/* MODAL SALA VIRTUAL B2B */}
+      {/* PORTAL INTERACTIVO DE PANTALLA COMPLETA */}
       <SalaVirtualB2B
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

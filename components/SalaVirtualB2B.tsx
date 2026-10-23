@@ -3,7 +3,7 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-// Inicialización directa y segura de Supabase
+// Inicialización segura de Supabase
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 const supabase = (supabaseUrl && supabaseAnonKey) 
@@ -31,7 +31,7 @@ export interface Props {
   initialApp?: string;
   appName?: string;
   appLogo?: string;
-  [key: string]: any; // Permite propiedades dinámicas para evitar bloqueos en Vercel
+  [key: string]: any;
 }
 
 export default function SalaVirtualB2B({ 
@@ -44,7 +44,6 @@ export default function SalaVirtualB2B({
   appLogo,
   ...restProps
 }: Props) {
-  // Configuración predeterminada: LAWENMOLL Salud Integrativa (Oficina Virtual 02)
   const defaultLawenmoll: PortalInfo = {
     id: 'lawenmoll',
     nombre: 'LAWENMOLL Salud Integrativa',
@@ -72,14 +71,12 @@ export default function SalaVirtualB2B({
     logo: effectiveLogo
   };
 
-  const [tab, setTab] = useState<'descripcion' | 'agendar' | 'reunion' | 'archivos' | 'notas'>('reunion');
   const [motivoConsulta, setMotivoConsulta] = useState<string>('Atención Virtual (Participantes de Lado a Lado)');
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [selectedTime, setSelectedTime] = useState<string>('10:30 AM');
   const [userName, setUserName] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
 
-  // Estados del Panel de Trabajo en Vivo / Reunión
   const [documentosReunion, setDocumentosReunion] = useState<string[]>([
     'Ficha_Clinica_SOAP_Inicial.pdf',
     'Pauta_Evaluacion_Metabolica.pdf'
@@ -88,7 +85,7 @@ export default function SalaVirtualB2B({
     'Esquema_Composicion_Corporal.jpg'
   ]);
   const [transcripcion, setTranscripcion] = useState<string>(
-    'Registro de Sesión: Paciente realiza consulta para evaluación de salud metabólica y hábitos. Se acuerda pauta de seguimiento integrativo.'
+    'Registro de Sesión: El paciente consulta para evaluación de salud metabólica. Se acuerda pauta de seguimiento e integración de hábitos saludables.'
   );
   const [transcribiendo, setTranscribiendo] = useState<boolean>(false);
   const [transcripcionCompletada, setTranscripcionCompletada] = useState<boolean>(false);
@@ -103,7 +100,6 @@ export default function SalaVirtualB2B({
 
   useEffect(() => {
     if (isOpen) {
-      setTab('reunion');
       setBookingSuccess(false);
     }
   }, [isOpen, inputPortalData]);
@@ -120,6 +116,13 @@ export default function SalaVirtualB2B({
   ];
 
   const horariosDisponibles: string[] = ['09:00 AM', '10:30 AM', '12:00 PM', '03:00 PM', '04:30 PM', '06:00 PM'];
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const handleAgendar = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -185,7 +188,7 @@ export default function SalaVirtualB2B({
     setTimeout(async () => {
       setTranscribiendo(false);
       setTranscripcionCompletada(true);
-      const textoActualizado = transcripcion + '\n\n[Transcripción Automática Generada]: Acuerdos consolidados y respaldados bajo estándar Ley N° 21.663.';
+      const textoActualizado = transcripcion + '\n\n[Transcripción Automática Generada]: Acuerdos consolidados y resguardados bajo estándar Ley N° 21.663.';
       setTranscripcion(textoActualizado);
 
       try {
@@ -201,13 +204,13 @@ export default function SalaVirtualB2B({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#2D6A4F]/60 backdrop-blur-md flex items-center justify-center p-3 md:p-6 overflow-y-auto font-sans">
-      <div className="bg-[#FAF8F5] w-full max-w-5xl rounded-3xl border-2 border-[#D4AF37] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] my-auto">
-        
-        {/* ENCABEZADO DEL PORTAL */}
-        <header className="bg-[#52796F] text-white p-5 flex justify-between items-center border-b-2 border-[#D4AF37]">
+    <div className="fixed inset-0 z-50 bg-[#FAF8F5] overflow-y-auto font-sans text-[#2D6A4F] selection:bg-[#E8F0EC]">
+      
+      {/* BARRA SUPERIOR FIJA DE NAVEGACIÓN DENTRO DEL PORTAL */}
+      <header className="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b-2 border-[#D4AF37] shadow-xs px-6 py-4">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white p-1.5 border border-[#D4AF37] flex items-center justify-center overflow-hidden flex-shrink-0 shadow-xs">
+            <div className="w-16 h-16 rounded-2xl bg-white p-2 border border-[#C8D8CE] shadow-xs flex items-center justify-center overflow-hidden flex-shrink-0">
               <img 
                 src={portalData.logo} 
                 alt={portalData.nombre} 
@@ -215,401 +218,350 @@ export default function SalaVirtualB2B({
               />
             </div>
             <div>
-              <span className="text-[10px] font-bold tracking-wider uppercase bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] px-3 py-0.5 rounded-full inline-block mb-1">
-                {portalData.oficinaNum}
-              </span>
-              <h2 className="text-base md:text-lg font-bold text-white">{portalData.nombre}</h2>
-              <p className="text-xs text-[#E8F0EC]">{portalData.subtitulo}</p>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-[10px] font-bold uppercase bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] px-3 py-0.5 rounded-full">
+                  {portalData.oficinaNum}
+                </span>
+                <span className="text-[10px] font-bold uppercase bg-[#E8F0EC] text-[#2D6A4F] border border-[#C8D8CE] px-3 py-0.5 rounded-full">
+                  Ley N° 21.663
+                </span>
+              </div>
+              <h2 className="text-lg md:text-xl font-bold text-[#2D6A4F]">{portalData.nombre}</h2>
+              <p className="text-xs text-[#52796F]">{portalData.subtitulo}</p>
             </div>
           </div>
 
-          <button 
-            type="button"
-            onClick={onClose} 
-            className="text-[#D85260] hover:text-white bg-[#FFF0F2] hover:bg-[#FF8894] border border-[#FF8894] text-xs px-4 py-2 rounded-full font-bold transition shadow-xs"
-          >
-            Cerrar Portal
-          </button>
-        </header>
-
-        {/* NAVEGACIÓN POR PESTAÑAS */}
-        <div className="flex border-b border-[#C8D8CE] bg-[#E8F0EC] overflow-x-auto">
-          <button 
-            type="button"
-            onClick={() => setTab('reunion')} 
-            className={`flex-1 min-w-[130px] py-3.5 text-xs font-bold transition ${tab === 'reunion' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
-          >
-            Reunión / Consulta en línea
-          </button>
-          <button 
-            type="button"
-            onClick={() => setTab('agendar')} 
-            className={`flex-1 min-w-[130px] py-3.5 text-xs font-bold transition ${tab === 'agendar' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
-          >
-            Agendar Cita B2B
-          </button>
-          <button 
-            type="button"
-            onClick={() => setTab('descripcion')} 
-            className={`flex-1 min-w-[130px] py-3.5 text-xs font-bold transition ${tab === 'descripcion' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
-          >
-            Información del Portal
-          </button>
-          <button 
-            type="button"
-            onClick={() => setTab('archivos')} 
-            className={`flex-1 min-w-[130px] py-3.5 text-xs font-bold transition ${tab === 'archivos' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
-          >
-            Adjuntar Documentos
-          </button>
-          <button 
-            type="button"
-            onClick={() => setTab('notas')} 
-            className={`flex-1 min-w-[130px] py-3.5 text-xs font-bold transition ${tab === 'notas' ? 'bg-[#FAF8F5] text-[#2D6A4F] border-b-2 border-[#D4AF37]' : 'text-[#52796F] hover:bg-[#FAF8F5]/50'}`}
-          >
-            Acuerdos y Notas
-          </button>
+          <div className="flex items-center gap-2 flex-wrap">
+            <button 
+              type="button"
+              onClick={() => scrollToSection('sec-consulta')}
+              className="text-xs font-bold bg-[#E8F0EC] hover:bg-[#52796F] hover:text-white text-[#2D6A4F] px-3.5 py-2 rounded-xl transition border border-[#C8D8CE]"
+            >
+              Consulta / Reunión
+            </button>
+            <button 
+              type="button"
+              onClick={() => scrollToSection('sec-agendar')}
+              className="text-xs font-bold bg-[#E8F0EC] hover:bg-[#52796F] hover:text-white text-[#2D6A4F] px-3.5 py-2 rounded-xl transition border border-[#C8D8CE]"
+            >
+              Agendar Cita
+            </button>
+            <button 
+              type="button"
+              onClick={() => scrollToSection('sec-info')}
+              className="text-xs font-bold bg-[#E8F0EC] hover:bg-[#52796F] hover:text-white text-[#2D6A4F] px-3.5 py-2 rounded-xl transition border border-[#C8D8CE]"
+            >
+              Información
+            </button>
+            <button 
+              type="button"
+              onClick={onClose} 
+              className="text-xs font-bold bg-[#FFF0F2] hover:bg-[#FF8894] text-[#D85260] hover:text-white px-5 py-2 rounded-full border border-[#FF8894] transition shadow-xs ml-2"
+            >
+              Cerrar Portal
+            </button>
+          </div>
         </div>
+      </header>
 
-        {/* CONTENIDO INTERNO DE LA APP */}
-        <div className="p-6 overflow-y-auto flex-1">
+      {/* CONTENIDO PRINCIPAL DESPLEGADO EN HOJA CONTINUA */}
+      <main className="max-w-7xl mx-auto px-6 py-10 space-y-12">
 
-          {/* TAB 1: REUNIÓN EN LÍNEA / PANEL DE TRABAJO */}
-          {tab === 'reunion' && (
-            <div className="space-y-6 max-w-4xl mx-auto">
-              
-              <div className="bg-white p-6 rounded-3xl border border-[#D4AF37] shadow-xs space-y-4">
-                <div className="border-b border-[#E8F0EC] pb-3 flex justify-between items-center flex-wrap gap-2">
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider bg-[#E8F0EC] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]">
-                      Consulta Activa — Participantes de Lado a Lado
-                    </span>
-                    <h3 className="text-base md:text-lg font-bold text-[#2D6A4F] mt-1">
-                      Panel de Trabajo Virtual — {portalData.nombre}
-                    </h3>
-                  </div>
-                  <span className="text-xs font-bold text-[#D85260] bg-[#FFF0F2] px-3 py-1 rounded-full border border-[#FF8894]">
-                    Sesión Encriptada Ley N° 21.663
-                  </span>
-                </div>
+        {/* BANNER DE INICIO DE LA OFICINA */}
+        <section className="bg-white p-8 md:p-10 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-4">
+          <div className="flex flex-wrap gap-2">
+            {portalData.leyes.map((ley, idx) => (
+              <span key={idx} className="text-[10px] font-bold uppercase tracking-wider bg-[#E8F0EC] text-[#2D6A4F] border border-[#C8D8CE] px-3.5 py-1 rounded-full">
+                {ley}
+              </span>
+            ))}
+          </div>
+          <h3 className="text-2xl font-bold text-[#2D6A4F]">Portal de Atención y Gestión B2B — {portalData.nombre}</h3>
+          <p className="text-sm text-[#52796F] leading-relaxed max-w-4xl">
+            {portalData.descripcionLarga}
+          </p>
+        </section>
 
-                {/* BOTONES DE ACCIÓN RÁPIDA */}
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-3 pt-2">
-                  
-                  <label className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl text-center cursor-pointer transition flex flex-col justify-center items-center gap-1">
-                    <span className="text-xs font-bold text-[#2D6A4F]">Añadir Documento</span>
-                    <span className="text-[10px] text-[#52796F]">Subir PDF o Ficha</span>
-                    <input 
-                      type="file" 
-                      accept=".pdf,.doc,.docx" 
-                      onChange={handleSubirDocumento} 
-                      className="hidden" 
-                    />
-                  </label>
-
-                  <button
-                    type="button"
-                    onClick={() => setTab('notas')}
-                    className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl text-center transition flex flex-col justify-center items-center gap-1"
-                  >
-                    <span className="text-xs font-bold text-[#2D6A4F]">Crear Nota</span>
-                    <span className="text-[10px] text-[#52796F]">Registrar Acuerdo</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleTranscribirReunion}
-                    disabled={transcribiendo}
-                    className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl text-center transition flex flex-col justify-center items-center gap-1 disabled:opacity-50"
-                  >
-                    <span className="text-xs font-bold text-[#2D6A4F]">
-                      {transcribiendo ? 'Transcribiendo...' : 'Transcribir Sesión'}
-                    </span>
-                    <span className="text-[10px] text-[#52796F]">Respaldar Registro</span>
-                  </button>
-
-                  <label className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl text-center cursor-pointer transition flex flex-col justify-center items-center gap-1">
-                    <span className="text-xs font-bold text-[#2D6A4F]">Adjuntar Imagen</span>
-                    <span className="text-[10px] text-[#52796F]">Subir Esquema / JPG</span>
-                    <input 
-                      type="file" 
-                      accept=".jpg,.png,.jpeg" 
-                      onChange={handleSubirImagen} 
-                      className="hidden" 
-                    />
-                  </label>
-
-                  <button
-                    type="button"
-                    onClick={() => setTab('agendar')}
-                    className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl text-center transition flex flex-col justify-center items-center gap-1 col-span-2 md:col-span-1"
-                  >
-                    <span className="text-xs font-bold text-[#2D6A4F]">Agendar Cita</span>
-                    <span className="text-[10px] text-[#52796F]">Nueva Sesión B2B</span>
-                  </button>
-
-                </div>
-              </div>
-
-              {/* TRES COLUMNAS PRINCIPALES */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
-                {/* DOCUMENTOS */}
-                <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-3 shadow-xs">
-                  <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#E8F0EC] pb-2">
-                    Documentos de la Sesión ({documentosReunion.length})
-                  </h4>
-                  <ul className="space-y-2 text-xs">
-                    {documentosReunion.map((doc, idx) => (
-                      <li key={idx} className="p-2.5 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[#52796F] font-medium flex justify-between items-center">
-                        <span className="truncate">{doc}</span>
-                        <span className="text-[9px] bg-[#E8F0EC] text-[#2D6A4F] px-2 py-0.5 rounded font-bold">PDF</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* IMÁGENES */}
-                <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-3 shadow-xs">
-                  <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#E8F0EC] pb-2">
-                    Imágenes y Esquemas ({imagenesReunion.length})
-                  </h4>
-                  <ul className="space-y-2 text-xs">
-                    {imagenesReunion.map((img, idx) => (
-                      <li key={idx} className="p-2.5 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[#52796F] font-medium flex justify-between items-center">
-                        <span className="truncate">{img}</span>
-                        <span className="text-[9px] bg-[#E8F0EC] text-[#2D6A4F] px-2 py-0.5 rounded font-bold">IMG</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* TRANSCRIPCIÓN */}
-                <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-3 shadow-xs">
-                  <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#E8F0EC] pb-2">
-                    Transcripción y Apuntes
-                  </h4>
-                  <textarea
-                    rows={4}
-                    value={transcripcion}
-                    onChange={(e) => setTranscripcion(e.target.value)}
-                    className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] focus:outline-none text-[#52796F] leading-relaxed"
-                  />
-                  {transcripcionCompletada && (
-                    <p className="text-[10px] text-[#2D6A4F] font-bold bg-[#E8F0EC] p-2 rounded-xl text-center">
-                      Transcripción respaldada exitosamente.
-                    </p>
-                  )}
-                </div>
-
-              </div>
-
+        {/* SECCIÓN 1: PANEL DE TRABAJO Y CONSULTA EN LÍNEA */}
+        <section id="sec-consulta" className="bg-white p-8 md:p-10 rounded-3xl border-2 border-[#D4AF37] shadow-sm space-y-8">
+          <div className="border-b border-[#E8F0EC] pb-4 flex justify-between items-center flex-wrap gap-3">
+            <div>
+              <span className="text-[11px] font-bold uppercase tracking-wider bg-[#E8F0EC] text-[#2D6A4F] px-3.5 py-1 rounded-full border border-[#C8D8CE]">
+                Módulo en Vivo • Consulta Virtual
+              </span>
+              <h3 className="text-xl font-bold text-[#2D6A4F] mt-2">
+                Panel de Trabajo y Atención en Vivo
+              </h3>
             </div>
-          )}
+            <span className="text-xs font-bold text-[#D85260] bg-[#FFF0F2] px-4 py-1.5 rounded-full border border-[#FF8894]">
+              Sesión Segura Encriptada
+            </span>
+          </div>
 
-          {/* TAB 2: AGENDAMIENTO B2B */}
-          {tab === 'agendar' && (
-            <div className="max-w-2xl mx-auto space-y-5 bg-white p-6 md:p-8 rounded-3xl border border-[#C8D8CE] shadow-xs">
-              <div className="text-center space-y-1 border-b border-[#E8F0EC] pb-4">
-                <h3 className="text-base font-bold text-[#2D6A4F]">Agendamiento de Cita — {portalData.nombre}</h3>
-                <p className="text-xs text-[#52796F]">Completa los datos para reservar tu sesión en esta oficina virtual.</p>
-              </div>
+          {/* ACCIONES RÁPIDAS EN GRILLA AMPLIA */}
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <label className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-4 rounded-2xl text-center cursor-pointer transition flex flex-col items-center gap-1 shadow-xs">
+              <span className="text-xs font-bold text-[#2D6A4F]">Añadir Documento</span>
+              <span className="text-[10px] text-[#52796F]">Subir PDF o Ficha</span>
+              <input type="file" accept=".pdf,.doc,.docx" onChange={handleSubirDocumento} className="hidden" />
+            </label>
 
-              {bookingSuccess ? (
-                <div className="p-6 bg-[#FFF0F2] rounded-2xl border border-[#FF8894] text-center space-y-4">
-                  <h4 className="text-base font-bold text-[#D85260]">Cita Agendada Exitosamente</h4>
-                  <p className="text-xs text-[#52796F] leading-relaxed">
-                    Registrado para <strong className="text-[#2D6A4F]">{userName}</strong> ({userEmail}).<br/>
-                    Portal: <strong className="text-[#2D6A4F]">{portalData.nombre}</strong><br/>
-                    Motivo: <strong className="text-[#2D6A4F]">{motivoConsulta}</strong><br/>
-                    Fecha: <strong className="text-[#2D6A4F]">{selectedDate}</strong> a las <strong className="text-[#2D6A4F]">{selectedTime}</strong>.
-                  </p>
-                  <button 
-                    type="button"
-                    onClick={() => setBookingSuccess(false)} 
-                    className="text-xs font-bold text-[#D85260] underline hover:text-[#2D6A4F] pt-2 block mx-auto"
-                  >
-                    Agendar otra reunión
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleAgendar} className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Motivo de la Cita *</label>
-                    <select
-                      value={motivoConsulta}
-                      onChange={(e) => setMotivoConsulta(e.target.value)}
-                      className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] focus:outline-none text-gray-800"
-                    >
-                      {motivos.map((item) => (
-                        <option key={item} value={item}>{item}</option>
-                      ))}
-                    </select>
-                  </div>
+            <button
+              type="button"
+              onClick={() => scrollToSection('sec-notas')}
+              className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-4 rounded-2xl text-center transition flex flex-col items-center gap-1 shadow-xs"
+            >
+              <span className="text-xs font-bold text-[#2D6A4F]">Crear Nota</span>
+              <span className="text-[10px] text-[#52796F]">Registrar Acuerdo</span>
+            </button>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Nombre Completo *</label>
-                      <input 
-                        type="text" 
-                        required 
-                        value={userName} 
-                        onChange={(e) => setUserName(e.target.value)} 
-                        placeholder="Ej: Maria Gonzalez" 
-                        className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl focus:outline-none bg-[#FAF8F5]" 
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Correo Electrónico *</label>
-                      <input 
-                        type="email" 
-                        required 
-                        value={userEmail} 
-                        onChange={(e) => setUserEmail(e.target.value)} 
-                        placeholder="contacto@empresa.cl" 
-                        className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl focus:outline-none bg-[#FAF8F5]" 
-                      />
-                    </div>
-                  </div>
+            <button
+              type="button"
+              onClick={handleTranscribirReunion}
+              disabled={transcribiendo}
+              className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-4 rounded-2xl text-center transition flex flex-col items-center gap-1 shadow-xs disabled:opacity-50"
+            >
+              <span className="text-xs font-bold text-[#2D6A4F]">
+                {transcribiendo ? 'Transcribiendo...' : 'Transcribir Sesión'}
+              </span>
+              <span className="text-[10px] text-[#52796F]">Respaldar Registro</span>
+            </button>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Fecha *</label>
-                      <input 
-                        type="date" 
-                        required 
-                        value={selectedDate} 
-                        onChange={(e) => setSelectedDate(e.target.value)} 
-                        className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5]" 
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-[#2D6A4F] mb-1.5">Horario Preferente *</label>
-                      <select
-                        value={selectedTime}
-                        onChange={(e) => setSelectedTime(e.target.value)}
-                        className="w-full text-xs p-3 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] font-bold text-[#2D6A4F]"
-                      >
-                        {horariosDisponibles.map((item) => (
-                          <option key={item} value={item}>{item}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
+            <label className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-4 rounded-2xl text-center cursor-pointer transition flex flex-col items-center gap-1 shadow-xs">
+              <span className="text-xs font-bold text-[#2D6A4F]">Adjuntar Imagen</span>
+              <span className="text-[10px] text-[#52796F]">Subir Esquema / JPG</span>
+              <input type="file" accept=".jpg,.png,.jpeg" onChange={handleSubirImagen} className="hidden" />
+            </label>
 
-                  <div className="flex items-center gap-3 pt-3 border-t border-[#E8F0EC]">
-                    <button 
-                      type="button"
-                      onClick={() => setTab('reunion')}
-                      className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold py-3 rounded-xl transition text-center"
-                    >
-                      Volver a la Sesión
-                    </button>
-                    <button 
-                      type="submit" 
-                      disabled={uploading} 
-                      className="flex-1 bg-[#52796F] hover:bg-[#2D6A4F] text-white text-xs font-bold py-3 rounded-xl transition text-center"
-                    >
-                      {uploading ? 'Procesando...' : 'Confirmar Cita'}
-                    </button>
-                  </div>
-                </form>
-              )}
-            </div>
-          )}
+            <button
+              type="button"
+              onClick={() => scrollToSection('sec-agendar')}
+              className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-4 rounded-2xl text-center transition flex flex-col items-center gap-1 shadow-xs col-span-2 md:col-span-1"
+            >
+              <span className="text-xs font-bold text-[#2D6A4F]">Agendar Cita</span>
+              <span className="text-[10px] text-[#52796F]">Nueva Sesión B2B</span>
+            </button>
+          </div>
 
-          {/* TAB 3: INFORMACIÓN DEL PORTAL */}
-          {tab === 'descripcion' && (
-            <div className="space-y-6 max-w-3xl mx-auto">
-              <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-4">
-                <div className="flex flex-wrap gap-2">
-                  {portalData.leyes.map((ley, idx) => (
-                    <span key={idx} className="text-[10px] font-bold uppercase tracking-wider bg-[#E8F0EC] text-[#2D6A4F] border border-[#C8D8CE] px-3 py-1 rounded-full">
-                      {ley}
-                    </span>
-                  ))}
-                </div>
-
-                <h3 className="text-lg font-bold text-[#2D6A4F] border-b border-[#E8F0EC] pb-2">
-                  Propósito y Funcionalidades de {portalData.nombre}
-                </h3>
-
-                <p className="text-xs md:text-sm text-[#52796F] leading-relaxed">
-                  {portalData.descripcionLarga}
-                </p>
-
-                <div className="pt-2">
-                  <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider mb-2">Servicios y Módulos Principales:</h4>
-                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
-                    {portalData.serviciosClave.map((servicio, idx) => (
-                      <li key={idx} className="p-3 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[#2D6A4F] font-semibold">
-                        • {servicio}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="p-3 bg-[#E8F0EC] rounded-2xl border border-[#C8D8CE] text-xs">
-                  <span className="font-bold text-[#2D6A4F]">Público Objetivo:</span>{' '}
-                  <span className="text-[#52796F]">{portalData.publicoObjetivo}</span>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 4: ADJUNTAR ARCHIVOS */}
-          {tab === 'archivos' && (
-            <div className="max-w-xl mx-auto space-y-4 bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs">
-              <h3 className="text-sm font-bold text-[#2D6A4F] text-center">Adjuntar Documentos / Fichas Clínicas</h3>
-              <input 
-                type="file" 
-                accept=".pdf,.doc,.docx,.png,.jpg" 
-                onChange={handleSubirDocumento} 
-                className="block w-full text-xs text-gray-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#E8F0EC] file:text-[#2D6A4F]" 
-              />
-              <button 
-                type="button"
-                onClick={() => { setUploading(true); setTimeout(() => setUploading(false), 1200); }} 
-                className="w-full bg-[#52796F] text-white text-xs font-bold py-2.5 rounded-xl hover:bg-[#2D6A4F] transition"
-              >
-                {uploading ? 'Cargando archivo...' : 'Guardar en Ficha del Cliente'}
-              </button>
-            </div>
-          )}
-
-          {/* TAB 5: ACUERDOS Y NOTAS */}
-          {tab === 'notas' && (
-            <div className="max-w-xl mx-auto space-y-3 bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs">
-              <h3 className="text-sm font-bold text-[#2D6A4F]">Acuerdos y Notas de Sesión</h3>
-              <div className="flex gap-2">
-                <input 
-                  type="text" 
-                  value={nuevaNota} 
-                  onChange={(e) => setNuevaNota(e.target.value)} 
-                  placeholder="Escribir acuerdo de consulta..." 
-                  className="flex-1 text-xs p-2.5 border border-[#C8D8CE] rounded-xl focus:outline-none" 
-                />
-                <button 
-                  type="button"
-                  onClick={handleAgregarNota} 
-                  className="bg-[#52796F] text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-[#2D6A4F]"
-                >
-                  Guardar
-                </button>
-              </div>
-              <ul className="text-xs space-y-2 pt-2">
-                {notas.map((item, index) => (
-                  <li key={index} className="p-3 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[#2D6A4F] flex items-center justify-between">
-                    <span>{item}</span>
-                    <span className="text-[10px] text-[#D85260] bg-[#FFF0F2] px-2 py-0.5 rounded font-bold border border-[#FF8894]">Nota #{index + 1}</span>
+          {/* DESGLOSE EN 3 COLUMNAS AMPLIAS */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+            <div className="bg-[#FAF8F5] p-6 rounded-2xl border border-[#C8D8CE] space-y-3">
+              <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#C8D8CE] pb-2">
+                Documentos de la Sesión ({documentosReunion.length})
+              </h4>
+              <ul className="space-y-2 text-xs">
+                {documentosReunion.map((doc, idx) => (
+                  <li key={idx} className="p-3 bg-white rounded-xl border border-[#C8D8CE] text-[#52796F] font-medium flex justify-between items-center">
+                    <span className="truncate">{doc}</span>
+                    <span className="text-[9px] bg-[#E8F0EC] text-[#2D6A4F] px-2 py-0.5 rounded font-bold">PDF</span>
                   </li>
                 ))}
               </ul>
             </div>
-          )}
 
-        </div>
-      </div>
+            <div className="bg-[#FAF8F5] p-6 rounded-2xl border border-[#C8D8CE] space-y-3">
+              <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#C8D8CE] pb-2">
+                Imágenes y Esquemas ({imagenesReunion.length})
+              </h4>
+              <ul className="space-y-2 text-xs">
+                {imagenesReunion.map((img, idx) => (
+                  <li key={idx} className="p-3 bg-white rounded-xl border border-[#C8D8CE] text-[#52796F] font-medium flex justify-between items-center">
+                    <span className="truncate">{img}</span>
+                    <span className="text-[9px] bg-[#E8F0EC] text-[#2D6A4F] px-2 py-0.5 rounded font-bold">IMG</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="bg-[#FAF8F5] p-6 rounded-2xl border border-[#C8D8CE] space-y-3">
+              <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#C8D8CE] pb-2">
+                Transcripción y Apuntes
+              </h4>
+              <textarea
+                rows={5}
+                value={transcripcion}
+                onChange={(e) => setTranscripcion(e.target.value)}
+                className="w-full text-xs p-3.5 border border-[#C8D8CE] rounded-xl bg-white focus:outline-none text-[#52796F] leading-relaxed"
+              />
+              {transcripcionCompletada && (
+                <p className="text-[11px] text-[#2D6A4F] font-bold bg-[#E8F0EC] p-2.5 rounded-xl text-center border border-[#C8D8CE]">
+                  Transcripción respaldada exitosamente bajo Ley N° 21.663.
+                </p>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* SECCIÓN 2: FORMULARIO DE AGENDAMIENTO B2B */}
+        <section id="sec-agendar" className="bg-white p-8 md:p-10 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-6">
+          <div className="border-b border-[#E8F0EC] pb-4 space-y-1">
+            <h3 className="text-xl font-bold text-[#2D6A4F]">Agendamiento de Cita B2B — {portalData.nombre}</h3>
+            <p className="text-xs text-[#52796F]">Selecciona el motivo y horario para reservar tu sesión personalizada.</p>
+          </div>
+
+          {bookingSuccess ? (
+            <div className="p-8 bg-[#FFF0F2] rounded-3xl border border-[#FF8894] text-center space-y-4 max-w-2xl mx-auto">
+              <h4 className="text-lg font-bold text-[#D85260]">Cita Registrada Exitosamente</h4>
+              <p className="text-xs md:text-sm text-[#52796F] leading-relaxed">
+                Reservada para <strong className="text-[#2D6A4F]">{userName}</strong> ({userEmail}).<br/>
+                Portal: <strong className="text-[#2D6A4F]">{portalData.nombre}</strong><br/>
+                Motivo: <strong className="text-[#2D6A4F]">{motivoConsulta}</strong><br/>
+                Fecha: <strong className="text-[#2D6A4F]">{selectedDate}</strong> a las <strong className="text-[#2D6A4F]">{selectedTime}</strong>.
+              </p>
+              <button 
+                type="button"
+                onClick={() => setBookingSuccess(false)} 
+                className="text-xs font-bold text-[#D85260] underline hover:text-[#2D6A4F] pt-2 block mx-auto"
+              >
+                Agendar otra reunión
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleAgendar} className="space-y-6 max-w-4xl">
+              <div>
+                <label className="block text-xs font-bold text-[#2D6A4F] mb-2">Motivo de la Cita *</label>
+                <select
+                  value={motivoConsulta}
+                  onChange={(e) => setMotivoConsulta(e.target.value)}
+                  className="w-full text-xs p-3.5 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] focus:outline-none text-gray-800"
+                >
+                  {motivos.map((item) => (
+                    <option key={item} value={item}>{item}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-bold text-[#2D6A4F] mb-2">Nombre Completo *</label>
+                  <input 
+                    type="text" 
+                    required 
+                    value={userName} 
+                    onChange={(e) => setUserName(e.target.value)} 
+                    placeholder="Ej: Maria Gonzalez" 
+                    className="w-full text-xs p-3.5 border border-[#C8D8CE] rounded-xl focus:outline-none bg-[#FAF8F5]" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-[#2D6A4F] mb-2">Correo Electrónico *</label>
+                  <input 
+                    type="email" 
+                    required 
+                    value={userEmail} 
+                    onChange={(e) => setUserEmail(e.target.value)} 
+                    placeholder="contacto@empresa.cl" 
+                    className="w-full text-xs p-3.5 border border-[#C8D8CE] rounded-xl focus:outline-none bg-[#FAF8F5]" 
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-bold text-[#2D6A4F] mb-2">Fecha *</label>
+                  <input 
+                    type="date" 
+                    required 
+                    value={selectedDate} 
+                    onChange={(e) => setSelectedDate(e.target.value)} 
+                    className="w-full text-xs p-3.5 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5]" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-[#2D6A4F] mb-2">Horario Preferente *</label>
+                  <select
+                    value={selectedTime}
+                    onChange={(e) => setSelectedTime(e.target.value)}
+                    className="w-full text-xs p-3.5 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5] font-bold text-[#2D6A4F]"
+                  >
+                    {horariosDisponibles.map((item) => (
+                      <option key={item} value={item}>{item}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <button 
+                  type="submit" 
+                  disabled={uploading} 
+                  className="bg-[#52796F] hover:bg-[#2D6A4F] text-white text-xs font-bold px-8 py-3.5 rounded-xl transition shadow-xs"
+                >
+                  {uploading ? 'Procesando Cita...' : 'Confirmar Cita B2B'}
+                </button>
+              </div>
+            </form>
+          )}
+        </section>
+
+        {/* SECCIÓN 3: INFORMACIÓN DETALLADA DE LA OFICINA */}
+        <section id="sec-info" className="bg-white p-8 md:p-10 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-6">
+          <div className="border-b border-[#E8F0EC] pb-4">
+            <h3 className="text-xl font-bold text-[#2D6A4F]">Servicios y Público Objetivo</h3>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider">Módulos Principales:</h4>
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+              {portalData.serviciosClave.map((servicio, idx) => (
+                <li key={idx} className="p-4 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[#2D6A4F] font-semibold">
+                  • {servicio}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="p-4 bg-[#E8F0EC] rounded-2xl border border-[#C8D8CE] text-xs">
+            <span className="font-bold text-[#2D6A4F]">Público Objetivo:</span>{' '}
+            <span className="text-[#52796F]">{portalData.publicoObjetivo}</span>
+          </div>
+        </section>
+
+        {/* SECCIÓN 4: REGISTRO DE ACUERDOS Y NOTAS */}
+        <section id="sec-notas" className="bg-white p-8 md:p-10 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-6">
+          <div className="border-b border-[#E8F0EC] pb-4">
+            <h3 className="text-xl font-bold text-[#2D6A4F]">Acuerdos y Notas de Sesión</h3>
+          </div>
+
+          <div className="flex gap-3 max-w-2xl">
+            <input 
+              type="text" 
+              value={nuevaNota} 
+              onChange={(e) => setNuevaNota(e.target.value)} 
+              placeholder="Escribir acuerdo de consulta..." 
+              className="flex-1 text-xs p-3.5 border border-[#C8D8CE] rounded-xl focus:outline-none bg-[#FAF8F5]" 
+            />
+            <button 
+              type="button"
+              onClick={handleAgregarNota} 
+              className="bg-[#52796F] text-white text-xs font-bold px-6 py-3.5 rounded-xl hover:bg-[#2D6A4F] transition"
+            >
+              Guardar
+            </button>
+          </div>
+
+          <ul className="text-xs space-y-3 pt-2 max-w-3xl">
+            {notas.map((item, index) => (
+              <li key={index} className="p-4 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[#2D6A4F] flex items-center justify-between gap-4">
+                <span>{item}</span>
+                <span className="text-[10px] text-[#D85260] bg-[#FFF0F2] px-3 py-1 rounded-full font-bold border border-[#FF8894] flex-shrink-0">
+                  Nota #{index + 1}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+      </main>
+
+      {/* PIE DE PÁGINA DEL PORTAL */}
+      <footer className="bg-[#52796F] text-white py-8 px-6 border-t-2 border-[#D4AF37] text-center text-xs space-y-2 mt-12">
+        <p className="font-bold">ASL Ideas SpA — {portalData.nombre}</p>
+        <p className="text-[11px] text-[#E8F0EC]">
+          Protección de Datos Sensibles en cumplimiento con Ley N° 21.663 y Accesibilidad Cognitiva Ley TEA N° 21.545 [1].
+        </p>
+      </footer>
+
     </div>
   );
 }
