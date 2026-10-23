@@ -23,7 +23,7 @@ export interface PortalInfo {
   publicoObjetivo: string;
 }
 
-interface Props {
+export interface Props {
   isOpen: boolean;
   onClose: () => void;
   portalData?: PortalInfo;
@@ -31,6 +31,7 @@ interface Props {
   initialApp?: string;
   appName?: string;
   appLogo?: string;
+  [key: string]: any; // Firma de índice flexible para evitar errores de compilación en Vercel
 }
 
 export default function SalaVirtualB2B({ 
@@ -40,7 +41,8 @@ export default function SalaVirtualB2B({
   isAdmin = false,
   initialApp,
   appName,
-  appLogo
+  appLogo,
+  ...restProps
 }: Props) {
   // Configuración predeterminada: LAWENMOLL Salud Integrativa (Oficina Virtual 02)
   const defaultLawenmoll: PortalInfo = {
@@ -315,7 +317,7 @@ export default function SalaVirtualB2B({
                   <button
                     type="button"
                     onClick={() => setTab('reunion')}
-                    className="bg-[#D4AF37] hover:bg-[#B08D4B] text-[#FFF] text-xs font-bold px-5 py-2.5 rounded-xl transition shadow-xs"
+                    className="bg-[#D4AF37] hover:bg-[#B08D4B] text-white text-xs font-bold px-5 py-2.5 rounded-xl transition shadow-xs"
                   >
                     Ingresar a Reunión en línea
                   </button>
