@@ -11,29 +11,28 @@ export default function HomePage() {
   const [adminPass, setAdminPass] = useState<string>('');
   const [adminError, setAdminError] = useState<boolean>(false);
 
-  // Datos detallados de las 4 Apps: Qué hace la App y Beneficios que cumple
   const portalesData: Record<string, PortalInfo> = {
     asl: {
       id: 'asl',
-      nombre: 'ASL Ideas SpA (Casa Matriz & Licencias B2B)',
-      subtitulo: 'Innovación, Licencias y Accesibilidad UI/UX para Emprendedores y Profesionales',
+      nombre: 'ASL Ideas SpA (Casa Matriz)',
+      subtitulo: 'Generadora de Apps para PYMES, Comercios Asociados y Creadora de la Tríada',
       logo: '/logo-asl.png.png',
       oficinaNum: 'Oficina Virtual 01',
-      leyes: ['Ley TEA N° 21.545 - Accesibilidad Cognitiva', 'Ley N° 21.663 - Datos Protegidos', 'Convenios B2B / PYMES'],
-      descripcionCorta: 'Centro de mando corporativo enfocado en licencias tecnológicas a medida, desarrollo de software accesible y consultoría en diseño inclusivo para PYMES, emprendedores y profesionales.',
-      descripcionLarga: 'Gestiona convenios institucionales y licencias de software B2B para PYMES, profesionales y comercios asociados. Implementa interfaces con baja sobrecarga sensorial adaptadas a usuarios neurodivergentes.',
+      leyes: ['Ley TEA N° 21.545 - Accesibilidad Cognitiva', 'Ley N° 21.663 - Datos Protegidos', 'Licencias B2B'],
+      descripcionCorta: 'Casa Matriz y motor tecnológico que hace realidad las 3 aplicaciones del ecosistema integrativo (Lawenmoll, Wellness Web App y Bienestar App). Desarrolla software accesible a medida para PYMES, emprendedores y comercios asociados.',
+      descripcionLarga: 'Centro de innovación y desarrollo corporativo. Diseña e implementa soluciones de software con accesibilidad cognitiva UI/UX, reducción de sobrecarga sensorial y cifrado de datos clínicos bajo norma legal.',
       serviciosClave: [
-        'Desarrollo de Software Médico y Preventivo a Medida',
-        'Licencias Tecnológicas B2B para Emprendedores y Profesionales',
-        'Consultoría en Accesibilidad UI/UX para Neurodivergencias (TEA / TDAH)',
-        'Convenios Institucionales y Métricas de Impacto'
+        'Desarrollo de Apps a Medida para PYMES y Comercios Asociados',
+        'Licencias Tecnológicas B2B y Convenios Institucionales',
+        'Consultoría en Accesibilidad Cognitiva UI/UX (Ley TEA N° 21.545)',
+        'Soporte e Integración de Ecosistemas Digitales Inclusivos'
       ],
       beneficios: [
-        'Cumplimiento legal garantizado bajo Ley TEA N° 21.545 y Ley N° 21.663.',
-        'Reducción efectiva del estrés cognitivo y sobrecarga sensorial.',
-        'Software amable adaptado a la velocidad de trabajo de PYMES y profesionales.'
+        'Motor creador del ecosistema de las 3 aplicaciones de salud digital.',
+        'Software adaptado al ritmo de trabajo de PYMES y profesionales independiente.',
+        'Cumplimiento de estándares de datos sensibles bajo Ley N° 21.663.'
       ],
-      publicoObjetivo: 'Emprendedores, Profesionales, PYMES, Comercios Asociados e Instituciones'
+      publicoObjetivo: 'Emprendedores, PYMES, Profesionales, Comercios Asociados e Instituciones'
     },
     lawenmoll: {
       id: 'lawenmoll',
@@ -48,14 +47,14 @@ export default function HomePage() {
         'Test de Bienestar Inteligente y Evaluación Nutricional',
         'Cálculo de Composición Corporal y Riesgo Metabólico',
         'Fichas Clínicas Encriptadas (Estándar SOAP y Ley N° 21.663)',
-        'Atención Virtual Remota con Especialistas y Terapeutas'
+        'Atención Virtual Remota con Especialistas'
       ],
       beneficios: [
-        'Diagnóstico preventivo sin juicios sobre el peso ni la condición física.',
-        'Privacidad total de fichas médicas mediante cifrado en tránsito.',
-        'Seguimiento personalizado de hábitos de salud de forma continua.'
+        'Diagnóstico preventivo sin juicios sobre el peso.',
+        'Privacidad total de fichas médicas mediante cifrado.',
+        'Seguimiento personalizado continuo.'
       ],
-      publicoObjetivo: 'Pacientes con condiciones crónicas, profesionales de la salud y adultos que buscan cuidado preventivo'
+      publicoObjetivo: 'Pacientes con condiciones crónicas, profesionales de la salud y adultos'
     },
     wellness: {
       id: 'wellness',
@@ -77,7 +76,7 @@ export default function HomePage() {
         'Protección articular completa para personas con sobrepeso o dolores crónicos.',
         'Aumento de la energía diaria sin desgaste físico excesivo.'
       ],
-      publicoObjetivo: 'Emprendedores, profesionales, equipos de trabajo remoto y adultos con movilidad reducida'
+      publicoObjetivo: 'Emprendedores, profesionales, equipos de trabajo remoto y adultos'
     },
     sabiduria: {
       id: 'sabiduria',
@@ -99,7 +98,8 @@ export default function HomePage() {
         'Espacio seguro de contención emocional y apoyo mutuo.',
         'Acceso rápido a guías educativas descargables en PDF.'
       ],
-      publicoObjetivo: 'Comunidad general, emprendedores locales de productos naturales y familias'
+      publicoObjetivo: 'Comunidad general, emprendedores locales de productos naturales y familias',
+      enConstruccion: true
     }
   };
 
@@ -123,7 +123,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#2D6A4F] font-sans flex flex-col justify-between selection:bg-[#E8F0EC]">
       
-      {/* BARRA SUPERIOR INSTITUCIONAL */}
+      {/* HEADER INSTITUCIONAL */}
       <header className="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b-2 border-[#D4AF37] shadow-xs">
         <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4">
@@ -136,7 +136,7 @@ export default function HomePage() {
             </div>
             <div>
               <h1 className="text-lg md:text-xl font-bold tracking-tight text-[#2D6A4F]">ASL Ideas SpA</h1>
-              <p className="text-xs text-[#52796F] font-medium">Soluciones para Emprendedores y Profesionales</p>
+              <p className="text-xs text-[#52796F] font-medium">Casa Matriz • Generadora de Apps para PYMES y Comercios</p>
             </div>
           </div>
 
@@ -145,7 +145,7 @@ export default function HomePage() {
               Ley TEA N° 21.545 - Accesibilidad Cognitiva
             </span>
             <span className="text-[10px] font-bold bg-[#E8F0EC] text-[#2D6A4F] border border-[#C8D8CE] px-3 py-1 rounded-full">
-              Ley N° 21.663 - Datos de Salud Protegidos
+              Ley N° 21.663 - Datos Protegidos
             </span>
             <button
               type="button"
@@ -212,10 +212,9 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* CONTENIDO PRINCIPAL DE LA HOJA PRINCIPAL */}
+      {/* HERO PRINCIPAL */}
       <main className="max-w-7xl mx-auto px-6 py-10 space-y-12 flex-1 w-full">
         
-        {/* ENCABEZADO Y HERO PRINCIPAL AJUSTADO SEGÚN PREFERENCIA */}
         <section className="bg-white p-8 md:p-12 rounded-3xl border-2 border-[#D4AF37] shadow-xs space-y-6">
           <div className="flex flex-wrap gap-2">
             <span className="text-[11px] font-bold uppercase tracking-wider bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] px-3.5 py-1.5 rounded-full">
@@ -237,24 +236,24 @@ export default function HomePage() {
 
           <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-xs text-[#2D6A4F] font-bold">
-              Diseñado especialmente para Emprendedores, Profesionales e Instituciones de Salud.
+              ASL Ideas SpA (Casa Matriz) es la creadora de las 3 aplicaciones del ecosistema y desarrolladora de soluciones a medida para emprendedores.
             </p>
             <button
               type="button"
               onClick={() => handleOpenPortal('asl')}
               className="bg-[#52796F] hover:bg-[#2D6A4F] text-white text-xs font-bold px-6 py-2.5 rounded-xl transition shadow-xs flex-shrink-0"
             >
-              Solicitar Reunión B2B
+              Contactar Casa Matriz
             </button>
           </div>
         </section>
 
-        {/* ECOSISTEMA DE LAS 4 APPS CON DESCRIPCIÓN Y BENEFICIOS VISIBLES */}
+        {/* TARJETAS DE LAS APPS */}
         <section className="space-y-6">
           <div className="border-b border-[#C8D8CE] pb-3">
             <h3 className="text-xl font-bold text-[#2D6A4F]">Ecosistema de Aplicaciones B2B</h3>
             <p className="text-xs text-[#52796F]">
-              Haz clic en cualquier aplicación para desplegar su Portal Interactivo en vivo y acceder a su Sala Virtual.
+              Casa Matriz impulsa la tríada de portales interactivos y el desarrollo de apps para el comercio asociado.
             </p>
           </div>
 
@@ -262,15 +261,26 @@ export default function HomePage() {
             {Object.values(portalesData).map((portal) => (
               <div
                 key={portal.id}
-                className="bg-white rounded-3xl border border-[#C8D8CE] hover:border-[#D4AF37] transition shadow-xs hover:shadow-md p-8 flex flex-col justify-between space-y-6 group"
+                className="bg-white rounded-3xl border border-[#C8D8CE] hover:border-[#D4AF37] transition shadow-xs hover:shadow-md p-8 flex flex-col justify-between space-y-6 group relative overflow-hidden"
               >
+                {/* MENSAJE DE APP EN CONSTRUCCIÓN SI APLICA */}
+                {portal.enConstruccion && (
+                  <div className="bg-[#FFF0F2] border-2 border-[#D85260] text-[#D85260] p-3 rounded-2xl text-center space-y-1">
+                    <span className="text-xs font-extrabold uppercase tracking-wider block">
+                      App en Construcción • Próximamente al Público
+                    </span>
+                    <p className="text-[10px] font-medium text-[#52796F]">
+                      Esta aplicación se encuentra en fase final de desarrollo antes de su lanzamiento oficial.
+                    </p>
+                  </div>
+                )}
+
                 <div className="space-y-5">
                   <div className="flex items-center justify-between gap-4 border-b border-[#FAF8F5] pb-3">
                     <span className="text-[10px] font-bold tracking-wider uppercase bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] px-3 py-1 rounded-full">
                       {portal.oficinaNum}
                     </span>
                     
-                    {/* LOGO CIRCULAR ROSADO PASTEL */}
                     <div className="w-16 h-16 rounded-full bg-[#FFF0F2] p-1.5 border-2 border-[#F4ACB7] shadow-xs flex items-center justify-center overflow-hidden flex-shrink-0">
                       <img 
                         src={portal.logo} 
@@ -290,7 +300,6 @@ export default function HomePage() {
                     <p className="text-xs font-semibold text-[#84A59D] mt-0.5">{portal.subtitulo}</p>
                   </div>
 
-                  {/* DESCRIPCIÓN DE LO QUE HACE LA APP */}
                   <div className="space-y-1.5 bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE]">
                     <span className="text-[11px] font-bold uppercase text-[#2D6A4F] block">
                       ¿Qué hace esta aplicación?
@@ -300,7 +309,6 @@ export default function HomePage() {
                     </p>
                   </div>
 
-                  {/* BENEFICIOS QUE CUMPLE */}
                   <div className="space-y-2">
                     <span className="text-[11px] font-bold uppercase text-[#D85260] block">
                       Beneficios que cumple:
@@ -315,7 +323,6 @@ export default function HomePage() {
                     </ul>
                   </div>
 
-                  {/* MARCO LEGAL */}
                   <div className="flex flex-wrap gap-1.5 pt-1">
                     {portal.leyes.map((ley, i) => (
                       <span key={i} className="text-[10px] font-bold bg-[#E8F0EC] text-[#2D6A4F] px-3 py-0.5 rounded-full border border-[#C8D8CE]">
@@ -330,14 +337,14 @@ export default function HomePage() {
                   onClick={() => handleOpenPortal(portal.id)}
                   className="w-full bg-[#52796F] hover:bg-[#2D6A4F] text-white text-xs font-bold py-3.5 rounded-2xl transition shadow-xs text-center mt-2"
                 >
-                  Ingresar al Portal {portal.oficinaNum}
+                  {portal.enConstruccion ? 'Ver Avance / Portal Demo' : `Ingresar al Portal ${portal.oficinaNum}`}
                 </button>
               </div>
             ))}
           </div>
         </section>
 
-        {/* REDES SOCIALES Y CONTACTOS CORPORATIVOS */}
+        {/* CONTACTOS CORPORATIVOS */}
         <section className="bg-white p-8 md:p-10 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-6">
           <div className="border-b border-[#E8F0EC] pb-4 space-y-1 text-center md:text-left">
             <span className="text-[10px] font-bold uppercase tracking-wider bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] px-3 py-0.5 rounded-full inline-block">
@@ -345,12 +352,11 @@ export default function HomePage() {
             </span>
             <h3 className="text-xl font-bold text-[#2D6A4F]">Redes Sociales y Contactos Corporativos</h3>
             <p className="text-xs text-[#52796F]">
-              Conecta con nosotros para conocer novedades, solicitar demostraciones o agendar convenios B2B.
+              Conecta con Casa Matriz para conocer novedades, solicitar demostraciones o agendar convenios B2B.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-2">
-            
             <div className="p-5 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-2 text-center shadow-xs hover:border-[#52796F] transition">
               <span className="text-xs font-extrabold text-[#2D6A4F] uppercase tracking-wider block">WhatsApp B2B</span>
               <p className="text-xs font-bold text-[#52796F]">+56 9 6543 2109</p>
@@ -400,21 +406,20 @@ export default function HomePage() {
                 Escribir Correo
               </a>
             </div>
-
           </div>
         </section>
 
       </main>
 
-      {/* PIE DE PÁGINA */}
+      {/* FOOTER */}
       <footer className="bg-[#52796F] text-white py-8 px-6 border-t-2 border-[#D4AF37] text-center space-y-2 mt-12">
-        <p className="font-bold text-sm">ASL Ideas SpA — Todos los derechos reservados</p>
+        <p className="font-bold text-sm">ASL Ideas SpA — Casa Matriz</p>
         <p className="text-xs text-[#E8F0EC]">
           Tecnología en salud humana, accesible e inclusiva para PYMES, emprendedores y profesionales.
         </p>
       </footer>
 
-      {/* PORTAL INTERACTIVO DE PANTALLA COMPLETA */}
+      {/* MODAL PORTAL */}
       <SalaVirtualB2B
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

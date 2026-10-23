@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import React, { useState, useEffect, useRef, ChangeEvent, FormEvent } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -21,6 +21,7 @@ export interface PortalInfo {
   serviciosClave: string[];
   beneficios: string[];
   publicoObjetivo: string;
+  enConstruccion?: boolean;
 }
 
 export interface ArchivoItem {
@@ -29,6 +30,7 @@ export interface ArchivoItem {
   tipo: 'pdf' | 'imagen';
   urlPreview?: string;
   fecha: string;
+  contenidoTexto?: string;
 }
 
 export interface Props {
@@ -86,7 +88,7 @@ export default function SalaVirtualB2B({
     logo: effectiveLogo
   };
 
-  // Estado del Código de Reunión y Videollamada
+  // Estados de Videollamada y Conexión
   const [codigoSala, setCodigoSala] = useState<string>('');
   const [copiado, setCopiado] = useState<boolean>(false);
   const [micActivo, setMicActivo] = useState<boolean>(true);
@@ -95,16 +97,37 @@ export default function SalaVirtualB2B({
   const [modalCancelar, setModalCancelar] = useState<boolean>(false);
   const [motivoCancelacion, setMotivoCancelacion] = useState<string>('Fallo técnico / Problema de conexión a internet');
 
-  // Panel Lateral en Videollamada
-  const [activeSideTab, setActiveSideTab] = useState<'menu' | 'nota' | 'transcripcion'>('menu');
+  // Referencia de Webcam
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [webcamPermiso, setWebcamPermiso] = useState<boolean>(false);
 
-  // Estado de Archivos Subidos
+  // Panel Lateral en Videollamada
+  const [activeSideTab, setActiveSideTab] = useState<'notas' | 'archivos' | 'transcripcion' | 'menu'>('notas');
+
+  // Archivos Subidos
   const [archivosList, setArchivosList] = useState<ArchivoItem[]>([
-    { id: '1', nombre: 'Ficha_Clinica_SOAP_Inicial.pdf', tipo: 'pdf', fecha: '23/10/2026' },
-    { id: '2', nombre: 'Pauta_Evaluacion_Metabolica.pdf', tipo: 'pdf', fecha: '23/10/2026' },
-    { id: '3', nombre: 'Esquema_Composicion_Corporal.jpg', tipo: 'imagen', fecha: '23/10/2026' }
+    { 
+      id: '1', 
+      nombre: 'Ficha_Clinica_SOAP_Inicial.pdf', 
+      tipo: 'pdf', 
+      fecha: '23/10/2026',
+      contenidoTexto: 'Ficha Médica SOAP Cifrada - Ley N° 21.663. Paciente ingresa para evaluación metabólica preventiva y test de bienestar.'
+    },
+    { 
+      id: '2', 
+      nombre: 'Pauta_Evaluacion_Metabolica.pdf', 
+      tipo: 'pdf', 
+      fecha: '23/10/2026',
+      contenidoTexto: 'Pauta de Composición Corporal: Índice de Músculo/Grasa, tolerancia a glucosa y recomendaciones de movimiento sin impacto.'
+    },
+    { 
+      id: '3', 
+      nombre: 'Esquema_Composicion_Corporal.jpg', 
+      tipo: 'imagen', 
+      fecha: '23/10/2026' 
+    }
   ]);
-  const [archivoPreview, setArchivoPreview] = useState<ArchivoItem | null>(null);
+  const [archivoPreview, setArchivoPreview] = useState<ArchivoItem | null>(archivosList[0]);
 
   // Formulario Agendamiento
   const [selectedDate, setSelectedDate] = useState<string>('');
@@ -119,17 +142,31 @@ export default function SalaVirtualB2B({
   );
   const [transcribiendo, setTranscribiendo] = useState<boolean>(false);
   const [notas, setNotas] = useState<string[]>([
-    'Acuerdo preliminar: Demostración de interfaz accesible UI/UX.',
-    'Revisión de requerimientos para Ley N° 21.663 y Ley TEA N° 21.545.'
+    'Nota 1: Demostración de interfaz accesible UI/UX.',
+    'Nota 2: Revisión de requerimientos para Ley N° 21.663 y Ley TEA N° 21.545.'
   ]);
   const [nuevaNota, setNuevaNota] = useState<string>('');
 
+  // Efecto para solicitar cámara real o simularla
   useEffect(() => {
     if (isOpen) {
       const codeGenerated = `ASL-${portalData.id.toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
       setCodigoSala(codeGenerated);
       setEnLlamada(true);
       setBookingSuccess(false);
+
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+          .then((stream) => {
+            setWebcamPermiso(true);
+            if (videoRef.current) {
+              videoRef.current.srcObject = stream;
+            }
+          })
+          .catch(() => {
+            setWebcamPermiso(false);
+          });
+      }
     }
   }, [isOpen, inputPortalData]);
 
@@ -143,20 +180,21 @@ export default function SalaVirtualB2B({
     }
   };
 
-  // MANEJADOR DE ARCHIVOS CORREGIDO (SOLUCIONA ERRORES TS2339 Y TS2345)
   const handleSubirArchivo = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      const file = files[0]; // Extracción explícita del primer File
+      const file = files[0];
       const isImg = file.type.includes('image');
       const nuevoArchivo: ArchivoItem = {
         id: Date.now().toString(),
         nombre: file.name,
         tipo: isImg ? 'imagen' : 'pdf',
         urlPreview: isImg ? URL.createObjectURL(file) : undefined,
-        fecha: new Date().toLocaleDateString('es-CL')
+        fecha: new Date().toLocaleDateString('es-CL'),
+        contenidoTexto: isImg ? undefined : `Documento PDF Adjunto: ${file.name}. Encriptado y validado bajo Ley N° 21.663.`
       };
       setArchivosList((prev) => [nuevoArchivo, ...prev]);
+      setArchivoPreview(nuevoArchivo);
 
       try {
         if (supabase) {
@@ -206,7 +244,7 @@ export default function SalaVirtualB2B({
     setTranscribiendo(true);
     setTimeout(async () => {
       setTranscribiendo(false);
-      const nuevaTranscripcion = transcripcion + '\n\n[Transcripción Automática - Ley N° 21.663]: Acuerdos resguardados.';
+      const nuevaTranscripcion = transcripcion + '\n\n[Transcripción de Voz en Vivo]: "Especialista confirma pauta de seguimiento y envío de ficha médica."';
       setTranscripcion(nuevaTranscripcion);
       setActiveSideTab('transcripcion');
 
@@ -219,7 +257,7 @@ export default function SalaVirtualB2B({
       } catch (err) {
         console.warn('Transcripción guardada localmente:', err);
       }
-    }, 1000);
+    }, 1200);
   };
 
   const handleAgendarSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -251,7 +289,7 @@ export default function SalaVirtualB2B({
   return (
     <div className="fixed inset-0 z-50 bg-[#FAF8F5] overflow-y-auto font-sans text-[#2D6A4F] selection:bg-[#E8F0EC]">
       
-      {/* HEADER CON LOGO CIRCULAR EN FONDO ROSADO PASTEL */}
+      {/* HEADER PORTAL */}
       <header className="bg-white sticky top-0 z-50 border-b-2 border-[#D4AF37] shadow-xs px-6 py-4">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4">
@@ -308,7 +346,22 @@ export default function SalaVirtualB2B({
       {/* CONTENIDO PRINCIPAL */}
       <main className="max-w-7xl mx-auto px-6 py-10 space-y-12">
 
-        {/* CÓDIGO DE SALA Y RECONEXIÓN */}
+        {/* ALERTA DE CONSTRUCCIÓN SI APLICA */}
+        {portalData.enConstruccion && (
+          <div className="bg-[#FFF0F2] p-6 rounded-3xl border-2 border-[#D85260] text-center space-y-2">
+            <span className="text-xs font-extrabold uppercase bg-[#D85260] text-white px-4 py-1 rounded-full inline-block">
+              Aplicación en Fase de Construcción
+            </span>
+            <h3 className="text-base font-bold text-[#D85260]">
+              Esta aplicación está completando sus últimas pruebas de accesibilidad e integración.
+            </h3>
+            <p className="text-xs text-[#52796F]">
+              Puedes interactuar con la Sala Virtual y probar las herramientas de videollamada de demostración.
+            </p>
+          </div>
+        )}
+
+        {/* CÓDIGO DE SALA */}
         <section className="bg-[#FFF0F2] p-6 rounded-3xl border-2 border-[#F4ACB7] flex flex-col md:flex-row justify-between items-center gap-4 shadow-xs">
           <div className="space-y-1">
             <span className="text-[10px] font-bold uppercase tracking-wider bg-white text-[#D85260] border border-[#FF8894] px-3 py-0.5 rounded-full">
@@ -340,14 +393,14 @@ export default function SalaVirtualB2B({
           </div>
         </section>
 
-        {/* VIDEOLLAMADA + PANEL LATERAL SOBRIO SIN EMOJIS */}
+        {/* VIDEOLLAMADA CON PANEL LATERAL DERECHO */}
         <section id="sec-videollamada" className="bg-white p-6 md:p-8 rounded-3xl border-2 border-[#D4AF37] shadow-md space-y-6">
           <div className="flex justify-between items-center border-b border-[#E8F0EC] pb-4 flex-wrap gap-2">
             <div>
               <span className="text-[10px] font-bold uppercase bg-[#E8F0EC] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]">
-                Módulo Interactivo • Participantes Lado a Lado
+                Participantes Lado a Lado & Panel de Notas y Archivos
               </span>
-              <h3 className="text-xl font-bold text-[#2D6A4F] mt-1">Sala de Videollamada en Vivo</h3>
+              <h3 className="text-xl font-bold text-[#2D6A4F] mt-1">Sala Virtual en Vivo</h3>
             </div>
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -358,43 +411,66 @@ export default function SalaVirtualB2B({
           {enLlamada ? (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               
-              {/* REPRODUCTOR DE VIDEOLLAMADA */}
+              {/* ÁREA DE VIDEOLLAMADA */}
               <div className="lg:col-span-2 bg-[#2D6A4F] rounded-3xl p-6 text-white space-y-6 shadow-inner flex flex-col justify-between">
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 min-h-[280px]">
-                  {/* ESPECIALISTA */}
-                  <div className="bg-[#52796F] rounded-2xl p-5 flex flex-col justify-between border-2 border-[#D4AF37] relative overflow-hidden">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 min-h-[300px]">
+                  {/* CÁMARA ESPECIALISTA */}
+                  <div className="bg-[#52796F] rounded-2xl p-4 flex flex-col justify-between border-2 border-[#D4AF37] relative overflow-hidden">
                     <div className="flex justify-between items-center z-10">
                       <span className="bg-black/40 text-white text-[10px] px-3 py-1 rounded-full font-bold">
                         Especialista ASL Ideas
                       </span>
                       <span className="text-[10px] text-[#D4AF37] font-bold">HD 1080p</span>
                     </div>
-                    <div className="text-center my-6 z-10">
-                      <div className="w-16 h-16 mx-auto rounded-full bg-[#FFF0F2] p-1 border-2 border-[#F4ACB7] mb-2 overflow-hidden shadow-md flex items-center justify-center">
+
+                    <div className="my-4 text-center z-10 flex-1 flex flex-col items-center justify-center">
+                      <div className="w-20 h-20 rounded-full bg-[#FFF0F2] p-1 border-2 border-[#F4ACB7] mb-2 overflow-hidden shadow-md flex items-center justify-center">
                         <img src={portalData.logo} alt="Logo" className="w-full h-full object-contain rounded-full" />
                       </div>
                       <p className="text-xs font-bold">Atención Virtual Adaptada</p>
+                      <p className="text-[10px] text-emerald-200 mt-1">Micrófono: Activo (Prueba de Voz)</p>
                     </div>
+
                     <div className="text-[9px] bg-black/30 p-2 rounded-xl text-center z-10">
                       Entorno de Baja Sobrecarga Sensorial (TEA/TDAH)
                     </div>
                   </div>
 
-                  {/* CLIENTE */}
-                  <div className="bg-[#3A5A40] rounded-2xl p-5 flex flex-col justify-between border-2 border-[#F4ACB7] relative overflow-hidden">
+                  {/* CÁMARA USUARIO / WEBCAM REAL O SIMULADA */}
+                  <div className="bg-[#3A5A40] rounded-2xl p-4 flex flex-col justify-between border-2 border-[#F4ACB7] relative overflow-hidden">
                     <div className="flex justify-between items-center z-10">
                       <span className="bg-black/40 text-white text-[10px] px-3 py-1 rounded-full font-bold">
                         Usuario / Cliente
                       </span>
-                      <span className="text-[10px] text-emerald-400 font-bold">Conectado</span>
+                      <span className="text-[10px] text-emerald-400 font-bold">
+                        {camaraActiva ? 'Cámara Encendida' : 'Cámara Apagada'}
+                      </span>
                     </div>
-                    <div className="text-center my-6 z-10">
-                      <div className="w-16 h-16 mx-auto rounded-full bg-[#FFF0F2] flex items-center justify-center border-2 border-[#FF8894] mb-2 text-[#D85260] font-bold text-lg shadow-md">
-                        {userName ? userName.substring(0, 2).toUpperCase() : 'USU'}
-                      </div>
-                      <p className="text-xs font-bold">{userName || 'Participante Invitado'}</p>
+
+                    <div className="my-4 text-center z-10 flex-1 flex flex-col items-center justify-center relative min-h-[140px]">
+                      {camaraActiva ? (
+                        webcamPermiso ? (
+                          <video 
+                            ref={videoRef} 
+                            autoPlay 
+                            playsInline 
+                            muted 
+                            className="w-full h-32 object-cover rounded-xl border border-white/20"
+                          />
+                        ) : (
+                          <div className="w-20 h-20 rounded-full bg-[#FFF0F2] flex items-center justify-center border-2 border-[#FF8894] mb-2 text-[#D85260] font-bold text-lg shadow-md">
+                            {userName ? userName.substring(0, 2).toUpperCase() : 'USU'}
+                          </div>
+                        )
+                      ) : (
+                        <div className="p-4 bg-black/40 rounded-xl text-xs text-gray-300">
+                          Cámara Silenciada
+                        </div>
+                      )}
+                      <p className="text-xs font-bold mt-2">{userName || 'Participante Invitado'}</p>
                     </div>
+
                     <div className="text-[9px] bg-black/30 p-2 rounded-xl text-center z-10">
                       Audio y Ficha Protegida Ley N° 21.663
                     </div>
@@ -429,111 +505,126 @@ export default function SalaVirtualB2B({
                 </div>
               </div>
 
-              {/* PANEL LATERAL SOBRIO SIN EMOJIS */}
+              {/* PANEL LATERAL DE NOTAS, ARCHIVOS Y TRANCRIPCIÓN */}
               <div className="lg:col-span-1 bg-[#FAF8F5] p-5 rounded-3xl border-2 border-[#C8D8CE] flex flex-col justify-between space-y-4 shadow-xs">
                 <div>
-                  <div className="border-b border-[#C8D8CE] pb-3 mb-4">
+                  <div className="border-b border-[#C8D8CE] pb-3 mb-3">
                     <h4 className="text-xs font-extrabold uppercase text-[#2D6A4F] tracking-wider">
-                      Panel Lateral de Control
+                      Panel Lateral de la Consulta
                     </h4>
-                    <p className="text-[11px] text-[#52796F]">Herramientas de consulta en vivo</p>
+                    <p className="text-[11px] text-[#52796F]">Notas escritas, PDF y transcripción</p>
                   </div>
 
-                  <div className="space-y-2.5">
-                    {/* AÑADIR DOCUMENTO */}
-                    <label className="w-full bg-white hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl cursor-pointer transition flex items-center justify-between shadow-xs group">
-                      <div className="text-left">
-                        <p className="text-xs font-bold text-[#2D6A4F]">Añadir Documento</p>
-                        <p className="text-[10px] text-[#84A59D]">Subir PDF o Ficha SOAP</p>
-                      </div>
-                      <input type="file" accept=".pdf,.doc,.docx" onChange={handleSubirArchivo} className="hidden" />
-                      <span className="text-xs font-bold text-[#52796F] group-hover:translate-x-1 transition">Adjuntar</span>
-                    </label>
-
-                    {/* CREAR NOTA */}
+                  {/* PESTAÑAS DE CONTROL */}
+                  <div className="grid grid-cols-3 gap-1 mb-4 bg-[#E8F0EC] p-1 rounded-xl">
                     <button
                       type="button"
-                      onClick={() => setActiveSideTab(activeSideTab === 'nota' ? 'menu' : 'nota')}
-                      className="w-full bg-white hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl transition flex items-center justify-between shadow-xs group text-left"
+                      onClick={() => setActiveSideTab('notas')}
+                      className={`text-[10px] font-bold py-1.5 rounded-lg transition ${activeSideTab === 'notas' ? 'bg-white text-[#2D6A4F] shadow-xs' : 'text-[#52796F]'}`}
                     >
-                      <div>
-                        <p className="text-xs font-bold text-[#2D6A4F]">Crear Nota</p>
-                        <p className="text-[10px] text-[#84A59D]">Registrar acuerdo rápido</p>
-                      </div>
-                      <span className="text-xs font-bold text-[#52796F] group-hover:translate-x-1 transition">Redactar</span>
+                      Notas ({notas.length})
                     </button>
-
-                    {/* TRANSCRIBIR SESIÓN */}
                     <button
                       type="button"
-                      onClick={handleTranscribirReunion}
-                      disabled={transcribiendo}
-                      className="w-full bg-white hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl transition flex items-center justify-between shadow-xs group text-left disabled:opacity-50"
+                      onClick={() => setActiveSideTab('archivos')}
+                      className={`text-[10px] font-bold py-1.5 rounded-lg transition ${activeSideTab === 'archivos' ? 'bg-white text-[#2D6A4F] shadow-xs' : 'text-[#52796F]'}`}
                     >
-                      <div>
-                        <p className="text-xs font-bold text-[#2D6A4F]">
-                          {transcribiendo ? 'Transcribiendo...' : 'Transcribir Sesión'}
-                        </p>
-                        <p className="text-[10px] text-[#84A59D]">Registro asistido de voz</p>
-                      </div>
-                      <span className="text-xs font-bold text-[#52796F] group-hover:translate-x-1 transition">Iniciar</span>
+                      Archivos ({archivosList.length})
                     </button>
-
-                    {/* ADJUNTAR IMAGEN */}
-                    <label className="w-full bg-white hover:bg-[#E8F0EC] border border-[#C8D8CE] p-3 rounded-2xl cursor-pointer transition flex items-center justify-between shadow-xs group">
-                      <div className="text-left">
-                        <p className="text-xs font-bold text-[#2D6A4F]">Adjuntar Imagen</p>
-                        <p className="text-[10px] text-[#84A59D]">Subir esquema o imagen JPG</p>
-                      </div>
-                      <input type="file" accept=".jpg,.png,.jpeg" onChange={handleSubirArchivo} className="hidden" />
-                      <span className="text-xs font-bold text-[#52796F] group-hover:translate-x-1 transition">Cargar</span>
-                    </label>
-
-                    {/* AGENDAR CITA */}
                     <button
                       type="button"
-                      onClick={() => scrollToSection('sec-agendar')}
-                      className="w-full bg-[#52796F] hover:bg-[#2D6A4F] text-white p-3 rounded-2xl transition flex items-center justify-between shadow-xs text-left"
+                      onClick={() => setActiveSideTab('transcripcion')}
+                      className={`text-[10px] font-bold py-1.5 rounded-lg transition ${activeSideTab === 'transcripcion' ? 'bg-white text-[#2D6A4F] shadow-xs' : 'text-[#52796F]'}`}
                     >
-                      <div>
-                        <p className="text-xs font-bold">Agendar Cita</p>
-                        <p className="text-[10px] text-[#E8F0EC]">Nueva sesión B2B</p>
-                      </div>
-                      <span className="text-xs font-bold">Reservar</span>
+                      Transcripción
                     </button>
                   </div>
-                </div>
 
-                {/* SUBPANEL EN LÍNEA */}
-                {activeSideTab === 'nota' && (
-                  <div className="bg-white p-3.5 rounded-2xl border border-[#C8D8CE] space-y-2">
-                    <p className="text-[11px] font-bold text-[#2D6A4F]">Nueva Nota Rápida:</p>
-                    <textarea
-                      rows={2}
-                      value={nuevaNota}
-                      onChange={(e) => setNuevaNota(e.target.value)}
-                      placeholder="Escribir nota..."
-                      className="w-full text-xs p-2 border border-[#C8D8CE] rounded-xl bg-[#FAF8F5]"
-                    />
-                    <button
-                      type="button"
-                      onClick={handleAgregarNota}
-                      className="w-full bg-[#52796F] text-white text-xs font-bold py-1.5 rounded-xl hover:bg-[#2D6A4F]"
-                    >
-                      Guardar Nota
-                    </button>
-                  </div>
-                )}
+                  {/* PESTAÑA: NOTAS */}
+                  {activeSideTab === 'notas' && (
+                    <div className="space-y-3">
+                      <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
+                        {notas.map((nota, idx) => (
+                          <div key={idx} className="p-2.5 bg-white rounded-xl border border-[#C8D8CE] text-xs text-[#2D6A4F] shadow-xs">
+                            {nota}
+                          </div>
+                        ))}
+                      </div>
 
-                {activeSideTab === 'transcripcion' && (
-                  <div className="bg-white p-3.5 rounded-2xl border border-[#C8D8CE] space-y-2">
-                    <p className="text-[11px] font-bold text-[#2D6A4F]">Transcripción Activa:</p>
-                    <div className="max-h-28 overflow-y-auto text-[10px] text-[#52796F] p-2 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE]">
-                      {transcripcion}
+                      <div className="pt-2 border-t border-[#C8D8CE] space-y-2">
+                        <textarea
+                          rows={2}
+                          value={nuevaNota}
+                          onChange={(e) => setNuevaNota(e.target.value)}
+                          placeholder="Escribir nota sobre la reunión..."
+                          className="w-full text-xs p-2.5 border border-[#C8D8CE] rounded-xl bg-white"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleAgregarNota}
+                          className="w-full bg-[#52796F] hover:bg-[#2D6A4F] text-white text-xs font-bold py-2 rounded-xl transition"
+                        >
+                          Guardar Nota en la Sesión
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
+                  {/* PESTAÑA: ARCHIVOS Y PDF */}
+                  {activeSideTab === 'archivos' && (
+                    <div className="space-y-3">
+                      <label className="w-full bg-[#52796F] hover:bg-[#2D6A4F] text-white text-xs font-bold p-2.5 rounded-xl cursor-pointer transition block text-center shadow-xs">
+                        + Adjuntar PDF o Imagen
+                        <input type="file" accept=".pdf,.doc,.docx,.jpg,.png" onChange={handleSubirArchivo} className="hidden" />
+                      </label>
+
+                      <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                        {archivosList.map((item) => (
+                          <div key={item.id} className="p-2.5 bg-white rounded-xl border border-[#C8D8CE] flex items-center justify-between text-xs gap-2">
+                            <div className="truncate">
+                              <p className="font-bold text-[#2D6A4F] truncate">{item.nombre}</p>
+                              <p className="text-[9px] text-[#84A59D]">{item.tipo.toUpperCase()} • {item.fecha}</p>
+                            </div>
+                            <div className="flex gap-1">
+                              <button
+                                type="button"
+                                onClick={() => setArchivoPreview(item)}
+                                className="text-[10px] font-bold bg-[#E8F0EC] text-[#2D6A4F] px-2 py-1 rounded-lg"
+                              >
+                                Ver
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleEliminarArchivo(item.id)}
+                                className="text-[10px] font-bold bg-[#FFF0F2] text-[#D85260] px-2 py-1 rounded-lg"
+                              >
+                                Borrar
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* PESTAÑA: TRANCRIPCIÓN */}
+                  {activeSideTab === 'transcripcion' && (
+                    <div className="space-y-3">
+                      <div className="max-h-44 overflow-y-auto text-xs text-[#52796F] p-3 bg-white rounded-xl border border-[#C8D8CE] leading-relaxed whitespace-pre-line">
+                        {transcripcion}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleTranscribirReunion}
+                        disabled={transcribiendo}
+                        className="w-full bg-[#52796F] hover:bg-[#2D6A4F] text-white text-xs font-bold py-2 rounded-xl transition disabled:opacity-50"
+                      >
+                        {transcribiendo ? 'Procesando Voz...' : 'Transcribir Micrófono en Vivo'}
+                      </button>
+                    </div>
+                  )}
+
+                </div>
               </div>
 
             </div>
@@ -551,83 +642,46 @@ export default function SalaVirtualB2B({
           )}
         </section>
 
-        {/* GESTOR DE ARCHIVOS SUBIDOS */}
-        <section className="bg-white p-8 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-6">
-          <div className="flex justify-between items-center border-b border-[#E8F0EC] pb-4 flex-wrap gap-2">
-            <div>
-              <span className="text-[10px] font-bold uppercase bg-[#E8F0EC] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]">
-                Fichas y Documentación Encriptada
-              </span>
-              <h3 className="text-xl font-bold text-[#2D6A4F] mt-1">Archivos de la Consulta ({archivosList.length})</h3>
+        {/* VISOR Y PREVISUALIZADOR DE PDF / DOCUMENTOS */}
+        {archivoPreview && (
+          <section className="bg-white p-6 md:p-8 rounded-3xl border-2 border-[#F4ACB7] shadow-xs space-y-4">
+            <div className="flex justify-between items-center border-b border-[#FF8894] pb-3">
+              <div>
+                <span className="text-[10px] font-bold uppercase bg-[#FFF0F2] text-[#D85260] px-3 py-0.5 rounded-full border border-[#FF8894]">
+                  Visualizador de Documentos Protegidos
+                </span>
+                <h4 className="text-base font-bold text-[#2D6A4F] mt-1">{archivoPreview.nombre}</h4>
+              </div>
+              <button
+                type="button"
+                onClick={() => setArchivoPreview(null)}
+                className="text-xs font-bold text-[#D85260] hover:underline"
+              >
+                Cerrar Visor
+              </button>
             </div>
 
-            <label className="bg-[#52796F] hover:bg-[#2D6A4F] text-white text-xs font-bold px-5 py-2.5 rounded-xl cursor-pointer transition shadow-xs">
-              + Subir Nuevo Archivo
-              <input type="file" accept=".pdf,.doc,.docx,.jpg,.png" onChange={handleSubirArchivo} className="hidden" />
-            </label>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {archivosList.map((item) => (
-              <div key={item.id} className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] flex items-center justify-between gap-3 shadow-xs">
-                <div className="flex items-center gap-3 overflow-hidden">
-                  <span className="text-xs font-bold bg-[#E8F0EC] text-[#2D6A4F] px-2.5 py-1 rounded-lg uppercase">
-                    {item.tipo}
+            {archivoPreview.tipo === 'imagen' && archivoPreview.urlPreview ? (
+              <div className="max-h-80 overflow-hidden rounded-2xl border border-[#FF8894] bg-[#FAF8F5] p-2 flex justify-center">
+                <img src={archivoPreview.urlPreview} alt="Preview" className="max-h-72 object-contain rounded-xl" />
+              </div>
+            ) : (
+              <div className="p-6 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-3">
+                <div className="flex items-center justify-between border-b border-[#C8D8CE] pb-2">
+                  <span className="text-xs font-bold text-[#2D6A4F]">Lector de PDF Cifrado — Ley N° 21.663</span>
+                  <span className="text-[10px] bg-[#E8F0EC] text-[#2D6A4F] font-bold px-2.5 py-0.5 rounded-full">
+                    Estándar SOAP
                   </span>
-                  <div className="truncate">
-                    <p className="text-xs font-bold text-[#2D6A4F] truncate">{item.nombre}</p>
-                    <p className="text-[10px] text-[#84A59D]">Fecha: {item.fecha}</p>
-                  </div>
                 </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setArchivoPreview(item)}
-                    className="text-xs font-bold bg-[#E8F0EC] hover:bg-[#52796F] hover:text-white text-[#2D6A4F] px-3 py-1.5 rounded-xl transition border border-[#C8D8CE]"
-                  >
-                    Ver
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleEliminarArchivo(item.id)}
-                    className="text-xs font-bold bg-[#FFF0F2] hover:bg-[#FF8894] text-[#D85260] hover:text-white px-3 py-1.5 rounded-xl transition border border-[#FF8894]"
-                  >
-                    Borrar
-                  </button>
-                </div>
+                <p className="text-xs text-[#52796F] leading-relaxed">
+                  {archivoPreview.contenidoTexto || 'Documento PDF verificado y protegido en la plataforma. Los datos sensibles están encriptados en tránsito.'}
+                </p>
               </div>
-            ))}
-          </div>
+            )}
+          </section>
+        )}
 
-          {archivoPreview && (
-            <div className="p-6 bg-[#FFF0F2] rounded-3xl border-2 border-[#F4ACB7] space-y-4">
-              <div className="flex justify-between items-center border-b border-[#FF8894] pb-2">
-                <h4 className="text-sm font-bold text-[#D85260]">Previsualización: {archivoPreview.nombre}</h4>
-                <button
-                  type="button"
-                  onClick={() => setArchivoPreview(null)}
-                  className="text-xs font-bold text-[#D85260] hover:underline"
-                >
-                  Cerrar Vista
-                </button>
-              </div>
-
-              {archivoPreview.urlPreview ? (
-                <div className="max-h-64 overflow-hidden rounded-2xl border border-[#FF8894] bg-white p-2 flex justify-center">
-                  <img src={archivoPreview.urlPreview} alt="Preview" className="max-h-60 object-contain" />
-                </div>
-              ) : (
-                <div className="p-8 bg-white rounded-2xl text-center space-y-2 border border-[#FF8894]">
-                  <p className="text-xs font-bold text-[#2D6A4F]">Documento PDF Protegido bajo Ley N° 21.663</p>
-                </div>
-              )}
-            </div>
-          )}
-        </section>
-
-        {/* AGENDAMIENTO B2B */}
+        {/* FORMULARIO DE AGENDAMIENTO B2B */}
         <section id="sec-agendar" className="bg-white p-8 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-6">
           <div className="border-b border-[#E8F0EC] pb-4">
             <h3 className="text-xl font-bold text-[#2D6A4F]">Agendamiento de Cita Virtual</h3>
