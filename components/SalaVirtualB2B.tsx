@@ -71,12 +71,12 @@ export default function SalaVirtualB2B({
   const [camaraActiva, setCamaraActiva] = useState<boolean>(true);
   const [enLlamada, setEnLlamada] = useState<boolean>(true);
 
-  // Cámara e Stream de Video (Asignado a Nosotros / Especialista)
+  // Cámara en Stream de Video (Asignado a Nosotros / Especialista)
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
 
   // Transcripción y Subtítulos en Vivo sobre la Videollamada
-  const [subtituloEnVivo, setSubtituloEnVivo] = useState<string>('Haz clic en "Transcribir Voz" para activar la escucha del micrófono...');
+  const [subtituloEnVivo, setSubtituloEnVivo] = useState<string>('Haz clic en "Transcribir Voz en Vivo" para activar la escucha del micrófono...');
   const [transcripcion, setTranscripcion] = useState<string>(
     'Registro de Sesión: Transcripción automática activada bajo Ley N° 21.663.\n[00:01] Sistema iniciado.'
   );
@@ -119,7 +119,7 @@ export default function SalaVirtualB2B({
   ]);
   const [nuevaNota, setNuevaNota] = useState<string>('');
 
-  // Capturar cámara web real
+  // Capturar cámara web real al abrir el portal
   useEffect(() => {
     if (isOpen) {
       setCodigoSala(`ASL-${portalData.id.toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`);
@@ -160,6 +160,7 @@ export default function SalaVirtualB2B({
     }
   };
 
+  // Manejador de archivos con índice files[0]
   const handleSubirArchivo = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
@@ -185,6 +186,7 @@ export default function SalaVirtualB2B({
     if (archivoPreview?.id === id) setArchivoPreview(null);
   };
 
+  // Transcripción corregida evitando el valor "undefined"
   const handleTranscribirEnVivo = () => {
     setTranscribiendo(true);
     setSubtituloEnVivo('Micrófono escuchando... Habla ahora para transcribir.');
@@ -201,7 +203,10 @@ export default function SalaVirtualB2B({
         recognition.onresult = (event: any) => {
           let textoActual = '';
           for (let i = event.resultIndex; i < event.results.length; i++) {
-            textoActual += event.results[i].transcript;
+            const resultItem = event.results[i];
+            if (resultItem && resultItem[0] && resultItem[0].transcript) {
+              textoActual += resultItem[0].transcript;
+            }
           }
           if (textoActual.trim()) {
             setSubtituloEnVivo(textoActual);
