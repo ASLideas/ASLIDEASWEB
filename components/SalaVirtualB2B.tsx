@@ -1,7 +1,14 @@
 'use client';
 
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@supabase/supabase-js';
+
+// Inicialización directa y segura de Supabase
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabase = (supabaseUrl && supabaseAnonKey) 
+  ? createClient(supabaseUrl, supabaseAnonKey) 
+  : null;
 
 export interface PortalInfo {
   id: string;
@@ -54,7 +61,6 @@ export default function SalaVirtualB2B({
     publicoObjetivo: 'Pacientes con condiciones crónicas, adultos con sobrepeso y profesionales de la salud'
   };
 
-  // Resuelve retrocompatibilidad para llamadas desde app/comunidad/page.tsx
   const effectiveName = inputPortalData?.nombre || appName || initialApp || defaultLawenmoll.nombre;
   const effectiveLogo = inputPortalData?.logo || appLogo || defaultLawenmoll.logo;
 
@@ -71,7 +77,7 @@ export default function SalaVirtualB2B({
   const [userName, setUserName] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
 
-  // Estados para la sala de Reunión en línea / Web
+  // Estados de la Reunión en línea
   const [documentosReunion, setDocumentosReunion] = useState<string[]>([
     'Ficha_Clinica_SOAP_Inicial.pdf',
     'Pauta_Evaluacion_Metabolica.pdf'
@@ -224,7 +230,7 @@ export default function SalaVirtualB2B({
           </button>
         </header>
 
-        {/* PESTAÑAS DE NAVEGACION TEXTUALES (SIN ICONOS) */}
+        {/* PESTAÑAS DE NAVEGACION TEXTUALES */}
         <div className="flex border-b border-[#C8D8CE] bg-[#E8F0EC] overflow-x-auto">
           <button 
             type="button"
@@ -329,7 +335,6 @@ export default function SalaVirtualB2B({
           {tab === 'reunion' && (
             <div className="space-y-6 max-w-4xl mx-auto">
               
-              {/* ACCIONES PRINCIPALES DE LA REUNION EN LINEA */}
               <div className="bg-white p-6 rounded-3xl border-2 border-[#D4AF37] shadow-xs space-y-4">
                 <div className="border-b border-[#E8F0EC] pb-3 flex justify-between items-center flex-wrap gap-2">
                   <div>
@@ -345,7 +350,7 @@ export default function SalaVirtualB2B({
                   </span>
                 </div>
 
-                {/* BOTONES DE ACCIONES REQUERIDAS */}
+                {/* BOTONES DE LAS 5 ACCIONES */}
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-3 pt-2">
                   
                   {/* ACCION 1: AÑADIR DOCUMENTO */}
@@ -408,13 +413,13 @@ export default function SalaVirtualB2B({
                 </div>
               </div>
 
-              {/* DESGLOSE LATERAL / COLUMNAS DE ARCHIVOS E IMAGENES */}
+              {/* DESGLOSE POR COLUMNAS */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 
-                {/* COLUMNA 1: DESGLOSE DE DOCUMENTOS */}
+                {/* DOCUMENTOS */}
                 <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-3 shadow-xs">
                   <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#E8F0EC] pb-2">
-                    Documentos de la Sesión ({documentosReunion.length})
+                    Documentos ({documentosReunion.length})
                   </h4>
                   <ul className="space-y-2 text-xs">
                     {documentosReunion.map((doc, idx) => (
@@ -426,10 +431,10 @@ export default function SalaVirtualB2B({
                   </ul>
                 </div>
 
-                {/* COLUMNA 2: DESGLOSE DE IMAGENES */}
+                {/* IMÁGENES */}
                 <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-3 shadow-xs">
                   <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#E8F0EC] pb-2">
-                    Imágenes y Esquemas ({imagenesReunion.length})
+                    Imágenes ({imagenesReunion.length})
                   </h4>
                   <ul className="space-y-2 text-xs">
                     {imagenesReunion.map((img, idx) => (
@@ -441,10 +446,10 @@ export default function SalaVirtualB2B({
                   </ul>
                 </div>
 
-                {/* COLUMNA 3: REGISTRO DE TRANSCRIPCION */}
+                {/* TRANSCRIPCIÓN */}
                 <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-3 shadow-xs">
                   <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#E8F0EC] pb-2">
-                    Transcripción de Sesión
+                    Transcripción
                   </h4>
                   <textarea
                     rows={4}
@@ -454,7 +459,7 @@ export default function SalaVirtualB2B({
                   />
                   {transcripcionCompletada && (
                     <p className="text-[10px] text-[#2D6A4F] font-bold bg-[#E8F0EC] p-2 rounded-xl text-center">
-                      Transcripción guardada y respaldada exitosamente.
+                      Transcripción respaldada exitosamente.
                     </p>
                   )}
                 </div>
