@@ -11,7 +11,7 @@ export default function HomePage() {
   const [adminPass, setAdminPass] = useState<string>('');
   const [adminError, setAdminError] = useState<boolean>(false);
 
-  // Mapeo con rutas exactas de logotipos
+  // Información detallada de las 4 Oficinas Virtuales
   const portalesData: Record<string, PortalInfo> = {
     asl: {
       id: 'asl',
@@ -20,15 +20,20 @@ export default function HomePage() {
       logo: '/LOGO_asl.png',
       oficinaNum: 'Oficina Virtual 01',
       leyes: ['Ley TEA N° 21.545', 'Ley N° 21.663', 'Convenios B2B'],
-      descripcionCorta: 'Gestión corporativa, licencias de software a medida y consultoría en accesibilidad cognitiva para instituciones.',
-      descripcionLarga: 'Centro de mando corporativo donde se gestionan convenios B2B con municipalidades, empresas e instituciones de salud. Presenta métricas de impacto y comercializa soluciones de diseño inclusivo para personas neurodivergentes.',
+      descripcionCorta: 'Gestión corporativa, desarrollo de software a medida, licencias B2B, convenios municipales y consultoría en accesibilidad cognitiva UI/UX.',
+      descripcionLarga: 'Centro de mando corporativo donde se gestionan convenios B2B con municipalidades, empresas e instituciones de salud. Presenta las métricas de impacto de las aplicaciones desarrolladas y comercializa soluciones de diseño inclusivo adaptadas para usuarios neurodivergentes.',
       serviciosClave: [
         'Licencias de Software B2B & Convenios Institucionales',
-        'Consultoría en Accesibilidad UI/UX (TEA / TDAH)',
-        'Desarrollo de Software Médico y Preventivo',
-        'Capacitación e Integración de Tecnologías Inclusivas'
+        'Consultoría en Accesibilidad UI/UX para Neurodivergencias (TEA / TDAH)',
+        'Desarrollo de Software Médico y Preventivo a Medida',
+        'Capacitación e Integración Institucional'
       ],
-      publicoObjetivo: 'Municipalidades, Empresas, Instituciones de Salud y Organizaciones'
+      beneficios: [
+        'Cumplimiento de la Ley TEA N° 21.545 y Ley de Ciberseguridad N° 21.663.',
+        'Reducción del estrés cognitivo y sobrecarga sensorial en entornos laborales.',
+        'Interfaces amables diseñadas con rigor científico y sensibilidad humana.'
+      ],
+      publicoObjetivo: 'Municipalidades, Empresas, PYMES, Instituciones de Salud y Organizaciones'
     },
     lawenmoll: {
       id: 'lawenmoll',
@@ -37,13 +42,18 @@ export default function HomePage() {
       logo: '/lawenmoll_logo.jpg',
       oficinaNum: 'Oficina Virtual 02',
       leyes: ['Ley N° 21.663 - Datos Protegidos', 'Ley TEA N° 21.545', 'Estándar SOAP'],
-      descripcionCorta: 'Test de Bienestar Inteligente, composición metabólica y Fichas Clínicas encriptadas.',
-      descripcionLarga: 'Plataforma clínica integrativa enfocada en la evaluación personalizada de la salud metabólica. Unifica la medicina preventiva con herramientas digitales que encriptan el historial clínico y conectan al paciente con especialistas.',
+      descripcionCorta: 'Test de Bienestar Inteligente, composición metabólica, Fichas Clínicas encriptadas bajo Ley N° 21.663 y consulta con especialistas.',
+      descripcionLarga: 'Plataforma clínica integrativa enfocada en la evaluación personalizada de la salud metabólica. Unifica la medicina preventiva con herramientas digitales que encriptan el historial clínico y conectan al paciente con especialistas de la salud.',
       serviciosClave: [
-        'Test de Bienestar Inteligente',
-        'Cálculo de Composición Corporal y Metabólica',
-        'Fichas Clínicas Encriptadas (Ley N° 21.663)',
-        'Atención con Especialistas y Terapeutas'
+        'Test de Bienestar Inteligente y Evaluación Nutricional',
+        'Cálculo de Composición Corporal y Riesgo Metabólico',
+        'Fichas Clínicas Encriptadas bajo Estándar SOAP (Ley N° 21.663)',
+        'Atención Virtual y Telemedicina con Especialistas'
+      ],
+      beneficios: [
+        'Diagnóstico preventivo sin juicios punitivos sobre el peso.',
+        'Privacidad total de fichas médicas mediante cifrado de alto nivel.',
+        'Seguimiento continuo adaptado al ritmo de vida de cada paciente.'
       ],
       publicoObjetivo: 'Pacientes con condiciones crónicas, adultos con sobrepeso y profesionales de la salud'
     },
@@ -54,32 +64,42 @@ export default function HomePage() {
       logo: '/logo_wellness.jpg',
       oficinaNum: 'Oficina Virtual 03',
       leyes: ['Ejercicios Sin Impacto', 'Reducción de Cortisol', 'Salas Temáticas'],
-      descripcionCorta: 'Salas virtuales interactivas, videoteca de ejercicios sin impacto y pausas activas.',
-      descripcionLarga: 'Espacio enfocado en la activación física adaptada y la reducción del cortisol para personas con sobrepeso, dolor articular o sobrecarga urbana. Incluye salas temáticas (Lotus, Cielo, Bosque, Raíz) para entrenamiento guiado.',
+      descripcionCorta: 'Movimiento adaptado sin impacto, pausas activas para el trabajo remoto, salas virtuales interactivas y cocina demostrativa.',
+      descripcionLarga: 'Espacio enfocado en la activación física adaptada y la reducción del cortisol para personas con sobrepeso, movilidad reducida o sobrecarga urbana. Incluye salas temáticas interactivas (Lotus, Cielo, Bosque, Raíz) para entrenamiento guiado en vivo.',
       serviciosClave: [
         'Salas Virtuales Temáticas (Lotus, Cielo, Bosque, Raíz)',
-        'Videoteca de Ejercicios Adaptados Sin Impacto',
-        'Pausas Activas y Cocina Demostrativa',
-        'Entrenamiento Guiado de Bajo Estrés'
+        'Videoteca de Ejercicios Adaptados Sin Impacto Articular',
+        'Pausas Activas de Bajo Estrés para Empresas',
+        'Cocina Demostrativa y Nutrición Antiinflamatoria'
       ],
-      publicoObjetivo: 'Adultos con movilidad reducida, sobrepeso, dolor articular o estrés urbano'
+      beneficios: [
+        'Disminución efectiva de los niveles de ansiedad y cortisol.',
+        'Ejercicios seguros diseñados para cuidar las articulaciones.',
+        'Interacción comunitaria guiada en salas virtuales temáticas.'
+      ],
+      publicoObjetivo: 'Adultos con movilidad reducida, sobrepeso, dolor articular o estrés laboral'
     },
     sabiduria: {
       id: 'sabiduria',
-      nombre: 'Bienestar & Sabiduría Ancestral',
+      nombre: 'Bienestar App & Sabiduría Ancestral',
       subtitulo: 'Comunidad & Fitoterapia Nativa',
       logo: '/LOGO_BIENESTAR.png',
       oficinaNum: 'Oficina Virtual 04',
       leyes: ['Herbolaria Nativa', 'Ley N° 21.663', 'Comunidad Inclusiva'],
-      descripcionCorta: 'Diario Mural de "Secretos de la Abuela", recetario herbolario en PDF y Agente Virtual.',
-      descripcionLarga: 'Portal dedicado a la preservación y divulgación de la herbolaria nativa y los remedios tradicionales de la cultura popular. Integra un mural de notas donde la comunidad comparte pautas familiares y fichas PDF descargables.',
+      descripcionCorta: 'Red de comunidad, recetario herbolario nativo en PDF, seguimiento de hábitos saludables, fitoterapia tradicional y descanso consciente.',
+      descripcionLarga: 'Portal dedicado a la preservación y divulgación de la herbolaria nativa y los remedios tradicionales de la cultura popular. Integra el Diario Mural interactivo "Secretos de la Abuela", donde la comunidad comparte pautas familiares y fichas PDF descargables.',
       serviciosClave: [
         'Diario Mural Interactivo "Secretos de la Abuela"',
-        'Recetario Herbolario Nativo Descargable (PDF)',
+        'Recetario Herbolario Nativo Descargable en PDF',
         'Agente Virtual de Conversación Empática',
-        'Encuentros y Talleres Comunitarios'
+        'Talleres y Encuentros Comunitarios de Fitoterapia'
       ],
-      publicoObjetivo: 'Comunidad general, familias y personas interesadas en la medicina natural'
+      beneficios: [
+        'Rescate de saberes ancestrales y medicina herbal nativa.',
+        'Espacio seguro de apoyo mutuo y descanso consciente.',
+        'Generación de fichas educativas coleccionables en formato PDF.'
+      ],
+      publicoObjetivo: 'Comunidad general, familias y personas interesadas en la medicina natural y el bienestar integral'
     }
   };
 
@@ -103,33 +123,42 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#2D6A4F] font-sans flex flex-col justify-between selection:bg-[#E8F0EC]">
       
-      {/* HEADER SUPERIOR */}
-      <header className="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-[#C8D8CE]/50 shadow-xs">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      {/* BARRA SUPERIOR INSTITUCIONAL */}
+      <header className="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b-2 border-[#D4AF37] shadow-xs">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-white p-1.5 border border-[#C8D8CE] shadow-xs flex items-center justify-center overflow-hidden">
-              <img 
-                src="/LOGO_asl.png" 
-                alt="ASL Ideas SpA Logo" 
-                className="w-full h-full object-contain" 
-              />
+            <div className="w-12 h-12 rounded-2xl bg-white p-1 border border-[#C8D8CE] shadow-xs flex items-center justify-center overflow-hidden">
+              <img src="/LOGO_asl.png" alt="ASL Ideas SpA" className="w-full h-full object-contain" />
             </div>
             <div>
               <h1 className="text-lg md:text-xl font-bold tracking-tight text-[#2D6A4F]">ASL Ideas SpA</h1>
-              <p className="text-xs text-[#52796F] font-medium">Ecosistema de Salud Digital Inclusiva & Accesibilidad</p>
+              <p className="text-xs text-[#52796F] font-medium">Inclusiva y Accesibilidad UI/UX</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[10px] font-bold bg-[#E8F0EC] text-[#2D6A4F] border border-[#C8D8CE] px-3 py-1 rounded-full">
+              Ley TEA N° 21.545 - Accesibilidad Cognitiva
+            </span>
+            <span className="text-[10px] font-bold bg-[#E8F0EC] text-[#2D6A4F] border border-[#C8D8CE] px-3 py-1 rounded-full">
+              Ley N° 21.663 - Datos de Salud Protegidos
+            </span>
+            <button
+              type="button"
+              onClick={() => handleOpenPortal('asl')}
+              className="text-xs font-bold bg-[#52796F] hover:bg-[#2D6A4F] text-white px-3.5 py-1.5 rounded-full transition shadow-xs"
+            >
+              Agendar Cita B2B
+            </button>
             {isAdminMode ? (
-              <span className="text-xs font-bold bg-[#D4AF37] text-white px-4 py-2 rounded-full shadow-xs">
+              <span className="text-xs font-bold bg-[#D4AF37] text-white px-3.5 py-1.5 rounded-full shadow-xs">
                 Modo Admin
               </span>
             ) : (
               <button
                 type="button"
                 onClick={() => setShowAdminLogin(true)}
-                className="text-xs font-bold text-[#2D6A4F] bg-[#E8F0EC] hover:bg-[#52796F] hover:text-white px-4 py-2 rounded-full border border-[#C8D8CE] transition shadow-xs"
+                className="text-xs font-bold text-[#2D6A4F] bg-[#FAF8F5] hover:bg-[#E8F0EC] px-3.5 py-1.5 rounded-full border border-[#C8D8CE] transition shadow-xs"
               >
                 Acceso Admin
               </button>
@@ -141,11 +170,10 @@ export default function HomePage() {
       {/* MODAL ADMIN */}
       {showAdminLogin && (
         <div className="fixed inset-0 z-50 bg-[#2D6A4F]/50 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white p-8 rounded-3xl border border-[#D4AF37] shadow-2xl max-w-sm w-full space-y-5">
-            <div className="text-center space-y-1">
-              <h3 className="text-base font-bold text-[#2D6A4F]">Autenticación Administrador</h3>
-              <p className="text-xs text-[#52796F]">Ingresa la clave para activar la gestión B2B.</p>
-            </div>
+          <div className="bg-white p-8 rounded-3xl border-2 border-[#D4AF37] shadow-2xl max-w-sm w-full space-y-4">
+            <h3 className="text-base font-bold text-[#2D6A4F] text-center border-b border-[#E8F0EC] pb-2">
+              Autenticación Administrador
+            </h3>
             <form onSubmit={handleAdminAuth} className="space-y-4">
               <div>
                 <input
@@ -181,49 +209,85 @@ export default function HomePage() {
       )}
 
       {/* CONTENIDO PRINCIPAL */}
-      <main className="max-w-7xl mx-auto px-6 py-12 md:py-16 space-y-16 flex-1 w-full">
+      <main className="max-w-7xl mx-auto px-6 py-10 space-y-12 flex-1 w-full">
         
-        {/* HERO */}
-        <section className="bg-white p-8 md:p-12 rounded-3xl border border-[#C8D8CE]/60 shadow-sm space-y-6">
-          <div className="max-w-3xl space-y-4">
-            <span className="text-[11px] font-bold uppercase tracking-wider bg-[#E8F0EC] text-[#2D6A4F] border border-[#C8D8CE] px-3.5 py-1.5 rounded-full inline-block">
-              Diseño Amable • Ley TEA N° 21.545 • Ley N° 21.663
+        {/* BANNER PRINCIPAL Y PROPÓSITO */}
+        <section className="bg-white p-8 md:p-12 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-4">
+          <span className="text-[11px] font-bold uppercase tracking-wider bg-[#E8F0EC] text-[#2D6A4F] border border-[#C8D8CE] px-3.5 py-1.5 rounded-full inline-block">
+            Desarrollamos Soluciones Accesibles para PYMES y Comercio Asociado
+          </span>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#2D6A4F] leading-tight">
+            Tecnología Humana, Accesible y Amable
+          </h2>
+          <p className="text-sm md:text-base text-[#52796F] leading-relaxed max-w-4xl">
+            Desarrollamos soluciones tecnológicas amables diseñadas por y para personas con neurodivergencias y condiciones crónicas de salud, unificando la ciencia metabólica, el movimiento adaptado y la sabiduría preventiva.
+          </p>
+        </section>
+
+        {/* SECCIÓN HISTORIA FUNDACIONAL Y PROPÓSITO CORPORATIVO */}
+        <section className="bg-white p-8 md:p-12 rounded-3xl border-2 border-[#D4AF37] shadow-sm space-y-8">
+          <div className="border-b border-[#E8F0EC] pb-4">
+            <span className="text-[10px] font-bold uppercase bg-[#E8F0EC] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]">
+              Historia Fundacional y Propósito Corporativo
             </span>
-            <h2 className="text-2xl md:text-4xl font-extrabold text-[#2D6A4F] leading-tight">
-              Ecosistema Integrativo de Salud Digital Inclusiva
-            </h2>
-            <p className="text-sm md:text-base text-[#52796F] leading-relaxed">
-              Propuesta tecnológica concebida por <strong>ASL Ideas SpA</strong> para reducir la sobrecarga sensorial, unificar la evaluación metabólica y brindar una experiencia digital accesible e intuitiva [1].
-            </p>
+            <h3 className="text-xl md:text-2xl font-bold text-[#2D6A4F] mt-2">
+              ¿Qué es ASL Ideas SpA y cuál es su Propósito Integrativo?
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* HISTORIA FUNDACIONAL */}
+            <div className="bg-[#FAF8F5] p-6 rounded-2xl border border-[#C8D8CE] space-y-3">
+              <h4 className="text-base font-bold text-[#2D6A4F]">Historia Fundacional y Perspectiva Única</h4>
+              <p className="text-xs md:text-sm text-[#52796F] leading-relaxed">
+                ASL Ideas SpA nace de una vivencia real: fue fundada por una Diseñadora Gráfica de 47 años con neurodivergencia —Condición del Espectro Autista (TEA Grado 1) y Trastorno por Déficit de Atención e Hiperactividad (TDAH)—, quien vive cotidianamente con enfermedades crónicas no transmisibles y sobrepeso.
+              </p>
+              <p className="text-xs md:text-sm text-[#52796F] leading-relaxed font-semibold">
+                Esta perspectiva aporta un conocimiento empírico de las fricciones, el estrés urbano y la sobrecarga sensorial que generan las aplicaciones médicas convencionales.
+              </p>
+            </div>
+
+            {/* PROPÓSITO CENTRAL Y PRINCIPIOS */}
+            <div className="bg-[#FAF8F5] p-6 rounded-2xl border border-[#C8D8CE] space-y-3">
+              <h4 className="text-base font-bold text-[#2D6A4F]">El Propósito Central y Principios UI/UX</h4>
+              <p className="text-xs md:text-sm text-[#52796F] leading-relaxed">
+                Demostrar que existen múltiples posibilidades integrativas para abordar afecciones crónicas y elevar la calidad de vida mediante interfaces amables e intuitivas.
+              </p>
+              <ul className="space-y-2 text-xs text-[#2D6A4F] pt-1">
+                <li className="p-2 bg-white rounded-lg border border-[#C8D8CE]">
+                  <strong>Reducción de Sobrecarga Sensorial:</strong> Paletas suaves (#FAF8F5, #52796F y #84A59D).
+                </li>
+                <li className="p-2 bg-white rounded-lg border border-[#C8D8CE]">
+                  <strong>Claridad Cognitiva (TDAH/TEA):</strong> Navegación lineal y microinteracciones previsibles.
+                </li>
+                <li className="p-2 bg-white rounded-lg border border-[#C8D8CE]">
+                  <strong>Empatía y Dignidad:</strong> Lenguaje libre de juicios punitivos.
+                </li>
+              </ul>
+            </div>
           </div>
         </section>
 
-        {/* TARJETAS DE LAS 4 OFICINAS VIRTUALES */}
-        <section className="space-y-8">
-          <div className="space-y-2 border-b border-[#C8D8CE]/60 pb-4">
-            <h3 className="text-xl md:text-2xl font-bold text-[#2D6A4F]">Las 4 Oficinas Virtuales Interactivas</h3>
-            <p className="text-xs md:text-sm text-[#52796F]">
-              Haz clic en cualquier portal para acceder al panel de trabajo en pantalla completa.
-            </p>
+        {/* ECOSISTEMA DE PORTALES INTERACTIVOS */}
+        <section className="space-y-6">
+          <div className="border-b border-[#C8D8CE] pb-3">
+            <h3 className="text-xl font-bold text-[#2D6A4F]">Ecosistema de Portales Interactivos</h3>
+            <p className="text-xs text-[#52796F]">Acceso a las 4 Oficinas Virtuales. Haz clic en cualquiera de las oficinas para ingresar a su portal descriptivo e interactivo.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {Object.values(portalesData).map((portal) => (
               <div
                 key={portal.id}
-                className="bg-white rounded-3xl border border-[#C8D8CE]/70 hover:border-[#D4AF37] transition-all duration-200 shadow-xs hover:shadow-md p-8 flex flex-col justify-between space-y-6 group"
+                className="bg-white rounded-3xl border border-[#C8D8CE] hover:border-[#D4AF37] transition shadow-xs hover:shadow-md p-8 flex flex-col justify-between space-y-6 group"
               >
-                <div className="space-y-5">
+                <div className="space-y-4">
                   <div className="flex items-center justify-between gap-4">
-                    <span className="text-[10px] font-bold tracking-wider uppercase bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] px-3.5 py-1 rounded-full">
+                    <span className="text-[10px] font-bold tracking-wider uppercase bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] px-3 py-1 rounded-full">
                       {portal.oficinaNum}
                     </span>
-                    <div className="w-16 h-16 rounded-2xl border border-[#C8D8CE]/80 p-2 bg-white shadow-xs flex items-center justify-center overflow-hidden">
-                      <img 
-                        src={portal.logo} 
-                        alt={portal.nombre} 
-                        className="w-full h-full object-contain" 
-                      />
+                    <div className="w-16 h-16 rounded-2xl border border-[#C8D8CE] p-2 bg-white shadow-xs flex items-center justify-center overflow-hidden">
+                      <img src={portal.logo} alt={portal.nombre} className="w-full h-full object-contain" />
                     </div>
                   </div>
 
@@ -236,9 +300,9 @@ export default function HomePage() {
 
                   <p className="text-xs md:text-sm text-[#52796F] leading-relaxed">{portal.descripcionCorta}</p>
 
-                  <div className="flex flex-wrap gap-2 pt-1">
+                  <div className="flex flex-wrap gap-1.5 pt-1">
                     {portal.leyes.map((ley, i) => (
-                      <span key={i} className="text-[10px] font-bold bg-[#E8F0EC] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]/60">
+                      <span key={i} className="text-[10px] font-bold bg-[#E8F0EC] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]">
                         {ley}
                       </span>
                     ))}
@@ -248,9 +312,9 @@ export default function HomePage() {
                 <button
                   type="button"
                   onClick={() => handleOpenPortal(portal.id)}
-                  className="w-full bg-[#52796F] hover:bg-[#2D6A4F] text-white text-xs font-bold py-3.5 rounded-2xl transition shadow-xs text-center"
+                  className="w-full bg-[#52796F] hover:bg-[#2D6A4F] text-white text-xs font-bold py-3.5 rounded-2xl transition shadow-xs text-center mt-2"
                 >
-                  Ingresar a {portal.oficinaNum}
+                  Ingresar al Portal {portal.oficinaNum}
                 </button>
               </div>
             ))}
@@ -260,11 +324,9 @@ export default function HomePage() {
       </main>
 
       {/* PIE DE PÁGINA */}
-      <footer className="bg-[#52796F] text-white py-10 px-6 border-t-2 border-[#D4AF37] text-center space-y-3 mt-12">
-        <p className="text-sm font-bold tracking-wide">ASL Ideas SpA — Salud Digital Inclusiva & Tecnología Amable</p>
-        <p className="text-xs text-[#E8F0EC] max-w-2xl mx-auto leading-relaxed">
-          Cumplimiento Ley N° 21.663 (Ciberseguridad y Protección de Datos Personales) y Ley N° 21.545 (Inclusión TEA) [1].
-        </p>
+      <footer className="bg-[#52796F] text-white py-8 px-6 border-t-2 border-[#D4AF37] text-center space-y-2 mt-12">
+        <p className="font-bold text-sm">ASL Ideas SpA — Todos los derechos reservados</p>
+        <p className="text-xs text-[#E8F0EC]">Tecnología en salud humana, accesible e inclusiva para Latinoamérica.</p>
       </footer>
 
       {/* PORTAL INTERACTIVO DE PANTALLA COMPLETA */}

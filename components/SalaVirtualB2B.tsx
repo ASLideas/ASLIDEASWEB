@@ -3,7 +3,6 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-// Inicialización segura de Supabase
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 const supabase = (supabaseUrl && supabaseAnonKey) 
@@ -20,6 +19,7 @@ export interface PortalInfo {
   descripcionCorta: string;
   descripcionLarga: string;
   serviciosClave: string[];
+  beneficios: string[];
   publicoObjetivo: string;
 }
 
@@ -59,6 +59,11 @@ export default function SalaVirtualB2B({
       'Fichas Clínicas Encriptadas (Ley N° 21.663)',
       'Atención con Especialistas y Terapeutas'
     ],
+    beneficios: [
+      'Diagnóstico preventivo sin juicios sobre el peso.',
+      'Privacidad total de fichas médicas.',
+      'Seguimiento personalizado.'
+    ],
     publicoObjetivo: 'Pacientes con condiciones crónicas, adultos con sobrepeso y profesionales de la salud'
   };
 
@@ -85,7 +90,7 @@ export default function SalaVirtualB2B({
     'Esquema_Composicion_Corporal.jpg'
   ]);
   const [transcripcion, setTranscripcion] = useState<string>(
-    'Registro de Sesión: El paciente consulta para evaluación de salud metabólica. Se acuerda pauta de seguimiento e integración de hábitos saludables.'
+    'Registro de Sesión: Paciente consulta para evaluación de salud metabólica y hábitos. Se acuerda pauta de seguimiento integrativo.'
   );
   const [transcribiendo, setTranscribiendo] = useState<boolean>(false);
   const [transcripcionCompletada, setTranscripcionCompletada] = useState<boolean>(false);
@@ -206,7 +211,7 @@ export default function SalaVirtualB2B({
   return (
     <div className="fixed inset-0 z-50 bg-[#FAF8F5] overflow-y-auto font-sans text-[#2D6A4F] selection:bg-[#E8F0EC]">
       
-      {/* BARRA SUPERIOR FIJA DE NAVEGACIÓN DENTRO DEL PORTAL */}
+      {/* BARRA SUPERIOR FIJA DEL PORTAL */}
       <header className="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b-2 border-[#D4AF37] shadow-xs px-6 py-4">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4">
@@ -264,10 +269,10 @@ export default function SalaVirtualB2B({
         </div>
       </header>
 
-      {/* CONTENIDO PRINCIPAL DESPLEGADO EN HOJA CONTINUA */}
+      {/* CONTENIDO DESPLEGADO */}
       <main className="max-w-7xl mx-auto px-6 py-10 space-y-12">
 
-        {/* BANNER DE INICIO DE LA OFICINA */}
+        {/* PRESENTACIÓN DEL PORTAL */}
         <section className="bg-white p-8 md:p-10 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-4">
           <div className="flex flex-wrap gap-2">
             {portalData.leyes.map((ley, idx) => (
@@ -276,13 +281,13 @@ export default function SalaVirtualB2B({
               </span>
             ))}
           </div>
-          <h3 className="text-2xl font-bold text-[#2D6A4F]">Portal de Atención y Gestión B2B — {portalData.nombre}</h3>
+          <h3 className="text-2xl font-bold text-[#2D6A4F]">Portal de Atención y Gestión — {portalData.nombre}</h3>
           <p className="text-sm text-[#52796F] leading-relaxed max-w-4xl">
             {portalData.descripcionLarga}
           </p>
         </section>
 
-        {/* SECCIÓN 1: PANEL DE TRABAJO Y CONSULTA EN LÍNEA */}
+        {/* SECCIÓN 1: CONSULTA / MÓDULO EN VIVO */}
         <section id="sec-consulta" className="bg-white p-8 md:p-10 rounded-3xl border-2 border-[#D4AF37] shadow-sm space-y-8">
           <div className="border-b border-[#E8F0EC] pb-4 flex justify-between items-center flex-wrap gap-3">
             <div>
@@ -290,7 +295,7 @@ export default function SalaVirtualB2B({
                 Módulo en Vivo • Consulta Virtual
               </span>
               <h3 className="text-xl font-bold text-[#2D6A4F] mt-2">
-                Panel de Trabajo y Atención en Vivo
+                Panel de Trabajo e Interacción en Vivo
               </h3>
             </div>
             <span className="text-xs font-bold text-[#D85260] bg-[#FFF0F2] px-4 py-1.5 rounded-full border border-[#FF8894]">
@@ -298,7 +303,6 @@ export default function SalaVirtualB2B({
             </span>
           </div>
 
-          {/* ACCIONES RÁPIDAS EN GRILLA AMPLIA */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <label className="bg-[#FAF8F5] hover:bg-[#E8F0EC] border border-[#C8D8CE] p-4 rounded-2xl text-center cursor-pointer transition flex flex-col items-center gap-1 shadow-xs">
               <span className="text-xs font-bold text-[#2D6A4F]">Añadir Documento</span>
@@ -343,11 +347,10 @@ export default function SalaVirtualB2B({
             </button>
           </div>
 
-          {/* DESGLOSE EN 3 COLUMNAS AMPLIAS */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
             <div className="bg-[#FAF8F5] p-6 rounded-2xl border border-[#C8D8CE] space-y-3">
               <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#C8D8CE] pb-2">
-                Documentos de la Sesión ({documentosReunion.length})
+                Documentos ({documentosReunion.length})
               </h4>
               <ul className="space-y-2 text-xs">
                 {documentosReunion.map((doc, idx) => (
@@ -361,7 +364,7 @@ export default function SalaVirtualB2B({
 
             <div className="bg-[#FAF8F5] p-6 rounded-2xl border border-[#C8D8CE] space-y-3">
               <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#C8D8CE] pb-2">
-                Imágenes y Esquemas ({imagenesReunion.length})
+                Imágenes ({imagenesReunion.length})
               </h4>
               <ul className="space-y-2 text-xs">
                 {imagenesReunion.map((img, idx) => (
@@ -375,7 +378,7 @@ export default function SalaVirtualB2B({
 
             <div className="bg-[#FAF8F5] p-6 rounded-2xl border border-[#C8D8CE] space-y-3">
               <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider border-b border-[#C8D8CE] pb-2">
-                Transcripción y Apuntes
+                Transcripción
               </h4>
               <textarea
                 rows={5}
@@ -385,18 +388,18 @@ export default function SalaVirtualB2B({
               />
               {transcripcionCompletada && (
                 <p className="text-[11px] text-[#2D6A4F] font-bold bg-[#E8F0EC] p-2.5 rounded-xl text-center border border-[#C8D8CE]">
-                  Transcripción respaldada exitosamente bajo Ley N° 21.663.
+                  Transcripción respaldada exitosamente.
                 </p>
               )}
             </div>
           </div>
         </section>
 
-        {/* SECCIÓN 2: FORMULARIO DE AGENDAMIENTO B2B */}
+        {/* SECCIÓN 2: AGENDAR CITA B2B */}
         <section id="sec-agendar" className="bg-white p-8 md:p-10 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-6">
           <div className="border-b border-[#E8F0EC] pb-4 space-y-1">
-            <h3 className="text-xl font-bold text-[#2D6A4F]">Agendamiento de Cita B2B — {portalData.nombre}</h3>
-            <p className="text-xs text-[#52796F]">Selecciona el motivo y horario para reservar tu sesión personalizada.</p>
+            <h3 className="text-xl font-bold text-[#2D6A4F]">Agendamiento de Cita — {portalData.nombre}</h3>
+            <p className="text-xs text-[#52796F]">Completa los datos para reservar tu cita o videoreunión.</p>
           </div>
 
           {bookingSuccess ? (
@@ -494,30 +497,43 @@ export default function SalaVirtualB2B({
           )}
         </section>
 
-        {/* SECCIÓN 3: INFORMACIÓN DETALLADA DE LA OFICINA */}
+        {/* SECCIÓN 3: INFORMACIÓN, BENEFICIOS Y PÚBLICO OBJETIVO */}
         <section id="sec-info" className="bg-white p-8 md:p-10 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-6">
           <div className="border-b border-[#E8F0EC] pb-4">
-            <h3 className="text-xl font-bold text-[#2D6A4F]">Servicios y Público Objetivo</h3>
+            <h3 className="text-xl font-bold text-[#2D6A4F]">Propósito, Beneficios y Módulos Clave</h3>
           </div>
 
-          <div className="space-y-4">
-            <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider">Módulos Principales:</h4>
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-              {portalData.serviciosClave.map((servicio, idx) => (
-                <li key={idx} className="p-4 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[#2D6A4F] font-semibold">
-                  • {servicio}
-                </li>
-              ))}
-            </ul>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider">Módulos y Servicios Clave:</h4>
+              <ul className="space-y-2 text-xs">
+                {portalData.serviciosClave.map((servicio, idx) => (
+                  <li key={idx} className="p-3.5 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-[#2D6A4F] font-semibold">
+                    • {servicio}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider">Beneficios Principales:</h4>
+              <ul className="space-y-2 text-xs">
+                {portalData.beneficios?.map((beneficio, idx) => (
+                  <li key={idx} className="p-3.5 bg-[#E8F0EC] rounded-xl border border-[#C8D8CE] text-[#2D6A4F] font-semibold">
+                    ✓ {beneficio}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
-          <div className="p-4 bg-[#E8F0EC] rounded-2xl border border-[#C8D8CE] text-xs">
+          <div className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] text-xs">
             <span className="font-bold text-[#2D6A4F]">Público Objetivo:</span>{' '}
             <span className="text-[#52796F]">{portalData.publicoObjetivo}</span>
           </div>
         </section>
 
-        {/* SECCIÓN 4: REGISTRO DE ACUERDOS Y NOTAS */}
+        {/* SECCIÓN 4: ACUERDOS Y NOTAS */}
         <section id="sec-notas" className="bg-white p-8 md:p-10 rounded-3xl border border-[#C8D8CE] shadow-xs space-y-6">
           <div className="border-b border-[#E8F0EC] pb-4">
             <h3 className="text-xl font-bold text-[#2D6A4F]">Acuerdos y Notas de Sesión</h3>
@@ -554,11 +570,11 @@ export default function SalaVirtualB2B({
 
       </main>
 
-      {/* PIE DE PÁGINA DEL PORTAL */}
+      {/* PIE DE PÁGINA */}
       <footer className="bg-[#52796F] text-white py-8 px-6 border-t-2 border-[#D4AF37] text-center text-xs space-y-2 mt-12">
         <p className="font-bold">ASL Ideas SpA — {portalData.nombre}</p>
         <p className="text-[11px] text-[#E8F0EC]">
-          Protección de Datos Sensibles en cumplimiento con Ley N° 21.663 y Accesibilidad Cognitiva Ley TEA N° 21.545 [1].
+          Protección de Datos Sensibles en cumplimiento con Ley N° 21.663 y Accesibilidad Cognitiva Ley TEA N° 21.545.
         </p>
       </footer>
 
