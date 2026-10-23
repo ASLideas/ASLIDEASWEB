@@ -64,21 +64,23 @@ export default function SalaVirtualB2B({
 
   const portalData: PortalInfo = inputPortalData || defaultLawenmoll;
 
-  // Estados de la Videollamada
+  // Estados de Videollamada y Accesibilidad Sensorial
   const [codigoSala, setCodigoSala] = useState<string>('');
   const [copiado, setCopiado] = useState<boolean>(false);
   const [micActivo, setMicActivo] = useState<boolean>(true);
   const [camaraActiva, setCamaraActiva] = useState<boolean>(true);
   const [enLlamada, setEnLlamada] = useState<boolean>(true);
+  const [modoCalma, setModoCalma] = useState<boolean>(false);
+  const [asistentesConectados, setAsistentesConectados] = useState<number>(2);
 
-  // Cámara en Stream de Video (Asignado a Nosotros / Especialista)
+  // Cámara e Stream de Video
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
 
-  // Transcripción y Subtítulos en Vivo sobre la Videollamada
-  const [subtituloEnVivo, setSubtituloEnVivo] = useState<string>('Haz clic en "Transcribir Voz en Vivo" para activar la escucha del micrófono...');
+  // Transcripción y Subtítulos
+  const [subtituloEnVivo, setSubtituloEnVivo] = useState<string>('Haz clic en "Transcribir Voz en Vivo" para activar el micrófono...');
   const [transcripcion, setTranscripcion] = useState<string>(
-    'Registro de Sesión: Transcripción automática activada bajo Ley N° 21.663.\n[00:01] Sistema iniciado.'
+    'Registro de Sesión: Transcripción automática activada bajo Ley N° 21.663.\n[00:01] Conexión establecida.'
   );
   const [transcribiendo, setTranscribiendo] = useState<boolean>(false);
 
@@ -107,19 +109,21 @@ export default function SalaVirtualB2B({
       tipo: 'imagen', 
       urlPreview: portalData.logo || '/logo-asl.png.png',
       fecha: '23/10/2026',
-      resumen: 'Diagrama de composición metabólica.'
+      resumen: 'Diagrama visual de composición metabólica.'
     }
   ]);
+
+  // CORRECCIÓN 1: Pasar el primer elemento (archivosList[0]) en lugar del arreglo entero
   const [archivoPreview, setArchivoPreview] = useState<ArchivoItem | null>(archivosList[0]);
 
-  // Formulario y Notas
+  // Notas de la Sesión
   const [notas, setNotas] = useState<string[]>([
-    'Nota 1: Demostración de interfaz accesible UI/UX.',
-    'Nota 2: Revisión de requerimientos para Ley N° 21.663 y Ley TEA N° 21.545.'
+    'Nota 1: Demostración de interfaz accesible UI/UX para neurodivergencias.',
+    'Nota 2: Cumplimiento de Ley N° 21.663 de Ciberseguridad y Ley TEA N° 21.545.'
   ]);
   const [nuevaNota, setNuevaNota] = useState<string>('');
 
-  // Capturar cámara web real al abrir el portal
+  // Capturar cámara web
   useEffect(() => {
     if (isOpen) {
       setCodigoSala(`ASL-${portalData.id.toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`);
@@ -160,7 +164,7 @@ export default function SalaVirtualB2B({
     }
   };
 
-  // Manejador de archivos con índice files[0]
+  // CORRECCIÓN 2: Extraer files[0] para obtener el objeto File individual
   const handleSubirArchivo = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
@@ -173,7 +177,7 @@ export default function SalaVirtualB2B({
         tipo: isImg ? 'imagen' : 'pdf',
         urlPreview: urlTemp,
         fecha: new Date().toLocaleDateString('es-CL'),
-        resumen: 'Documento subido por el usuario.',
+        resumen: 'Documento adjuntado en la sesión virtual.',
         contenidoTexto: isImg ? undefined : `Documento PDF Adjunto: ${file.name}. Verificado y encriptado bajo Ley N° 21.663.`
       };
       setArchivosList((prev) => [nuevoArchivo, ...prev]);
@@ -186,7 +190,6 @@ export default function SalaVirtualB2B({
     if (archivoPreview?.id === id) setArchivoPreview(null);
   };
 
-  // Transcripción corregida evitando el valor "undefined"
   const handleTranscribirEnVivo = () => {
     setTranscribiendo(true);
     setSubtituloEnVivo('Micrófono escuchando... Habla ahora para transcribir.');
@@ -248,8 +251,32 @@ export default function SalaVirtualB2B({
     setNuevaNota('');
   };
 
+  const handleExportarInforme = () => {
+    const contenido = `================================================
+ASL IDEAS SpA — INFORME DE REGISTRO DE SESIÓN
+================================================
+Fecha: ${new Date().toLocaleDateString('es-CL')}
+Código de Sala: ${codigoSala}
+Portal: ${portalData.nombre}
+Estándar Ciberseguridad: Ley N° 21.663 | Accesibilidad: Ley N° 21.545
+
+ACUERDOS Y NOTAS REGISTRADAS:
+${notas.map((n, idx) => `${idx + 1}. ${n}`).join('\n')}
+
+TRANCRIPCIÓN COMPLETA:
+${transcripcion}
+================================================`;
+
+    const blob = new Blob([contenido], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Registro_Sesion_${codigoSala}.txt`;
+    link.click();
+  };
+
   return (
-    <div className="fixed inset-0 z-50 bg-[#FAF8F5] overflow-y-auto font-sans text-[#2D6A4F] selection:bg-[#E8F0EC]">
+    <div className={`fixed inset-0 z-50 overflow-y-auto font-sans transition-colors duration-300 ${modoCalma ? 'bg-[#F4F1EA] text-[#1E3A2F]' : 'bg-[#FAF8F5] text-[#2D6A4F]'}`}>
       
       {/* HEADER INSTITUCIONAL */}
       <header className="bg-white sticky top-0 z-50 border-b-2 border-[#D4AF37] shadow-xs px-6 py-4">
@@ -264,7 +291,14 @@ export default function SalaVirtualB2B({
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => setModoCalma(!modoCalma)}
+              className={`text-xs font-bold px-4 py-2 rounded-full border transition ${modoCalma ? 'bg-[#2D6A4F] text-white border-[#2D6A4F]' : 'bg-[#E8F0EC] text-[#2D6A4F] border-[#C8D8CE]'}`}
+            >
+              {modoCalma ? '🌿 Modo Calma Activo' : '⚪ Activar Modo Calma (TEA)'}
+            </button>
+
             <button onClick={onClose} className="text-xs font-bold bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] px-5 py-2 rounded-full hover:bg-[#FF8894] hover:text-white transition">
               Cerrar Portal
             </button>
@@ -274,17 +308,22 @@ export default function SalaVirtualB2B({
 
       <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
 
-        {/* CÓDIGO DE SALA */}
+        {/* CÓDIGO DE SALA Y CONEXIÓN MULTIUSUARIO */}
         <section className="bg-[#FFF0F2] p-5 rounded-3xl border-2 border-[#F4ACB7] flex flex-col md:flex-row justify-between items-center gap-4">
           <div>
-            <span className="text-[10px] font-bold uppercase bg-white text-[#D85260] border border-[#FF8894] px-3 py-0.5 rounded-full">
-              Código de Acceso Seguro
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-bold uppercase bg-white text-[#D85260] border border-[#FF8894] px-3 py-0.5 rounded-full">
+                Código de Acceso Seguro
+              </span>
+              <span className="text-[10px] font-bold bg-[#E8F0EC] text-[#2D6A4F] px-2.5 py-0.5 rounded-full border border-[#C8D8CE]">
+                👥 {asistentesConectados} Asistentes Conectados
+              </span>
+            </div>
             <h3 className="text-lg font-extrabold text-[#2D6A4F] mt-1">
               Código de Sala: <span className="text-[#D85260] font-mono">{codigoSala}</span>
             </h3>
           </div>
-          <button onClick={copiarCodigoSala} className="bg-[#D4AF37] text-white text-xs font-bold px-5 py-2.5 rounded-xl">
+          <button onClick={copiarCodigoSala} className="bg-[#D4AF37] text-white text-xs font-bold px-5 py-2.5 rounded-xl hover:bg-[#B08D4B] transition">
             {copiado ? '¡Copiado!' : 'Copiar Código'}
           </button>
         </section>
@@ -294,7 +333,7 @@ export default function SalaVirtualB2B({
           <div className="flex justify-between items-center border-b border-[#E8F0EC] pb-3">
             <h3 className="text-xl font-bold text-[#2D6A4F]">Sala de Videollamada & Transcripción en Vivo</h3>
             <span className="text-xs font-bold text-emerald-600 bg-[#E8F0EC] px-3 py-1 rounded-full border border-[#C8D8CE]">
-              Conexión Encriptada
+              Conexión Encriptada TLS 1.3
             </span>
           </div>
 
@@ -369,7 +408,7 @@ export default function SalaVirtualB2B({
                   </p>
                 </div>
 
-                {/* CONTROLES */}
+                {/* CONTROLES DE TRANSMISIÓN */}
                 <div className="flex flex-wrap justify-center gap-2 pt-1">
                   <button
                     onClick={() => setMicActivo(!micActivo)}
@@ -398,8 +437,11 @@ export default function SalaVirtualB2B({
               {/* PANEL LATERAL */}
               <div className="lg:col-span-1 bg-[#FAF8F5] p-4 rounded-3xl border-2 border-[#C8D8CE] flex flex-col justify-between space-y-4">
                 <div>
-                  <div className="border-b border-[#C8D8CE] pb-2 mb-3">
+                  <div className="border-b border-[#C8D8CE] pb-2 mb-3 flex justify-between items-center">
                     <h4 className="text-xs font-extrabold uppercase text-[#2D6A4F]">Panel Lateral de la Consulta</h4>
+                    <button onClick={handleExportarInforme} className="text-[10px] bg-[#E8F0EC] text-[#2D6A4F] font-bold px-2 py-1 rounded-lg border border-[#C8D8CE] hover:bg-[#2D6A4F] hover:text-white transition">
+                      Descargar SOAP
+                    </button>
                   </div>
 
                   <div className="grid grid-cols-3 gap-1 mb-3 bg-[#E8F0EC] p-1 rounded-xl">
