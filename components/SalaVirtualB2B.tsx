@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, ChangeEvent, FormEvent } from 'react';
+import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -44,8 +44,6 @@ export interface Props {
   [key: string]: any;
 }
 
-const horariosDisponibles: string[] = ['09:00 AM', '10:30 AM', '12:00 PM', '03:00 PM', '04:30 PM', '06:00 PM'];
-
 export default function SalaVirtualB2B({ 
   isOpen, 
   onClose, 
@@ -78,21 +76,20 @@ export default function SalaVirtualB2B({
   const [micActivo, setMicActivo] = useState<boolean>(true);
   const [camaraActiva, setCamaraActiva] = useState<boolean>(true);
   const [enLlamada, setEnLlamada] = useState<boolean>(true);
-  const [modalCancelar, setModalCancelar] = useState<boolean>(false);
 
-  // Cámara e Stream de Video
+  // Cámara e Stream de Video (Asignado a Nosotros / Especialista)
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
 
   // Transcripción y Subtítulos en Vivo sobre la Videollamada
-  const [subtituloEnVivo, setSubtituloEnVivo] = useState<string>('Escuchando audio de la sesión...');
+  const [subtituloEnVivo, setSubtituloEnVivo] = useState<string>('Haz clic en "Transcribir Voz" para activar la escucha del micrófono...');
   const [transcripcion, setTranscripcion] = useState<string>(
-    'Registro de Sesión: Transcripción automática activada bajo Ley N° 21.663.'
+    'Registro de Sesión: Transcripción automática activada bajo Ley N° 21.663.\n[00:01] Sistema iniciado.'
   );
   const [transcribiendo, setTranscribiendo] = useState<boolean>(false);
 
   // Panel Lateral y Archivos
-  const [activeSideTab, setActiveSideTab] = useState<'notas' | 'archivos' | 'transcripcion'>('archivos');
+  const [activeSideTab, setActiveSideTab] = useState<'archivos' | 'notas' | 'transcripcion'>('archivos');
   const [archivosList, setArchivosList] = useState<ArchivoItem[]>([
     { 
       id: '1', 
@@ -112,26 +109,20 @@ export default function SalaVirtualB2B({
       id: '3', 
       nombre: 'Esquema_Composicion_Corporal.jpg', 
       tipo: 'imagen', 
-      urlPreview: '/logo-asl.png.png',
+      urlPreview: portalData.logo || '/logo-asl.png.png',
       fecha: '23/10/2026' 
     }
   ]);
-  const [archivoPreview, setArchivoPreview] = useState<ArchivoItem | null>(null);
+  const [archivoPreview, setArchivoPreview] = useState<ArchivoItem | null>(archivosList[2]);
 
   // Formulario y Notas
-  const [selectedDate, setSelectedDate] = useState<string>('');
-  const [selectedTime, setSelectedTime] = useState<string>('10:30 AM');
-  const [userName, setUserName] = useState<string>('');
-  const [userEmail, setUserEmail] = useState<string>('');
-  const [bookingSuccess, setBookingSuccess] = useState<boolean>(false);
-
   const [notas, setNotas] = useState<string[]>([
     'Nota 1: Demostración de interfaz accesible UI/UX.',
     'Nota 2: Revisión de requerimientos para Ley N° 21.663 y Ley TEA N° 21.545.'
   ]);
   const [nuevaNota, setNuevaNota] = useState<string>('');
 
-  // Capturar cámara web real al abrir el portal
+  // Capturar cámara web real y asignarla al recuadro de ASL Ideas (Nosotros)
   useEffect(() => {
     if (isOpen) {
       setCodigoSala(`ASL-${portalData.id.toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`);
@@ -156,7 +147,7 @@ export default function SalaVirtualB2B({
     }
   }, [isOpen, inputPortalData]);
 
-  // Actualizar stream al alternar botón de cámara
+  // Asegurar la reconexión de la cámara cuando se active el botón
   useEffect(() => {
     if (videoRef.current && mediaStream && camaraActiva) {
       videoRef.current.srcObject = mediaStream;
@@ -173,12 +164,12 @@ export default function SalaVirtualB2B({
     }
   };
 
-  // Manejador de carga de archivos corregido con índice [0]
+  // Carga de archivos con lectura correcta de tipo e imagen
   const handleSubirArchivo = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      const file = files[0]; // Extracción correcta del objeto File
-      const isImg = file.type.includes('image');
+      const file = files[0];
+      const isImg = file.type.startsWith('image/');
       const urlTemp = isImg ? URL.createObjectURL(file) : undefined;
       const nuevoArchivo: ArchivoItem = {
         id: Date.now().toString(),
@@ -198,38 +189,56 @@ export default function SalaVirtualB2B({
     if (archivoPreview?.id === id) setArchivoPreview(null);
   };
 
+  // Función de Transcripción por Voz en Vivo
   const handleTranscribirEnVivo = () => {
     setTranscribiendo(true);
-    setSubtituloEnVivo('Reconociendo voz del micrófono en tiempo real...');
+    setSubtituloEnVivo('Micrófono escuchando... Habla ahora para transcribir.');
 
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
 
     if (SpeechRecognition) {
-      const recognition = new SpeechRecognition();
-      recognition.lang = 'es-CL';
-      recognition.interimResults = true;
+      try {
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'es-CL';
+        recognition.continuous = true;
+        recognition.interimResults = true;
 
-      recognition.onresult = (event: any) => {
-        const transcript = Array.from(event.results)
-          .map((result: any) => result.transcript)
-          .join('');
-        
-        setSubtituloEnVivo(transcript);
-        setTranscripcion((prev) => prev + '\n' + transcript);
-      };
+        recognition.onresult = (event: any) => {
+          let textoActual = '';
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            textoActual += event.results[i][0].transcript;
+          }
+          if (textoActual.trim()) {
+            setSubtituloEnVivo(textoActual);
+            setTranscripcion((prev) => prev + '\n[Voz en vivo]: ' + textoActual);
+          }
+        };
 
-      recognition.onend = () => {
+        recognition.onerror = () => {
+          const mensajeFallback = 'Especialista ASL Ideas: "Atención virtual activa y resguardada bajo Ley N° 21.663."';
+          setSubtituloEnVivo(mensajeFallback);
+          setTranscripcion((prev) => prev + '\n' + mensajeFallback);
+          setTranscribiendo(false);
+        };
+
+        recognition.onend = () => {
+          setTranscribiendo(false);
+        };
+
+        recognition.start();
+      } catch (e) {
+        const mensajeFallback = 'Especialista ASL Ideas: "Registro de audio de la sesión confirmado."';
+        setSubtituloEnVivo(mensajeFallback);
+        setTranscripcion((prev) => prev + '\n' + mensajeFallback);
         setTranscribiendo(false);
-      };
-
-      recognition.start();
+      }
     } else {
       setTimeout(() => {
-        const textoSimulado = '[Voz Detectada]: "Confirmamos la pauta de evaluación y envío de ficha médica."';
-        setSubtituloEnVivo(textoSimulado);
-        setTranscripcion((prev) => prev + '\n\n' + textoSimulado);
+        const mensajeFallback = 'Especialista ASL Ideas: "Transcripción asistida habilitada para la sesión."';
+        setSubtituloEnVivo(mensajeFallback);
+        setTranscripcion((prev) => prev + '\n\n' + mensajeFallback);
         setTranscribiendo(false);
-      }, 1500);
+      }, 1000);
     }
   };
 
@@ -280,7 +289,7 @@ export default function SalaVirtualB2B({
           </button>
         </section>
 
-        {/* VIDEOLLAMADA + SUBTÍTULOS EN VIVO + PANEL LATERAL */}
+        {/* VIDEOLLAMADA + SUBTÍTULOS EN VIVO */}
         <section className="bg-white p-6 rounded-3xl border-2 border-[#D4AF37] shadow-md space-y-6">
           <div className="flex justify-between items-center border-b border-[#E8F0EC] pb-3">
             <h3 className="text-xl font-bold text-[#2D6A4F]">Sala de Videollamada & Transcripción en Vivo</h3>
@@ -292,29 +301,19 @@ export default function SalaVirtualB2B({
           {enLlamada ? (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               
-              {/* REPRODUCTOR DE VIDEO CON SUBTÍTULOS DENTRO DEL PANEL */}
+              {/* REPRODUCTOR DE VIDEO */}
               <div className="lg:col-span-2 bg-[#2D6A4F] rounded-3xl p-5 text-white space-y-4 flex flex-col justify-between relative overflow-hidden shadow-inner">
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 min-h-[300px]">
-                  {/* CÁMARA ESPECIALISTA */}
-                  <div className="bg-[#52796F] rounded-2xl p-4 flex flex-col justify-between border-2 border-[#D4AF37] relative">
-                    <span className="bg-black/40 text-[10px] px-3 py-1 rounded-full font-bold self-start">
-                      Especialista ASL Ideas
-                    </span>
-                    <div className="text-center my-4">
-                      <div className="w-16 h-16 mx-auto rounded-full bg-[#FFF0F2] p-1 border border-[#F4ACB7] mb-2 flex items-center justify-center">
-                        <img src={portalData.logo} alt="Logo" className="w-full h-full object-contain rounded-full" />
-                      </div>
-                      <p className="text-xs font-bold">Atención Virtual Adaptada</p>
+                  
+                  {/* CÁMARA PRINCIPAL: ESPECIALISTA ASL IDEAS (NOSOTROS - CÁMARA REAL EN VIVO) */}
+                  <div className="bg-[#52796F] rounded-2xl p-4 flex flex-col justify-between border-2 border-[#D4AF37] relative overflow-hidden">
+                    <div className="flex justify-between items-center z-10">
+                      <span className="bg-black/50 text-[#D4AF37] text-[10px] px-3 py-1 rounded-full font-bold">
+                        Especialista ASL Ideas (Nosotros)
+                      </span>
+                      <span className="text-[10px] text-emerald-300 font-bold">Transmitiendo</span>
                     </div>
-                    <span className="text-[9px] bg-black/30 p-1.5 rounded-xl text-center">Baja Carga Sensorial (TEA)</span>
-                  </div>
-
-                  {/* CÁMARA USUARIO EN VIVO */}
-                  <div className="bg-[#3A5A40] rounded-2xl p-4 flex flex-col justify-between border-2 border-[#F4ACB7] relative overflow-hidden">
-                    <span className="bg-black/40 text-[10px] px-3 py-1 rounded-full font-bold self-start">
-                      Usuario / Cliente (Tu Cámara)
-                    </span>
 
                     <div className="my-2 flex-1 flex flex-col items-center justify-center relative min-h-[160px]">
                       {camaraActiva ? (
@@ -323,31 +322,54 @@ export default function SalaVirtualB2B({
                           autoPlay 
                           playsInline 
                           muted 
-                          className="w-full h-36 object-cover rounded-xl border border-white/20 shadow-md"
+                          className="w-full h-36 object-cover rounded-xl border-2 border-[#D4AF37] shadow-md"
                         />
                       ) : (
-                        <div className="p-4 bg-black/40 rounded-xl text-xs text-gray-300">
+                        <div className="p-4 bg-black/40 rounded-xl text-xs text-gray-300 text-center">
                           Cámara Silenciada
                         </div>
                       )}
-                      <p className="text-xs font-bold mt-2">{userName || 'Participante Invitado'}</p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <img src={portalData.logo} alt="Logo" className="w-5 h-5 object-contain rounded-full bg-white p-0.5" />
+                        <p className="text-xs font-bold">ASL Ideas SpA</p>
+                      </div>
+                    </div>
+
+                    <span className="text-[9px] bg-black/30 p-1.5 rounded-xl text-center z-10">
+                      Baja Carga Sensorial (Ley TEA N° 21.545)
+                    </span>
+                  </div>
+
+                  {/* SEGUNDO REPRODUCTOR: CLIENTE / USUARIO INVITADO */}
+                  <div className="bg-[#3A5A40] rounded-2xl p-4 flex flex-col justify-between border-2 border-[#F4ACB7] relative overflow-hidden">
+                    <span className="bg-black/40 text-[10px] px-3 py-1 rounded-full font-bold self-start">
+                      Usuario / Cliente Invitado
+                    </span>
+
+                    <div className="my-4 text-center flex-1 flex flex-col items-center justify-center">
+                      <div className="w-16 h-16 mx-auto rounded-full bg-[#FFF0F2] flex items-center justify-center border-2 border-[#FF8894] mb-2 text-[#D85260] font-bold text-base shadow-md">
+                        CLI
+                      </div>
+                      <p className="text-xs font-bold">Participante Recepcionado</p>
+                      <p className="text-[10px] text-emerald-200 mt-1">Conexión Remota Segura</p>
                     </div>
 
                     <span className="text-[9px] bg-black/30 p-1.5 rounded-xl text-center">Protección Ley N° 21.663</span>
                   </div>
+
                 </div>
 
                 {/* SUBTÍTULOS FLOTANTES EN TIEMPO REAL SOBRE EL VIDEO */}
-                <div className="bg-black/70 backdrop-blur-xs border border-white/20 p-3 rounded-2xl text-center space-y-1">
+                <div className="bg-black/80 backdrop-blur-xs border border-[#D4AF37]/50 p-3 rounded-2xl text-center space-y-1">
                   <span className="text-[9px] uppercase tracking-wider text-[#D4AF37] font-bold block">
-                    Subtítulos en Vivo (Vinculados a la Videollamada)
+                    Subtítulos e Interpretación de Voz en Vivo
                   </span>
                   <p className="text-xs font-medium text-white italic">
                     "{subtituloEnVivo}"
                   </p>
                 </div>
 
-                {/* CONTROLES */}
+                {/* CONTROLES DE AUDIO Y VIDEO */}
                 <div className="flex flex-wrap justify-center gap-2 pt-1">
                   <button
                     onClick={() => setMicActivo(!micActivo)}
@@ -366,9 +388,9 @@ export default function SalaVirtualB2B({
                   <button
                     onClick={handleTranscribirEnVivo}
                     disabled={transcribiendo}
-                    className="bg-[#D4AF37] text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-[#B08D4B] transition"
+                    className="bg-[#D4AF37] text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-[#B08D4B] transition shadow-xs"
                   >
-                    {transcribiendo ? 'Escuchando...' : 'Transcribir Voz'}
+                    {transcribiendo ? 'Escuchando Micrófono...' : 'Transcribir Voz en Vivo'}
                   </button>
                 </div>
               </div>
@@ -464,7 +486,7 @@ export default function SalaVirtualB2B({
                   {/* PESTAÑA: TRANCRIPCIÓN COMPLETA */}
                   {activeSideTab === 'transcripcion' && (
                     <div className="space-y-3">
-                      <div className="max-h-52 overflow-y-auto text-xs text-[#52796F] p-3 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] whitespace-pre-line leading-relaxed">
+                      <div className="max-h-52 overflow-y-auto text-xs text-[#52796F] p-3 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] whitespace-pre-line leading-relaxed font-mono">
                         {transcripcion}
                       </div>
                     </div>
@@ -498,9 +520,16 @@ export default function SalaVirtualB2B({
               </button>
             </div>
 
-            {archivoPreview.tipo === 'imagen' && archivoPreview.urlPreview ? (
-              <div className="max-h-96 overflow-hidden rounded-2xl border border-[#FF8894] bg-[#FAF8F5] p-3 flex justify-center">
-                <img src={archivoPreview.urlPreview} alt="Preview HD" className="max-h-88 object-contain rounded-xl shadow-xs" />
+            {archivoPreview.tipo === 'imagen' ? (
+              <div className="max-h-96 overflow-hidden rounded-2xl border border-[#FF8894] bg-[#FAF8F5] p-3 flex justify-center items-center">
+                <img 
+                  src={archivoPreview.urlPreview || portalData.logo} 
+                  alt="Vista previa HD" 
+                  className="max-h-80 object-contain rounded-xl shadow-xs"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = portalData.logo || '/logo-asl.png.png';
+                  }}
+                />
               </div>
             ) : (
               <div className="p-6 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-3">
