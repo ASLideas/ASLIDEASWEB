@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 
-interface PortalInfo {
+export interface PortalInfo {
   id: string;
   nombre: string;
   subtitulo: string;
@@ -20,14 +20,42 @@ interface Props {
   onClose: () => void;
   portalData?: PortalInfo;
   isAdmin?: boolean;
+  initialApp?: string;
+  appName?: string;
+  appLogo?: string;
 }
 
 export default function SalaVirtualB2B({ 
   isOpen, 
   onClose, 
-  portalData,
-  isAdmin = false
+  portalData: inputPortalData,
+  isAdmin = false,
+  initialApp,
+  appName,
+  appLogo
 }: Props) {
+  // Construcción retrocompatible en caso de llamarse desde app/comunidad/page.tsx
+  const effectiveName = inputPortalData?.nombre || appName || initialApp || 'Portal ASL Ideas SpA';
+  const effectiveLogo = inputPortalData?.logo || appLogo || '/LOGO_asl.png';
+
+  const portalData: PortalInfo = inputPortalData || {
+    id: 'default',
+    nombre: effectiveName,
+    subtitulo: 'Portal Interactivo de Atención y Coordinación B2B',
+    logo: effectiveLogo,
+    oficinaNum: 'Oficina Virtual',
+    leyes: ['Ley TEA N° 21.545', 'Ley N° 21.663'],
+    descripcionCorta: 'Atención virtual, cotización de servicios y coordinación de convenios B2B.',
+    descripcionLarga: 'Espacio de reunión e interacción virtual para la coordinación corporativa, presentación de proyectos de salud digital inclusiva y accesibilidad cognitiva UI/UX.',
+    serviciosClave: [
+      'Atención y Consultoría Virtual',
+      'Coordinación de Licencias B2B',
+      'Revisión de Requerimientos de Accesibilidad',
+      'Presentación de Proyectos Institucionales'
+    ],
+    publicoObjetivo: 'Comunidad, Instituciones y Convenios B2B'
+  };
+
   const [tab, setTab] = useState<'descripcion' | 'agendar' | 'video' | 'archivos' | 'notas'>('descripcion');
   const [motivoConsulta, setMotivoConsulta] = useState<string>('Atención Virtual (Participantes de Lado a Lado)');
   const [selectedDate, setSelectedDate] = useState<string>('');
@@ -51,9 +79,9 @@ export default function SalaVirtualB2B({
       setTab('descripcion');
       setBookingSuccess(false);
     }
-  }, [isOpen, portalData]);
+  }, [isOpen, inputPortalData]);
 
-  if (!isOpen || !portalData) return null;
+  if (!isOpen) return null;
 
   const motivos: string[] = [
     'Atención Virtual (Participantes de Lado a Lado)',
@@ -100,7 +128,11 @@ export default function SalaVirtualB2B({
         <header className="bg-[#52796F] text-white p-5 flex justify-between items-center border-b-2 border-[#D4AF37]">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white p-1 border-2 border-[#D4AF37] flex items-center justify-center shadow-md overflow-hidden flex-shrink-0">
-              <img src={portalData.logo} alt={portalData.nombre} className="w-full h-full object-cover rounded-full" />
+              <img 
+                src={portalData.logo} 
+                alt={portalData.nombre} 
+                className="w-full h-full object-cover rounded-full" 
+              />
             </div>
             <div>
               <span className="text-[10px] font-bold tracking-wider uppercase bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] px-3 py-1 rounded-full inline-block mb-1">
