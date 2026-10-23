@@ -315,7 +315,7 @@ export default function SalaVirtualB2B({
                   <button
                     type="button"
                     onClick={() => setTab('reunion')}
-                    className="bg-[#D4AF37] hover:bg-[#B08D4B] text-white text-xs font-bold px-5 py-2.5 rounded-xl transition shadow-xs"
+                    className="bg-[#D4AF37] hover:bg-[#B08D4B] text-[#FFF] text-xs font-bold px-5 py-2.5 rounded-xl transition shadow-xs"
                   >
                     Ingresar a Reunión en línea
                   </button>
@@ -331,7 +331,7 @@ export default function SalaVirtualB2B({
             </div>
           )}
 
-          {/* TAB 2: REUNIÓN EN LÍNEA / REUNIÓN WEB CON DESGLOSE COMPLETO */}
+          {/* TAB 2: REUNIÓN EN LÍNEA */}
           {tab === 'reunion' && (
             <div className="space-y-6 max-w-4xl mx-auto">
               
