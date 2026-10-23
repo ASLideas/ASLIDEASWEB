@@ -1,13 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-const supabase = (supabaseUrl && supabaseAnonKey) 
-  ? createClient(supabaseUrl, supabaseAnonKey) 
-  : null;
 
 export interface PortalInfo {
   id: string;
@@ -30,6 +23,7 @@ export interface ArchivoItem {
   tipo: 'pdf' | 'imagen';
   urlPreview?: string;
   fecha: string;
+  resumen?: string;
   contenidoTexto?: string;
 }
 
@@ -96,6 +90,7 @@ export default function SalaVirtualB2B({
       nombre: 'Ficha_Clinica_SOAP_Inicial.pdf', 
       tipo: 'pdf', 
       fecha: '23/10/2026',
+      resumen: 'Evaluación metabólica preventiva y test de bienestar integrativo.',
       contenidoTexto: 'Ficha Médica SOAP Protegida — Ley N° 21.663. Evaluación metabólica inicial y plan preventivo.'
     },
     { 
@@ -103,6 +98,7 @@ export default function SalaVirtualB2B({
       nombre: 'Pauta_Evaluacion_Metabolica.pdf', 
       tipo: 'pdf', 
       fecha: '23/10/2026',
+      resumen: 'Guía de ejercicios adaptados sin impacto articular.',
       contenidoTexto: 'Pauta de Composición Corporal: Músculo, masa grasa y ejercicios adaptados sin impacto.'
     },
     { 
@@ -110,10 +106,11 @@ export default function SalaVirtualB2B({
       nombre: 'Esquema_Composicion_Corporal.jpg', 
       tipo: 'imagen', 
       urlPreview: portalData.logo || '/logo-asl.png.png',
-      fecha: '23/10/2026' 
+      fecha: '23/10/2026',
+      resumen: 'Diagrama de composición metabólica.'
     }
   ]);
-  const [archivoPreview, setArchivoPreview] = useState<ArchivoItem | null>(archivosList[2]);
+  const [archivoPreview, setArchivoPreview] = useState<ArchivoItem | null>(archivosList[0]);
 
   // Formulario y Notas
   const [notas, setNotas] = useState<string[]>([
@@ -122,7 +119,7 @@ export default function SalaVirtualB2B({
   ]);
   const [nuevaNota, setNuevaNota] = useState<string>('');
 
-  // Capturar cámara web real y asignarla al recuadro de ASL Ideas (Nosotros)
+  // Capturar cámara web real
   useEffect(() => {
     if (isOpen) {
       setCodigoSala(`ASL-${portalData.id.toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`);
@@ -147,7 +144,6 @@ export default function SalaVirtualB2B({
     }
   }, [isOpen, inputPortalData]);
 
-  // Asegurar la reconexión de la cámara cuando se active el botón
   useEffect(() => {
     if (videoRef.current && mediaStream && camaraActiva) {
       videoRef.current.srcObject = mediaStream;
@@ -164,19 +160,19 @@ export default function SalaVirtualB2B({
     }
   };
 
-  // Carga de archivos con lectura correcta de tipo e imagen
   const handleSubirArchivo = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
       const file = files[0];
       const isImg = file.type.startsWith('image/');
-      const urlTemp = isImg ? URL.createObjectURL(file) : undefined;
+      const urlTemp = URL.createObjectURL(file);
       const nuevoArchivo: ArchivoItem = {
         id: Date.now().toString(),
         nombre: file.name,
         tipo: isImg ? 'imagen' : 'pdf',
         urlPreview: urlTemp,
         fecha: new Date().toLocaleDateString('es-CL'),
+        resumen: 'Documento subido por el usuario.',
         contenidoTexto: isImg ? undefined : `Documento PDF Adjunto: ${file.name}. Verificado y encriptado bajo Ley N° 21.663.`
       };
       setArchivosList((prev) => [nuevoArchivo, ...prev]);
@@ -189,7 +185,6 @@ export default function SalaVirtualB2B({
     if (archivoPreview?.id === id) setArchivoPreview(null);
   };
 
-  // Función de Transcripción por Voz en Vivo
   const handleTranscribirEnVivo = () => {
     setTranscribiendo(true);
     setSubtituloEnVivo('Micrófono escuchando... Habla ahora para transcribir.');
@@ -206,7 +201,7 @@ export default function SalaVirtualB2B({
         recognition.onresult = (event: any) => {
           let textoActual = '';
           for (let i = event.resultIndex; i < event.results.length; i++) {
-            textoActual += event.results[i][0].transcript;
+            textoActual += event.results[i].transcript;
           }
           if (textoActual.trim()) {
             setSubtituloEnVivo(textoActual);
@@ -306,7 +301,7 @@ export default function SalaVirtualB2B({
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 min-h-[300px]">
                   
-                  {/* CÁMARA PRINCIPAL: ESPECIALISTA ASL IDEAS (NOSOTROS - CÁMARA REAL EN VIVO) */}
+                  {/* CÁMARA ESPECIALISTA ASL IDEAS */}
                   <div className="bg-[#52796F] rounded-2xl p-4 flex flex-col justify-between border-2 border-[#D4AF37] relative overflow-hidden">
                     <div className="flex justify-between items-center z-10">
                       <span className="bg-black/50 text-[#D4AF37] text-[10px] px-3 py-1 rounded-full font-bold">
@@ -340,7 +335,7 @@ export default function SalaVirtualB2B({
                     </span>
                   </div>
 
-                  {/* SEGUNDO REPRODUCTOR: CLIENTE / USUARIO INVITADO */}
+                  {/* CLIENTE / USUARIO INVITADO */}
                   <div className="bg-[#3A5A40] rounded-2xl p-4 flex flex-col justify-between border-2 border-[#F4ACB7] relative overflow-hidden">
                     <span className="bg-black/40 text-[10px] px-3 py-1 rounded-full font-bold self-start">
                       Usuario / Cliente Invitado
@@ -359,7 +354,7 @@ export default function SalaVirtualB2B({
 
                 </div>
 
-                {/* SUBTÍTULOS FLOTANTES EN TIEMPO REAL SOBRE EL VIDEO */}
+                {/* SUBTÍTULOS EN TIEMPO REAL SOBRE EL VIDEO */}
                 <div className="bg-black/80 backdrop-blur-xs border border-[#D4AF37]/50 p-3 rounded-2xl text-center space-y-1">
                   <span className="text-[9px] uppercase tracking-wider text-[#D4AF37] font-bold block">
                     Subtítulos e Interpretación de Voz en Vivo
@@ -369,7 +364,7 @@ export default function SalaVirtualB2B({
                   </p>
                 </div>
 
-                {/* CONTROLES DE AUDIO Y VIDEO */}
+                {/* CONTROLES */}
                 <div className="flex flex-wrap justify-center gap-2 pt-1">
                   <button
                     onClick={() => setMicActivo(!micActivo)}
@@ -395,7 +390,7 @@ export default function SalaVirtualB2B({
                 </div>
               </div>
 
-              {/* PANEL LATERAL DE NOTAS, ARCHIVOS Y TRANCRIPCIÓN COMPLETA */}
+              {/* PANEL LATERAL */}
               <div className="lg:col-span-1 bg-[#FAF8F5] p-4 rounded-3xl border-2 border-[#C8D8CE] flex flex-col justify-between space-y-4">
                 <div>
                   <div className="border-b border-[#C8D8CE] pb-2 mb-3">
@@ -423,7 +418,7 @@ export default function SalaVirtualB2B({
                     </button>
                   </div>
 
-                  {/* PESTAÑA: ARCHIVOS Y PDF */}
+                  {/* PESTAÑA ARCHIVOS */}
                   {activeSideTab === 'archivos' && (
                     <div className="space-y-3">
                       <label className="w-full bg-[#52796F] text-white text-xs font-bold p-2.5 rounded-xl cursor-pointer block text-center shadow-xs hover:bg-[#2D6A4F] transition">
@@ -458,7 +453,7 @@ export default function SalaVirtualB2B({
                     </div>
                   )}
 
-                  {/* PESTAÑA: NOTAS */}
+                  {/* PESTAÑA NOTAS */}
                   {activeSideTab === 'notas' && (
                     <div className="space-y-3">
                       <div className="space-y-1.5 max-h-44 overflow-y-auto pr-1">
@@ -483,7 +478,7 @@ export default function SalaVirtualB2B({
                     </div>
                   )}
 
-                  {/* PESTAÑA: TRANCRIPCIÓN COMPLETA */}
+                  {/* PESTAÑA TRANCRIPCIÓN */}
                   {activeSideTab === 'transcripcion' && (
                     <div className="space-y-3">
                       <div className="max-h-52 overflow-y-auto text-xs text-[#52796F] p-3 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] whitespace-pre-line leading-relaxed font-mono">
@@ -505,13 +500,13 @@ export default function SalaVirtualB2B({
           )}
         </section>
 
-        {/* VISOR Y PREVISUALIZADOR MODAL DE PDF E IMÁGENES */}
+        {/* VISOR ESTILO GEMINI NOTEBOOK */}
         {archivoPreview && (
-          <section className="bg-white p-6 rounded-3xl border-2 border-[#F4ACB7] shadow-lg space-y-4">
-            <div className="flex justify-between items-center border-b border-[#FF8894] pb-2">
+          <section className="bg-white p-6 rounded-3xl border-2 border-[#D4AF37] shadow-lg space-y-4">
+            <div className="flex justify-between items-center border-b border-[#E8F0EC] pb-2">
               <div>
-                <span className="text-[10px] font-bold uppercase bg-[#FFF0F2] text-[#D85260] px-3 py-0.5 rounded-full border border-[#FF8894]">
-                  Visualizador de Documentos & Fichas Protegidas
+                <span className="text-[10px] font-bold uppercase bg-[#E8F0EC] text-[#2D6A4F] px-3 py-0.5 rounded-full border border-[#C8D8CE]">
+                  Guía de la Fuente • Documento Protegido (Ley N° 21.663)
                 </span>
                 <h4 className="text-base font-bold text-[#2D6A4F] mt-1">{archivoPreview.nombre}</h4>
               </div>
@@ -520,28 +515,37 @@ export default function SalaVirtualB2B({
               </button>
             </div>
 
-            {archivoPreview.tipo === 'imagen' ? (
-              <div className="max-h-96 overflow-hidden rounded-2xl border border-[#FF8894] bg-[#FAF8F5] p-3 flex justify-center items-center">
-                <img 
-                  src={archivoPreview.urlPreview || portalData.logo} 
-                  alt="Vista previa HD" 
-                  className="max-h-80 object-contain rounded-xl shadow-xs"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = portalData.logo || '/logo-asl.png.png';
-                  }}
+            {archivoPreview.urlPreview ? (
+              archivoPreview.tipo === 'pdf' ? (
+                <iframe
+                  src={archivoPreview.urlPreview}
+                  title={archivoPreview.nombre}
+                  className="w-full h-96 rounded-2xl border border-[#C8D8CE]"
                 />
-              </div>
+              ) : (
+                <div className="max-h-96 overflow-hidden rounded-2xl border border-[#FF8894] bg-[#FAF8F5] p-3 flex justify-center items-center">
+                  <img 
+                    src={archivoPreview.urlPreview} 
+                    alt="Preview HD" 
+                    className="max-h-80 object-contain rounded-xl shadow-xs"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = portalData.logo || '/logo-asl.png.png';
+                    }}
+                  />
+                </div>
+              )
             ) : (
               <div className="p-6 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-3">
-                <div className="flex items-center justify-between border-b border-[#C8D8CE] pb-2">
-                  <span className="text-xs font-bold text-[#2D6A4F]">Lector de PDF Cifrado — Ley N° 21.663</span>
-                  <span className="text-[10px] bg-[#E8F0EC] text-[#2D6A4F] font-bold px-2.5 py-0.5 rounded-full">
-                    Estándar SOAP
-                  </span>
+                <div className="border-l-4 border-[#2D6A4F] pl-3 py-1">
+                  <span className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider block">Resumen del Documento</span>
+                  <p className="text-xs text-[#52796F] mt-1">{archivoPreview.resumen}</p>
                 </div>
-                <p className="text-xs text-[#52796F] leading-relaxed font-mono">
-                  {archivoPreview.contenidoTexto || 'Documento PDF verificado y protegido en la plataforma. Los datos sensibles están encriptados en tránsito.'}
-                </p>
+                <div className="pt-2 border-t border-[#C8D8CE]">
+                  <span className="text-xs font-bold text-[#2D6A4F] uppercase tracking-wider block mb-1">Contenido Registrado</span>
+                  <p className="text-xs text-[#52796F] leading-relaxed font-mono whitespace-pre-line">
+                    {archivoPreview.contenidoTexto}
+                  </p>
+                </div>
               </div>
             )}
           </section>
