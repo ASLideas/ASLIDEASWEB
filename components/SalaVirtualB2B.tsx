@@ -112,8 +112,6 @@ export default function SalaVirtualB2B({
       resumen: 'Diagrama visual de composición metabólica.'
     }
   ]);
-
-  // CORRECCIÓN 1: Pasar el primer elemento (archivosList[0]) en lugar del arreglo entero
   const [archivoPreview, setArchivoPreview] = useState<ArchivoItem | null>(archivosList[0]);
 
   // Notas de la Sesión
@@ -164,7 +162,6 @@ export default function SalaVirtualB2B({
     }
   };
 
-  // CORRECCIÓN 2: Extraer files[0] para obtener el objeto File individual
   const handleSubirArchivo = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
@@ -296,7 +293,7 @@ ${transcripcion}
               onClick={() => setModoCalma(!modoCalma)}
               className={`text-xs font-bold px-4 py-2 rounded-full border transition ${modoCalma ? 'bg-[#2D6A4F] text-white border-[#2D6A4F]' : 'bg-[#E8F0EC] text-[#2D6A4F] border-[#C8D8CE]'}`}
             >
-              {modoCalma ? '🌿 Modo Calma Activo' : '⚪ Activar Modo Calma (TEA)'}
+              {modoCalma ? 'Modo Calma Activo' : 'Activar Modo Calma (TEA)'}
             </button>
 
             <button onClick={onClose} className="text-xs font-bold bg-[#FFF0F2] text-[#D85260] border border-[#FF8894] px-5 py-2 rounded-full hover:bg-[#FF8894] hover:text-white transition">
@@ -316,7 +313,7 @@ ${transcripcion}
                 Código de Acceso Seguro
               </span>
               <span className="text-[10px] font-bold bg-[#E8F0EC] text-[#2D6A4F] px-2.5 py-0.5 rounded-full border border-[#C8D8CE]">
-                👥 {asistentesConectados} Asistentes Conectados
+                {asistentesConectados} Asistentes Conectados
               </span>
             </div>
             <h3 className="text-lg font-extrabold text-[#2D6A4F] mt-1">
@@ -324,7 +321,7 @@ ${transcripcion}
             </h3>
           </div>
           <button onClick={copiarCodigoSala} className="bg-[#D4AF37] text-white text-xs font-bold px-5 py-2.5 rounded-xl hover:bg-[#B08D4B] transition">
-            {copiado ? '¡Copiado!' : 'Copiar Código'}
+            {copiado ? 'Copiado!' : 'Copiar Código'}
           </button>
         </section>
 
