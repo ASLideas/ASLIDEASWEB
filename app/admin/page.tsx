@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, FormEvent } from 'react';
 
 export interface AsientoLibro {
   id: string;
@@ -40,17 +40,15 @@ export interface ContratoItem {
   estado: 'Vigente' | 'En Cierre' | 'Borrador';
 }
 
-export default function AdminPage() {
+export default function AdminPanel() {
   const [seccionActiva, setSeccionActiva] = useState<
     'contabilidad' | 'especialistas' | 'estadisticas' | 'actualizaciones' | 'agente'
   >('actualizaciones');
 
-  // Subtab para la sección de Contabilidad B2B
   const [subtabContable, setSubtabContable] = useState<
     'ingresos_egresos' | 'facturas_boletas' | 'activos_pasivos' | 'contratos'
   >('ingresos_egresos');
 
-  // Estado: Libro Diario (Ingresos y Egresos)
   const [asientos, setAsientos] = useState<AsientoLibro[]>([
     { id: '1', fecha: '23/10/2026', tipo: 'Ingreso', concepto: 'Convenio B2B Municipalidad de Santiago', monto: 1200000, categoria: 'Licencias B2B' },
     { id: '2', fecha: '22/10/2026', tipo: 'Egreso', concepto: 'Servidores Encriptados Ciberseguridad Ley N 21.663', monto: 180000, categoria: 'Gasto Operativo' },
@@ -61,15 +59,13 @@ export default function AdminPage() {
   const [tipoMovimiento, setTipoMovimiento] = useState<'Ingreso' | 'Egreso'>('Ingreso');
   const [categoriaMov, setCategoriaMov] = useState<'Licencias B2B' | 'Webpay' | 'Gasto Operativo' | 'Honorarios' | 'Impuestos'>('Licencias B2B');
 
-  // Estado: Facturas y Boletas
-  const [documentos, setDocumentos] = useState<DocumentoTributario[]>([
+  const [documentos] = useState<DocumentoTributario[]>([
     { id: '1', folio: 'F-2026-089', tipo: 'Factura Emitida', emisorReceptor: 'Servicio de Salud Metropolitano', montoNeto: 1200000, iva: 228000, montoTotal: 1428000, fecha: '20/10/2026', estado: 'Pagado' },
     { id: '2', folio: 'F-2026-090', tipo: 'Factura Recibida', emisorReceptor: 'Proveedor Hosting SSL Cifrado', montoNeto: 180000, iva: 34200, montoTotal: 214200, fecha: '18/10/2026', estado: 'Pagado' },
     { id: '3', folio: 'BH-2026-012', tipo: 'Boleta de Honorarios', emisorReceptor: 'Consultoria Accesibilidad UI/UX TEA', montoNeto: 450000, iva: 60750, montoTotal: 389250, fecha: '15/10/2026', estado: 'Pagado' }
   ]);
 
-  // Estado: Activos y Pasivos
-  const [balance, setBalance] = useState<BalanceItem[]>([
+  const [balance] = useState<BalanceItem[]>([
     { id: '1', tipo: 'Activo Circulante', nombre: 'Caja y Bancos (Saldo Disponible)', valor: 8500000 },
     { id: '2', tipo: 'Activo Circulante', nombre: 'Cuentas por Cobrar Licencias B2B', valor: 2400000 },
     { id: '3', tipo: 'Activo Fijo', nombre: 'Equipos y Servidores de Desarrollo', valor: 4500000 },
@@ -78,14 +74,12 @@ export default function AdminPage() {
     { id: '6', tipo: 'Patrimonio', nombre: 'Capital Social Inicial ASL Ideas SpA', valor: 14722000 }
   ]);
 
-  // Estado: Contratos Genéricos
-  const [contratos, setContratos] = useState<ContratoItem[]>([
+  const [contratos] = useState<ContratoItem[]>([
     { id: '1', titulo: 'Convenio Marco de Licencia Inclusiva B2B', tipo: 'Convenio Municipal B2B', contraparte: 'Municipalidad de Santiago', fechaFirma: '10/01/2026', vigencia: '12 Meses (Renovable)', estado: 'Vigente' },
     { id: '2', titulo: 'Acuerdo de Prestacion de Servicios de Salud Integrativa', tipo: 'Prestación de Servicios', contraparte: 'LAWENMOLL Especialistas', fechaFirma: '15/03/2026', vigencia: 'Indefinida', estado: 'Vigente' },
     { id: '3', titulo: 'Contrato Tipo de Uso de Plataforma Wellness & Bienestar', tipo: 'Licencia de Software', contraparte: 'Usuarios y PYMES Asociadas', fechaFirma: '01/05/2026', vigencia: 'Anual', estado: 'Vigente' }
   ]);
 
-  // Agregar movimiento al Libro Diario
   const handleAgregarAsiento = (e: FormEvent) => {
     e.preventDefault();
     if (!nuevoConcepto.trim() || !nuevoMonto) return;
@@ -103,7 +97,6 @@ export default function AdminPage() {
     setNuevoMonto('');
   };
 
-  // Totales Financieros
   const totalIngresos = asientos.filter(a => a.tipo === 'Ingreso').reduce((acc, curr) => acc + curr.monto, 0);
   const totalEgresos = asientos.filter(a => a.tipo === 'Egreso').reduce((acc, curr) => acc + curr.monto, 0);
   const saldoCaja = totalIngresos - totalEgresos;
@@ -115,11 +108,9 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-[#F5F2EB] text-[#2D6A4F] font-sans flex flex-col md:flex-row">
       
-      {/* SIDEBAR NAVEGACIÓN (Basado exactamente en la captura de pantalla) */}
+      {/* SIDEBAR NAVEGACION */}
       <aside className="w-full md:w-64 bg-[#EAE6DF] border-r border-[#C8D8CE] p-5 flex flex-col justify-between shrink-0">
         <div className="space-y-6">
-          
-          {/* IDENTIFICADOR CONSOLA ADMINISTRADORA */}
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-[#2D6A4F] text-white flex items-center justify-center font-bold text-xs">
               ASL
@@ -133,7 +124,6 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {/* MENÚ LATERAL PRINCIPAL */}
           <nav className="space-y-1 text-xs font-bold">
             <button
               onClick={() => setSeccionActiva('contabilidad')}
@@ -190,20 +180,16 @@ export default function AdminPage() {
               Agente IA Redes & Monetización
             </button>
           </nav>
-
         </div>
 
-        {/* PIE DE SIDEBAR */}
         <div className="pt-4 border-t border-[#C8D8CE] text-[10px] text-[#84A59D] space-y-1">
           <p>ASL Ideas SpA - Chile</p>
           <p>Ciberseguridad Ley N 21.663</p>
         </div>
       </aside>
 
-      {/* ÁREA DE CONTENIDO PRINCIPAL */}
+      {/* CONTENIDO PRINCIPAL */}
       <main className="flex-1 p-6 md:p-8 overflow-y-auto space-y-6">
-        
-        {/* HEADER SUPERIOR */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-[#C8D8CE] pb-4">
           <div>
             <span className="text-[10px] font-bold uppercase bg-[#EAE6DF] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]">
@@ -222,11 +208,8 @@ export default function AdminPage() {
           </a>
         </div>
 
-        {/* CONTENIDO 1: CASA MATRIZ & CONTABILIDAD B2B */}
         {seccionActiva === 'contabilidad' && (
           <div className="space-y-6">
-            
-            {/* SUB-NAVEGACIÓN CONTABLE */}
             <div className="bg-white p-1.5 rounded-2xl border border-[#C8D8CE] flex flex-wrap gap-1">
               <button
                 onClick={() => setSubtabContable('ingresos_egresos')}
@@ -265,11 +248,8 @@ export default function AdminPage() {
               </button>
             </div>
 
-            {/* SUBTAB 1.1: LIBRO DIARIO DE INGRESOS Y EGRESOS */}
             {subtabContable === 'ingresos_egresos' && (
               <div className="space-y-6">
-                
-                {/* TARJETAS RESUMEN DE CAJA */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="bg-white p-4 rounded-2xl border border-[#C8D8CE]">
                     <span className="text-[10px] font-bold uppercase text-[#84A59D]">Ingresos Registrados</span>
@@ -285,7 +265,6 @@ export default function AdminPage() {
                   </div>
                 </div>
 
-                {/* FORMULARIO Y TABLA ASIENTOS */}
                 <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-4">
                   <h3 className="text-sm font-bold text-[#2D6A4F]">Registrar Nuevo Movimiento en Libro Diario</h3>
                   
@@ -350,11 +329,9 @@ export default function AdminPage() {
                     </table>
                   </div>
                 </div>
-
               </div>
             )}
 
-            {/* SUBTAB 1.2: FACTURAS Y BOLETAS */}
             {subtabContable === 'facturas_boletas' && (
               <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-4">
                 <div className="flex justify-between items-center border-b border-[#E8F0EC] pb-3">
@@ -390,7 +367,6 @@ export default function AdminPage() {
               </div>
             )}
 
-            {/* SUBTAB 1.3: ACTIVOS Y PASIVOS (BALANCE PATRIMONIAL) */}
             {subtabContable === 'activos_pasivos' && (
               <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-4">
                 <div className="border-b border-[#E8F0EC] pb-3">
@@ -399,8 +375,6 @@ export default function AdminPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  
-                  {/* ACTIVOS */}
                   <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE] space-y-3">
                     <div className="flex justify-between items-center border-b border-[#C8D8CE] pb-2">
                       <h4 className="text-xs font-extrabold uppercase text-[#2D6A4F]">Activos Totales</h4>
@@ -417,7 +391,6 @@ export default function AdminPage() {
                     </div>
                   </div>
 
-                  {/* PASIVOS & PATRIMONIO */}
                   <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-[#C8D8CE] space-y-3">
                     <div className="flex justify-between items-center border-b border-[#C8D8CE] pb-2">
                       <h4 className="text-xs font-extrabold uppercase text-[#D85260]">Pasivos Totales & Patrimonio</h4>
@@ -433,12 +406,10 @@ export default function AdminPage() {
                       ))}
                     </div>
                   </div>
-
                 </div>
               </div>
             )}
 
-            {/* SUBTAB 1.4: CONTRATOS GENÉRICOS & CONVENIOS B2B */}
             {subtabContable === 'contratos' && (
               <div className="bg-white p-5 rounded-3xl border border-[#C8D8CE] space-y-4">
                 <div className="border-b border-[#E8F0EC] pb-3">
@@ -471,11 +442,9 @@ export default function AdminPage() {
                 </div>
               </div>
             )}
-
           </div>
         )}
 
-        {/* CONTENIDO 2: ESPECIALISTAS LAWENMOLL */}
         {seccionActiva === 'especialistas' && (
           <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] space-y-4">
             <h3 className="text-base font-bold text-[#2D6A4F]">Especialistas & Terapeutas LAWENMOLL</h3>
@@ -486,7 +455,6 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* CONTENIDO 3: ESTADÍSTICAS DE APLICACIONES */}
         {seccionActiva === 'estadisticas' && (
           <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] space-y-4">
             <h3 className="text-base font-bold text-[#2D6A4F]">Estadísticas de Uso del Ecosistema</h3>
@@ -512,7 +480,6 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* CONTENIDO 4: GESTOR DE ACTUALIZACIONES APPS (Como se ve en la foto) */}
         {seccionActiva === 'actualizaciones' && (
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] space-y-4">
@@ -524,8 +491,6 @@ export default function AdminPage() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
-                {/* MÓDULO LAWENMOLL */}
                 <div className="p-5 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-3">
                   <span className="text-[10px] font-bold uppercase text-[#84A59D] tracking-wider block">Módulo LAWENMOLL</span>
                   <h4 className="text-sm font-bold text-[#2D6A4F]">Editar LAWENMOLL</h4>
@@ -537,7 +502,6 @@ export default function AdminPage() {
                   </button>
                 </div>
 
-                {/* MÓDULO WELLNESS */}
                 <div className="p-5 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-3">
                   <span className="text-[10px] font-bold uppercase text-[#84A59D] tracking-wider block">Módulo Wellness</span>
                   <h4 className="text-sm font-bold text-[#2D6A4F]">Editar Wellness App</h4>
@@ -549,7 +513,6 @@ export default function AdminPage() {
                   </button>
                 </div>
 
-                {/* MÓDULO BIENESTAR */}
                 <div className="p-5 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-3">
                   <span className="text-[10px] font-bold uppercase text-[#84A59D] tracking-wider block">Módulo Bienestar</span>
                   <h4 className="text-sm font-bold text-[#2D6A4F]">Editar Bienestar App</h4>
@@ -561,7 +524,6 @@ export default function AdminPage() {
                   </button>
                 </div>
 
-                {/* MÓDULO B2B */}
                 <div className="p-5 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-3">
                   <span className="text-[10px] font-bold uppercase text-[#84A59D] tracking-wider block">Módulo B2B</span>
                   <h4 className="text-sm font-bold text-[#2D6A4F]">Editar Muestra B2B</h4>
@@ -572,22 +534,18 @@ export default function AdminPage() {
                     Ajustar Oferta B2B
                   </button>
                 </div>
-
               </div>
             </div>
           </div>
         )}
 
-        {/* CONTENIDO 5: AGENTE IA REDES & MONETIZACIÓN */}
         {seccionActiva === 'agente' && (
           <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] space-y-4">
             <h3 className="text-base font-bold text-[#2D6A4F]">Agente IA Redes & Monetización Webpay</h3>
             <p className="text-xs text-[#52796F]">Supervisión del agente conversacional en redes sociales y pasarela de pago.</p>
           </div>
         )}
-
       </main>
-
     </div>
   );
 }
