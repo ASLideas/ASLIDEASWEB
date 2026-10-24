@@ -167,6 +167,8 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-[#F5F2EB] text-[#2D6A4F] font-sans flex flex-col md:flex-row">
+      
+      {/* SIDEBAR NAVEGACION */}
       <aside className="w-full md:w-64 bg-[#EAE6DF] border-r border-[#C8D8CE] p-5 flex flex-col justify-between shrink-0">
         <div className="space-y-6">
           <div className="flex items-center gap-3">
@@ -246,6 +248,7 @@ export default function AdminPage() {
         </div>
       </aside>
 
+      {/* CONTENIDO PRINCIPAL */}
       <main className="flex-1 p-6 md:p-8 overflow-y-auto space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-[#C8D8CE] pb-4">
           <div>
@@ -265,6 +268,7 @@ export default function AdminPage() {
           </Link>
         </div>
 
+        {/* 1. GESTOR DE ACTUALIZACIONES APPS */}
         {seccionActiva === 'actualizaciones' && (
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] space-y-4">
@@ -324,6 +328,7 @@ export default function AdminPage() {
           </div>
         )}
 
+        {/* 2. CASA MATRIZ & CONTABILIDAD B2B */}
         {seccionActiva === 'contabilidad' && (
           <div className="space-y-6">
             <div className="bg-white p-1.5 rounded-2xl border border-[#C8D8CE] flex flex-wrap gap-1">
@@ -561,6 +566,7 @@ export default function AdminPage() {
           </div>
         )}
 
+        {/* 3. ESPECIALISTAS LAWENMOLL */}
         {seccionActiva === 'especialistas' && (
           <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] space-y-4">
             <h3 className="text-base font-bold text-[#2D6A4F]">Especialistas & Terapeutas LAWENMOLL</h3>
@@ -571,6 +577,7 @@ export default function AdminPage() {
           </div>
         )}
 
+        {/* 4. ESTADÍSTICAS DE APLICACIONES */}
         {seccionActiva === 'estadisticas' && (
           <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] space-y-4">
             <h3 className="text-base font-bold text-[#2D6A4F]">Estadísticas de Uso del Ecosistema</h3>
@@ -596,6 +603,7 @@ export default function AdminPage() {
           </div>
         )}
 
+        {/* 5. AGENTE IA REDES & MONETIZACIÓN WEBPAY */}
         {seccionActiva === 'agente' && (
           <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] space-y-4">
             <h3 className="text-base font-bold text-[#2D6A4F]">Agente IA Redes & Monetización Webpay</h3>
