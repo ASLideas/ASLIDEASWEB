@@ -111,7 +111,7 @@ export default function HomePage() {
   const handleAdminAuth = (e: React.FormEvent) => {
     e.preventDefault();
     if (adminPass === 'asl2026' || adminPass === 'admin') {
-      setIsAdminMode(true);
+      window.location.href = '/admin';
       setShowAdminLogin(false);
       setAdminError(false);
       setAdminPass('');
@@ -161,7 +161,7 @@ export default function HomePage() {
             ) : (
               <button
                 type="button"
-                onClick={() => setShowAdminLogin(true)}
+                onClick={() => window.location.href = '/admin'}
                 className="text-xs font-bold text-[#2D6A4F] bg-[#FAF8F5] hover:bg-[#E8F0EC] px-4 py-2 rounded-full border border-[#C8D8CE] transition shadow-xs"
               >
                 Acceso Admin
