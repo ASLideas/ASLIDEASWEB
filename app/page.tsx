@@ -42,6 +42,7 @@ export default function Home() {
               Agendar Cita B2B
             </button>
 
+            {/* BOTÓN DE ADMINISTRACIÓN CORREGIDO */}
             <Link
               href="/admin"
               className="bg-[#D4AF37] text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-[#B08D4B] transition shadow-xs flex items-center"
