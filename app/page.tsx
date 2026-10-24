@@ -78,7 +78,7 @@ export default function HomePage() {
 
           {/* VISTA INTERACTIVA DEL PORTAL SELECCIONADO */}
           <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] shadow-xs">
-            <SalaVirtualB2B activePortalKey={activePortalKey} />
+            <SalaVirtualB2B activePortalKey={activePortalKey} isOpen={true} onClose={() => {}} />
           </div>
         </section>
 
