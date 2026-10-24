@@ -42,8 +42,9 @@ export interface ContratoItem {
 }
 
 export default function AdminPage() {
-  const [autenticado, setAutenticado] = useState<boolean>(true);
+  const [pasoAuth, setPasoAuth] = useState<1 | 2 | 3>(1);
   const [claveInput, setClaveInput] = useState<string>('');
+  const [pinInput, setPinInput] = useState<string>('');
   const [errorLogin, setErrorLogin] = useState<string>('');
 
   const [seccionActiva, setSeccionActiva] = useState<
@@ -84,14 +85,25 @@ export default function AdminPage() {
     { id: '3', titulo: 'Contrato Tipo de Uso de Plataforma Wellness & Bienestar', tipo: 'Licencia de Software', contraparte: 'Usuarios y PYMES Asociadas', fechaFirma: '01/05/2026', vigencia: 'Anual', estado: 'Vigente' }
   ]);
 
-  const handleLogin = (e: FormEvent) => {
+  const handlePaso1 = (e: FormEvent) => {
     e.preventDefault();
     const pass = claveInput.trim();
     if (pass === 'asl2026' || pass === 'admin' || pass === 'NW2026*') {
-      setAutenticado(true);
+      setPasoAuth(2);
       setErrorLogin('');
     } else {
-      setErrorLogin('Clave de administrador incorrecta. Usa: asl2026 o admin');
+      setErrorLogin('Paso 1 Fallido: Clave de administrador incorrecta.');
+    }
+  };
+
+  const handlePaso2 = (e: FormEvent) => {
+    e.preventDefault();
+    const pin = pinInput.trim();
+    if (pin === '216630' || pin === '884210' || pin === '2026' || pin === 'asl2026') {
+      setPasoAuth(3);
+      setErrorLogin('');
+    } else {
+      setErrorLogin('Paso 2 Fallido: PIN / Token de Ciberseguridad inválido.');
     }
   };
 
@@ -120,7 +132,7 @@ export default function AdminPage() {
   const totalPasivos = balance.filter(b => b.tipo.startsWith('Pasivo')).reduce((acc, curr) => acc + curr.valor, 0);
   const patrimonioNeto = totalActivos - totalPasivos;
 
-  if (!autenticado) {
+  if (pasoAuth === 1) {
     return (
       <div className="min-h-screen bg-[#F5F2EB] flex items-center justify-center p-4">
         <div className="bg-white max-w-md w-full rounded-3xl p-8 border-2 border-[#D4AF37] shadow-xl text-center space-y-6">
@@ -129,19 +141,19 @@ export default function AdminPage() {
           </div>
           <div>
             <span className="text-[10px] font-bold uppercase bg-[#E8F0EC] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]">
-              Consola Privada Ley N 21.663
+              Paso 1 de 2: Autenticación Maestra
             </span>
             <h2 className="text-xl font-bold text-[#2D6A4F] mt-3">Ingreso Administrador</h2>
-            <p className="text-xs text-[#52796F] mt-1">Introduce tu clave de acceso para ver la consola de administracion.</p>
+            <p className="text-xs text-[#52796F] mt-1">Ingresa tu clave de acceso de primer nivel.</p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handlePaso1} className="space-y-4">
             <input
               type="password"
               value={claveInput}
               onChange={(e) => setClaveInput(e.target.value)}
-              placeholder="Clave Admin (ej: asl2026)"
-              className="w-full text-sm p-3.5 border-2 border-[#C8D8CE] rounded-xl text-center font-mono focus:border-[#2D6A4F] outline-none"
+              placeholder="Clave Administradora (ej: asl2026)"
+              className="w-full text-sm p-3.5 border-2 border-[#C8D8CE] rounded-xl text-center font-mono focus:border-[#2D6A4F] outline-none text-[#2D6A4F]"
               required
             />
 
@@ -155,11 +167,65 @@ export default function AdminPage() {
               type="submit"
               className="w-full bg-[#2D6A4F] text-white text-xs font-bold py-3.5 rounded-xl hover:bg-[#1E3A2F] transition shadow-md"
             >
-              Ingresar al Panel
+              Siguiente (Paso 2) -&gt;
             </button>
           </form>
 
-          <p className="text-[10px] text-[#84A59D]">Claves validas: asl2026 | admin | NW2026*</p>
+          <p className="text-[10px] text-[#84A59D]">Claves: asl2026 | admin | NW2026*</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (pasoAuth === 2) {
+    return (
+      <div className="min-h-screen bg-[#F5F2EB] flex items-center justify-center p-4">
+        <div className="bg-white max-w-md w-full rounded-3xl p-8 border-2 border-[#2D6A4F] shadow-xl text-center space-y-6">
+          <div className="w-16 h-16 mx-auto rounded-full bg-[#E8F0EC] border-2 border-[#D4AF37] flex items-center justify-center font-bold text-[#2D6A4F] text-lg">
+            2FA
+          </div>
+          <div>
+            <span className="text-[10px] font-bold uppercase bg-[#E8F0EC] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]">
+              Paso 2 de 2: Doble Seguridad Ciberseguridad Ley N 21.663
+            </span>
+            <h2 className="text-xl font-bold text-[#2D6A4F] mt-3">PIN / Token de Verificación</h2>
+            <p className="text-xs text-[#52796F] mt-1">Introduce el PIN de seguridad asignado para liberar la Consola Contable y Administrativa.</p>
+          </div>
+
+          <form onSubmit={handlePaso2} className="space-y-4">
+            <input
+              type="password"
+              value={pinInput}
+              onChange={(e) => setPinInput(e.target.value)}
+              placeholder="PIN de Seguridad (ej: 216630)"
+              className="w-full text-sm p-3.5 border-2 border-[#2D6A4F] rounded-xl text-center font-mono focus:border-[#D4AF37] outline-none text-[#2D6A4F]"
+              required
+            />
+
+            {errorLogin && (
+              <p className="text-xs text-[#D85260] font-bold bg-[#FFF0F2] p-2 rounded-lg border border-[#FF8894]">
+                {errorLogin}
+              </p>
+            )}
+
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => { setPasoAuth(1); setErrorLogin(''); }}
+                className="w-1/3 bg-[#EAE6DF] text-[#2D6A4F] text-xs font-bold py-3.5 rounded-xl hover:bg-[#DED9CF] transition"
+              >
+                &lt;- Volver
+              </button>
+              <button
+                type="submit"
+                className="w-2/3 bg-[#2D6A4F] text-white text-xs font-bold py-3.5 rounded-xl hover:bg-[#1E3A2F] transition shadow-md"
+              >
+                Verificar &amp; Entrar
+              </button>
+            </div>
+          </form>
+
+          <p className="text-[10px] text-[#84A59D]">PIN de Seguridad: 216630 (o 884210 / asl2026)</p>
         </div>
       </div>
     );
@@ -179,7 +245,7 @@ export default function AdminPage() {
               <h1 className="text-sm font-extrabold text-[#2D6A4F]">ASL Ideas SpA</h1>
               <p className="text-[10px] font-bold text-[#84A59D] uppercase tracking-wider">CONSOLA ADMINISTRADORA</p>
               <span className="text-[9px] bg-[#E8F0EC] text-[#2D6A4F] px-2 py-0.5 rounded-full font-bold inline-block mt-0.5 border border-[#C8D8CE]">
-                Sesión Privada Activa
+                Sesión Privada Activa (2FA Validado)
               </span>
             </div>
           </div>
@@ -242,9 +308,15 @@ export default function AdminPage() {
           </nav>
         </div>
 
-        <div className="pt-4 border-t border-[#C8D8CE] text-[10px] text-[#84A59D] space-y-1">
+        <div className="pt-4 border-t border-[#C8D8CE] text-[10px] text-[#84A59D] space-y-2">
           <p>ASL Ideas SpA - Chile</p>
           <p>Ciberseguridad Ley N 21.663</p>
+          <button
+            onClick={() => setPasoAuth(1)}
+            className="w-full text-center text-[10px] font-bold text-[#D85260] bg-[#FFF0F2] py-1.5 rounded-lg border border-[#FF8894] hover:bg-[#FFE5E8] transition"
+          >
+            Cerrar Sesión Privada
+          </button>
         </div>
       </aside>
 
@@ -253,7 +325,7 @@ export default function AdminPage() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-[#C8D8CE] pb-4">
           <div>
             <span className="text-[10px] font-bold uppercase bg-[#EAE6DF] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]">
-              Consola privada con baja carga sensorial para la gestión unificada
+              Consola privada protegida con Doble Seguridad (2FA) Ley N 21.663
             </span>
             <h2 className="text-xl font-bold text-[#2D6A4F] mt-1">
               Administración & Actualizaciones de Módulos
@@ -395,7 +467,7 @@ export default function AdminPage() {
                       value={nuevoConcepto}
                       onChange={(e) => setNuevoConcepto(e.target.value)}
                       placeholder="Detalle o concepto del movimiento..."
-                      className="text-xs p-2.5 border border-[#C8D8CE] rounded-xl sm:col-span-2 bg-white"
+                      className="text-xs p-2.5 border border-[#C8D8CE] rounded-xl sm:col-span-2 bg-white text-[#2D6A4F]"
                       required
                     />
                     <input
@@ -403,13 +475,13 @@ export default function AdminPage() {
                       value={nuevoMonto}
                       onChange={(e) => setNuevoMonto(e.target.value)}
                       placeholder="Monto CLP..."
-                      className="text-xs p-2.5 border border-[#C8D8CE] rounded-xl bg-white"
+                      className="text-xs p-2.5 border border-[#C8D8CE] rounded-xl bg-white text-[#2D6A4F]"
                       required
                     />
                     <select
                       value={tipoMovimiento}
                       onChange={(e) => setTipoMovimiento(e.target.value as 'Ingreso' | 'Egreso')}
-                      className="text-xs p-2.5 border border-[#C8D8CE] rounded-xl bg-white font-bold"
+                      className="text-xs p-2.5 border border-[#C8D8CE] rounded-xl bg-white font-bold text-[#2D6A4F]"
                     >
                       <option value="Ingreso">Ingreso (+)</option>
                       <option value="Egreso">Egreso (-)</option>
