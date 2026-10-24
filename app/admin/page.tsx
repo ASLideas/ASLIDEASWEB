@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, FormEvent } from 'react';
+import Link from 'next/link';
 
 export interface AsientoLibro {
   id: string;
@@ -40,7 +41,11 @@ export interface ContratoItem {
   estado: 'Vigente' | 'En Cierre' | 'Borrador';
 }
 
-export default function AdminPanel() {
+export default function AdminPage() {
+  const [autenticado, setAutenticado] = useState<boolean>(true);
+  const [claveInput, setClaveInput] = useState<string>('');
+  const [errorLogin, setErrorLogin] = useState<string>('');
+
   const [seccionActiva, setSeccionActiva] = useState<
     'contabilidad' | 'especialistas' | 'estadisticas' | 'actualizaciones' | 'agente'
   >('actualizaciones');
@@ -57,7 +62,6 @@ export default function AdminPanel() {
   const [nuevoConcepto, setNuevoConcepto] = useState<string>('');
   const [nuevoMonto, setNuevoMonto] = useState<string>('');
   const [tipoMovimiento, setTipoMovimiento] = useState<'Ingreso' | 'Egreso'>('Ingreso');
-  const [categoriaMov, setCategoriaMov] = useState<'Licencias B2B' | 'Webpay' | 'Gasto Operativo' | 'Honorarios' | 'Impuestos'>('Licencias B2B');
 
   const [documentos] = useState<DocumentoTributario[]>([
     { id: '1', folio: 'F-2026-089', tipo: 'Factura Emitida', emisorReceptor: 'Servicio de Salud Metropolitano', montoNeto: 1200000, iva: 228000, montoTotal: 1428000, fecha: '20/10/2026', estado: 'Pagado' },
@@ -80,6 +84,17 @@ export default function AdminPanel() {
     { id: '3', titulo: 'Contrato Tipo de Uso de Plataforma Wellness & Bienestar', tipo: 'Licencia de Software', contraparte: 'Usuarios y PYMES Asociadas', fechaFirma: '01/05/2026', vigencia: 'Anual', estado: 'Vigente' }
   ]);
 
+  const handleLogin = (e: FormEvent) => {
+    e.preventDefault();
+    const pass = claveInput.trim();
+    if (pass === 'asl2026' || pass === 'admin' || pass === 'NW2026*') {
+      setAutenticado(true);
+      setErrorLogin('');
+    } else {
+      setErrorLogin('Clave de administrador incorrecta. Usa: asl2026 o admin');
+    }
+  };
+
   const handleAgregarAsiento = (e: FormEvent) => {
     e.preventDefault();
     if (!nuevoConcepto.trim() || !nuevoMonto) return;
@@ -90,7 +105,7 @@ export default function AdminPanel() {
       tipo: tipoMovimiento,
       concepto: nuevoConcepto.trim(),
       monto: valorNum,
-      categoria: categoriaMov
+      categoria: tipoMovimiento === 'Ingreso' ? 'Licencias B2B' : 'Gasto Operativo'
     };
     setAsientos([nuevo, ...asientos]);
     setNuevoConcepto('');
@@ -105,10 +120,53 @@ export default function AdminPanel() {
   const totalPasivos = balance.filter(b => b.tipo.startsWith('Pasivo')).reduce((acc, curr) => acc + curr.valor, 0);
   const patrimonioNeto = totalActivos - totalPasivos;
 
+  if (!autenticado) {
+    return (
+      <div className="min-h-screen bg-[#F5F2EB] flex items-center justify-center p-4">
+        <div className="bg-white max-w-md w-full rounded-3xl p-8 border-2 border-[#D4AF37] shadow-xl text-center space-y-6">
+          <div className="w-16 h-16 mx-auto rounded-full bg-[#E8F0EC] border-2 border-[#2D6A4F] flex items-center justify-center font-bold text-[#2D6A4F] text-lg">
+            ASL
+          </div>
+          <div>
+            <span className="text-[10px] font-bold uppercase bg-[#E8F0EC] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]">
+              Consola Privada Ley N 21.663
+            </span>
+            <h2 className="text-xl font-bold text-[#2D6A4F] mt-3">Ingreso Administrador</h2>
+            <p className="text-xs text-[#52796F] mt-1">Introduce tu clave de acceso para ver la consola de administracion.</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <input
+              type="password"
+              value={claveInput}
+              onChange={(e) => setClaveInput(e.target.value)}
+              placeholder="Clave Admin (ej: asl2026)"
+              className="w-full text-sm p-3.5 border-2 border-[#C8D8CE] rounded-xl text-center font-mono focus:border-[#2D6A4F] outline-none"
+              required
+            />
+
+            {errorLogin && (
+              <p className="text-xs text-[#D85260] font-bold bg-[#FFF0F2] p-2 rounded-lg border border-[#FF8894]">
+                {errorLogin}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              className="w-full bg-[#2D6A4F] text-white text-xs font-bold py-3.5 rounded-xl hover:bg-[#1E3A2F] transition shadow-md"
+            >
+              Ingresar al Panel
+            </button>
+          </form>
+
+          <p className="text-[10px] text-[#84A59D]">Claves validas: asl2026 | admin | NW2026*</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#F5F2EB] text-[#2D6A4F] font-sans flex flex-col md:flex-row">
-      
-      {/* SIDEBAR NAVEGACION */}
       <aside className="w-full md:w-64 bg-[#EAE6DF] border-r border-[#C8D8CE] p-5 flex flex-col justify-between shrink-0">
         <div className="space-y-6">
           <div className="flex items-center gap-3">
@@ -117,9 +175,9 @@ export default function AdminPanel() {
             </div>
             <div>
               <h1 className="text-sm font-extrabold text-[#2D6A4F]">ASL Ideas SpA</h1>
-              <p className="text-[10px] font-bold text-[#84A59D] uppercase tracking-wider">Consola Administradora</p>
+              <p className="text-[10px] font-bold text-[#84A59D] uppercase tracking-wider">CONSOLA ADMINISTRADORA</p>
               <span className="text-[9px] bg-[#E8F0EC] text-[#2D6A4F] px-2 py-0.5 rounded-full font-bold inline-block mt-0.5 border border-[#C8D8CE]">
-                Sesion Privada Activa
+                Sesión Privada Activa
               </span>
             </div>
           </div>
@@ -188,25 +246,83 @@ export default function AdminPanel() {
         </div>
       </aside>
 
-      {/* CONTENIDO PRINCIPAL */}
       <main className="flex-1 p-6 md:p-8 overflow-y-auto space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-[#C8D8CE] pb-4">
           <div>
             <span className="text-[10px] font-bold uppercase bg-[#EAE6DF] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]">
-              Consola Privada con Baja Carga Sensorial
+              Consola privada con baja carga sensorial para la gestión unificada
             </span>
             <h2 className="text-xl font-bold text-[#2D6A4F] mt-1">
               Administración & Actualizaciones de Módulos
             </h2>
           </div>
 
-          <a
+          <Link
             href="/"
             className="text-xs font-bold text-[#2D6A4F] hover:text-[#1E3A2F] bg-white px-4 py-2 rounded-xl border border-[#C8D8CE] transition"
           >
             Ver Portada Pública -&gt;
-          </a>
+          </Link>
         </div>
+
+        {seccionActiva === 'actualizaciones' && (
+          <div className="space-y-6">
+            <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] space-y-4">
+              <div className="border-b border-[#E8F0EC] pb-3">
+                <h3 className="text-base font-bold text-[#2D6A4F]">Control de Módulos & Publicaciones</h3>
+                <p className="text-xs text-[#52796F] mt-1">
+                  Ingresa a cada aplicación para realizar modificaciones de texto, añadir recetarios PDF o actualizar horarios de salas virtuales sin requerir código adicional.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-5 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-3">
+                  <span className="text-[10px] font-bold uppercase text-[#84A59D] tracking-wider block">MÓDULO LAWENMOLL</span>
+                  <h4 className="text-sm font-bold text-[#2D6A4F]">Editar LAWENMOLL</h4>
+                  <p className="text-xs text-[#52796F] leading-relaxed">
+                    Vitrina Virtual de Medicina Integrativa & Fichas Clínicas encriptadas bajo Ley N 21.663.
+                  </p>
+                  <button className="text-xs font-bold bg-[#E8F0EC] text-[#2D6A4F] px-4 py-2 rounded-xl border border-[#C8D8CE]">
+                    Configurar Vitrina
+                  </button>
+                </div>
+
+                <div className="p-5 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-3">
+                  <span className="text-[10px] font-bold uppercase text-[#84A59D] tracking-wider block">MÓDULO WELLNESS</span>
+                  <h4 className="text-sm font-bold text-[#2D6A4F]">Editar Wellness App</h4>
+                  <p className="text-xs text-[#52796F] leading-relaxed">
+                    Salas Virtuales interactivas (Lotus, Cielo, Bosque, Raíz) y movimiento adaptado sin impacto.
+                  </p>
+                  <button className="text-xs font-bold bg-[#E8F0EC] text-[#2D6A4F] px-4 py-2 rounded-xl border border-[#C8D8CE]">
+                    Administrar Salas
+                  </button>
+                </div>
+
+                <div className="p-5 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-3">
+                  <span className="text-[10px] font-bold uppercase text-[#84A59D] tracking-wider block">MÓDULO BIENESTAR</span>
+                  <h4 className="text-sm font-bold text-[#2D6A4F]">Editar Bienestar App</h4>
+                  <p className="text-xs text-[#52796F] leading-relaxed">
+                    Red comunitaria, recetarios herbolarios en PDF y módulo Morfeo de descanso.
+                  </p>
+                  <button className="text-xs font-bold bg-[#E8F0EC] text-[#2D6A4F] px-4 py-2 rounded-xl border border-[#C8D8CE]">
+                    Cargar Recetarios
+                  </button>
+                </div>
+
+                <div className="p-5 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-3">
+                  <span className="text-[10px] font-bold uppercase text-[#84A59D] tracking-wider block">MÓDULO B2B</span>
+                  <h4 className="text-sm font-bold text-[#2D6A4F]">Editar Muestra B2B</h4>
+                  <p className="text-xs text-[#52796F] leading-relaxed">
+                    Ajuste de propuestas comerciales, contratos tipo y licencias para municipalidades.
+                  </p>
+                  <button className="text-xs font-bold bg-[#E8F0EC] text-[#2D6A4F] px-4 py-2 rounded-xl border border-[#C8D8CE]">
+                    Ajustar Oferta B2B
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {seccionActiva === 'contabilidad' && (
           <div className="space-y-6">
@@ -475,65 +591,6 @@ export default function AdminPanel() {
               <div className="p-3 bg-[#FAF8F5] rounded-xl border border-[#C8D8CE] text-center">
                 <span className="text-lg font-bold text-[#2D6A4F] block">12</span>
                 <span className="text-[10px] text-[#84A59D]">Convenios B2B</span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {seccionActiva === 'actualizaciones' && (
-          <div className="space-y-6">
-            <div className="bg-white p-6 rounded-3xl border border-[#C8D8CE] space-y-4">
-              <div className="border-b border-[#E8F0EC] pb-3">
-                <h3 className="text-base font-bold text-[#2D6A4F]">Control de Módulos & Publicaciones</h3>
-                <p className="text-xs text-[#52796F] mt-1">
-                  Ingresa a cada aplicación para realizar modificaciones de texto, añadir recetarios PDF o actualizar horarios de salas virtuales sin requerir código adicional.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-5 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-3">
-                  <span className="text-[10px] font-bold uppercase text-[#84A59D] tracking-wider block">Módulo LAWENMOLL</span>
-                  <h4 className="text-sm font-bold text-[#2D6A4F]">Editar LAWENMOLL</h4>
-                  <p className="text-xs text-[#52796F] leading-relaxed">
-                    Vitrina Virtual de Medicina Integrativa & Fichas Clínicas encriptadas bajo Ley N 21.663.
-                  </p>
-                  <button className="text-xs font-bold bg-[#E8F0EC] text-[#2D6A4F] px-4 py-2 rounded-xl border border-[#C8D8CE]">
-                    Configurar Vitrina
-                  </button>
-                </div>
-
-                <div className="p-5 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-3">
-                  <span className="text-[10px] font-bold uppercase text-[#84A59D] tracking-wider block">Módulo Wellness</span>
-                  <h4 className="text-sm font-bold text-[#2D6A4F]">Editar Wellness App</h4>
-                  <p className="text-xs text-[#52796F] leading-relaxed">
-                    Salas Virtuales interactivas (Lotus, Cielo, Bosque, Raíz) y movimiento adaptado sin impacto.
-                  </p>
-                  <button className="text-xs font-bold bg-[#E8F0EC] text-[#2D6A4F] px-4 py-2 rounded-xl border border-[#C8D8CE]">
-                    Administrar Salas
-                  </button>
-                </div>
-
-                <div className="p-5 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-3">
-                  <span className="text-[10px] font-bold uppercase text-[#84A59D] tracking-wider block">Módulo Bienestar</span>
-                  <h4 className="text-sm font-bold text-[#2D6A4F]">Editar Bienestar App</h4>
-                  <p className="text-xs text-[#52796F] leading-relaxed">
-                    Red comunitaria, recetarios herbolarios en PDF y módulo Morfeo de descanso.
-                  </p>
-                  <button className="text-xs font-bold bg-[#E8F0EC] text-[#2D6A4F] px-4 py-2 rounded-xl border border-[#C8D8CE]">
-                    Cargar Recetarios
-                  </button>
-                </div>
-
-                <div className="p-5 bg-[#FAF8F5] rounded-2xl border border-[#C8D8CE] space-y-3">
-                  <span className="text-[10px] font-bold uppercase text-[#84A59D] tracking-wider block">Módulo B2B</span>
-                  <h4 className="text-sm font-bold text-[#2D6A4F]">Editar Muestra B2B</h4>
-                  <p className="text-xs text-[#52796F] leading-relaxed">
-                    Ajuste de propuestas comerciales, contratos tipo y licencias para municipalidades.
-                  </p>
-                  <button className="text-xs font-bold bg-[#E8F0EC] text-[#2D6A4F] px-4 py-2 rounded-xl border border-[#C8D8CE]">
-                    Ajustar Oferta B2B
-                  </button>
-                </div>
               </div>
             </div>
           </div>
