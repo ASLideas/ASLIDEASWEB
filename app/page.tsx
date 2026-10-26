@@ -314,7 +314,8 @@ export default function HomePage() {
                       Beneficios que cumple:
                     </span>
                     <ul className="space-y-1.5 text-xs text-[#2D6A4F]">
-                      {portal.beneficios.map((ben: any, i: number) => (
+                    {portal.beneficios.map((ben: any, i: number) => (
+
                         <li key={i} className="flex items-start gap-2 bg-[#FFF0F2] p-2 rounded-xl border border-[#F4ACB7]">
                           <span className="text-[#D85260] font-bold">•</span>
                           <span className="text-[11px] font-medium text-[#2D6A4F]">{ben}</span>
