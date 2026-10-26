@@ -3,10 +3,15 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 
 export interface PortalInfo {
+  id?: string;
   key?: string;
+  nombre?: string;
   title?: string;
+  subtitulo?: string;
   subtitle?: string;
+  logo?: string;
   description?: string;
+  [key: string]: any;
 }
 
 export interface SalaVirtualB2BProps {
