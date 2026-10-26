@@ -14,97 +14,69 @@ export default function HomePage() {
   const portalesData: Record<string, PortalInfo> = {
     asl: {
       id: 'asl',
-      nombre: 'ASL Ideas SpA (Casa Matriz)',
-      subtitulo: 'Generadora de Apps para PYMES, Comercios Asociados y Creadora de la Tríada',
+      nombre: 'ASL Ideas SpA',
+      subtitulo: 'Casa Matriz • Generadora de Apps para PYMES y Comercios',
+      oficinaNum: 'Casa Matriz',
       logo: '/logo-asl.png.png',
-      oficinaNum: 'Oficina Virtual 01',
-      leyes: ['Ley TEA N° 21.545 - Accesibilidad Cognitiva', 'Ley N° 21.663 - Datos Protegidos', 'Licencias B2B'],
-      descripcionCorta: 'Casa Matriz y motor tecnológico que hace realidad las 3 aplicaciones del ecosistema integrativo (Lawenmoll, Wellness Web App y Bienestar App). Desarrolla software accesible a medida para PYMES, emprendedores y comercios asociados.',
-      descripcionLarga: 'Centro de innovación y desarrollo corporativo. Diseña e implementa soluciones de software con accesibilidad cognitiva UI/UX, reducción de sobrecarga sensorial y cifrado de datos clínicos bajo norma legal.',
-      serviciosClave: [
-        'Desarrollo de Apps a Medida para PYMES y Comercios Asociados',
-        'Licencias Tecnológicas B2B y Convenios Institucionales',
-        'Consultoría en Accesibilidad Cognitiva UI/UX (Ley TEA N° 21.545)',
-        'Soporte e Integración de Ecosistemas Digitales Inclusivos'
-      ],
+      descripcionCorta: 'Soluciones tecnológicas accesibles para emprendedores, municipalidades y comercios asociados.',
       beneficios: [
-        'Motor creador del ecosistema de las 3 aplicaciones de salud digital.',
-        'Software adaptado al ritmo de trabajo de PYMES y profesionales independiente.',
-        'Cumplimiento de estándares de datos sensibles bajo Ley N° 21.663.'
+        'Desarrollo de Apps a medida',
+        'Cumplimiento Ley TEA N° 21.545 y Ley N° 21.663',
+        'Soporte técnico y mantención continua'
       ],
-      publicoObjetivo: 'Emprendedores, PYMES, Profesionales, Comercios Asociados e Instituciones'
+      leyes: ['Ley TEA N° 21.545', 'Ley N° 21.663'],
+      enConstruccion: false
     },
     lawenmoll: {
       id: 'lawenmoll',
-      nombre: 'LAWENMOLL Salud Integrativa',
-      subtitulo: 'Evaluación Metabólica Inteligente y Fichas Clínicas Protegidas',
-      logo: '/logo-lawenmoll.jpg.png',
-      oficinaNum: 'Oficina Virtual 02',
-      leyes: ['Ley N° 21.663 - Datos de Salud Protegidos', 'Ley TEA N° 21.545', 'Estándar SOAP'],
-      descripcionCorta: 'Plataforma clínica integrativa que realiza Test de Bienestar Inteligente, cálculo de composición corporal y gestión de Fichas Clínicas encriptadas.',
-      descripcionLarga: 'Combina la medicina preventiva con herramientas digitales de alta ciberseguridad. Conecta a pacientes con especialistas y terapeutas resguardando el historial médico bajo estándares de la Ley N° 21.663.',
-      serviciosClave: [
-        'Test de Bienestar Inteligente y Evaluación Nutricional',
-        'Cálculo de Composición Corporal y Riesgo Metabólico',
-        'Fichas Clínicas Encriptadas (Estándar SOAP y Ley N° 21.663)',
-        'Atención Virtual Remota con Especialistas'
-      ],
+      nombre: 'LAWENMOLL',
+      subtitulo: 'Medicina Integrativa y Fichas Clínicas Protegidas',
+      oficinaNum: 'Portal 01',
+      logo: '/lawenmoll_logo.jpg',
+      descripcionCorta: 'Vitrina Virtual de Medicina Integrativa y gestión de fichas clínicas encriptadas.',
       beneficios: [
-        'Diagnóstico preventivo sin juicios sobre el peso.',
-        'Privacidad total de fichas médicas mediante cifrado.',
-        'Seguimiento personalizado continuo.'
+        'Atención médica e integrativa',
+        'Fichas clínicas resguardadas bajo Ley N° 21.663',
+        'Directorio de terapeutas certificados'
       ],
-      publicoObjetivo: 'Pacientes con condiciones crónicas, profesionales de la salud y adultos'
+      leyes: ['Ley N° 21.663'],
+      enConstruccion: false
     },
     wellness: {
       id: 'wellness',
-      nombre: 'Wellness Web App',
-      subtitulo: 'Movimiento Adaptado Sin Impacto & Pausas Activas',
-      logo: '/logo-wellness.jpg.jpg',
-      oficinaNum: 'Oficina Virtual 03',
-      leyes: ['Ejercicios Sin Impacto', 'Reducción de Cortisol', 'Salas Temáticas Virtuales'],
-      descripcionCorta: 'Aplicación de activación física adaptada sin saltos ni impacto articular, ideal para pausas activas de profesionales y emprendedores.',
-      descripcionLarga: 'Ofrece programas de movimiento guiado y reducción del cortisol mediante salas virtuales interactivas (Lotus, Cielo, Bosque, Raíz), ayudando a combatir el sedentarismo y la sobrecarga laboral.',
-      serviciosClave: [
-        'Salas Virtuales Temáticas de Entrenamiento Guiado',
-        'Videoteca de Ejercicios Adaptados Sin Impacto Articular',
-        'Pausas Activas Saludables para PYMES y Trabajo Remoto',
-        'Cocina Demostrativa de Bajo Índice Glicémico'
-      ],
+      nombre: 'Wellness App',
+      subtitulo: 'Salas Virtuales y Movimiento Adaptado',
+      oficinaNum: 'Portal 02',
+      logo: '/logo_wellness.jpg',
+      descripcionCorta: 'Salas virtuales interactivas y movimiento adaptado sin impacto.',
       beneficios: [
-        'Disminución efectiva de los niveles de ansiedad y sobrecarga de trabajo.',
-        'Protección articular completa para personas con sobrepeso o dolores crónicos.',
-        'Aumento de la energía diaria sin desgaste físico excesivo.'
+        'Salas Lotus, Cielo, Bosque y Raíz',
+        'Pausas activas y baja carga sensorial',
+        'Acompañamiento sin impacto físico'
       ],
-      publicoObjetivo: 'Emprendedores, profesionales, equipos de trabajo remoto y adultos'
+      leyes: ['Ley TEA N° 21.545'],
+      enConstruccion: true
     },
-    sabiduria: {
-      id: 'sabiduria',
-      nombre: 'Bienestar App & Sabiduría Ancestral',
-      subtitulo: 'Comunidad Inclusiva & Fitoterapia Nativa',
-      logo: '/logo-bienestar.png.png',
-      oficinaNum: 'Oficina Virtual 04',
-      leyes: ['Herbolaria Nativa Tradicional', 'Ley N° 21.663', 'Comunidad de Apoyo'],
-      descripcionCorta: 'Portal comunitario interactivo con Diario Mural de "Secretos de la Abuela", recetario nativo descargable en PDF y fitoterapia tradicional.',
-      descripcionLarga: 'Preserva y divulga el conocimiento ancestral de la medicina herbal nativa. Cuenta con un sistema automatizado de generación de fichas PDF coleccionables y un agente virtual de conversación empática.',
-      serviciosClave: [
-        'Diario Mural Interactivo "Secretos de la Abuela"',
-        'Recetario Herbolario Nativo Descargable en Formato PDF',
-        'Agente Virtual de Conversación Empática e IA Acompañante',
-        'Encuentros Virtuales y Talleres Comunitarios'
-      ],
+    bienestar: {
+      id: 'bienestar',
+      nombre: 'Bienestar App',
+      subtitulo: 'Red Comunitaria y Módulo Morfeo',
+      oficinaNum: 'Portal 03',
+      logo: '/LOGO_BIENESTAR.png',
+      descripcionCorta: 'Red comunitaria, recetarios herbolarios en PDF y módulo de descanso.',
       beneficios: [
-        'Rescate de saberes tradicionales e infusiones herbales nativas.',
-        'Espacio seguro de contención emocional y apoyo mutuo.',
-        'Acceso rápido a guías educativas descargables en PDF.'
+        'Recetarios herbolarios descargables',
+        'Módulo Morfeo de descanso',
+        'Red comunitaria de apoyo'
       ],
-      publicoObjetivo: 'Comunidad general, emprendedores locales de productos naturales y familias',
+      leyes: ['Ley TEA N° 21.545', 'Ley N° 21.663'],
       enConstruccion: true
     }
   };
 
-  const handleOpenPortal = (key: string) => {
-    setActivePortalKey(key);
+  const handleOpenPortal = (id?: string) => {
+    if (!id) return;
+    setActivePortalKey(id);
     setIsModalOpen(true);
   };
 
@@ -121,8 +93,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#2D6A4F] font-sans flex flex-col justify-between selection:bg-[#E8F0EC]">
-      
+    <div className="min-h-screen bg-[#FAF8F5] text-[#2D6A4F] flex flex-col font-sans">
       {/* HEADER INSTITUCIONAL */}
       <header className="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b-2 border-[#D4AF37] shadow-xs">
         <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
@@ -312,12 +283,11 @@ export default function HomePage() {
                   <div className="space-y-2">
                     <span className="text-[11px] font-bold uppercase text-[#D85260] block">
                       Beneficios que cumple:
-                      </span>
+                    </span>
                     <ul className="space-y-1.5 text-xs text-[#2D6A4F]">
                       {portal.beneficios?.map((ben: any, i: number) => (
                         <li key={i} className="flex items-start gap-2 bg-[#FFF0F2] p-2 rounded-xl border border-[#F4ACB7]">
                           <span className="text-[#D85260] font-bold">•</span>
-                          <span className="text-[11px] font-medium text-[#2D6A4F]">{ben}</span>
                           <span className="text-[11px] font-medium text-[#2D6A4F]">{ben}</span>
                         </li>
                       ))}
@@ -325,7 +295,7 @@ export default function HomePage() {
                   </div>
 
                   <div className="flex flex-wrap gap-1.5 pt-1">
-                    {portal.leyes.map((ley: any, i: number) => (
+                    {portal.leyes?.map((ley: any, i: number) => (
                       <span key={i} className="text-[10px] font-bold bg-[#E8F0EC] text-[#2D6A4F] px-3 py-0.5 rounded-full border border-[#C8D8CE]">
                         {ley}
                       </span>
@@ -336,11 +306,9 @@ export default function HomePage() {
                 <button
                   type="button"
                   onClick={() => handleOpenPortal(portal.id!)}
-
                   className="w-full bg-[#52796F] hover:bg-[#2D6A4F] text-white text-xs font-bold py-3.5 rounded-2xl transition shadow-xs text-center mt-2"
                 >
                   {portal.enConstruccion ? 'Ver Avance / Portal Demo' : `Ingresar al Portal ${portal.oficinaNum}`}
-                
                 </button>
               </div>
             ))}
