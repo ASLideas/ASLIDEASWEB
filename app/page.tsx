@@ -334,7 +334,7 @@ export default function HomePage() {
 
                 <button
                   type="button"
-                  onClick={() => handleOpenPortal(portal.id)}
+                  onClick={() => handleOpenPortal(portal.id || '')}
                   className="w-full bg-[#52796F] hover:bg-[#2D6A4F] text-white text-xs font-bold py-3.5 rounded-2xl transition shadow-xs text-center mt-2"
                 >
                   {portal.enConstruccion ? 'Ver Avance / Portal Demo' : `Ingresar al Portal ${portal.oficinaNum}`}
