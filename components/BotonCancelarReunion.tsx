@@ -54,7 +54,7 @@ export default function BotonCancelarReunion() {
               <form onSubmit={handleSubmit} className="space-y-3">
                 <div>
                   <label className="block text-[11px] font-bold text-[#2D6A4F] mb-1 uppercase tracking-wider">
-                    Selecciona la Aplicacion o Servicio
+                    Selecciona la Aplicación o Servicio
                   </label>
                   <select
                     value={selectedApp}
@@ -64,13 +64,13 @@ export default function BotonCancelarReunion() {
                     <option value="asl">1. Casa Matriz B2B (ASL Ideas SpA)</option>
                     <option value="lawenmoll">2. LAWENMOLL (Salud Integrativa)</option>
                     <option value="wellness">3. Wellness Web App (Movimiento Adaptado)</option>
-                    <option value="bienestar">4. Sabiduria Ancestral (Bienestar &amp; Fitoterapia)</option>
+                    <option value="bienestar">4. Sabiduría Ancestral (Bienestar &amp; Fitoterapia)</option>
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-[11px] font-bold text-[#2D6A4F] mb-1 uppercase tracking-wider">
-                    Correo Electronico Registrado
+                    Correo Electrónico Registrado
                   </label>
                   <input
                     type="email"
@@ -84,7 +84,7 @@ export default function BotonCancelarReunion() {
 
                 <div>
                   <label className="block text-[11px] font-bold text-[#2D6A4F] mb-1 uppercase tracking-wider">
-                    Codigo de Reserva o RUT (Opcional)
+                    Código de Reserva o RUT (Opcional)
                   </label>
                   <input
                     type="text"
@@ -102,7 +102,7 @@ export default function BotonCancelarReunion() {
                   <textarea
                     value={reason}
                     onChange={(e) => setReason(e.target.value)}
-                    placeholder="Indicanos la razon o tu disponibilidad de horario..."
+                    placeholder="Indícanos la razón o tu disponibilidad de horario..."
                     rows={2}
                     className="w-full text-xs p-3 bg-white border border-[#C8D8CE] rounded-xl font-sans text-[#2D6A4F] focus:border-[#2D6A4F] outline-none resize-none"
                   />
@@ -130,7 +130,7 @@ export default function BotonCancelarReunion() {
                   Solicitud procesada exitosamente.
                 </p>
                 <p className="text-[11px] text-[#52796F] leading-relaxed">
-                  Se ha registrado la anulacion para la aplicacion seleccionada. Si deseas coordinar una nueva atencion, escribe a <span className="font-bold">contacto@aslideas.cl</span>.
+                  Se ha registrado la anulación para la aplicación seleccionada. Si deseas coordinar una nueva atención, escribe a <span className="font-bold">contacto@aslideas.cl</span>.
                 </p>
                 <button
                   type="button"

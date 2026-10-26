@@ -30,7 +30,7 @@ export default function AdminPage() {
       setIsAuthenticated(true);
       setErrorMessage('');
     } else {
-      setErrorMessage('Paso 2 Fallido: PIN / Token de Ciberseguridad invalido.');
+      setErrorMessage('Paso 2 Fallido: PIN / Token de Ciberseguridad inválido.');
     }
   };
 
@@ -65,7 +65,7 @@ export default function AdminPage() {
               <form onSubmit={handleStep1} className="space-y-4">
                 <div>
                   <label className="block text-[11px] font-bold text-[#2D6A4F] mb-1 uppercase tracking-wider">
-                    Contrasena Administradora
+                    Contraseña Administradora
                   </label>
                   <input
                     type="password"
@@ -78,7 +78,7 @@ export default function AdminPage() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full text-xs font-bold bg-[#2D6A4F] text-white py-3 rounded-xl hover:bg-[#1E3A2F] transition shadow-xs cursor-pointer"
+                  className="w-full text-xs font-bold bg-[#2D6A4F] text-white py-3 rounded-xl hover:bg-[#1E3A2F] transition shadow-sm cursor-pointer"
                 >
                   Continuar al Paso 2 -&gt;
                 </button>
@@ -87,7 +87,7 @@ export default function AdminPage() {
               <form onSubmit={handleStep2} className="space-y-4">
                 <div>
                   <label className="block text-[11px] font-bold text-[#2D6A4F] mb-1 uppercase tracking-wider">
-                    PIN / Token de Verificacion
+                    PIN / Token de Verificación
                   </label>
                   <p className="text-[11px] text-[#52796F] mb-2">
                     Introduce el PIN de seguridad asignado para liberar la Consola Contable y Administrativa.
@@ -112,7 +112,7 @@ export default function AdminPage() {
                   </button>
                   <button
                     type="submit"
-                    className="w-2/3 text-xs font-bold bg-[#D4AF37] text-white py-3 rounded-xl hover:bg-[#B08D4B] transition shadow-xs cursor-pointer"
+                    className="w-2/3 text-xs font-bold bg-[#D4AF37] text-white py-3 rounded-xl hover:bg-[#B08D4B] transition shadow-sm cursor-pointer"
                   >
                     Verificar &amp; Entrar
                   </button>
@@ -134,11 +134,11 @@ export default function AdminPage() {
           <div className="space-y-4 text-center">
             <h2 className="text-xl font-extrabold text-[#2D6A4F]">Panel de Control Administrador</h2>
             <p className="text-xs text-[#52796F]">
-              Sesion iniciada con exito para ASL Ideas SpA.
+              Sesión iniciada con éxito para ASL Ideas SpA.
             </p>
             <div className="p-4 bg-[#E8F0EC] rounded-2xl border border-[#C8D8CE] text-left space-y-2 text-xs">
               <p><span className="font-bold">Estado Servidores:</span> 100% Operativos</p>
-              <p><span className="font-bold">Ciberseguridad Ley N° 21.663:</span> Encriptacion Activa</p>
+              <p><span className="font-bold">Ciberseguridad Ley N° 21.663:</span> Encriptación Activa</p>
               <p><span className="font-bold">Contacto Corporativo:</span> contacto@aslideas.cl</p>
             </div>
             <button
@@ -150,7 +150,7 @@ export default function AdminPage() {
               }}
               className="text-xs font-bold text-[#D85260] underline pt-2 cursor-pointer"
             >
-              Cerrar Sesion Segura
+              Cerrar Sesión Segura
             </button>
           </div>
         )}
@@ -159,12 +159,12 @@ export default function AdminPage() {
       {showForgotModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-[#FAF8F5] max-w-sm w-full rounded-3xl p-6 border-2 border-[#C8D8CE] shadow-2xl space-y-4 text-center">
-            <h3 className="text-base font-extrabold text-[#2D6A4F]">Recuperacion de Credenciales</h3>
+            <h3 className="text-base font-extrabold text-[#2D6A4F]">Recuperación de Credenciales</h3>
             <div className="text-xs text-[#52796F] space-y-2 leading-relaxed text-left bg-white p-4 rounded-2xl border border-[#C8D8CE]">
-              <p><span className="font-bold text-[#2D6A4F]">Pista de Clave:</span> Corresponde al ano corporativo en minusculas (ej: asl2026).</p>
-              <p><span className="font-bold text-[#2D6A4F]">Pista de PIN:</span> Corresponde al numero de ley o codigo maestro (216630).</p>
+              <p><span className="font-bold text-[#2D6A4F]">Pista de Clave:</span> Corresponde al año corporativo en minúsculas (ej: asl2026).</p>
+              <p><span className="font-bold text-[#2D6A4F]">Pista de PIN:</span> Corresponde al número de ley o código maestro (216630).</p>
               <p className="pt-2 border-t border-[#C8D8CE]">
-                Para restablecer claves de administrador, envia una solicitud formal a <span className="font-bold text-[#2D6A4F]">contacto@aslideas.cl</span>.
+                Para restablecer claves de administrador, envía una solicitud formal a <span className="font-bold text-[#2D6A4F]">contacto@aslideas.cl</span>.
               </p>
             </div>
             <button
