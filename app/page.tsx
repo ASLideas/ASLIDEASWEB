@@ -72,7 +72,7 @@ export default function HomePage() {
       descripcionCorta: 'Comunidad para la divulgacion de medicina herbolaria nativa y secretos familiares.',
       descripcionLarga: 'Portal interactivo dedicado a preservar y difundir los conocimientos tradicionales de fitoterapia chilena. Incluye un diario mural colaborativo de la comunidad y descarga directa de recetarios en PDF.',
       serviciosClave: ['Diario Mural "Secretos de la Abuela"', 'Recetario Herbolario en PDF', 'Asistente Empatico Virtual'],
-      beneficios: ['Rescate de tradiciones nativas', 'Material descripcioble'ilustrado', 'Comunidad de apoyo sin juicios'],
+      beneficios: ['Rescate de tradiciones nativas', 'Material descargable ilustrado', 'Comunidad de apoyo sin juicios'],
       enConstruccion: true,
     },
   ];
@@ -95,7 +95,7 @@ export default function HomePage() {
       <div className="bg-[#FFF0F2] border-b border-[#FF8894] py-2 px-4 text-center">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-2 text-[#D85260] font-bold">
-            <span className="w-2 h-2 rounded-full bg-[#FFF8894] animate-pulse"></span>
+            <span className="w-2 h-2 rounded-full bg-[#FF8894] animate-pulse"></span>
             <span>Espacios y Vitrinas Virtuales Inclusivas para PYMEs y Municipios (Ley TEA N 21.545)</span>
           </div>
           <div className="flex items-center gap-2">
@@ -157,7 +157,7 @@ export default function HomePage() {
 
       <section className="bg-white border-b border-[#C8D8CE] py-10 px-4 text-center">
         <div className="max-w-4xl mx-auto space-y-4">
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex justify-center gap-2 flex-wrap">
             <span className="bg-[#E8F0EC] text-[#2D6A4F] text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider border border-[#C8D8CE]">
               Salud Digital Integrativa
             </span>
@@ -175,7 +175,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:qx-8 py-12 space-y-10">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
         <div className="text-center space-y-2">
           <span className="text-xs font-bold text-[#D85260] uppercase tracking-wider bg-[#FFF0F2] px-3.5 py-1 rounded-full border border-[#FF8894]">
             Plataformas Oficiales
@@ -189,7 +189,7 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {portales.map((ortal) => (
+          {portales.map((portal) => (
             <div
               key={portal.id}
               className="bg-white rounded-3xl border-2 border-[#C8D8CE] hover:border-[#D4AF37] p-6 sm:p-8 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-6"
@@ -331,3 +331,8 @@ export default function HomePage() {
     </main>
   );
 }
+Paso 3: Enviar los cambios a GitHub desde Git Bash
+Una vez guardados los archivos en VS Code, ejecuta estas 3 líneas en tu consola Git Bash:
+git add .
+git commit -m "Fix limpia: SalaVirtualB2B y page.tsx en UTF8 nativo sin errores"
+git push origin main --force
