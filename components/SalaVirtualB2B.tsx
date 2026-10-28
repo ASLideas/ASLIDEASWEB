@@ -35,17 +35,17 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
   const [email, setEmail] = useState<string>('');
   const [reservaConfirmada, setReservaConfirmada] = useState<boolean>(false);
 
-  const [codigoReserva, setCodigoReserva] = useState<string>('');
+  const [odigoReserva, setCodigoReserva] = useState<string>('');
   const [emailCancelar, setEmailCancelar] = useState<string>('');
   const [motivoCancelacion, setMotivoCancelacion] = useState<string>('');
-  const [cancelacionConfirmada, setCancelacionConfirmada] = useState<boolean>(false);
+  const cancelacionConfirmada, setCancelacionConfirmada] = useState<boolean>(false);
 
   if (!isOpen) return null;
 
   const handleConfirmarReserva = (e: React.FormEvent) => {
     e.preventDefault();
     if (!nombre.trim() || !email.trim() || !fecha) {
-      alert('Por favor completa todos los campos requeridos (*).');
+      alert('Por favor completa todos los campos requeridos ().');
       return;
     }
     setReservaConfirmada(true);
@@ -66,7 +66,7 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
         
         <div className="flex justify-between items-center border-b border-[#C8D8CE] pb-4">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider bg-[#E8F0EC] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]">
+            <span className="text-[!0px] font-bold uppercase tracking-wider bg-[#E8F0EC] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]">
               Gestion de Agenda B2B y Vitrinas
             </span>
             <h3 className="text-xl font-extrabold text-[#2D6A4F] mt-1">
