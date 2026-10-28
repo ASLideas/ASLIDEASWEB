@@ -27,16 +27,14 @@ interface SalaVirtualB2BProps {
 export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMode = 'agendar' }: SalaVirtualB2BProps) {
   const [modo, setModo] = useState<'agendar' | 'cancelar'>(initialMode);
   
-  // Datos Agendamiento
-  const [plataforma, setPlataforma] = useState<string>('1. Casa Matriz ASL Ideas SpA (Desarrollo B2B & Vitrinas PYME)');
-  const [motivo, setMotivo] = useState<string>('Cotización de Vitrina Virtual PYME / Convenio Corporativo');
+  const [plataforma, setPlataforma] = useState<string>('1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Vitrinas PYME)');
+  const [motivo, setMotivo] = useState<string>('Cotizacion de Vitrina Virtual PYME / Convenio Corporativo');
   const [fecha, setFecha] = useState<string>('');
-  const [hora, setHora] = useState<string>('10:30 AM (Bloque Mañana)');
+  const [hora, setHora] = useState<string>('10:30 AM (Bloque Manana)');
   const [nombre, setNombre] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [reservaConfirmada, setReservaConfirmada] = useState<boolean>(false);
 
-  // Datos Cancelación
   const [codigoReserva, setCodigoReserva] = useState<string>('');
   const [emailCancelar, setEmailCancelar] = useState<string>('');
   const [motivoCancelacion, setMotivoCancelacion] = useState<string>('');
@@ -56,7 +54,7 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
   const handleConfirmarCancelacion = (e: React.FormEvent) => {
     e.preventDefault();
     if (!codigoReserva.trim() || !emailCancelar.trim()) {
-      alert('Por favor ingresa el código de reserva y tu correo registrado.');
+      alert('Por favor ingresa el codigo de reserva y tu correo registrado.');
       return;
     }
     setCancelacionConfirmada(true);
@@ -66,14 +64,13 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
     <div className="fixed inset-0 z-50 bg-[#2D6A4F]/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
       <div className="bg-[#FAF8F5] max-w-2xl w-full rounded-3xl border-2 border-[#D4AF37] shadow-2xl p-6 md:p-8 space-y-6 my-8">
         
-        {/* ENCABEZADO */}
         <div className="flex justify-between items-center border-b border-[#C8D8CE] pb-4">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider bg-[#E8F0EC] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]">
-              Gestión de Agenda B2B & Vitrinas
+              Gestion de Agenda B2B y Vitrinas
             </span>
             <h3 className="text-xl font-extrabold text-[#2D6A4F] mt-1">
-              {modo === 'agendar' ? 'Reserva de Cita o Vitrina Virtual' : 'Solicitud de Cancelación / Reprogramación'}
+              {modo === 'agendar' ? 'Reserva de Cita o Vitrina Virtual' : 'Solicitud de Cancelacion o Reprogramacion'}
             </h3>
           </div>
           <button
@@ -81,11 +78,10 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
             onClick={onClose}
             className="text-xs font-bold text-[#D85260] bg-[#FFF0F2] hover:bg-[#FF8894] hover:text-white px-3 py-1.5 rounded-xl border border-[#FF8894] transition cursor-pointer"
           >
-            ✕ Cerrar
+            Cerrar
           </button>
         </div>
 
-        {/* SELECTOR MODO: AGENDAR VS CANCELAR */}
         <div className="flex bg-[#E8F0EC] p-1 rounded-2xl border border-[#C8D8CE] text-xs font-bold">
           <button
             type="button"
@@ -94,7 +90,7 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
               modo === 'agendar' ? 'bg-[#2D6A4F] text-white shadow-xs' : 'text-[#52796F] hover:text-[#2D6A4F]'
             }`}
           >
-            ���️ Nueva Reserva / Cita
+            Nueva Reserva / Cita
           </button>
           <button
             type="button"
@@ -103,20 +99,19 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
               modo === 'cancelar' ? 'bg-[#D85260] text-white shadow-xs' : 'text-[#52796F] hover:text-[#D85260]'
             }`}
           >
-            ❌ Cancelar / Reprogramar Cita
+            Cancelar / Reprogramar Cita
           </button>
         </div>
 
-        {/* MODO AGENDAR */}
         {modo === 'agendar' && (
           reservaConfirmada ? (
             <div className="bg-white p-6 rounded-2xl border border-[#2D6A4F] text-center space-y-4 shadow-xs">
               <div className="w-12 h-12 mx-auto bg-[#E8F0EC] rounded-full flex items-center justify-center text-[#2D6A4F] font-bold text-xl">
-                ✓
+                OK
               </div>
-              <h4 className="text-lg font-bold text-[#2D6A4F]">¡Cita Registrada Exitosamente!</h4>
+              <h4 className="text-lg font-bold text-[#2D6A4F]">Cita Registrada Exitosamente</h4>
               <p className="text-xs text-[#52796F] leading-relaxed">
-                Hemos recibido tu solicitud para <strong>{nombre}</strong> ({email}). Te enviaremos el acceso para la reunión del día <strong>{fecha}</strong> a las <strong>{hora}</strong>.
+                Hemos recibido tu solicitud para <strong>{nombre}</strong> ({email}). Te enviaremos el acceso para la reunion del dia <strong>{fecha}</strong> a las <strong>{hora}</strong>.
               </p>
               <button
                 type="button"
@@ -137,10 +132,10 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
                   onChange={(e) => setPlataforma(e.target.value)}
                   className="w-full p-3 bg-white border border-[#C8D8CE] rounded-xl text-[#2D6A4F] font-medium outline-none focus:border-[#2D6A4F]"
                 >
-                  <option value="1. Casa Matriz ASL Ideas SpA (Desarrollo B2B & Vitrinas PYME)">1. Casa Matriz ASL Ideas SpA (Desarrollo B2B & Vitrinas PYME)</option>
-                  <option value="2. LAWENMOLL Salud Integrativa (Evaluación Metabólica)">2. LAWENMOLL Salud Integrativa (Evaluación Metabólica)</option>
-                  <option value="3. Wellness Web App (Movimiento Adaptado & Pausas Activas)">3. Wellness Web App (Movimiento Adaptado & Pausas Activas)</option>
-                  <option value="4. Sabiduría Ancestral & Fitoterapia Nativa">4. Sabiduría Ancestral & Fitoterapia Nativa</option>
+                  <option value="1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Vitrinas PYME)">1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Vitrinas PYME)</option>
+                  <option value="2. LAWENMOLL Salud Integrativa (Evaluacion Metabolica)">2. LAWENMOLL Salud Integrativa (Evaluacion Metabolica)</option>
+                  <option value="3. Wellness Web App (Movimiento Adaptado y Pausas Activas)">3. Wellness Web App (Movimiento Adaptado y Pausas Activas)</option>
+                  <option value="4. Sabiduria Ancestral y Fitoterapia Nativa">4. Sabiduria Ancestral y Fitoterapia Nativa</option>
                 </select>
               </div>
 
@@ -153,10 +148,10 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
                   onChange={(e) => setMotivo(e.target.value)}
                   className="w-full p-3 bg-white border border-[#C8D8CE] rounded-xl text-[#2D6A4F] font-medium outline-none focus:border-[#2D6A4F]"
                 >
-                  <option value="Cotización de Vitrina Virtual PYME / Convenio Corporativo">Cotización de Vitrina Virtual PYME / Convenio Corporativo</option>
-                  <option value="Demostración Virtual de Software Accesible UI/UX">Demostración Virtual de Software Accesible UI/UX</option>
-                  <option value="Atención Remota con Especialista o Terapeuta">Atención Remota con Especialista o Terapeuta</option>
-                  <option value="Consultoría en Accesibilidad Cognitiva Ley TEA (Ley 21.545)">Consultoría en Accesibilidad Cognitiva Ley TEA (Ley 21.545)</option>
+                  <option value="Cotizacion de Vitrina Virtual PYME / Convenio Corporativo">Cotizacion de Vitrina Virtual PYME / Convenio Corporativo</option>
+                  <option value="Demostracion Virtual de Software Accesible UI/UX">Demostracion Virtual de Software Accesible UI/UX</option>
+                  <option value="Atencion Remota con Especialista o Terapeuta">Atencion Remota con Especialista o Terapeuta</option>
+                  <option value="Consultoria en Accesibilidad Cognitiva Ley TEA (Ley 21.545)">Consultoria en Accesibilidad Cognitiva Ley TEA (Ley 21.545)</option>
                 </select>
               </div>
 
@@ -178,9 +173,9 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
                     onChange={(e) => setHora(e.target.value)}
                     className="w-full p-3 bg-white border border-[#C8D8CE] rounded-xl text-[#2D6A4F] font-medium outline-none focus:border-[#2D6A4F]"
                   >
-                    <option value="09:30 AM (Bloque Mañana)">09:30 AM (Bloque Mañana)</option>
-                    <option value="10:30 AM (Bloque Mañana)">10:30 AM (Bloque Mañana)</option>
-                    <option value="12:00 PM (Bloque Mediodía)">12:00 PM (Bloque Mediodía)</option>
+                    <option value="09:30 AM (Bloque Manana)">09:30 AM (Bloque Manana)</option>
+                    <option value="10:30 AM (Bloque Manana)">10:30 AM (Bloque Manana)</option>
+                    <option value="12:00 PM (Bloque Mediodia)">12:00 PM (Bloque Mediodia)</option>
                     <option value="15:30 PM (Bloque Tarde)">15:30 PM (Bloque Tarde)</option>
                     <option value="17:00 PM (Bloque Tarde)">17:00 PM (Bloque Tarde)</option>
                   </select>
@@ -200,7 +195,7 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-bold text-[#2D6A4F] uppercase tracking-wider">Correo Electrónico *</label>
+                  <label className="font-bold text-[#2D6A4F] uppercase tracking-wider">Correo Electronico *</label>
                   <input
                     type="email"
                     value={email}
@@ -222,16 +217,15 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
           )
         )}
 
-        {/* MODO CANCELAR */}
         {modo === 'cancelar' && (
           cancelacionConfirmada ? (
             <div className="bg-white p-6 rounded-2xl border border-[#D85260] text-center space-y-4 shadow-xs">
               <div className="w-12 h-12 mx-auto bg-[#FFF0F2] rounded-full flex items-center justify-center text-[#D85260] font-bold text-xl">
-                ✕
+                X
               </div>
-              <h4 className="text-lg font-bold text-[#D85260]">Solicitud de Cancelación Procesada</h4>
+              <h4 className="text-lg font-bold text-[#D85260]">Solicitud de Cancelacion Procesada</h4>
               <p className="text-xs text-[#52796F] leading-relaxed">
-                Hemos procesado la cancelación del código <strong>{codigoReserva}</strong> para el correo <strong>{emailCancelar}</strong>. Te enviamos la confirmación a tu e-mail.
+                Hemos procesado la cancelacion del codigo <strong>{codigoReserva}</strong> para el correo <strong>{emailCancelar}</strong>. Te enviamos la confirmacion a tu e-mail.
               </p>
               <button
                 type="button"
@@ -245,7 +239,7 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
             <form onSubmit={handleConfirmarCancelacion} className="space-y-4 text-xs">
               <div className="space-y-1">
                 <label className="font-bold text-[#D85260] uppercase tracking-wider">
-                  Código de Reserva o RUT *
+                  Codigo de Reserva o RUT *
                 </label>
                 <input
                   type="text"
@@ -259,7 +253,7 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
 
               <div className="space-y-1">
                 <label className="font-bold text-[#D85260] uppercase tracking-wider">
-                  Correo Electrónico Registrado *
+                  Correo Electronico Registrado *
                 </label>
                 <input
                   type="email"
@@ -273,12 +267,12 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
 
               <div className="space-y-1">
                 <label className="font-bold text-[#52796F] uppercase tracking-wider">
-                  Motivo de Cancelación o Reprogramación (Opcional)
+                  Motivo de Cancelacion o Reprogramacion (Opcional)
                 </label>
                 <textarea
                   value={motivoCancelacion}
                   onChange={(e) => setMotivoCancelacion(e.target.value)}
-                  placeholder="Indica la razón o si prefieres cambiar de fecha..."
+                  placeholder="Indica la razon o si prefieres cambiar de fecha..."
                   rows={3}
                   className="w-full p-3 bg-white border border-[#C8D8CE] rounded-xl text-[#2D6A4F] outline-none focus:border-[#2D6A4F]"
                 />
@@ -288,7 +282,7 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
                 type="submit"
                 className="w-full bg-[#D85260] hover:bg-[#A8323E] text-white text-xs font-bold py-3.5 rounded-2xl transition shadow-md mt-4 cursor-pointer"
               >
-                Confirmar Cancelación de Cita
+                Confirmar Cancelacion de Cita
               </button>
             </form>
           )
