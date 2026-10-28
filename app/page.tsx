@@ -331,8 +331,3 @@ export default function HomePage() {
     </main>
   );
 }
-Paso 3: Enviar los cambios a GitHub desde Git Bash
-Una vez guardados los archivos en VS Code, ejecuta estas 3 líneas en tu consola Git Bash:
-git add .
-git commit -m "Fix limpia: SalaVirtualB2B y page.tsx en UTF8 nativo sin errores"
-git push origin main --force
