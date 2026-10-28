@@ -11,63 +11,75 @@ export interface PortalItem {
   oficinaNum: string;
   leyes: string[];
   descripcionCorta: string;
-  descripcionLarga?: string;
-  serviciosClave?: string[];
-  beneficios?: string[];
-  publicoObjetivo?: string;
+  descripcionLarga: string;
+  serviciosClave: string[];
+  beneficios: string[];
   enConstruccion?: boolean;
 }
 
 export default function HomePage() {
   const [selectedPortalId, setSelectedPortalId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalInitialMode, setModalInitialMode] = useState<'agendar' | 'cancelar'>('agendar');
 
   const portales: PortalItem[] = [
     {
       id: 'asl-ideas-b2b',
-      nombre: '1. Oficina ASL Ideas SpA',
-      subtitulo: 'Casa Matriz, B2B e Innovación Inclusiva',
-      logo: '/logo.png',
-      oficinaNum: 'N° 1',
-      leyes: ['Ley TEA (Ley 21.545)', 'Accesibilidad UI/UX'],
-      descripcionCorta: 'Gestión corporativa, licencias de software accesible, convenios institucionales y consultoría en diseño cognitivo.',
+      nombre: 'ASL Ideas SpA',
+      subtitulo: 'Casa Matriz - Desarrollo B2B y Licencias Inclusivas',
+      logo: '/logo-asl.png.png',
+      oficinaNum: 'Oficina Virtual 01',
+      leyes: ['Ley TEA N 21.545', 'Accesibilidad Cognitiva UI/UX'],
+      descripcionCorta: 'Centro de innovacion y gestion corporativa B2B en salud digital accesible.',
+      descripcionLarga: 'Especialistas en desarrollo de software accesible a medida para municipalidades, empresas e instituciones de salud. Creamos vitrinas virtuales y entornos digitales amables con baja carga sensorial.',
+      serviciosClave: ['Licencias B2B de Software', 'Vitrinas Virtuales PYME', 'Consultoria UI/UX en Ley TEA'],
+      beneficios: ['Entornos de baja carga sensorial', 'Integracion agil con Supabase', 'Cumplimiento normativo estricto'],
       enConstruccion: false,
     },
     {
       id: 'lawenmoll-salud',
-      nombre: '2. Oficina LAWENMOLL',
-      subtitulo: 'Salud Integrativa & Fichas Clínicas SOAP',
-      logo: '/lawenmoll_logo.jpg',
-      oficinaNum: 'N° 2',
-      leyes: ['Ley de Ciberseguridad (Ley 21.663)', 'Fichas Encriptadas'],
-      descripcionCorta: 'Test de Bienestar Inteligente, composición metabólica, fichas clínicas protegidas y citas con terapeutas.',
+      nombre: 'LAWENMOLL',
+      subtitulo: 'Salud Integrativa y Fichas Clinicas Protegidas',
+      logo: '/logo-lawenmoll.jpg.png',
+      oficinaNum: 'Oficina Virtual 02',
+      leyes: ['Ley N 21.663 - Ciberseguridad', 'Ficha Clinica SOAP'],
+      descripcionCorta: 'Evaluacion metabolica inteligente y gestion clinica encriptada de nivel medico.',
+      descripcionLarga: 'Plataforma para el diagnostico preventivo y acompanamiento en enfermedades cronicas no transmisibles. Permite realizar tests de composicion metabolica, emision de reportes y consultas con terapeutas.',
+      serviciosClave: ['Test de Bienestar Inteligente', 'Fichas SOAP Encriptadas', 'Telemedicina Integrativa'],
+      beneficios: ['Datos de salud protegidos (Ley N 21.663)', 'Seguimiento metabolico personalizado', 'Atencion personalizada sin estres'],
       enConstruccion: false,
     },
     {
       id: 'wellness-web-app',
-      nombre: '3. Oficina Wellness Web App',
-      subtitulo: 'Movimiento Adaptado & Pausas Activas',
-      logo: '/logo_wellness.jpg',
-      oficinaNum: 'N° 3',
-      leyes: ['Movimiento Sin Impacto', 'Salas Virtuales Interactivas'],
-      descripcionCorta: 'Salas interactivas (Lotus, Cielo, Bosque, Raíz), ejercicios sin impacto y cocina demostrativa.',
+      nombre: 'Wellness Web App',
+      subtitulo: 'Movimiento Adaptado y Pausas Activas',
+      logo: '/logo-wellness.jpg.jpg',
+      oficinaNum: 'Oficina Virtual 03',
+      leyes: ['Movimiento Sin Impacto', 'Salas Interactivas Tematicas'],
+      descripcionCorta: 'Salas virtuales en vivo y videoteca de entrenamiento adaptado sin impacto articular.',
+      descripcionLarga: 'Espacio enfocado en la reduccion del cortisol urbano y la activacion fisica amable. Disenado para personas con sobrepeso, dolor articular o movilidad reducida mediante salas interactivas.',
+      serviciosClave: ['Salas Virtuales Tematicas', 'Ejercicios Adaptados Sin Salto', 'Cocina Demostrativa'],
+      beneficios: ['Reduccion efectiva del cortisol', 'Entrenamiento amable sin lesiones', 'Videoteca 24/7 disponible'],
       enConstruccion: false,
     },
     {
       id: 'sabiduria-ancestral',
-      nombre: '4. Oficina Sabiduría Ancestral',
-      subtitulo: 'Comunidad & Fitoterapia Nativa',
-      logo: '/LOGO_BIENESTAR.png',
-      oficinaNum: 'N° 4',
-      leyes: ['Diario Mural Popular', 'Recetario Herbolario PDF'],
-      descripcionCorta: 'Mural interactivo de consejos tradicionales, recetario nativo descargable en PDF y asistente empático.',
+      nombre: 'Sabiduria Ancestral',
+      subtitulo: 'Comunidad Inclusiva y Fitoterapia Nativa',
+      logo: '/logo-bienestar.png.png',
+      oficinaNum: 'Oficina Virtual 04',
+      leyes: ['Diario Mural Popular', 'Recetario Nativo PDF'],
+      descripcionCorta: 'Comunidad para la divulgacion de medicina herbolaria nativa y secretos familiares.',
+      descripcionLarga: 'Portal interactivo dedicado a preservar y difundir los conocimientos tradicionales de fitoterapia chilena. Incluye diario mural colaborativo de la comunidad y descarga directa de recetarios en PDF.',
+      serviciosClave: ['Diario Mural Secretos de la Abuela', 'Recetario Herbolario en PDF', 'Asistente Empatico Virtual'],
+      beneficios: ['Rescate de tradicionel nativas', 'Material descrispable ilustrado', 'Comunidad de apoyo sin juicios'],
       enConstruccion: true,
     },
   ];
 
-  const handleOpenPortal = (id?: string) => {
-    if (!id) return;
-    setSelectedPortalId(id);
+  const handleOpenPortal = (id?: string, mode: 'agendar' | 'cancelar' = 'agendar') => {
+    setSelectedPortalId(id ?? 'asl-ideas-b2b');
+    setModalInitialMode(mode);
     setIsModalOpen(true);
   };
 
@@ -79,78 +91,164 @@ export default function HomePage() {
   const currentPortalData = portales.find((p) => p.id === selectedPortalId);
 
   return (
-    <main className="min-h-screen bg-[#FAF8F5] text-[#2D6A4F] font-sans">
-      {/* NAVEGACIÓN PRINCIPAL */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-[#C8D8CE] sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+    <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] font-sans">
+      <div className="bg-[#CDD6A9] border-b border-[#97A884] py-2.5 px-4 text-center">
+        <div className="max-w-7xl mx-auto flep flex-col sm:flex-row items-center justify-between gap-2 text-xs">
+          <div className="flex items-center gap-2 text-[#676E5E] font-bold">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#DC8D6C] animate-pulse"></span>
+            <span>ASL Ideas SpA: Espacios y Vitrinas Virtuales Inclusivas (Ley TEA8N 21.545)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => handleOpenPortal('asl-ideas-b2b', 'agendar')}
+              className="bg-[#676E5E] text-white text-[11px] px-3.5 py-1 rounded-lg font-bold hover:bg-[#52584b] transition shadow-xs cursor-pointer"
+            >
+              Sala de Video Reunion
+            </button>
+            <a
+              href="/admin"
+              className="bg-[#DC8D6C] text-white text-[11px] px-3.5 py-1 rounded-lg font-bold hover:bg-[#c37858] transition shadow-xs"
+            >
+              Panel Admin
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <header className="bg-white/95 backdrop-blur-md border-b-2 border-[#E6C693] sticky top-0 z-40 shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#52796F] flex items-center justify-center text-white font-extrabold text-lg shadow-md">
-              ASL
+            <div className="w-10 h-10 rounded-xl bg-white border-2 border-[#E6C693] p-0.5 overflow-hidden shadow-xs flex items-center#justify-center">
+              <img src="/logo-asl.png.png" alt="Logo ASL Ideas" className="w-full h-full object-contain" />
             </div>
             <div>
-              <h1 className="text-lg font-black tracking-tight text-[#2D6A4F]">ASL Ideas SpA</h1>
-              <p className="text-[10px] text-[#52796F] font-semibold uppercase tracking-wider">
+              <h1 className="text-base font-black tracking-tight text-[#676E5E]">ASL Ideas SpA</h1>
+              <p className="text-[9px] text-[#97A884] font-bold uppercase tracking-wider">
                 Estrategia de Salud Digital Inclusiva
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={() => handleOpenPortal('asl-ideas-b2b')}
-            className="bg-[#2D6A4F] hover:bg-[#1E3A2F] text-white text-xs font-bold px-5 py-2.5 rounded-2xl transition shadow-md"
-          >
-            Agendamiento B2B / Demo
-          </button>
+
+          <div className="flex items-center space-x-2">
+            <button
+              type="button"
+              onClick={() => handleOpenPortal('asl-ideas-b2b', 'agendar')}
+              className="bg-[#676E5E] hover:bg-[#52584b] text-white text-xs font-bold px-3.5 py-1.5 rounded-xl transition shadow-xs cursor-pointer"
+            >
+              Agendar Cita
+            </button>
+            <button
+              type="button"
+              onClick={() => handleOpenPortal('asl-ideas-b2b', 'cancelar')}
+              className="bg-[#E6E7D5] text-[#DC8D6C] border border-[#DC8D6C] hover:bg-[#DC8D6C] hOver:text-white text-xs font-bold px-3 py-1.5 rounded-xl transition shadow-xs cursor-pointer"
+            >
+              Cancelar
+            </button>
+            <a
+              href="/admin"
+              className="bg-white text-[#676E5E] border border-[#E6C693] hOver:bg-[#E6E7D5] text-xs font-bold px-3 py-1.5 rounded-xl transition shadow-xs"
+            >
+              Admin
+            </a>
+          </div>
         </div>
       </header>
 
-      {/* HERO / BIENVENIDA */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8 text-center space-y-4">
-        <span className="inline-block bg-[#E8F0EC] text-[#2D6A4F] border border-[#C8D8CE] text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest shadow-xs">
-          Diseño Accesible • Neurodivergencia (TEA / TDAH) • Salud Integrativa
-        </span>
-        <h2 className="text-3xl sm:text-5xl font-black text-[#2D6A4F] leading-tight max-w-4xl mx-auto">
-          Tecnología de Salud Humana, Amable e Inclusiva
-        </h2>
-        <p className="text-sm sm:text-base text-[#52796F] max-w-2xl mx-auto leading-relaxed">
-          Plataforma de bienestar digital diseñada para reducir la sobrecarga sensorial, abordar enfermedades crónicas no transmisibles y promover el autocuidado consciente.
-        </p>
+
+      <section className="bg-white border-b border-[#97A884]/30 py-12 px-4 text-center">
+        <div className="max-w-4xl mx-auto space-y-4">
+          <div className="flex justify-center gap-2 flex-wrap">
+            <span className="bg-[#CDD6A9] text-[#676E5E] text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider border border-[#97A884]">
+              Casa Matriz & Licencias B2B
+            </span>
+            <span className="bg-[#E6C693]/40 text-[#676E5E] border border-[#E6C693] text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider">
+              Baja Carga Sensorial (Ley TEA N 21.545)
+            </span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#676E5E] leading-tight">
+            Ecosistema de Soluciones Tecnologicas Accesibilidas
+          </h2>
+          <p className="text-sm text-[#676E5E]/80 max-w-2xl mx-auto leading-relaxed">
+            Plataformas institucionales en salud integrativa, movimiento adaptado, vitrinas virtuales para PYMEs y preservacion del bienestar popular.
+          </p>
+        </div>
       </section>
 
-      {/* REJILLA DE LAS 4 OFICINAS VIRTUALES */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="text-center mb-8">
-          <h3 className="text-xl font-extrabold text-[#2D6A4F]">Ecosistema de Oficinas Virtuales</h3>
-          <p className="text-xs text-[#52796F]">Haz clic en cualquiera de nuestros portales para ingresar o agendar una demostración</p>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+        <div className="text-center space-y-2">
+          <span className="text-xs font-bold text-[#DC8D6C] uppercase tracking-wider bg-white px-3.5 py-1 rounded-full border border-[#DC8D6C]">
+            Plataformas Oficiales
+          </span>
+          <h3 className="text-2xl sm:text-3xl font-black text-[#676E5E]">
+            Nuestras 4 Oficinas Virtuales y Aplicaciones
+          </h3>
+          <p className="text-xs text-[#676E5E]/80 max-w-xl mx-auto">
+            Explora la funcionalidad y servicios de cada una de nuestras unidades tecnologicas.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {portales.map((portal) => (
             <div
               key={portal.id}
-              className="bg-white rounded-3xl border border-[#C8D8CE] p-6 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-4 hover:-translate-y-1"
+              className="bg-white rounded-3xl border-2 border-[#97A884] hover:border-[#E6C693] p-6 sm:p-8 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-6"
             >
-              <div className="space-y-3">
-                <div className="flex justify-between items-start">
-                  <span className="text-[10px] font-bold uppercase tracking-widest bg-[#E8F0EC] text-[#2D6A4F] px-2.5 py-1 rounded-lg">
-                    {portal.oficinaNum}
-                  </span>
+              <div className="space-y-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-16 h-16 rounded-2xl border-2 border-[#E6C693] p-0.5 overflow-hidden bg-white shrink-0 shadow-sm flex items-center justify-center">
+                      <img
+                        src={portal.logo}
+                        alt={`Logo ${portal.nombre}`}
+                        className="w-full h-full object-contain rounded-xl"
+                      />
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-widest bg-[#CDD6A9] text-[#676E5E] px-2.5 py-0.5 rounded-md border border-[#97A884]">
+                        {portal.oficinaNum}
+                      </span>
+                      <h4 className="text-xl font-black text-[#676E5E] leading-snug mt-1">{portal.nombre}</h4>
+                      <p className="text-xs font-bold text-[#97A884] uppercase tracking-wider">{portal.subtitulo}</p>
+                    </div>
+                  </div>
+
                   {portal.enConstruccion && (
-                    <span className="text-[10px] font-bold bg-[#FFF3D6] text-[#B8860B] px-2.5 py-1 rounded-lg border border-[#FFE08A]">
+                    <span className="text-[10px] font-bold bg-[#E6C693]/30 text-[#676E5E] px-2.5 py-1 rounded-lg border border-[#E6C693] shrink-0">
                       En Avance
                     </span>
                   )}
                 </div>
 
-                <h4 className="text-base font-bold text-[#2D6A4F] leading-snug">{portal.nombre}</h4>
-                <p className="text-xs font-semibold text-[#84A59D]">{portal.subtitulo}</p>
-                <p className="text-xs text-[#52796F] leading-relaxed">{portal.descripcionCorta}</p>
 
-                <div className="flex flex-wrap gap-1.5 pt-2">
+                <div className="space-y-2 border-t border-[#E6E7D5] pt-3">
+                  <p className="text-xs font-semibold text-[#676E5E] leading-relaxed">
+                    {portal.descripcionCorta}
+                  </p>
+                  <p className="text-xs text-[#676E5E]/80 leading-relaxed">
+                    {portal.descripcionLarga}
+              _p>
+                </div>
+
+
+                <div className="bg-[#E6E7D5] p-4 rounded-2xl border border-[#97A884]/40 space-y-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#676E5E] block">
+                    Servicios y Módulos Clave:
+                  </span>
+                  <ul className="text-xs text-[#676E5E] space-y-1 list-disc list-inside">
+                    {portal.serviciosClave.map((serv, idx) => (
+                      <li key={idx} className="font-medium">{serv}</li>
+                    ))}
+                </ul>
+                </div>
+
+
+                <div className="flex flex-wrap gap-1.5 pt-1">
                   {portal.leyes.map((ley, idx) => (
                     <span
                       key={idx}
-                      className="text-[9px] font-semibold bg-[#FAF8F5] text-[#52796F] border border-[#C8D8CE] px-2 py-0.5 rounded-md"
+                      className="text-[10px] font-bold bg-[#CDD6A9] text-[#676E5E] border border-[#97A884] px-2.5 py-1 rounded-lg"
                     >
                       {ley}
                     </span>
@@ -158,47 +256,81 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={() => handleOpenPortal(portal.id ?? '')}
-                className="w-full bg-[#52796F] hover:bg-[#2D6A4F] text-white text-xs font-bold py-3.5 rounded-2xl transition shadow-xs text-center mt-2 cursor-pointer"
-              >
-                {portal.enConstruccion ? 'Ver Avance / Portal Demo' : `Ingresar al Portal ${portal.oficinaNum}`}
-              </button>
+              <div className="pt-2 border-t border-[#97A884]/30 flex items-center justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleOpenPortal(portal.id ?? '', 'agendar')}
+                  className="flex-1 bg-[#676E5E] hover:bg-[#52584b] text-white text-xs font-bold py-3 rounded-2xl transition shadow-sm text-center cursor-pointer"
+                >
+                  {portal.enConstruccion ? 'Ver Avance y Demo' : `Ingresar a ${portal.nombre}`}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleOpenPortal(portal.id ?? '', 'agendar')}
+                  className="bg-[#DC8D6C] text-white hover:bg-[#c37858] text-xs font-bold px-4 py-3 rounded-2xl transition shadow-xs cursor-pointer shrink-0"
+                  title="Agendar Video Reunión"
+                >
+                  Video Reunión
+                </button>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* SECCIÓN DE CONTACTO Y CONVENIOS */}
-      <section className="max-w-4xl mx-auto px-4 py-12 text-center space-y-6">
-        <div className="bg-white rounded-3xl border-2 border-[#D4AF37] p-8 shadow-lg space-y-4">
-          <h3 className="text-xl font-bold text-[#2D6A4F]">¿Eres una Empresa, Institución o Municipio?</h3>
-          <p className="text-xs text-[#52796F] leading-relaxed max-w-xl mx-auto">
-            Desarrollamos soluciones de software a medida con estándares de accesibilidad cognitiva (Ley TEA 21.545) y protección de datos clínicos (Ley 21.663).
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 pt-2">
-            <button
-              type="button"
-              onClick={() => handleOpenPortal('asl-ideas-b2b')}
-              className="bg-[#2D6A4F] hover:bg-[#1E3A2F] text-white text-xs font-bold px-6 py-3 rounded-xl transition shadow-md"
-            >
-              Agendar Cita B2B / Demostración
-            </button>
+      <section className="bg-white border-y border-[#97A884]/30 py-12 px-4">
+        <div className="max-w-6xl mx-auto space-y-8">
+          <div className="text-center space-y-2">
+            <span className="text-xs font-bold text-[#DC8D6C] uppercase tracking-wider bg-[#E6E7D5] px-3.5 py-1 rounded-full border border-[#DC8D6C]">
+              Vitrinas Virtuales B2B
+            </span>
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-[#676E5E]">
+              Espacio y Difusi&o3n;n para PYMEs e Instituciones
+            </h3>
+            <p className="text-xs text-[#676E5E]/80 max-w-2xl mx-auto">
+              Brindamos vitrinas digitales optimizadas para que emprendedores de la salud e instituciones exhiban sus productos y servicios en entornos amables.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+            <div className="bg-[#E6E7D5] p-6 rounded-3xl border border-[#97A884] space-y-2">
+              <h4 className="font-bold text-[#676E5E]">Vitrinas Digitales PYME</h4>
+              <p className="text-[#676E5E]/80 leading-relaxed">
+                Catálogos web interactivos y limpios para dar visibilidad comercial directa en entornos municipales e institucionales.
+              </p>
+            </div>
+
+            <div className="bg-[#E6E7D5] p-6 rounded-3xl border border-[#97A884] space-y-2">
+              <h4 className="font-bold text-[#676E5E]">Diseño Inclusivo Ley TEA</h4>
+              <p className="text-[#676E5E]/80 leading-relaxed">
+                Navegaci&o3n;n predecible y paleta relajante que garantizan la inclusi&/o3n; de personas con TEA Grado 1 y TDAH.
+              </p>
+            </div>
+
+            <div className="bg-[#E6E7D5] p-6 rounded-3xl border border-[#97A884] space-y-2">
+              <h4 className="font-bold text-[#676E5E]">Ciberseguridad Ley N 21.663</h4>
+              <p className="text-[#676E5E]/80 leading-relaxed">
+                Infraestructura encriptada para el resguardo de informaci&o3n; confidencial, usuarios y atenci&o3n; institucional.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* PIE DE PÁGINA */}
-      <footer className="bg-white border-t border-[#C8D8CE] py-6 text-center text-xs text-[#84A59D]">
-        <p>© {new Date().getFullYear()} ASL Ideas SpA. Todos los derechos reservados. Tecnología de Salud Digital Inclusiva.</p>
+      <footer className="bg-white border-t border-[#97A884]/30 py-6 text-center text-xs text-[#97A884] space-y-2">
+        <p className="text-[#676E5E]">Copyright ASL Ideas SpA | Estrategia de Salud Digital y Vitrinas Inclusivas para PYMEs.</p>
+        <div className="flex justify-center gap-4 text-[11px] px-4">
+          <a href="/admin" className="hover:underline focus:bold text-[#676E5E]">Administraci&o3n; (/admin)</a>
+          <span>-</span>
+          <span>Ley N 21.545 y Ley N 21.663</span>
+        </div>
       </footer>
 
-      {/* MODAL DE AGENDAMIENTO / SALA VIRTUAL B2B */}
       <SalaVirtualB2B
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         portalData={currentPortalData}
+        initialMode={modalInitialMode}
       />
     </main>
   );
