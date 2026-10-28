@@ -24,7 +24,7 @@ interface SalaVirtualB2BProps {
   initialMode?: 'agendar' | 'cancelar';
 }
 
-export default function SalaVirtualB2B({ isOpen, onClose, initialMode = 'agendar' }: SalaVirtualB2BProps) {
+export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMode = 'agendar' }: SalaVirtualB2BProps) {
   const [modo, setModo] = useState<'agendar' | 'cancelar'>(initialMode);
   
   // Datos Agendamiento
