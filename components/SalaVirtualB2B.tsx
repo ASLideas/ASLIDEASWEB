@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useState } from 'react';
 
 export interface PortalInfo {
@@ -12,7 +13,6 @@ export interface PortalInfo {
   descripcionLarga?: string;
   serviciosClave?: string[];
   beneficios?: string[];
-  publicoObjetivo?: string;
   enConstruccion?: boolean;
 }
 
@@ -20,15 +20,22 @@ interface SalaVirtualB2BProps {
   isOpen: boolean;
   onClose: () => void;
   portalData?: PortalInfo;
-  isAdmin?: boolean;
   initialMode?: 'agendar' | 'cancelar';
 }
 
-export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMode = 'agendar' }: SalaVirtualB2BProps) {
+export default function SalaVirtualB2B({
+  isOpen,
+  onClose,
+  portalData,
+  initialMode = 'agendar',
+}: SalaVirtualB2BProps) {
   const [modo, setModo] = useState<'agendar' | 'cancelar'>(initialMode);
-  
-  const [plataforma, setPlataforma] = useState<string>('1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Vitrinas PYME)');
-  const [motivo, setMotivo] = useState<string>('Cotizacion de Vitrina Virtual PYME / Convenio Corporativo');
+  const [plataforma, setPlataforma] = useState<string>(
+    '1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)'
+  );
+  const [motivo, setMotivo] = useState<string>(
+    'Videoreunion de Trabajo / Cotizacion de Vitrina B2B'
+  );
   const [fecha, setFecha] = useState<string>('');
   const [hora, setHora] = useState<string>('10:30 AM (Bloque Manana)');
   const [nombre, setNombre] = useState<string>('');
@@ -37,7 +44,6 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
 
   const [codigoReserva, setCodigoReserva] = useState<string>('');
   const [emailCancelar, setEmailCancelar] = useState<string>('');
-  const [motivoCancelacion, setMotivoCancelacion] = useState<string>('');
   const [cancelacionConfirmada, setCancelacionConfirmada] = useState<boolean>(false);
 
   if (!isOpen) return null;
@@ -45,7 +51,7 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
   const handleConfirmarReserva = (e: React.FormEvent) => {
     e.preventDefault();
     if (!nombre.trim() || !email.trim() || !fecha) {
-      alert('Por favor completa todos los campos requeridos (*).');
+      alert('Por favor completa todos los campos requeridos.');
       return;
     }
     setReservaConfirmada(true);
@@ -61,121 +67,123 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#2D6A4F]/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-[#FAF8F5] max-w-2xl w-full rounded-3xl border-2 border-[#D4AF37] shadow-2xl p-6 md:p-8 space-y-6 my-8">
+    <div className="fixed inset-0 z-50 bg-[#676E5E]/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+      <div className="bg-[#E6E7D5] max-w-2xl w-full rounded-3xl border-2 border-[#97A884] shadow-2xl p-6 md:p-8 space-y-6 my-8 text-[#676E5E]">
         
-        <div className="flex justify-between items-center border-b border-[#C8D8CE] pb-4">
+        <div className="flex justify-between items-center border-b border-[#97A884]/40 pb-4">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider bg-[#E8F0EC] text-[#2D6A4F] px-3 py-1 rounded-full border border-[#C8D8CE]">
-              Gestion de Agenda B2B y Vitrinas
+            <span className="text-[10px] font-bold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-3 py-1 rounded-full border border-[#97A884]">
+              Sala de Video Reunión B2B
             </span>
-            <h3 className="text-xl font-extrabold text-[#2D6A4F] mt-1">
-              {modo === 'agendar' ? 'Reserva de Cita o Vitrina Virtual' : 'Solicitud de Cancelacion o Reprogramacion'}
+            <h3 className="text-xl font-extrabold text-[#676E5E] mt-1">
+              {modo === 'agendar' ? 'Reserva de Cita y Video Reunión' : 'Solicitud de Cancelación'}
             </h3>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-xs font-bold text-[#D85260] bg-[#FFF0F2] hover:bg-[#FF8894] hover:text-white px-3 py-1.5 rounded-xl border border-[#FF8894] transition cursor-pointer"
+            className="text-xs font-bold text-white bg-[#DC8D6C] hover:bg-[#c37858] px-3.5 py-1.5 rounded-xl transition cursor-pointer"
           >
             Cerrar
           </button>
         </div>
 
-        <div className="flex bg-[#E8F0EC] p-1 rounded-2xl border border-[#C8D8CE] text-xs font-bold">
+        <div className="flex bg-[#CDD6A9]/50 p-1 rounded-2xl border border-[#97A884] text-xs font-bold">
           <button
             type="button"
             onClick={() => { setModo('agendar'); setReservaConfirmada(false); }}
             className={`flex-1 py-2.5 rounded-xl transition text-center cursor-pointer ${
-              modo === 'agendar' ? 'bg-[#2D6A4F] text-white shadow-xs' : 'text-[#52796F] hover:text-[#2D6A4F]'
+              modo === 'agendar' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:text-[#676E5E]'
             }`}
           >
-            Nueva Reserva / Cita
+            Agendar Video Reunión
           </button>
           <button
             type="button"
             onClick={() => { setModo('cancelar'); setCancelacionConfirmada(false); }}
             className={`flex-1 py-2.5 rounded-xl transition text-center cursor-pointer ${
-              modo === 'cancelar' ? 'bg-[#D85260] text-white shadow-xs' : 'text-[#52796F] hover:text-[#D85260]'
+              modo === 'cancelar' ? 'bg-[#DC8D6C] text-white shadow-xs' : 'text-[#676E5E] hover:text-[#DC8D6C]'
             }`}
           >
-            Cancelar / Reprogramar Cita
+            Cancelar / Reprogramar
           </button>
         </div>
 
         {modo === 'agendar' && (
           reservaConfirmada ? (
-            <div className="bg-white p-6 rounded-2xl border border-[#2D6A4F] text-center space-y-4 shadow-xs">
-              <div className="w-12 h-12 mx-auto bg-[#E8F0EC] rounded-full flex items-center justify-center text-[#2D6A4F] font-bold text-xl">
+            <div className="bg-white p-6 rounded-2xl border border-[#97A884] text-center space-y-4 shadow-xs">
+              <div className="w-12 h-12 mx-auto bg-[#CDD6A9] rounded-full flex items-center justify-center text-[#676E5E] font-extrabold text-xs">
                 OK
               </div>
-              <h4 className="text-lg font-bold text-[#2D6A4F]">Cita Registrada Exitosamente</h4>
-              <p className="text-xs text-[#52796F] leading-relaxed">
-                Hemos recibido tu solicitud para <strong>{nombre}</strong> ({email}). Te enviaremos el acceso para la reunion del dia <strong>{fecha}</strong> a las <strong>{hora}</strong>.
+              <h4 className="text-lg font-bold text-[#676E5E]">Video Reunión Agendada</h4>
+              <p className="text-xs text-[#676E5E] leading-relaxed">
+                Hemos registrado la cita para <strong>{nombre}</strong> ({email}). El acceso a la sala de video reunión para el día <strong>{fecha}</strong> a las <strong>{hora}</strong> ha sido enviado a tu correo.
               </p>
+              <div className="p-3 bg-[#E6E7D5] rounded-xl border border-[#97A884] text-[11px] font-mono text-[#676E5E]">
+                Enlace de Sala Virtual: [suspicious link removed]
+              </div>
               <button
                 type="button"
                 onClick={() => { setReservaConfirmada(false); onClose(); }}
-                className="bg-[#2D6A4F] text-white text-xs font-bold px-6 py-2.5 rounded-xl hover:bg-[#1E3A2F] transition cursor-pointer"
+                className="bg-[#676E5E] text-white text-xs font-bold px-6 py-2.5 rounded-xl hover:bg-[#52584b] transition cursor-pointer"
               >
-                Entendido / Volver al Sitio
+                Volver a ASL Ideas
               </button>
             </div>
           ) : (
             <form onSubmit={handleConfirmarReserva} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="font-bold text-[#2D6A4F] uppercase tracking-wider">
+                <label className="font-bold text-[#676E5E] uppercase tracking-wider">
                   1. Plataforma o Servicio *
                 </label>
                 <select
                   value={plataforma}
                   onChange={(e) => setPlataforma(e.target.value)}
-                  className="w-full p-3 bg-white border border-[#C8D8CE] rounded-xl text-[#2D6A4F] font-medium outline-none focus:border-[#2D6A4F]"
+                  className="w-full p-3 bg-white border border-[#97A884] rounded-xl text-[#676E5E] font-medium outline-none focus:border-[#676E5E]"
                 >
-                  <option value="1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Vitrinas PYME)">1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Vitrinas PYME)</option>
-                  <option value="2. LAWENMOLL Salud Integrativa (Evaluacion Metabolica)">2. LAWENMOLL Salud Integrativa (Evaluacion Metabolica)</option>
-                  <option value="3. Wellness Web App (Movimiento Adaptado y Pausas Activas)">3. Wellness Web App (Movimiento Adaptado y Pausas Activas)</option>
-                  <option value="4. Sabiduria Ancestral y Fitoterapia Nativa">4. Sabiduria Ancestral y Fitoterapia Nativa</option>
+                  <option value="1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)">1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)</option>
+                  <option value="2. LAWENMOLL Salud Integrativa">2. LAWENMOLL Salud Integrativa</option>
+                  <option value="3. Wellness Web App (Movimiento Adaptado)">3. Wellness Web App (Movimiento Adaptado)</option>
+                  <option value="4. Sabiduria Ancestral">4. Sabiduria Ancestral</option>
                 </select>
               </div>
 
               <div className="space-y-1">
-                <label className="font-bold text-[#2D6A4F] uppercase tracking-wider">
+                <label className="font-bold text-[#676E5E] uppercase tracking-wider">
                   2. Motivo de la Cita *
                 </label>
                 <select
                   value={motivo}
                   onChange={(e) => setMotivo(e.target.value)}
-                  className="w-full p-3 bg-white border border-[#C8D8CE] rounded-xl text-[#2D6A4F] font-medium outline-none focus:border-[#2D6A4F]"
+                  className="w-full p-3 bg-white border border-[#97A884] rounded-xl text-[#676E5E] font-medium outline-none focus:border-[#676E5E]"
                 >
-                  <option value="Convenio Corporativo / Vitrina Virtual PYME">Convenio Corporativo / Vitrina Virtual PYME</option>
-                  <option value="Demostracion Virtual de Software Accesibilidad Cognitiva">Demostracion Virtual de Software Accesibilidad Cognitiva</option>
-                  <option value="Atencion Remota con Especialista o Terapeuta">Atencion Remota con Especialista o Terapeuta</option>
-                  <option value="Consultoria en Accesibilidad Cognitiva Ley TEA (Ley 21.545)">Consultoria en Accesibilidad Cognitiva Ley TEA (Ley 21.545)</option>
+                  <option value="Videoreunion de Trabajo / Cotizacion de Vitrina B2B">Videoreunión de Trabajo / Cotización de Vitrina B2B</option>
+                  <option value="Demostracion de Software Accesibilidad Cognitiva Ley TEA">Demostración de Software Accesibilidad Cognitiva Ley TEA</option>
+                  <option value="Consultoria Institucional B2B">Consultoría Institucional B2B</option>
                 </select>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="font-bold text-[#2D6A4F] uppercase tracking-wider px-1">Fecha *</label>
+                  <label className="font-bold text-[#676E5E] uppercase tracking-wider">Fecha *</label>
                   <input
                     type="date"
                     value={fecha}
                     onChange={(e) => setFecha(e.target.value)}
-                    className="w-full p-3 bg-white border border-[#C8D8CE] rounded-xl text-[#2D6A4F] font-medium outline-none focus:border-[#2D6A4F]"
+                    className="w-full p-3 bg-white border border-[#97A884] rounded-xl text-[#676E5E] font-medium outline-none focus:border-[#676E5E]"
                     required
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-bold text-[#2D6A4F] uppercase tracking-wider px-1">Hora Disponible *</label>
+                  <label className="font-bold text-[#676E5E] uppercase tracking-wider">Bloque Horario *</label>
                   <select
                     value={hora}
                     onChange={(e) => setHora(e.target.value)}
-                    className="w-full p-3 bg-white border border-[#C8D8CE] rounded-xl text-[#2D6A4F] font-medium outline-none focus:border-[#2D6A4F]"
+                    className="w-full p-3 bg-white border border-[#97A884] rounded-xl text-[#676E5E] font-medium outline-none focus:border-[#676E5E]"
                   >
-                    <option value="09:30 AM (Bloque Manana)">09:30 AM (Bloque Manana)</option>
-                    <option value="10:30 AM (Bloque Manana)">10:30 AM (Bloque Manana)</option>
-                    <option value="12:00 PM (Bloque Mediodia)">12:00 PM (Bloque Mediodia)</option>
+                    <option value="09:30 AM (Bloque Manana)">09:30 AM (Bloque Mañana)</option>
+                    <option value="10:30 AM (Bloque Manana)">10:30 AM (Bloque Mañana)</option>
+                    <option value="12:00 PM (Bloque Mediodia)">12:00 PM (Bloque Mediodía)</option>
                     <option value="15:30 PM (Bloque Tarde)">15:30 PM (Bloque Tarde)</option>
                     <option value="17:00 PM (Bloque Tarde)">17:00 PM (Bloque Tarde)</option>
                   </select>
@@ -184,24 +192,24 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="font-bold text-[#2D6A4F] uppercase tracking-wider px-1">Nombre Completo / Empresa *</label>
+                  <label className="font-bold text-[#676E5E] uppercase tracking-wider">Nombre Completo / Empresa *</label>
                   <input
                     type="text"
                     value={nombre}
                     onChange={(e) => setNombre(e.target.value)}
-                    placeholder="Tu nombre o PYME"
-                    className="w-full p-3 bg-white border border-[#C8D8CE] rounded-xl text-[#2D6A4F] outline-none focus:border-[#2D6A4F]"
+                    placeholder="Nombre o Institución..."
+                    className="w-full p-3 bg-white border border-[#97A884] rounded-xl text-[#676E5E] outline-none focus:border-[#676E5E]"
                     required
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-bold text-[#2D6A4F] uppercase tracking-wider px-1">Correo Electronico *</label>
+                  <label className="font-bold text-[#676E5E] uppercase tracking-wider">Correo Electrónico *</label>
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="contacto@pyme.cl"
-                    className="w-full p-3 bg-white border border-[#C8D8CE] rounded-xl text-[#2D6A4F] outline-none focus:border-[#2D6A4F]"
+                    placeholder="contacto@empresa.cl"
+                    className="w-full p-3 bg-white border border-[#97A884] rounded-xl text-[#676E5E] outline-none focus:border-[#676E5E]"
                     required
                   />
                 </div>
@@ -209,9 +217,9 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
 
               <button
                 type="submit"
-                className="w-full bg-[#2D6A4F] hover:bg-[#1E3A2F] text-white text-xs font-bold py-3.5 rounded-2xl transition shadow-md mt-4 cursor-pointer"
+                className="w-full bg-[#676E5E] hover:bg-[#52584b] text-white text-xs font-bold py-3.5 rounded-2xl transition shadow-md mt-4 cursor-pointer"
               >
-                Confirmar Reserva de Cita
+                Confirmar y Generar Sala Virtual
               </button>
             </form>
           )
@@ -219,70 +227,54 @@ export default function SalaVirtualB2B({ isOpen, onClose, portalData, initialMod
 
         {modo === 'cancelar' && (
           cancelacionConfirmada ? (
-            <div className="bg-white p-6 rounded-2xl border border-[#D85260] text-center space-y-4 shadow-xs">
-              <div className="w-12 h-12 mx-auto bg-[#FFF0F2] rounded-full flex items-center justify-center text-[#D85260] font-bold text-xl">
-                X
-              </div>
-              <h4 className="text-lg font-bold text-[#D85260]">Solicitud de Cancelacion Procesada</h4>
-              <p className="text-xs text-[#52796F] leading-relaxed">
-                Hemos procesado la cancelacion del codigo <strong>{codigoReserva}</strong> para el correo <strong>{emailCancelar}</strong>. Te enviamos la confirmacion a tu e-mail.
+            <div className="bg-white p-6 rounded-2xl border border-[#DC8D6C] text-center space-y-4 shadow-xs">
+              <h4 className="text-lg font-bold text-[#DC8D6C]">Reserva Cancelada</h4>
+              <p className="text-xs text-[#676E5E] leading-relaxed">
+                La reunión con código <strong>{codigoReserva}</strong> ha sido cancelada para el correo <strong>{emailCancelar}</strong>.
               </p>
               <button
                 type="button"
                 onClick={() => { setCancelacionConfirmada(false); onClose(); }}
-                className="bg-[#2D6A4F] text-white text-xs font-bold px-6 py-2.5 rounded-xl hover:bg-[#1E3A2F] transition cursor-pointer"
+                className="bg-[#676E5E] text-white text-xs font-bold px-6 py-2.5 rounded-xl hover:bg-[#52584b] transition cursor-pointer"
               >
-                Volver al Sitio Principal
+                Volver al Sitio
               </button>
             </div>
           ) : (
             <form onSubmit={handleConfirmarCancelacion} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="font-bold text-[#D85260] uppercase tracking-wider px-1">
-                  Codigo de Reserva o RUT *
+                <label className="font-bold text-[#DC8D6C] uppercase tracking-wider">
+                  Código de Reserva o RUT *
                 </label>
                 <input
                   type="text"
                   value={codigoReserva}
                   onChange={(e) => setCodigoReserva(e.target.value)}
-                  placeholder="Ej: ASL-8921 o 12.345.678-K"
-                  className="w-full p-3 bg-white border border-[#FF8894] rounded-xl text-[#2D6A4F] outline-none focus:border-[#D85260]"
+                  placeholder="Ej: ASL-8921"
+                  className="w-full p-3 bg-white border border-[#DC8D6C] rounded-xl text-[#676E5E] outline-none focus:border-[#DC8D6C]"
                   required
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="font-bold text-[#D85260] uppercase tracking-wider px-1">
-                  Correo Electronico Registrado *
+                <label className="font-bold text-[#DC8D6C] uppercase tracking-wider">
+                  Correo Registrado *
                 </label>
                 <input
                   type="email"
                   value={emailCancelar}
                   onChange={(e) => setEmailCancelar(e.target.value)}
                   placeholder="correo@ejemplo.cl"
-                  className="w-full p-3 bg-white border border-[#FF8894] rounded-xl text-[#2D6A4F] outline-none focus:border-[#D85260]"
+                  className="w-full p-3 bg-white border border-[#DC8D6C] rounded-xl text-[#676E5E] outline-none focus:border-[#DC8D6C]"
                   required
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="font-bold text-[#52796F] uppercase tracking-wider px-1">
-                  Motivo de Cancelacion o Reprogramacion (Opcional)
-                </label>
-                <textarea
-                  value={motivoCancelacion}
-                  onChange={(e) => setMotivoCancelacion(e.target.value)}
-                  placeholder="Indica la razon o si prefieres cambiar de fecha..."
-                  rows={3}
-                  className="w-full p-3 bg-white border border-[#C8D8CE] rounded-xl text-[#2D6A4F] outline-none focus:border-[#2D6A4F]"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-[#D85260] hover:bg-[#A8323E] text-white text-xs font-bold py-3.5 rounded-2xl transition shadow-md mt-4 cursor-pointer"
+                className="w-full bg-[#DC8D6C] hover:bg-[#c37858] text-white text-xs font-bold py-3.5 rounded-2xl transition shadow-md mt-4 cursor-pointer"
               >
-                Confirmar Cancelacion de Cita
+                Confirmar Cancelación
               </button>
             </form>
           )
