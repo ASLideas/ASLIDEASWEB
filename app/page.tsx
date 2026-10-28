@@ -314,7 +314,7 @@ export default function HomePage() {
       </section>
 
       <footer className="bg-white border-t border-[#C8D8CE] py-6 text-center text-xs text-[#84A59D] space-y-2">
-        <p>© {new Date().getFullYear()} ASL Ideas SpA | Estrategia de Salud Digital y Vitrinas Inclusivas para PYMEs.</p>
+        <p>Copyright ASL Ideas SpA | Estrategia de Salud Digital y Vitrinas Inclusivas para PYMEs.</p>
         <div className="flex justify-center gap-4 text-[11px]">
           <a href="/admin" className="hover:underline font-bold text-[#2D6A4F]">Administracion (/admin)</a>
           <span>-</span>
