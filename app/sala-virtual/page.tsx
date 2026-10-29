@@ -5,9 +5,9 @@ import Link from 'next/link';
 
 export default function SalaVirtualPage() {
   const [plataforma, setPlataforma] = useState('1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)');
-  const [motivo, setMotivo] = useState('Videoreunion de Trabajo / Cotizacion de Vitrina B2B');
+  const [motivo, setMotivo] = useState('Videoreunión de Trabajo / Cotización de Vitrina B2B');
   const [fecha, setFecha] = useState('');
-  const [hora, setHora] = useState('10:30 AM (Bloque Manana)');
+  const [hora, setHora] = useState('10:30 AM (Bloque Mañana)');
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
   const [reservaConfirmada, setReservaConfirmada] = useState(false);
@@ -32,7 +32,7 @@ export default function SalaVirtualPage() {
             <div>
               <h1 className="text-base font-black tracking-tight text-[#676E5E]">ASL Ideas SpA</h1>
               <p className="text-[9px] text-[#97A884] font-bold uppercase tracking-wider">
-                Sala de Video Reunion B2B
+                Sala de Video Reunión B2B
               </p>
             </div>
           </Link>
@@ -58,13 +58,13 @@ export default function SalaVirtualPage() {
           <div className="border-b border-[#97A884]/30 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-3.5 py-1 rounded-full border border-[#97A884]">
-                Atencion Corporativa e Institucional
+                Atención Corporativa e Institucional
               </span>
               <h2 className="text-2xl font-extrabold text-[#676E5E] mt-2">
                 Sala Virtual de Reuniones & Agendamiento B2B
               </h2>
               <p className="text-xs text-[#676E5E]/80 mt-1">
-                Coordina una videoreunion privada con el equipo de ASL Ideas SpA para cotizaciones de Vitrinas PYME, demos de software con accesibilidad Ley TEA N 21.545 o licencias corporativas.
+                Coordina una videoreunión privada con el equipo de ASL Ideas SpA para cotizaciones de Vitrinas PYME, demos de software con accesibilidad Ley TEA N° 21.545 o licencias corporativas.
               </p>
             </div>
           </div>
@@ -74,9 +74,9 @@ export default function SalaVirtualPage() {
               <div className="w-16 h-16 mx-auto bg-[#CDD6A9] rounded-full flex items-center justify-center text-[#676E5E] font-black text-lg border-2 border-[#97A884]">
                 OK
               </div>
-              <h3 className="text-xl font-bold text-[#676E5E]">Video Reunion Agendada con Exito</h3>
+              <h3 className="text-xl font-bold text-[#676E5E]">Video Reunión Agendada con Éxito</h3>
               <p className="text-sm text-[#676E5E] leading-relaxed max-w-lg mx-auto">
-                Registramos la reunion para <strong>{nombre}</strong> ({email}) correspondiente a <strong>{plataforma}</strong>.
+                Registramos la reunión para <strong>{nombre}</strong> ({email}) correspondiente a <strong>{plataforma}</strong>.
               </p>
               <div className="pt-2">
                 <button
@@ -84,7 +84,7 @@ export default function SalaVirtualPage() {
                   onClick={() => setReservaConfirmada(false)}
                   className="bg-[#676E5E] text-white text-xs font-bold px-6 py-3 rounded-xl hover:bg-[#52584b] transition cursor-pointer"
                 >
-                  Agendar Otra Reunion
+                  Agendar Otra Reunión
                 </button>
               </div>
             </div>
@@ -102,7 +102,7 @@ export default function SalaVirtualPage() {
                   <option value="1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)">1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)</option>
                   <option value="2. LAWENMOLL Salud Integrativa">2. LAWENMOLL Salud Integrativa</option>
                   <option value="3. Wellness Web App (Movimiento Adaptado)">3. Wellness Web App (Movimiento Adaptado)</option>
-                  <option value="4. Sabiduria Ancestral">4. Sabiduria Ancestral</option>
+                  <option value="4. Sabiduría Ancestral / Bienestar">4. Sabiduría Ancestral / Bienestar</option>
                 </select>
               </div>
 
@@ -115,9 +115,9 @@ export default function SalaVirtualPage() {
                   onChange={(e) => setMotivo(e.target.value)}
                   className="w-full p-3.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl text-[#676E5E] font-medium outline-none focus:border-[#676E5E]"
                 >
-                  <option value="Videoreunion de Trabajo / Cotizacion de Vitrina B2B">Videoreunion de Trabajo / Cotizacion de Vitrina B2B</option>
-                  <option value="Demostracion de Software Accesibilidad Cognitiva Ley TEA">Demostracion de Software Accesibilidad Cognitiva Ley TEA</option>
-                  <option value="Consultoria Institucional B2B">Consultoria Institucional B2B</option>
+                  <option value="Videoreunión de Trabajo / Cotización de Vitrina B2B">Videoreunión de Trabajo / Cotización de Vitrina B2B</option>
+                  <option value="Demostración de Software Accesibilidad Cognitiva Ley TEA">Demostración de Software Accesibilidad Cognitiva Ley TEA</option>
+                  <option value="Consultoría Institucional B2B">Consultoría Institucional B2B</option>
                 </select>
               </div>
 
@@ -139,9 +139,9 @@ export default function SalaVirtualPage() {
                     onChange={(e) => setHora(e.target.value)}
                     className="w-full p-3.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl text-[#676E5E] font-medium outline-none focus:border-[#676E5E]"
                   >
-                    <option value="09:30 AM (Bloque Manana)">09:30 AM (Bloque Manana)</option>
-                    <option value="10:30 AM (Bloque Manana)">10:30 AM (Bloque Manana)</option>
-                    <option value="12:00 PM (Bloque Mediodia)">12:00 PM (Bloque Mediodia)</option>
+                    <option value="09:30 AM (Bloque Mañana)">09:30 AM (Bloque Mañana)</option>
+                    <option value="10:30 AM (Bloque Mañana)">10:30 AM (Bloque Mañana)</option>
+                    <option value="12:00 PM (Bloque Mediodía)">12:00 PM (Bloque Mediodía)</option>
                     <option value="15:30 PM (Bloque Tarde)">15:30 PM (Bloque Tarde)</option>
                     <option value="17:00 PM (Bloque Tarde)">17:00 PM (Bloque Tarde)</option>
                   </select>
@@ -155,18 +155,18 @@ export default function SalaVirtualPage() {
                     type="text"
                     value={nombre}
                     onChange={(e) => setNombre(e.target.value)}
-                    placeholder="Tu nombre o institucion..."
+                    placeholder="Tu nombre o institución..."
                     className="w-full p-3.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl text-[#676E5E] outline-none focus:border-[#676E5E]"
                     required
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-bold text-[#676E5E] uppercase tracking-wider block">Correo Electronico *</label>
+                  <label className="font-bold text-[#676E5E] uppercase tracking-wider block">Correo Electrónico *</label>
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="contacto@empresa.cl"
+                    placeholder="contacto@aslideas.cl"
                     className="w-full p-3.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl text-[#676E5E] outline-none focus:border-[#676E5E]"
                     required
                   />

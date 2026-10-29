@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 
 export default function AdminPage() {
@@ -13,7 +13,7 @@ export default function AdminPage() {
               <img src="/logo-asl.png.png" alt="Logo ASL Ideas" className="w-full h-full object-contain" />
             </div>
             <div>
-              <h1 className="text-base font-black text-[#676E5E]">Consola de Administracion ASL Ideas SpA</h1>
+              <h1 className="text-base font-black text-[#676E5E]">Consola de Administración ASL Ideas SpA</h1>
               <p className="text-[9px] text-[#97A884] font-bold uppercase tracking-wider">
                 Panel Muestra Abierta (Sin Clave)
               </p>
@@ -38,13 +38,13 @@ export default function AdminPage() {
         <div className="bg-white p-6 rounded-3xl border-2 border-[#97A884] shadow-xs flex flex-col md:flex-row justify-between items-center gap-4">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-3 py-0.5 rounded-full border border-[#97A884]">
-              Modo Muestra e Inspeccion
+              Modo Muestra e Inspección
             </span>
             <h2 className="text-xl font-extrabold text-[#676E5E] mt-1">
-              Consola Abierta para Demostracion
+              Consola Abierta para Demostración
             </h2>
             <p className="text-xs text-[#676E5E]/80 mt-1">
-              Acceso liberado temporalmente para inspeccion de las funcionalidades de gestion B2B, citas agendadas y fichas SOAP.
+              Acceso liberado temporalmente para inspección de las funcionalidades de gestión B2B, citas agendadas y fichas SOAP.
             </p>
           </div>
           <Link
@@ -59,17 +59,17 @@ export default function AdminPage() {
           <div className="bg-white p-5 rounded-2xl border border-[#97A884] space-y-1 shadow-xs">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#97A884]">Citas Agendadas B2B</span>
             <p className="text-2xl font-black text-[#676E5E]">14 Reuniones</p>
-            <p className="text-[10px] text-[#676E5E]/70">Salas de Video Reunion activas</p>
+            <p className="text-[10px] text-[#676E5E]/70">Salas de Video Reunión activas</p>
           </div>
           <div className="bg-white p-5 rounded-2xl border border-[#97A884] space-y-1 shadow-xs">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#97A884]">Vitrinas PYME</span>
             <p className="text-2xl font-black text-[#676E5E]">8 PYMEs</p>
-            <p className="text-[10px] text-[#676E5E]/70">Catalogos virtuales de salud integrativa</p>
+            <p className="text-[10px] text-[#676E5E]/70">Catálogos virtuales de salud integrativa</p>
           </div>
           <div className="bg-white p-5 rounded-2xl border border-[#97A884] space-y-1 shadow-xs">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#97A884]">Fichas Encriptadas</span>
             <p className="text-2xl font-black text-[#676E5E]">128 SOAP</p>
-            <p className="text-[10px] text-[#676E5E]/70">Cumplimiento Ley N 21.663</p>
+            <p className="text-[10px] text-[#676E5E]/70">Cumplimiento Ley N° 21.663</p>
           </div>
           <div className="bg-white p-5 rounded-2xl border border-[#97A884] space-y-1 shadow-xs">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#97A884]">Licencias Corporativas</span>
@@ -81,14 +81,14 @@ export default function AdminPage() {
         <div className="bg-white rounded-3xl border-2 border-[#97A884] p-6 space-y-6 shadow-sm">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-[#97A884]/30 pb-4">
             <div>
-              <h3 className="text-lg font-black text-[#676E5E]">Gestion de Solicitudes B2B y Citas Virtuales</h3>
+              <h3 className="text-lg font-black text-[#676E5E]">Gestión de Solicitudes B2B y Citas Virtuales</h3>
               <p className="text-xs text-[#676E5E]/80">Listado de agendamientos recientes recibidos en el sitio web.</p>
             </div>
             <Link
               href="/sala-virtual"
               className="bg-[#676E5E] text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-[#52584b] transition"
             >
-              + Nueva Reunion
+              + Nueva Reunión
             </Link>
           </div>
 
@@ -114,15 +114,15 @@ export default function AdminPage() {
                 <tr>
                   <td className="p-3 font-semibold">2026-10-31 | 15:30 PM</td>
                   <td className="p-3">PYME Herbolaria Nativa</td>
-                  <td className="p-3 font-medium">4. Sabiduria Ancestral</td>
-                  <td className="p-3">Cotizacion Vitrina Virtual B2B</td>
-                  <td className="p-3"><span className="bg-[#E6C693]/40 text-[#676E5E] px-2 py-0.5 rounded-md font-bold">En Revision</span></td>
+                  <td className="p-3 font-medium">4. Sabiduría Ancestral</td>
+                  <td className="p-3">Cotización Vitrina Virtual B2B</td>
+                  <td className="p-3"><span className="bg-[#E6C693]/40 text-[#676E5E] px-2 py-0.5 rounded-md font-bold">En Revisión</span></td>
                 </tr>
                 <tr>
                   <td className="p-3 font-semibold">2026-11-02 | 09:30 AM</td>
-                  <td className="p-3">Centro Medico Integrativo</td>
+                  <td className="p-3">Centro Médico Integrativo</td>
                   <td className="p-3 font-medium">2. LAWENMOLL Salud Integrativa</td>
-                  <td className="p-3">Consultoria Fichas SOAP (Ley 21.663)</td>
+                  <td className="p-3">Consultoría Fichas SOAP (Ley 21.663)</td>
                   <td className="p-3"><span className="bg-[#CDD6A9] text-[#676E5E] px-2 py-0.5 rounded-md font-bold">Confirmada</span></td>
                 </tr>
               </tbody>

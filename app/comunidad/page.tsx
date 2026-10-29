@@ -6,7 +6,7 @@ import SalaVirtualB2B from '@/components/SalaVirtualB2B';
 
 export default function ComunidadPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentAppName, setCurrentAppName] = useState('Sabiduria Ancestral');
+  const [currentAppName, setCurrentAppName] = useState('Sabiduría Ancestral / Bienestar');
   const [currentAppLogo, setCurrentAppLogo] = useState('/logo-bienestar.png.png');
 
   return (
@@ -18,7 +18,7 @@ export default function ComunidadPage() {
               <img src="/logo-bienestar.png.png" alt="Logo Bienestar" className="w-full h-full object-contain" />
             </div>
             <div>
-              <h1 className="text-base font-black text-[#676E5E]">Comunidad & Sabiduria Ancestral</h1>
+              <h1 className="text-base font-black text-[#676E5E]">Comunidad & Sabiduría Ancestral</h1>
               <p className="text-[9px] text-[#97A884] font-bold uppercase tracking-wider">
                 Diario Mural Popular y Recetarios Nativo PDF
               </p>
@@ -34,7 +34,7 @@ export default function ComunidadPage() {
             <button
               type="button"
               onClick={() => setIsModalOpen(true)}
-              className="bg-[#676E5E] text-white text-xs font-bold px-3.5 py-1.5 rounded-xl hover:bg-[#52584b] transition cursor-pointer"
+              className="bg-[#676E5E] text-white text-xs font-bold px-3.5 py-1.5 rounded-xl transition cursor-pointer"
             >
               Agendar Cita
             </button>
@@ -59,7 +59,7 @@ export default function ComunidadPage() {
               onClick={() => setIsModalOpen(true)}
               className="bg-[#DC8D6C] text-white text-xs font-bold px-6 py-3 rounded-2xl hover:bg-[#c37858] transition shadow-xs cursor-pointer"
             >
-              Solicitar Informacion o Video Reunion
+              Solicitar Información o Video Reunión
             </button>
           </div>
         </div>
