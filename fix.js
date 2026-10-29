@@ -1,11 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
-// Asegurar la existencia de las carpetas
 if (!fs.existsSync('components')) fs.mkdirSync('components', { recursive: true });
 if (!fs.existsSync('app')) fs.mkdirSync('app', { recursive: true });
 
-// 1. Código de components/SalaVirtualB2B.tsx
 const salaVirtualCode = `'use client';
 
 import React, { useState } from 'react';
@@ -29,6 +27,8 @@ interface SalaVirtualB2BProps {
   onClose: () => void;
   portalData?: PortalInfo;
   initialMode?: 'agendar' | 'cancelar';
+  initialApp?: string;
+  appLogo?: string;
 }
 
 export default function SalaVirtualB2B({
@@ -36,10 +36,12 @@ export default function SalaVirtualB2B({
   onClose,
   portalData,
   initialMode = 'agendar',
+  initialApp,
+  appLogo,
 }: SalaVirtualB2BProps) {
   const [modo, setModo] = useState<'agendar' | 'cancelar'>(initialMode);
   const [plataforma, setPlataforma] = useState<string>(
-    '1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)'
+    portalData?.nombre || initialApp || '1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)'
   );
   const [motivo, setMotivo] = useState<string>(
     'Videoreunion de Trabajo / Cotizacion de Vitrina B2B'
@@ -294,7 +296,6 @@ export default function SalaVirtualB2B({
 }
 `;
 
-// 2. Código de app/page.tsx
 const pageCode = `'use client';
 
 import React, { useState } from 'react';
@@ -630,8 +631,7 @@ export default function HomePage() {
 }
 `;
 
-// Escribir los archivos con codificación UTF-8
 fs.writeFileSync(path.join('components', 'SalaVirtualB2B.tsx'), salaVirtualCode, 'utf8');
 fs.writeFileSync(path.join('app', 'page.tsx'), pageCode, 'utf8');
 
-console.log('✅ Archivos con logos actualizados exitosamente en UTF-8.');
+console.log('✅ Componente SalaVirtualB2BProps actualizado con initialApp y appLogo.');
