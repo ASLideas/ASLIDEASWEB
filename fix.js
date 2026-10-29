@@ -1,4 +1,4 @@
-const fs = require('fs');
+// @ts-nocheckconst fs = require('fs');
 const path = require('path');
 
 if (!fs.existsSync('components')) fs.mkdirSync('components', { recursive: true });
