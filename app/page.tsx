@@ -29,24 +29,24 @@ export default function HomePage() {
       subtitulo: 'Casa Matriz - Desarrollo B2B y Licencias Inclusivas',
       logo: '/logo-asl.png.png',
       oficinaNum: 'Oficina Virtual 01',
-      leyes: ['Ley TEA N° 21.545', 'Accesibilidad Cognitiva UI/UX'],
-      descripcionCorta: 'Centro de innovación y gestión corporativa B2B en salud digital accesible.',
+      leyes: ['Ley TEA N 21.545', 'Accesibilidad Cognitiva UI/UX'],
+      descripcionCorta: 'Centro de innovacion y gestion corporativa B2B en salud digital accesible.',
       descripcionLarga: 'Especialistas en desarrollo de software accesible a medida para municipalidades, empresas e instituciones de salud. Creamos vitrinas virtuales y entornos digitales amables con baja carga sensorial.',
-      serviciosClave: ['Licencias B2B de Software', 'Vitrinas Virtuales PYME', 'Consultoría UI/UX en Ley TEA'],
-      beneficios: ['Entornos de baja carga sensorial', 'Integración ágil con Supabase', 'Cumplimiento normativo estricto'],
+      serviciosClave: ['Licencias B2B de Software', 'Vitrinas Virtuales PYME', 'Consultoria UI/UX en Ley TEA'],
+      beneficios: ['Entornos de baja carga sensorial', 'Integracion agil con Supabase', 'Cumplimiento normativo estricto'],
       enConstruccion: false,
     },
     {
       id: 'lawenmoll-salud',
       nombre: 'LAWENMOLL',
-      subtitulo: 'Salud Integrativa y Fichas Clínicas Protegidas',
+      subtitulo: 'Salud Integrativa y Fichas Clinicas Protegidas',
       logo: '/logo-lawenmoll.jpg.png',
       oficinaNum: 'Oficina Virtual 02',
-      leyes: ['Ley N° 21.663 - Ciberseguridad', 'Ficha Clínica SOAP'],
-      descripcionCorta: 'Evaluación metabólica inteligente y gestión clínica encriptada de nivel médico.',
-      descripcionLarga: 'Plataforma para el diagnóstico preventivo y acompañamiento en enfermedades crónicas no transmisibles. Permite realizar tests de composición metabólica, emisión de reportes y consultas con terapeutas.',
+      leyes: ['Ley N 21.663 - Ciberseguridad', 'Ficha Clinica SOAP'],
+      descripcionCorta: 'Evaluacion metabolica inteligente y gestion clinica encriptada de nivel medico.',
+      descripcionLarga: 'Plataforma para el diagnostico preventivo y acompanamiento en enfermedades cronicas no transmisibles. Permite realizar tests de composicion metabolica, emision de reportes y consultas con terapeutas.',
       serviciosClave: ['Test de Bienestar Inteligente', 'Fichas SOAP Encriptadas', 'Telemedicina Integrativa'],
-      beneficios: ['Datos de salud protegidos (Ley N° 21.663)', 'Seguimiento metabólico personalizado', 'Atención personalizada sin estrés'],
+      beneficios: ['Datos de salud protegidos (Ley N 21.663)', 'Seguimiento metabolico personalizado', 'Atencion personalizada sin estres'],
       enConstruccion: false,
     },
     {
@@ -55,23 +55,23 @@ export default function HomePage() {
       subtitulo: 'Movimiento Adaptado y Pausas Activas',
       logo: '/logo-wellness.jpg.jpg',
       oficinaNum: 'Oficina Virtual 03',
-      leyes: ['Movimiento Sin Impacto', 'Salas Interactivas Temáticas'],
+      leyes: ['Movimiento Sin Impacto', 'Salas Interactivas Tematicas'],
       descripcionCorta: 'Salas virtuales en vivo y videoteca de entrenamiento adaptado sin impacto articular.',
-      descripcionLarga: 'Espacio enfocado en la reducción del cortisol urbano y la activación física amable. Diseñado para personas con sobrepeso, dolor articular o movilidad reducida mediante salas interactivas.',
-      serviciosClave: ['Salas Virtuales Temáticas', 'Ejercicios Adaptados Sin Salto', 'Cocina Demostrativa'],
-      beneficios: ['Reducción efectiva del cortisol', 'Entrenamiento amable sin lesiones', 'Videoteca 24/7 disponible'],
+      descripcionLarga: 'Espacio enfocado en la reduccion del cortisol urbano y la activacion fisica amable. Disenado para personas con sobrepeso, dolor articular o movilidad reducida mediante salas interactivas.',
+      serviciosClave: ['Salas Virtuales Tematicas', 'Ejercicios Adaptados Sin Salto', 'Cocina Demostrativa'],
+      beneficios: ['Reduccion efectiva del cortisol', 'Entrenamiento amable sin lesiones', 'Videoteca 24/7 disponible'],
       enConstruccion: false,
     },
     {
       id: 'sabiduria-ancestral',
-      nombre: 'Sabiduría Ancestral',
+      nombre: 'Sabiduria Ancestral',
       subtitulo: 'Comunidad Inclusiva y Fitoterapia Nativa',
       logo: '/logo-bienestar.png.png',
       oficinaNum: 'Oficina Virtual 04',
       leyes: ['Diario Mural Popular', 'Recetario Nativo PDF'],
-      descripcionCorta: 'Comunidad para la divulgación de medicina herbolaria nativa y secretos familiares.',
+      descripcionCorta: 'Comunidad para la divulgacion de medicina herbolaria nativa y secretos familiares.',
       descripcionLarga: 'Portal interactivo dedicado a preservar y difundir los conocimientos tradicionales de fitoterapia chilena. Incluye diario mural colaborativo de la comunidad y descarga directa de recetarios en PDF.',
-      serviciosClave: ['Diario Mural Secretos de la Abuela', 'Recetario Herbolario en PDF', 'Asistente Empático Virtual'],
+      serviciosClave: ['Diario Mural Secretos de la Abuela', 'Recetario Herbolario en PDF', 'Asistente Empatico Virtual'],
       beneficios: ['Rescate de tradiciones nativas', 'Material descargable ilustrado', 'Comunidad de apoyo sin juicios'],
       enConstruccion: true,
     },
@@ -92,12 +92,11 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] font-sans">
-      {/* Banner Superior Corporativo */}
       <div className="bg-[#CDD6A9] border-b border-[#97A884] py-2.5 px-4 text-center">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-2 text-[#676E5E] font-bold">
             <span className="w-2.5 h-2.5 rounded-full bg-[#DC8D6C] animate-pulse"></span>
-            <span>ASL Ideas SpA: Espacios y Vitrinas Virtuales Inclusivas (Ley TEA N° 21.545)</span>
+            <span>ASL Ideas SpA: Espacios y Vitrinas Virtuales Inclusivas (Ley TEA N 21.545)</span>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -105,7 +104,7 @@ export default function HomePage() {
               onClick={() => handleOpenPortal('asl-ideas-b2b', 'agendar')}
               className="bg-[#676E5E] text-white text-[11px] px-3.5 py-1 rounded-lg font-bold hover:bg-[#52584b] transition shadow-xs cursor-pointer"
             >
-              Sala de Video Reunión
+              Sala de Video Reunion
             </button>
             <a
               href="/admin"
@@ -117,7 +116,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Header Principal */}
       <header className="bg-white/95 backdrop-blur-md border-b-2 border-[#E6C693] sticky top-0 z-40 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -157,7 +155,6 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Hero Section */}
       <section className="bg-white border-b border-[#97A884]/30 py-12 px-4 text-center">
         <div className="max-w-4xl mx-auto space-y-4">
           <div className="flex justify-center gap-2 flex-wrap">
@@ -165,20 +162,19 @@ export default function HomePage() {
               Casa Matriz & Licencias B2B
             </span>
             <span className="bg-[#E6C693]/40 text-[#676E5E] border border-[#E6C693] text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider">
-              Baja Carga Sensorial (Ley TEA N° 21.545)
+              Baja Carga Sensorial (Ley TEA N 21.545)
             </span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#676E5E] leading-tight">
-            Ecosistema de Soluciones Tecnológicas Accesibles
+            Ecosistema de Soluciones Tecnologicas Accesibles
           </h2>
           <p className="text-sm text-[#676E5E]/80 max-w-2xl mx-auto leading-relaxed">
-            Plataformas institucionales en salud integrativa, movimiento adaptado, vitrinas virtuales para PYMEs y preservación del bienestar popular.
+            Plataformas institucionales en salud integrativa, movimiento adaptado, vitrinas virtuales para PYMEs y preservacion del bienestar popular.
           </p>
         </div>
       </section>
 
-      {/* Grid de Portales */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
         <div className="text-center space-y-2">
           <span className="text-xs font-bold text-[#DC8D6C] uppercase tracking-wider bg-white px-3.5 py-1 rounded-full border border-[#DC8D6C]">
@@ -188,7 +184,7 @@ export default function HomePage() {
             Nuestras 4 Oficinas Virtuales y Aplicaciones
           </h3>
           <p className="text-xs text-[#676E5E]/80 max-w-xl mx-auto">
-            Explora la funcionalidad y servicios de cada una de nuestras unidades tecnológicas.
+            Explora la funcionalidad y servicios de cada una de nuestras unidades tecnologicas.
           </p>
         </div>
 
@@ -235,7 +231,7 @@ export default function HomePage() {
 
                 <div className="bg-[#E6E7D5] p-4 rounded-2xl border border-[#97A884]/40 space-y-2">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-[#676E5E] block">
-                    Servicios y Módulos Clave:
+                    Servicios y Modulos Clave:
                   </span>
                   <ul className="text-xs text-[#676E5E] space-y-1 list-disc list-inside">
                     {portal.serviciosClave.map((serv, idx) => (
@@ -268,9 +264,9 @@ export default function HomePage() {
                   type="button"
                   onClick={() => handleOpenPortal(portal.id ?? '', 'agendar')}
                   className="bg-[#DC8D6C] text-white hover:bg-[#c37858] text-xs font-bold px-4 py-3 rounded-2xl transition shadow-xs cursor-pointer shrink-0"
-                  title="Agendar Video Reunión"
+                  title="Agendar Video Reunion"
                 >
-                  Video Reunión
+                  Video Reunion
                 </button>
               </div>
             </div>
@@ -278,7 +274,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Sección Vitrinas B2B */}
       <section className="bg-white border-y border-[#97A884]/30 py-12 px-4">
         <div className="max-w-6xl mx-auto space-y-8">
           <div className="text-center space-y-2">
@@ -286,7 +281,7 @@ export default function HomePage() {
               Vitrinas Virtuales B2B
             </span>
             <h3 className="text-2xl sm:text-3xl font-extrabold text-[#676E5E]">
-              Espacio y Difusión para PYMEs e Instituciones
+              Espacio y Difusion para PYMEs e Instituciones
             </h3>
             <p className="text-xs text-[#676E5E]/80 max-w-2xl mx-auto">
               Brindamos vitrinas digitales optimizadas para que emprendedores de la salud e instituciones exhiban sus productos y servicios en entornos amables.
@@ -297,38 +292,36 @@ export default function HomePage() {
             <div className="bg-[#E6E7D5] p-6 rounded-3xl border border-[#97A884] space-y-2">
               <h4 className="font-bold text-[#676E5E]">Vitrinas Digitales PYME</h4>
               <p className="text-[#676E5E]/80 leading-relaxed">
-                Catálogos web interactivos y limpios para dar visibilidad comercial directa en entornos municipales e institucionales.
+                Catalogos web interactivos y limpios para dar visibilidad comercial directa en entornos municipales e institucionales.
               </p>
             </div>
 
             <div className="bg-[#E6E7D5] p-6 rounded-3xl border border-[#97A884] space-y-2">
-              <h4 className="font-bold text-[#676E5E]">Diseño Inclusivo Ley TEA</h4>
+              <h4 className="font-bold text-[#676E5E]">Diseno Inclusivo Ley TEA</h4>
               <p className="text-[#676E5E]/80 leading-relaxed">
-                Navegación predecible y paleta relajante que garantizan la inclusión de personas con TEA Grado 1 y TDAH.
+                Navegacion predecible y paleta relajante que garantizan la inclusion de personas con TEA Grado 1 y TDAH.
               </p>
             </div>
 
             <div className="bg-[#E6E7D5] p-6 rounded-3xl border border-[#97A884] space-y-2">
-              <h4 className="font-bold text-[#676E5E]">Ciberseguridad Ley N° 21.663</h4>
+              <h4 className="font-bold text-[#676E5E]">Ciberseguridad Ley N 21.663</h4>
               <p className="text-[#676E5E]/80 leading-relaxed">
-                Infraestructura encriptada para el resguardo de información confidencial, usuarios y atención institucional.
+                Infraestructura encriptada para el resguardo de informacion confidencial, usuarios y atencion institucional.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="bg-white border-t border-[#97A884]/30 py-6 text-center text-xs text-[#97A884] space-y-2">
         <p className="text-[#676E5E]">Copyright ASL Ideas SpA | Estrategia de Salud Digital y Vitrinas Inclusivas para PYMEs.</p>
-        <div className="flex justify-center gap-4 text-[11px]">
-          <a href="/admin" className="hover:underline font-bold text-[#676E5E]">Administración (/admin)</a>
+        <div className="flex justify-center gap-4 text-[11px] px-4">
+          <a href="/admin" className="hover:underline font-bold text-[#676E5E]">Administracion (/admin)</a>
           <span>-</span>
-          <span>Ley N° 21.545 y Ley N° 21.663</span>
+          <span>Ley N 21.545 y Ley N 21.663</span>
         </div>
       </footer>
 
-      {/* Modal Sala Virtual */}
       <SalaVirtualB2B
         isOpen={isModalOpen}
         onClose={handleCloseModal}

@@ -73,10 +73,10 @@ export default function SalaVirtualB2B({
         <div className="flex justify-between items-center border-b border-[#97A884]/40 pb-4">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-3 py-1 rounded-full border border-[#97A884]">
-              Sala de Video Reunión B2B
+              Sala de Video Reunion B2B
             </span>
             <h3 className="text-xl font-extrabold text-[#676E5E] mt-1">
-              {modo === 'agendar' ? 'Reserva de Cita y Video Reunión' : 'Solicitud de Cancelación'}
+              {modo === 'agendar' ? 'Reserva de Cita y Video Reunion' : 'Solicitud de Cancelacion'}
             </h3>
           </div>
           <button
@@ -96,7 +96,7 @@ export default function SalaVirtualB2B({
               modo === 'agendar' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:text-[#676E5E]'
             }`}
           >
-            Agendar Video Reunión
+            Agendar Video Reunion
           </button>
           <button
             type="button"
@@ -115,9 +115,9 @@ export default function SalaVirtualB2B({
               <div className="w-12 h-12 mx-auto bg-[#CDD6A9] rounded-full flex items-center justify-center text-[#676E5E] font-extrabold text-xs">
                 OK
               </div>
-              <h4 className="text-lg font-bold text-[#676E5E]">Video Reunión Agendada</h4>
+              <h4 className="text-lg font-bold text-[#676E5E]">Video Reunion Agendada</h4>
               <p className="text-xs text-[#676E5E] leading-relaxed">
-                Hemos registrado la cita para <strong>{nombre}</strong> ({email}). El acceso a la sala de video reunión para el día <strong>{fecha}</strong> a las <strong>{hora}</strong> ha sido enviado a tu correo.
+                Hemos registrado la cita para <strong>{nombre}</strong> ({email}). El acceso a la sala de video reunion para el dia <strong>{fecha}</strong> a las <strong>{hora}</strong> ha sido enviado a tu correo.
               </p>
               <div className="p-3 bg-[#E6E7D5] rounded-xl border border-[#97A884] text-[11px] font-mono text-[#676E5E]">
                 Enlace de Sala Virtual: [suspicious link removed]
@@ -157,9 +157,9 @@ export default function SalaVirtualB2B({
                   onChange={(e) => setMotivo(e.target.value)}
                   className="w-full p-3 bg-white border border-[#97A884] rounded-xl text-[#676E5E] font-medium outline-none focus:border-[#676E5E]"
                 >
-                  <option value="Videoreunion de Trabajo / Cotizacion de Vitrina B2B">Videoreunión de Trabajo / Cotización de Vitrina B2B</option>
-                  <option value="Demostracion de Software Accesibilidad Cognitiva Ley TEA">Demostración de Software Accesibilidad Cognitiva Ley TEA</option>
-                  <option value="Consultoria Institucional B2B">Consultoría Institucional B2B</option>
+                  <option value="Videoreunion de Trabajo / Cotizacion de Vitrina B2B">Videoreunion de Trabajo / Cotizacion de Vitrina B2B</option>
+                  <option value="Demostracion de Software Accesibilidad Cognitiva Ley TEA">Demostracion de Software Accesibilidad Cognitiva Ley TEA</option>
+                  <option value="Consultoria Institucional B2B">Consultoria Institucional B2B</option>
                 </select>
               </div>
 
@@ -181,9 +181,9 @@ export default function SalaVirtualB2B({
                     onChange={(e) => setHora(e.target.value)}
                     className="w-full p-3 bg-white border border-[#97A884] rounded-xl text-[#676E5E] font-medium outline-none focus:border-[#676E5E]"
                   >
-                    <option value="09:30 AM (Bloque Manana)">09:30 AM (Bloque Mañana)</option>
-                    <option value="10:30 AM (Bloque Manana)">10:30 AM (Bloque Mañana)</option>
-                    <option value="12:00 PM (Bloque Mediodia)">12:00 PM (Bloque Mediodía)</option>
+                    <option value="09:30 AM (Bloque Manana)">09:30 AM (Bloque Manana)</option>
+                    <option value="10:30 AM (Bloque Manana)">10:30 AM (Bloque Manana)</option>
+                    <option value="12:00 PM (Bloque Mediodia)">12:00 PM (Bloque Mediodia)</option>
                     <option value="15:30 PM (Bloque Tarde)">15:30 PM (Bloque Tarde)</option>
                     <option value="17:00 PM (Bloque Tarde)">17:00 PM (Bloque Tarde)</option>
                   </select>
@@ -197,13 +197,13 @@ export default function SalaVirtualB2B({
                     type="text"
                     value={nombre}
                     onChange={(e) => setNombre(e.target.value)}
-                    placeholder="Nombre o Institución..."
+                    placeholder="Nombre o Institucion..."
                     className="w-full p-3 bg-white border border-[#97A884] rounded-xl text-[#676E5E] outline-none focus:border-[#676E5E]"
                     required
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-bold text-[#676E5E] uppercase tracking-wider">Correo Electrónico *</label>
+                  <label className="font-bold text-[#676E5E] uppercase tracking-wider">Correo Electronico *</label>
                   <input
                     type="email"
                     value={email}
@@ -230,7 +230,7 @@ export default function SalaVirtualB2B({
             <div className="bg-white p-6 rounded-2xl border border-[#DC8D6C] text-center space-y-4 shadow-xs">
               <h4 className="text-lg font-bold text-[#DC8D6C]">Reserva Cancelada</h4>
               <p className="text-xs text-[#676E5E] leading-relaxed">
-                La reunión con código <strong>{codigoReserva}</strong> ha sido cancelada para el correo <strong>{emailCancelar}</strong>.
+                La reunion con codigo <strong>{codigoReserva}</strong> ha sido cancelada para el correo <strong>{emailCancelar}</strong>.
               </p>
               <button
                 type="button"
@@ -244,7 +244,7 @@ export default function SalaVirtualB2B({
             <form onSubmit={handleConfirmarCancelacion} className="space-y-4 text-xs">
               <div className="space-y-1">
                 <label className="font-bold text-[#DC8D6C] uppercase tracking-wider">
-                  Código de Reserva o RUT *
+                  Codigo de Reserva o RUT *
                 </label>
                 <input
                   type="text"
@@ -274,7 +274,7 @@ export default function SalaVirtualB2B({
                 type="submit"
                 className="w-full bg-[#DC8D6C] hover:bg-[#c37858] text-white text-xs font-bold py-3.5 rounded-2xl transition shadow-md mt-4 cursor-pointer"
               >
-                Confirmar Cancelación
+                Confirmar Cancelacion
               </button>
             </form>
           )
