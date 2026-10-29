@@ -21,6 +21,8 @@ interface SalaVirtualB2BProps {
   onClose: () => void;
   portalData?: PortalInfo;
   initialMode?: 'agendar' | 'cancelar';
+  initialApp?: string;
+  appLogo?: string;
 }
 
 export default function SalaVirtualB2B({
@@ -28,10 +30,12 @@ export default function SalaVirtualB2B({
   onClose,
   portalData,
   initialMode = 'agendar',
+  initialApp,
+  appLogo,
 }: SalaVirtualB2BProps) {
   const [modo, setModo] = useState<'agendar' | 'cancelar'>(initialMode);
   const [plataforma, setPlataforma] = useState<string>(
-    '1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)'
+    portalData?.nombre || initialApp || '1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)'
   );
   const [motivo, setMotivo] = useState<string>(
     'Videoreunion de Trabajo / Cotizacion de Vitrina B2B'
