@@ -64,7 +64,7 @@ export default function SalaVirtualB2B({
   // Estados de la Sala de Video
   const [micActivo, setMicActivo] = useState<boolean>(true);
   const [camActiva, setCamActiva] = useState<boolean>(true);
-  const [transcribiendo, setTranscribiendo] = useState<boolean>(false);
+  const [transcribiendo, setTranscribiendo] = useState<boolean>(true);
   const [mensajeEstado, setMensajeEstado] = useState<string>('');
 
   // Archivos Adjuntos Interactivos
@@ -75,8 +75,9 @@ export default function SalaVirtualB2B({
 
   // Transcripción en Vivo
   const [transcripcion, setTranscripcion] = useState<string[]>([
-    'ASL Bot: Sala de Video Reunión iniciada bajo cifrado de ciberseguridad Ley N° 21.663.',
-    'Sistemas: Entorno configurado con baja carga sensorial para neurodivergencias (Ley TEA N° 21.545).'
+    'ASL Bot: Sala de Video Reunión iniciada bajo cifrado Ley N° 21.663.',
+    'Sistemas: Entorno configurado con baja carga sensorial (Ley TEA N° 21.545).',
+    'Anfitrión ASL: "Bienvenidos a la reunión interactiva de ASL Ideas SpA."'
   ]);
 
   // Minuta y Notas
@@ -88,24 +89,24 @@ export default function SalaVirtualB2B({
   const [emailCancel, setEmailCancel] = useState('');
   const [canceladoExito, setCanceladoExito] = useState(false);
 
-  // Bucle de Transcripción Simulado en Vivo
+  // Bucle de Transcripción Simulado en Tiempo Real
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (transcribiendo) {
+    if (transcribiendo && modo === 'videollamada') {
       const frasesLive = [
         'Anfitrión ASL: "Presentando el módulo de accesibilidad cognitiva y lectura fácil."',
-        'Participante B2B: "Confirmado el requerimiento de integración con fichas encriptadas."',
+        'Participante B2B: "Confirmado el requerimiento de integración con fichas encriptadas SOAP."',
         'Sistema IA: "Generando resumen de compromisos clave para la minuta."',
-        'Anfitrión ASL: "Ajustando paleta de colores amables sin sobrecarga sensorial."'
+        'Anfitrión ASL: "Ajustando paleta de colores amables sin sobrecarga sensorial para la Web App."'
       ];
       let i = 0;
       interval = setInterval(() => {
         setTranscripcion(prev => [...prev, frasesLive[i % frasesLive.length]]);
         i++;
-      }, 4000);
+      }, 3500);
     }
     return () => clearInterval(interval);
-  }, [transcribiendo]);
+  }, [transcribiendo, modo]);
 
   if (!isOpen) return null;
 
@@ -114,11 +115,11 @@ export default function SalaVirtualB2B({
   const currentOficina = portalData?.oficinaNum || 'Oficina Virtual 01';
   const currentSubtitulo = portalData?.subtitulo || 'Casa Matriz - Desarrollo B2B y Licencias Inclusivas';
   const currentLeyes = portalData?.leyes || ['Ley TEA N° 21.545', 'Accesibilidad Cognitiva UI/UX'];
-  const currentDescLarga = portalData?.descripcionLarga || 'Especialistas en desarrollo de software accesible a medida para municipalidades, empresas e instituciones de salud. Creamos vitrinas virtuales y entornos digitales amables con baja carga sensorial.';
+  const currentDescLarga = portalData?.descripcionLarga || 'Especialistas en desarrollo de software accesible a medida para municipalidades, empresas e instituciones de salud.';
   const currentServicios = portalData?.serviciosClave || ['Licencias B2B de Software', 'Vitrinas Virtuales PYME', 'Consultoría UI/UX en Ley TEA'];
   const currentBeneficios = portalData?.beneficios || ['Entornos de baja carga sensorial', 'Integración ágil con Supabase', 'Cumplimiento normativo estricto'];
 
-  // Manejo de Carga de Archivos Reales
+  // Manejo de Carga de Archivos Reales del Usuario
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const nuevos: ArchivoAdjunto[] = [];
@@ -131,8 +132,8 @@ export default function SalaVirtualB2B({
           fecha: 'Recién subido'
         });
       });
-      setArchivosSubidos([...archivosSubidos, ...nuevos]);
-      setMensajeEstado(`${nuevos.length} archivo(s) adjuntado(s) exitosamente`);
+      setArchivosSubidos(prev => [...prev, ...nuevos]);
+      setMensajeEstado(`${nuevos.length} archivo(s) cargado(s) exitosamente`);
       setTranscripcion(prev => [...prev, `Sistema: Archivo adjuntado por usuario (${nuevos.map(n => n.nombre).join(', ')})`]);
       setTimeout(() => setMensajeEstado(''), 3000);
     }
@@ -140,7 +141,7 @@ export default function SalaVirtualB2B({
 
   const eliminarArchivo = (index: number) => {
     const borrado = archivosSubidos[index];
-    setArchivosSubidos(archivosSubidos.filter((_, i) => i !== index));
+    setArchivosSubidos(prev => prev.filter((_, i) => i !== index));
     setMensajeEstado(`Archivo "${borrado.nombre}" eliminado`);
     setTimeout(() => setMensajeEstado(''), 3000);
   };
@@ -148,7 +149,7 @@ export default function SalaVirtualB2B({
   const handleConfirmarReserva = (e: React.FormEvent) => {
     e.preventDefault();
     if (!nombre.trim() || !email.trim() || !fecha) {
-      alert('Por favor completa todos los campos requeridos para agendar la reunión.');
+      alert('Por favor completa todos los campos requeridos.');
       return;
     }
     setReservaConfirmada(true);
@@ -175,7 +176,7 @@ export default function SalaVirtualB2B({
   const toggleCam = () => {
     const nuevoEstado = !camActiva;
     setCamActiva(nuevoEstado);
-    const msg = nuevoEstado ? 'Cámara Activada (Video HD)' : 'Cámara Apagada';
+    const msg = nuevoEstado ? 'Cámara Activada (Transmisión HD)' : 'Cámara Apagada';
     setMensajeEstado(msg);
     setTranscripcion(prev => [...prev, `Sistema: ${msg}`]);
     setTimeout(() => setMensajeEstado(''), 3000);
@@ -186,10 +187,6 @@ export default function SalaVirtualB2B({
     setTranscribiendo(nuevoEstado);
     if (nuevoEstado) {
       setMensajeEstado('Transcripción automática activada en tiempo real');
-      setTranscripcion(prev => [
-        ...prev,
-        'Transcripción IA: Capturando conversación y generando subtítulos...'
-      ]);
     } else {
       setMensajeEstado('Transcripción pausada');
     }
@@ -222,7 +219,7 @@ export default function SalaVirtualB2B({
         } text-[#676E5E]`}
       >
         
-        {/* Cabecera del Modal con Botón de Maximizar */}
+        {/* Cabecera del Modal con Ícono de Pantalla Completa */}
         <div className="flex flex-wrap justify-between items-center border-b border-[#97A884]/40 pb-4 gap-2">
           <div className="flex items-center space-x-3">
             <img 
@@ -241,13 +238,18 @@ export default function SalaVirtualB2B({
           </div>
 
           <div className="flex items-center space-x-2">
+            
+            {/* Ícono/Botón de Cuadradito para Desplegar Pantalla Completa */}
             <button
               type="button"
               onClick={() => setEsPantallaCompleta(!esPantallaCompleta)}
-              className="text-xs font-bold text-[#676E5E] bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white px-3 py-1.5 rounded-xl border border-[#97A884] transition cursor-pointer"
+              className="text-xs font-bold text-[#676E5E] bg-white hover:bg-[#CDD6A9] px-3 py-1.5 rounded-xl border-2 border-[#97A884] transition cursor-pointer flex items-center gap-1.5 shadow-xs"
+              title={esPantallaCompleta ? 'Restaurar tamaño normal' : 'Desplegar en pantalla completa'}
             >
-              {esPantallaCompleta ? 'Restaurar Ventana' : 'Pantalla Completa'}
+              <span className="text-sm font-black">🗖</span>
+              <span>{esPantallaCompleta ? 'Salir' : 'Pantalla Completa'}</span>
             </button>
+
             <button
               type="button"
               onClick={onClose}
@@ -307,22 +309,30 @@ export default function SalaVirtualB2B({
               </div>
             )}
 
-            {/* Pantalla de Video Interactivamente Simulada */}
-            <div className={`bg-[#2D3227] rounded-3xl p-6 text-white text-center relative flex flex-col justify-between shadow-2xl border-2 border-[#97A884] ${esPantallaCompleta ? 'min-h-[380px]' : 'min-h-[280px]'}`}>
+            {/* Pantalla de Video Interactivamente Simulada en Vivo */}
+            <div className={`bg-[#2D3227] rounded-3xl p-6 text-white text-center relative flex flex-col justify-between shadow-2xl border-2 border-[#97A884] ${esPantallaCompleta ? 'min-h-[420px]' : 'min-h-[300px]'}`}>
+              
               <div className="flex justify-between items-center text-[10px]">
-                <span className="bg-[#CDD6A9] text-[#676E5E] font-bold px-2.5 py-1 rounded-md border border-[#97A884] flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-                  EN VIVO - Cifrado Ley N° 21.663
+                <span className="bg-[#CDD6A9] text-[#676E5E] font-bold px-3 py-1 rounded-md border border-[#97A884] flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+                  REC EN VIVO — Cifrado Ley N° 21.663
                 </span>
                 <span className="text-[#CDD6A9] font-mono">Baja Carga Sensorial Ley TEA</span>
               </div>
 
-              {/* Contenido Visual del Video */}
+              {/* Visor Visual de Cámara */}
               <div className="my-6 space-y-3">
-                <div className="w-28 h-28 mx-auto bg-white rounded-3xl border-4 border-[#E6C693] p-2 flex items-center justify-center shadow-xl relative overflow-hidden">
-                  <img src={currentLogo} alt={currentNombre} className={`w-full h-full object-contain ${camActiva ? 'opacity-100' : 'opacity-30'}`} />
-                  {!camActiva && (
-                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-[10px] font-bold text-white uppercase tracking-wider">
+                <div className={`w-32 h-32 mx-auto rounded-3xl border-4 transition-all duration-300 p-2 flex items-center justify-center shadow-2xl relative overflow-hidden ${
+                  camActiva ? 'bg-gradient-to-b from-white to-[#E6E7D5] border-[#E6C693]' : 'bg-black/90 border-gray-700'
+                }`}>
+                  <img src={currentLogo} alt={currentNombre} className={`w-full h-full object-contain transition-opacity duration-300 ${camActiva ? 'opacity-100' : 'opacity-20'}`} />
+                  
+                  {camActiva ? (
+                    <span className="absolute bottom-2 right-2 bg-green-600 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-md border border-white">
+                      HD 1080p
+                    </span>
+                  ) : (
+                    <div className="absolute inset-0 bg-black/70 flex items-center justify-center text-[10px] font-bold text-white uppercase tracking-wider">
                       Cámara Apagada
                     </div>
                   )}
@@ -330,22 +340,22 @@ export default function SalaVirtualB2B({
 
                 <div>
                   <p className="text-base font-extrabold text-white">{plataforma}</p>
-                  <p className="text-[10px] text-[#CDD6A9] uppercase tracking-wider font-semibold">Sala Interactiva B2B Activa</p>
+                  <p className="text-[10px] text-[#CDD6A9] uppercase tracking-wider font-semibold">Transmisión Interactiva B2B en Vivo</p>
                 </div>
 
-                {/* Ecualizador / Indicadores de Audio y Cámara */}
+                {/* Indicadores de Micrófono y Cámara */}
                 <div className="flex justify-center items-center gap-4 text-[11px] text-[#CDD6A9] font-medium pt-1">
                   <div className="flex items-center gap-1.5">
                     <span>Micrófono:</span>
-                    <span className={`font-bold px-2 py-0.5 rounded-md ${micActivo ? 'bg-green-700 text-white' : 'bg-red-600 text-white'}`}>
+                    <span className={`font-bold px-2.5 py-0.5 rounded-md text-[10px] ${micActivo ? 'bg-green-700 text-white' : 'bg-red-600 text-white'}`}>
                       {micActivo ? 'Encendido' : 'Silenciado'}
                     </span>
                   </div>
                   <span>|</span>
                   <div className="flex items-center gap-1.5">
                     <span>Cámara:</span>
-                    <span className={`font-bold px-2 py-0.5 rounded-md ${camActiva ? 'bg-green-700 text-white' : 'bg-gray-600 text-white'}`}>
-                      {camActiva ? 'HD Activa' : 'Apagada'}
+                    <span className={`font-bold px-2.5 py-0.5 rounded-md text-[10px] ${camActiva ? 'bg-green-700 text-white' : 'bg-gray-600 text-white'}`}>
+                      {camActiva ? 'Transmitiendo HD' : 'Apagada'}
                     </span>
                   </div>
                 </div>
@@ -386,7 +396,7 @@ export default function SalaVirtualB2B({
             {/* Módulos Interactivos: Archivos, Transcripción y Minuta */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
               
-              {/* 1. Módulo Adjuntar y Ver Archivos */}
+              {/* 1. Módulo Adjuntar y Ver Archivos con Carga Real */}
               <div className="bg-white p-4 sm:p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-2">
@@ -400,6 +410,7 @@ export default function SalaVirtualB2B({
                     </button>
                   </div>
 
+                  {/* Input de archivo real oculto */}
                   <input
                     type="file"
                     ref={fileInputRef}
@@ -418,13 +429,15 @@ export default function SalaVirtualB2B({
                             <p className="font-bold text-[#676E5E] truncate">{f.nombre}</p>
                             <span className="text-[9px] text-[#97A884] font-mono">{f.tamano} • {f.fecha}</span>
                           </div>
+                          
+                          {/* Botón X funcional para eliminar archivo */}
                           <button
                             type="button"
                             onClick={() => eliminarArchivo(i)}
-                            className="text-red-600 hover:text-red-800 font-bold px-2 py-0.5 text-[10px] cursor-pointer"
-                            title="Eliminar archivo"
+                            className="w-6 h-6 rounded-full bg-red-100 hover:bg-red-600 text-red-600 hover:text-white font-black text-[11px] flex items-center justify-center transition cursor-pointer shrink-0"
+                            title="Eliminar este archivo"
                           >
-                            X
+                            ×
                           </button>
                         </div>
                       ))
