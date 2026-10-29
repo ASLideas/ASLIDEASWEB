@@ -78,11 +78,6 @@ export default function SalaVirtualPage() {
               <p className="text-sm text-[#676E5E] leading-relaxed max-w-lg mx-auto">
                 Registramos la reunion para <strong>{nombre}</strong> ({email}) correspondiente a <strong>{plataforma}</strong>.
               </p>
-              <div className="p-4 bg-white rounded-xl border border-[#97A884] text-xs font-mono text-[#676E5E] max-w-md mx-auto space-y-1">
-                <p className="font-bold">Acceso Directo a la Sala Virtual:</p>
-                <p className="text-[#DC8D6C] font-semibold break-all">[suspicious link removed]</p>
-                <p className="text-[10px] text-[#97A884]">Fecha: {fecha} | Horario: {hora}</p>
-              </div>
               <div className="pt-2">
                 <button
                   type="button"

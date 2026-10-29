@@ -4,167 +4,74 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 
 export default function AdminPage() {
-  const [pass, setPass] = useState('');
-  const [pin, setPin] = useState('');
-  const [authenticated, setAuthenticated] = useState(false);
-  const [step, setStep] = useState<1 | 2>(1);
-  const [errorMsg, setErrorMsg] = useState('');
-
-  const validPasswords = ['asl2026', 'admin', 'NW2026*'];
-  const validPins = ['216630', '884210', 'asl2026', '2026', '1234'];
-
-  const handleStep1 = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validPasswords.includes(pass.trim())) {
-      setStep(2);
-      setErrorMsg('');
-    } else {
-      setErrorMsg('Clave de acceso incorrecta. Intenta con asl2026 o admin.');
-    }
-  };
-
-  const handleStep2 = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validPins.includes(pin.trim())) {
-      setAuthenticated(true);
-      setErrorMsg('');
-    } else {
-      setErrorMsg('PIN de verificacion 2FA incorrecto. Intenta con 216630 o 1234.');
-    }
-  };
-
-  if (!authenticated) {
-    return (
-      <main className="min-h-screen bg-[#E6E7D5] flex items-center justify-center p-4 font-sans text-[#676E5E]">
-        <div className="bg-white max-w-md w-full rounded-3xl border-2 border-[#97A884] shadow-xl p-6 md:p-8 space-y-6">
-          <div className="text-center space-y-2">
-            <div className="w-16 h-16 mx-auto rounded-2xl border-2 border-[#E6C693] p-1 bg-white overflow-hidden shadow-xs flex items-center justify-center">
-              <img src="/logo-asl.png.png" alt="Logo ASL Ideas" className="w-full h-full object-contain" />
-            </div>
-            <span className="text-[10px] font-bold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-3 py-1 rounded-full border border-[#97A884]">
-              Acceso Restringido - Ley N 21.663
-            </span>
-            <h2 className="text-xl font-extrabold text-[#676E5E]">
-              Consola de Administracion ASL Ideas SpA
-            </h2>
-            <p className="text-xs text-[#676E5E]/80">
-              {step === 1 ? 'Paso 1: Ingresa tu Clave Corporativa' : 'Paso 2: Autenticacion de Doble Factor (2FA)'}
-            </p>
-          </div>
-
-          {errorMsg && (
-            <div className="bg-[#DC8D6C]/20 border border-[#DC8D6C] text-[#DC8D6C] p-3 rounded-xl text-xs font-bold text-center">
-              {errorMsg}
-            </div>
-          )}
-
-          {step === 1 ? (
-            <form onSubmit={handleStep1} className="space-y-4 text-xs">
-              <div className="space-y-1">
-                <label className="font-bold uppercase tracking-wider text-[#676E5E] block">
-                  Clave Administradora *
-                </label>
-                <input
-                  type="password"
-                  value={pass}
-                  onChange={(e) => setPass(e.target.value)}
-                  placeholder="Ej: asl2026"
-                  className="w-full p-3.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl text-[#676E5E] outline-none focus:border-[#676E5E]"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-[#676E5E] hover:bg-[#52584b] text-white font-bold py-3.5 rounded-xl transition cursor-pointer"
-              >
-                Continuar a 2FA
-              </button>
-            </form>
-          ) : (
-            <form onSubmit={handleStep2} className="space-y-4 text-xs">
-              <div className="space-y-1">
-                <label className="font-bold uppercase tracking-wider text-[#676E5E] block">
-                  PIN de Seguridad (216630) *
-                </label>
-                <input
-                  type="password"
-                  value={pin}
-                  onChange={(e) => setPin(e.target.value)}
-                  placeholder="Ej: 216630"
-                  className="w-full p-3.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl text-[#676E5E] outline-none focus:border-[#676E5E]"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-[#DC8D6C] hover:bg-[#c37858] text-white font-bold py-3.5 rounded-xl transition cursor-pointer"
-              >
-                Ingresar a la Consola
-              </button>
-            </form>
-          )}
-
-          <div className="text-center pt-2">
-            <Link href="/" className="text-xs text-[#97A884] hover:underline font-bold">
-              ← Volver al Sitio Principal
-            </Link>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
   return (
     <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] font-sans pb-16">
-      <header className="bg-white border-b border-[#97A884] sticky top-0 z-40 shadow-xs">
+      <header className="bg-white border-b-2 border-[#E6C693] sticky top-0 z-40 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 rounded-xl bg-white border-2 border-[#E6C693] p-0.5 overflow-hidden flex items-center justify-center">
               <img src="/logo-asl.png.png" alt="Logo ASL Ideas" className="w-full h-full object-contain" />
             </div>
             <div>
-              <h1 className="text-base font-black text-[#676E5E]">Consola de Administracion ASL</h1>
+              <h1 className="text-base font-black text-[#676E5E]">Consola de Administracion ASL Ideas SpA</h1>
               <p className="text-[9px] text-[#97A884] font-bold uppercase tracking-wider">
-                Panel B2B, Citas y Vitrinas Virtuales
+                Panel Muestra Abierta (Sin Clave)
               </p>
             </div>
           </div>
           <div className="flex items-center space-x-3">
+            <span className="bg-[#CDD6A9] text-[#676E5E] text-[10px] font-bold px-3 py-1 rounded-full border border-[#97A884]">
+              Acceso Directo
+            </span>
             <Link
               href="/"
-              className="bg-[#CDD6A9] text-[#676E5E] hover:bg-[#97A884] hover:text-white text-xs font-bold px-3.5 py-1.5 rounded-xl transition"
+              className="bg-[#676E5E] text-white hover:bg-[#52584b] text-xs font-bold px-3.5 py-1.5 rounded-xl transition"
             >
-              Sitio Publico
+              Volver al Sitio
             </Link>
-            <button
-              type="button"
-              onClick={() => { setAuthenticated(false); setStep(1); setPass(''); setPin(''); }}
-              className="bg-[#DC8D6C] text-white text-xs font-bold px-3.5 py-1.5 rounded-xl hover:bg-[#c37858] transition cursor-pointer"
-            >
-              Cerrar Sesion
-            </button>
           </div>
         </div>
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
+        
+        <div className="bg-white p-6 rounded-3xl border-2 border-[#97A884] shadow-xs flex flex-col md:flex-row justify-between items-center gap-4">
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-3 py-0.5 rounded-full border border-[#97A884]">
+              Modo Muestra e Inspeccion
+            </span>
+            <h2 className="text-xl font-extrabold text-[#676E5E] mt-1">
+              Consola Abierta para Demostracion
+            </h2>
+            <p className="text-xs text-[#676E5E]/80 mt-1">
+              Acceso liberado temporalmente para inspeccion de las funcionalidades de gestion B2B, citas agendadas y fichas SOAP.
+            </p>
+          </div>
+          <Link
+            href="/sala-virtual"
+            className="bg-[#676E5E] hover:bg-[#52584b] text-white text-xs font-bold px-5 py-3 rounded-2xl transition shrink-0"
+          >
+            Abrir Sala Virtual
+          </Link>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white p-5 rounded-2xl border border-[#97A884] space-y-1">
+          <div className="bg-white p-5 rounded-2xl border border-[#97A884] space-y-1 shadow-xs">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#97A884]">Citas Agendadas B2B</span>
             <p className="text-2xl font-black text-[#676E5E]">14 Reuniones</p>
             <p className="text-[10px] text-[#676E5E]/70">Salas de Video Reunion activas</p>
           </div>
-          <div className="bg-white p-5 rounded-2xl border border-[#97A884] space-y-1">
+          <div className="bg-white p-5 rounded-2xl border border-[#97A884] space-y-1 shadow-xs">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#97A884]">Vitrinas PYME</span>
             <p className="text-2xl font-black text-[#676E5E]">8 PYMEs</p>
             <p className="text-[10px] text-[#676E5E]/70">Catalogos virtuales de salud integrativa</p>
           </div>
-          <div className="bg-white p-5 rounded-2xl border border-[#97A884] space-y-1">
+          <div className="bg-white p-5 rounded-2xl border border-[#97A884] space-y-1 shadow-xs">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#97A884]">Fichas Encriptadas</span>
             <p className="text-2xl font-black text-[#676E5E]">128 SOAP</p>
             <p className="text-[10px] text-[#676E5E]/70">Cumplimiento Ley N 21.663</p>
           </div>
-          <div className="bg-white p-5 rounded-2xl border border-[#97A884] space-y-1">
+          <div className="bg-white p-5 rounded-2xl border border-[#97A884] space-y-1 shadow-xs">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#97A884]">Licencias Corporativas</span>
             <p className="text-2xl font-black text-[#676E5E]">3 Convenios</p>
             <p className="text-[10px] text-[#676E5E]/70">Municipalidades e instituciones</p>
@@ -222,6 +129,7 @@ export default function AdminPage() {
             </table>
           </div>
         </div>
+
       </div>
     </main>
   );

@@ -20,7 +20,7 @@ export interface SalaVirtualB2BProps {
   isOpen: boolean;
   onClose: () => void;
   portalData?: PortalInfo;
-  initialMode?: 'agendar' | 'cancelar';
+  initialMode?: 'agendar' | 'cancelar' | 'videollamada';
   initialApp?: string;
   appLogo?: string;
 }
@@ -33,7 +33,7 @@ export default function SalaVirtualB2B({
   initialApp,
   appLogo,
 }: SalaVirtualB2BProps) {
-  const [modo, setModo] = useState<'agendar' | 'cancelar'>(initialMode);
+  const [modo, setModo] = useState<'agendar' | 'cancelar' | 'videollamada'>(initialMode);
   const [plataforma, setPlataforma] = useState<string>(
     portalData?.nombre || initialApp || '1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)'
   );
@@ -46,9 +46,15 @@ export default function SalaVirtualB2B({
   const [email, setEmail] = useState<string>('');
   const [reservaConfirmada, setReservaConfirmada] = useState<boolean>(false);
 
-  const [codigoReserva, setCodigoReserva] = useState<string>('');
-  const [emailCancelar, setEmailCancelar] = useState<string>('');
-  const [cancelacionConfirmada, setCancelacionConfirmada] = useState<boolean>(false);
+  const [micActivo, setMicActivo] = useState(true);
+  const [camActiva, setCamActiva] = useState(true);
+  const [transcribiendo, setTranscribiendo] = useState(false);
+  const [archivosSubidos, setArchivosSubidos] = useState<string[]>(['Presentacion_Vitrina_B2B_ASL.pdf']);
+  const [transcripcion, setTranscripcion] = useState<string[]>([
+    'ASL Bot: Sala de Video Reunion iniciada bajo cifrado de ciberseguridad Ley N° 21.663.',
+    'Sistemas: Entorno configurado con baja carga sensorial (Ley TEA N° 21.545).'
+  ]);
+  const [minuta, setMinuta] = useState<string>('Compromisos de la reunion:\n1. Revision de Vitrina Virtual PYME.\n2. Cotizacion de licencias de software inclusivo.');
 
   if (!isOpen) return null;
 
@@ -61,18 +67,16 @@ export default function SalaVirtualB2B({
     setReservaConfirmada(true);
   };
 
-  const handleConfirmarCancelacion = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!codigoReserva.trim() || !emailCancelar.trim()) {
-      alert('Por favor ingresa el codigo de reserva y tu correo registrado.');
-      return;
+  const handleSubirArchivo = () => {
+    const nuevo = prompt('Nombre del documento o archivo a adjuntar:');
+    if (nuevo && nuevo.trim()) {
+      setArchivosSubidos([...archivosSubidos, nuevo.trim()]);
     }
-    setCancelacionConfirmada(true);
   };
 
   return (
     <div className="fixed inset-0 z-50 bg-[#676E5E]/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-[#E6E7D5] max-w-2xl w-full rounded-3xl border-2 border-[#97A884] shadow-2xl p-6 md:p-8 space-y-6 my-8 text-[#676E5E]">
+      <div className="bg-[#E6E7D5] max-w-4xl w-full rounded-3xl border-2 border-[#97A884] shadow-2xl p-6 md:p-8 space-y-6 my-8 text-[#676E5E]">
         
         <div className="flex justify-between items-center border-b border-[#97A884]/40 pb-4">
           <div className="flex items-center space-x-3">
@@ -84,7 +88,7 @@ export default function SalaVirtualB2B({
                 Sala de Video Reunion B2B
               </span>
               <h3 className="text-xl font-extrabold text-[#676E5E] mt-0.5">
-                {modo === 'agendar' ? 'Reserva de Cita y Video Reunion' : 'Solicitud de Cancelacion'}
+                {modo === 'videollamada' ? 'Video Reunion Interactiva en Vivo' : modo === 'agendar' ? 'Reserva de Cita y Video Reunion' : 'Solicitud de Cancelacion'}
               </h3>
             </div>
           </div>
@@ -97,26 +101,131 @@ export default function SalaVirtualB2B({
           </button>
         </div>
 
-        <div className="flex bg-[#CDD6A9]/50 p-1 rounded-2xl border border-[#97A884] text-xs font-bold">
+        <div className="flex bg-[#CDD6A9]/50 p-1 rounded-2xl border border-[#97A884] text-xs font-bold gap-1">
           <button
             type="button"
-            onClick={() => { setModo('agendar'); setReservaConfirmada(false); }}
-            className={`flex-1 py-2.5 rounded-xl transition text-center cursor-pointer ${
-              modo === 'agendar' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:text-[#676E5E]'
+            onClick={() => setModo('videollamada')}
+            className={`flex-1 py-2 rounded-xl transition text-center cursor-pointer ${
+              modo === 'videollamada' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:text-[#676E5E]'
             }`}
           >
-            Agendar Video Reunion
+            Ingresar a Sala en Vivo
           </button>
           <button
             type="button"
-            onClick={() => { setModo('cancelar'); setCancelacionConfirmada(false); }}
-            className={`flex-1 py-2.5 rounded-xl transition text-center cursor-pointer ${
+            onClick={() => { setModo('agendar'); setReservaConfirmada(false); }}
+            className={`flex-1 py-2 rounded-xl transition text-center cursor-pointer ${
+              modo === 'agendar' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:text-[#676E5E]'
+            }`}
+          >
+            Agendar Reunion
+          </button>
+          <button
+            type="button"
+            onClick={() => setModo('cancelar')}
+            className={`flex-1 py-2 rounded-xl transition text-center cursor-pointer ${
               modo === 'cancelar' ? 'bg-[#DC8D6C] text-white shadow-xs' : 'text-[#676E5E] hover:text-[#DC8D6C]'
             }`}
           >
             Cancelar / Reprogramar
           </button>
         </div>
+
+        {modo === 'videollamada' && (
+          <div className="space-y-6 text-xs">
+            <div className="bg-[#3D4336] rounded-2xl p-6 text-white text-center relative min-h-[220px] flex flex-col justify-between shadow-inner border border-[#97A884]">
+              <div className="flex justify-between items-center text-[10px]">
+                <span className="bg-[#CDD6A9] text-[#676E5E] font-bold px-2.5 py-0.5 rounded-md">
+                  EN VIVO - Encriptacion TLS 1.3
+                </span>
+                <span>ASL Ideas SpA - Sala B2B</span>
+              </div>
+
+              <div className="my-6">
+                <div className="w-16 h-16 mx-auto bg-[#676E5E] rounded-full flex items-center justify-center font-bold text-xl border-2 border-[#E6C693] mb-2">
+                  ASL
+                </div>
+                <p className="text-sm font-bold">{plataforma}</p>
+                <p className="text-[11px] text-[#CDD6A9]">Camara: {camActiva ? 'Activa (HD)' : 'Desactivada'} | Mic: {micActivo ? 'Encendido' : 'Silenciado'}</p>
+              </div>
+
+              <div className="flex justify-center gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setMicActivo(!micActivo)}
+                  className={`px-3 py-1.5 rounded-lg font-bold text-[11px] transition ${
+                    micActivo ? 'bg-[#676E5E] hover:bg-[#52584b]' : 'bg-[#DC8D6C]'
+                  }`}
+                >
+                  {micActivo ? 'Microfono ON' : 'Microfono OFF'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCamActiva(!camActiva)}
+                  className={`px-3 py-1.5 rounded-lg font-bold text-[11px] transition ${
+                    camActiva ? 'bg-[#676E5E] hover:bg-[#52584b]' : 'bg-[#DC8D6C]'
+                  }`}
+                >
+                  {camActiva ? 'Camara ON' : 'Camara OFF'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTranscribiendo(!transcribiendo);
+                    if (!transcribiendo) {
+                      setTranscripcion([...transcripcion, 'Usuario: Transcripcion automatica activada.']);
+                    }
+                  }}
+                  className={`px-3 py-1.5 rounded-lg font-bold text-[11px] transition ${
+                    transcribiendo ? 'bg-[#E6C693] text-[#676E5E]' : 'bg-[#676E5E] text-white'
+                  }`}
+                >
+                  {transcribiendo ? 'Transcribiendo...' : 'Transcribir Reunion'}
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white p-4 rounded-2xl border border-[#97A884] space-y-2">
+                <div className="flex justify-between items-center">
+                  <h4 className="font-bold text-[#676E5E]">Adjuntar Archivo</h4>
+                  <button
+                    type="button"
+                    onClick={handleSubirArchivo}
+                    className="bg-[#CDD6A9] hover:bg-[#97A884] text-[#676E5E] hover:text-white font-bold px-2 py-0.5 rounded-md text-[10px]"
+                  >
+                    + Subir
+                  </button>
+                </div>
+                <ul className="space-y-1 text-[11px]">
+                  {archivosSubidos.map((f, i) => (
+                    <li key={i} className="p-1.5 bg-[#E6E7D5] rounded-lg border border-[#97A884]/40 font-mono truncate">
+                      📄 {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="bg-white p-4 rounded-2xl border border-[#97A884] space-y-2">
+                <h4 className="font-bold text-[#676E5E]">Transcribir Reunion</h4>
+                <div className="h-24 overflow-y-auto bg-[#E6E7D5]/50 p-2 rounded-xl text-[10px] space-y-1 font-mono">
+                  {transcripcion.map((t, idx) => (
+                    <p key={idx}>{t}</p>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-white p-4 rounded-2xl border border-[#97A884] space-y-2">
+                <h4 className="font-bold text-[#676E5E]">Archivos y Notas / Minuta</h4>
+                <textarea
+                  value={minuta}
+                  onChange={(e) => setMinuta(e.target.value)}
+                  className="w-full h-24 p-2 bg-[#FAF8F5] border border-[#97A884] rounded-xl text-[11px] text-[#676E5E] outline-none"
+                />
+              </div>
+            </div>
+          </div>
+        )}
 
         {modo === 'agendar' && (
           reservaConfirmada ? (
@@ -133,10 +242,10 @@ export default function SalaVirtualB2B({
               </div>
               <button
                 type="button"
-                onClick={() => { setReservaConfirmada(false); onClose(); }}
+                onClick={() => { setReservaConfirmada(false); setModo('videollamada'); }}
                 className="bg-[#676E5E] text-white text-xs font-bold px-6 py-2.5 rounded-xl hover:bg-[#52584b] transition cursor-pointer"
               >
-                Volver a ASL Ideas
+                Ingresar a la Sala Virtual Ahora
               </button>
             </div>
           ) : (
@@ -235,58 +344,15 @@ export default function SalaVirtualB2B({
         )}
 
         {modo === 'cancelar' && (
-          cancelacionConfirmada ? (
-            <div className="bg-white p-6 rounded-2xl border border-[#DC8D6C] text-center space-y-4 shadow-xs">
-              <h4 className="text-lg font-bold text-[#DC8D6C]">Reserva Cancelada</h4>
-              <p className="text-xs text-[#676E5E] leading-relaxed">
-                La reunion con codigo <strong>{codigoReserva}</strong> ha sido cancelada para el correo <strong>{emailCancelar}</strong>.
-              </p>
-              <button
-                type="button"
-                onClick={() => { setCancelacionConfirmada(false); onClose(); }}
-                className="bg-[#676E5E] text-white text-xs font-bold px-6 py-2.5 rounded-xl hover:bg-[#52584b] transition cursor-pointer"
-              >
-                Volver al Sitio
-              </button>
+          <form className="space-y-4 text-xs">
+            <div className="space-y-1">
+              <label className="font-bold text-[#DC8D6C] uppercase tracking-wider">Codigo de Reserva *</label>
+              <input type="text" placeholder="Ej: ASL-8921" className="w-full p-3 bg-white border border-[#DC8D6C] rounded-xl text-[#676E5E]" />
             </div>
-          ) : (
-            <form onSubmit={handleConfirmarCancelacion} className="space-y-4 text-xs">
-              <div className="space-y-1">
-                <label className="font-bold text-[#DC8D6C] uppercase tracking-wider">
-                  Codigo de Reserva o RUT *
-                </label>
-                <input
-                  type="text"
-                  value={codigoReserva}
-                  onChange={(e) => setCodigoReserva(e.target.value)}
-                  placeholder="Ej: ASL-8921"
-                  className="w-full p-3 bg-white border border-[#DC8D6C] rounded-xl text-[#676E5E] outline-none focus:border-[#DC8D6C]"
-                  required
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="font-bold text-[#DC8D6C] uppercase tracking-wider">
-                  Correo Registrado *
-                </label>
-                <input
-                  type="email"
-                  value={emailCancelar}
-                  onChange={(e) => setEmailCancelar(e.target.value)}
-                  placeholder="correo@ejemplo.cl"
-                  className="w-full p-3 bg-white border border-[#DC8D6C] rounded-xl text-[#676E5E] outline-none focus:border-[#DC8D6C]"
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-[#DC8D6C] hover:bg-[#c37858] text-white text-xs font-bold py-3.5 rounded-2xl transition shadow-md mt-4 cursor-pointer"
-              >
-                Confirmar Cancelacion
-              </button>
-            </form>
-          )
+            <button type="button" onClick={() => alert('Reserva cancelada.')} className="w-full bg-[#DC8D6C] text-white font-bold py-3 rounded-xl">
+              Confirmar Cancelacion
+            </button>
+          </form>
         )}
 
       </div>
