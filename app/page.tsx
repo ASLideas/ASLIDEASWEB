@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import SalaVirtualB2B from '@/components/SalaVirtualB2B';
 
 export interface PortalItem {
@@ -99,19 +100,18 @@ export default function HomePage() {
             <span>ASL Ideas SpA: Espacios y Vitrinas Virtuales Inclusivas (Ley TEA N 21.545)</span>
           </div>
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => handleOpenPortal('asl-ideas-b2b', 'agendar')}
-              className="bg-[#676E5E] text-white text-[11px] px-3.5 py-1 rounded-lg font-bold hover:bg-[#52584b] transition shadow-xs cursor-pointer"
+            <Link
+              href="/sala-virtual"
+              className="bg-[#676E5E] text-white text-[11px] px-3.5 py-1 rounded-lg font-bold hover:bg-[#52584b] transition shadow-xs"
             >
               Sala de Video Reunion
-            </button>
-            <a
+            </Link>
+            <Link
               href="/admin"
               className="bg-[#DC8D6C] text-white text-[11px] px-3.5 py-1 rounded-lg font-bold hover:bg-[#c37858] transition shadow-xs"
             >
               Panel Admin
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -131,32 +131,81 @@ export default function HomePage() {
           </div>
 
           <div className="flex items-center space-x-2">
+            <Link
+              href="/sala-virtual"
+              className="bg-[#676E5E] hover:bg-[#52584b] text-white text-xs font-bold px-3.5 py-1.5 rounded-xl transition shadow-xs"
+            >
+              Sala Virtual
+            </Link>
             <button
               type="button"
               onClick={() => handleOpenPortal('asl-ideas-b2b', 'agendar')}
-              className="bg-[#676E5E] hover:bg-[#52584b] text-white text-xs font-bold px-3.5 py-1.5 rounded-xl transition shadow-xs cursor-pointer"
+              className="bg-[#CDD6A9] text-[#676E5E] hover:bg-[#97A884] hover:text-white text-xs font-bold px-3 py-1.5 rounded-xl transition shadow-xs cursor-pointer"
             >
               Agendar Cita
             </button>
-            <button
-              type="button"
-              onClick={() => handleOpenPortal('asl-ideas-b2b', 'cancelar')}
-              className="bg-[#E6E7D5] text-[#DC8D6C] border border-[#DC8D6C] hover:bg-[#DC8D6C] hover:text-white text-xs font-bold px-3 py-1.5 rounded-xl transition shadow-xs cursor-pointer"
-            >
-              Cancelar
-            </button>
-            <a
+            <Link
               href="/admin"
-              className="bg-white text-[#676E5E] border border-[#E6C693] hover:bg-[#E6E7D5] text-xs font-bold px-3 py-1.5 rounded-xl transition shadow-xs"
+              className="bg-[#DC8D6C] text-white border border-[#DC8D6C] hover:bg-[#c37858] text-xs font-bold px-3 py-1.5 rounded-xl transition shadow-xs"
             >
-              Admin
-            </a>
+              Admin ASL
+            </Link>
           </div>
         </div>
       </header>
 
-      <section className="bg-white border-b border-[#97A884]/30 py-12 px-4 text-center">
-        <div className="max-w-4xl mx-auto space-y-4">
+      {/* Banner de Destacado: Sala de Reuniones y Admin */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-white p-6 rounded-3xl border-2 border-[#97A884] flex flex-col justify-between space-y-4 shadow-sm">
+            <div className="space-y-2">
+              <span className="text-[10px] font-bold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-3 py-1 rounded-full border border-[#97A884]">
+                Modulo de Agendamiento
+              </span>
+              <h3 className="text-xl font-black text-[#676E5E]">Sala Virtual de Reuniones B2B</h3>
+              <p className="text-xs text-[#676E5E]/80 leading-relaxed">
+                Coordinación directa de reuniones de trabajo, cotizaciones de Vitrinas PYME y demostraciones de software accesible.
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Link
+                href="/sala-virtual"
+                className="flex-1 bg-[#676E5E] text-white text-xs font-bold py-2.5 rounded-xl hover:bg-[#52584b] transition text-center"
+              >
+                Ingresar a Sala Virtual
+              </Link>
+              <button
+                type="button"
+                onClick={() => handleOpenPortal('asl-ideas-b2b', 'agendar')}
+                className="bg-[#CDD6A9] text-[#676E5E] text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-[#97A884] hover:text-white transition cursor-pointer"
+              >
+                Agendar
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-3xl border-2 border-[#E6C693] flex flex-col justify-between space-y-4 shadow-sm">
+            <div className="space-y-2">
+              <span className="text-[10px] font-bold uppercase tracking-wider bg-[#E6C693]/40 text-[#676E5E] px-3 py-1 rounded-full border border-[#E6C693]">
+                Consola Corporativa
+              </span>
+              <h3 className="text-xl font-black text-[#676E5E]">Administración ASL Ideas SpA</h3>
+              <p className="text-xs text-[#676E5E]/80 leading-relaxed">
+                Gestión centralizada de citas B2B, catalogos PYME, fichas clínicas SOAP encriptadas (Ley N 21.663) y convenios.
+              </p>
+            </div>
+            <Link
+              href="/admin"
+              className="bg-[#DC8D6C] text-white text-xs font-bold py-2.5 rounded-xl hover:bg-[#c37858] transition text-center"
+            >
+              Acceder al Panel de Administración (/admin)
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white border-y border-[#97A884]/30 my-8 py-10 px-4 text-center">
+        <div className="max-w-4xl mx-auto space-y-3">
           <div className="flex justify-center gap-2 flex-wrap">
             <span className="bg-[#CDD6A9] text-[#676E5E] text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider border border-[#97A884]">
               Casa Matriz & Licencias B2B
@@ -175,7 +224,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
         <div className="text-center space-y-2">
           <span className="text-xs font-bold text-[#DC8D6C] uppercase tracking-wider bg-white px-3.5 py-1 rounded-full border border-[#DC8D6C]">
             Plataformas Oficiales
@@ -274,51 +323,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-white border-y border-[#97A884]/30 py-12 px-4">
-        <div className="max-w-6xl mx-auto space-y-8">
-          <div className="text-center space-y-2">
-            <span className="text-xs font-bold text-[#DC8D6C] uppercase tracking-wider bg-[#E6E7D5] px-3.5 py-1 rounded-full border border-[#DC8D6C]">
-              Vitrinas Virtuales B2B
-            </span>
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-[#676E5E]">
-              Espacio y Difusion para PYMEs e Instituciones
-            </h3>
-            <p className="text-xs text-[#676E5E]/80 max-w-2xl mx-auto">
-              Brindamos vitrinas digitales optimizadas para que emprendedores de la salud e instituciones exhiban sus productos y servicios en entornos amables.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
-            <div className="bg-[#E6E7D5] p-6 rounded-3xl border border-[#97A884] space-y-2">
-              <h4 className="font-bold text-[#676E5E]">Vitrinas Digitales PYME</h4>
-              <p className="text-[#676E5E]/80 leading-relaxed">
-                Catalogos web interactivos y limpios para dar visibilidad comercial directa en entornos municipales e institucionales.
-              </p>
-            </div>
-
-            <div className="bg-[#E6E7D5] p-6 rounded-3xl border border-[#97A884] space-y-2">
-              <h4 className="font-bold text-[#676E5E]">Diseno Inclusivo Ley TEA</h4>
-              <p className="text-[#676E5E]/80 leading-relaxed">
-                Navegacion predecible y paleta relajante que garantizan la inclusion de personas con TEA Grado 1 y TDAH.
-              </p>
-            </div>
-
-            <div className="bg-[#E6E7D5] p-6 rounded-3xl border border-[#97A884] space-y-2">
-              <h4 className="font-bold text-[#676E5E]">Ciberseguridad Ley N 21.663</h4>
-              <p className="text-[#676E5E]/80 leading-relaxed">
-                Infraestructura encriptada para el resguardo de informacion confidencial, usuarios y atencion institucional.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <footer className="bg-white border-t border-[#97A884]/30 py-6 text-center text-xs text-[#97A884] space-y-2">
         <p className="text-[#676E5E]">Copyright ASL Ideas SpA | Estrategia de Salud Digital y Vitrinas Inclusivas para PYMEs.</p>
         <div className="flex justify-center gap-4 text-[11px] px-4">
-          <a href="/admin" className="hover:underline font-bold text-[#676E5E]">Administracion (/admin)</a>
+          <Link href="/admin" className="hover:underline font-bold text-[#676E5E]">Administracion (/admin)</Link>
           <span>-</span>
-          <span>Ley N 21.545 y Ley N 21.663</span>
+          <Link href="/sala-virtual" className="hover:underline font-bold text-[#676E5E]">Sala Virtual (/sala-virtual)</Link>
         </div>
       </footer>
 

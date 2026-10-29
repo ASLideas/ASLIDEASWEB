@@ -16,7 +16,7 @@ export interface PortalInfo {
   enConstruccion?: boolean;
 }
 
-interface SalaVirtualB2BProps {
+export interface SalaVirtualB2BProps {
   isOpen: boolean;
   onClose: () => void;
   portalData?: PortalInfo;
@@ -75,13 +75,18 @@ export default function SalaVirtualB2B({
       <div className="bg-[#E6E7D5] max-w-2xl w-full rounded-3xl border-2 border-[#97A884] shadow-2xl p-6 md:p-8 space-y-6 my-8 text-[#676E5E]">
         
         <div className="flex justify-between items-center border-b border-[#97A884]/40 pb-4">
-          <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-3 py-1 rounded-full border border-[#97A884]">
-              Sala de Video Reunion B2B
-            </span>
-            <h3 className="text-xl font-extrabold text-[#676E5E] mt-1">
-              {modo === 'agendar' ? 'Reserva de Cita y Video Reunion' : 'Solicitud de Cancelacion'}
-            </h3>
+          <div className="flex items-center space-x-3">
+            {(portalData?.logo || appLogo) && (
+              <img src={portalData?.logo || appLogo} alt="Logo" className="w-8 h-8 object-contain rounded-lg border border-[#97A884]" />
+            )}
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-3 py-0.5 rounded-full border border-[#97A884]">
+                Sala de Video Reunion B2B
+              </span>
+              <h3 className="text-xl font-extrabold text-[#676E5E] mt-0.5">
+                {modo === 'agendar' ? 'Reserva de Cita y Video Reunion' : 'Solicitud de Cancelacion'}
+              </h3>
+            </div>
           </div>
           <button
             type="button"
