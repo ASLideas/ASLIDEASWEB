@@ -104,61 +104,39 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] font-sans">
       
-      {/* Banner Superior Promocional */}
-      <div className="bg-[#CDD6A9] border-b border-[#97A884] py-2.5 px-4 text-center">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
-          <div className="flex items-center gap-2 text-[#676E5E] font-bold">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#DC8D6C]"></span>
-            <span>ASL Ideas SpA: Espacios y Vitrinas Virtuales Inclusivas (Ley TEA N° 21.545)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => handleOpenPortal('asl-ideas-b2b', 'videollamada')}
-              className="bg-[#676E5E] text-white text-[11px] px-3.5 py-1 rounded-lg font-bold hover:bg-[#52584b] transition cursor-pointer"
-            >
-              Sala de Video Reunión
-            </button>
-            <Link
-              href="/admin"
-              className="bg-[#DC8D6C] text-white text-[11px] px-3.5 py-1 rounded-lg font-bold hover:bg-[#c37858] transition"
-            >
-              Administración ASL
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Encabezado Principal */}
-      <header className="bg-white/95 backdrop-blur-md border-b-2 border-[#E6C693] sticky top-0 z-40 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-white border-2 border-[#E6C693] p-0.5 overflow-hidden shadow-xs flex items-center justify-center">
+      {/* Encabezado Principal Ajustado para Móviles (Sin Banner Superior) */}
+      <header className="bg-white/95 backdrop-blur-md border-b-2 border-[#E6C693] sticky top-0 z-40 shadow-xs py-2 px-3 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+          
+          {/* Identificación de la Marca */}
+          <div className="flex items-center space-x-2.5">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white border-2 border-[#E6C693] p-0.5 overflow-hidden shadow-xs flex items-center justify-center shrink-0">
               <img src="/logo-asl.png.png" alt="Logo ASL Ideas" className="w-full h-full object-contain" />
             </div>
             <div>
-              <h1 className="text-base font-black tracking-tight text-[#676E5E]">ASL Ideas SpA</h1>
-              <p className="text-[9px] text-[#97A884] font-bold uppercase tracking-wider">
+              <h1 className="text-sm sm:text-base font-black tracking-tight text-[#676E5E] leading-none">ASL Ideas SpA</h1>
+              <p className="text-[8px] sm:text-[9px] text-[#97A884] font-bold uppercase tracking-wider mt-0.5">
                 Estrategia de Salud Digital Inclusiva
               </p>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2 relative">
+          {/* Línea Única de Botones (Limpia y Responsive) */}
+          <div className="flex items-center justify-center flex-wrap sm:flex-nowrap gap-1.5 sm:gap-2 w-full sm:w-auto relative">
             
             {/* Botón Desplegable 1: Ingresar a Sala */}
             <div className="relative">
               <button
                 type="button"
                 onClick={() => { setDropdownSalasOpen(!dropdownSalasOpen); setDropdownCitasOpen(false); }}
-                className="bg-[#676E5E] hover:bg-[#52584b] text-white text-xs font-bold px-3.5 py-2 rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-xs"
+                className="bg-[#676E5E] hover:bg-[#52584b] text-white text-[10px] sm:text-xs font-bold px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl transition cursor-pointer flex items-center gap-1 shadow-xs"
               >
                 <span>Ingresar a Sala</span>
-                <span className="text-[10px]">v</span>
+                <span className="text-[9px]">v</span>
               </button>
 
               {dropdownSalasOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl border-2 border-[#97A884] shadow-xl py-2 z-50 text-xs">
+                <div className="absolute left-0 sm:right-0 sm:left-auto mt-2 w-60 sm:w-64 bg-white rounded-2xl border-2 border-[#97A884] shadow-xl py-2 z-50 text-xs">
                   <p className="px-3 py-1 font-bold text-[10px] text-[#97A884] uppercase tracking-wider border-b border-[#E6E7D5]">
                     Selecciona una Sala Virtual:
                   </p>
@@ -167,12 +145,12 @@ export default function HomePage() {
                       key={p.id}
                       type="button"
                       onClick={() => handleOpenPortal(p.id, 'videollamada')}
-                      className="w-full text-left px-3.5 py-2.5 hover:bg-[#CDD6A9]/30 text-[#676E5E] font-medium flex items-center gap-2 border-b border-[#E6E7D5]/50 last:border-0 cursor-pointer"
+                      className="w-full text-left px-3 py-2 hover:bg-[#CDD6A9]/30 text-[#676E5E] font-medium flex items-center gap-2 border-b border-[#E6E7D5]/50 last:border-0 cursor-pointer"
                     >
                       <img src={p.logo} alt="" className="w-5 h-5 object-contain rounded-md border border-[#97A884]" />
                       <div className="truncate">
-                        <p className="font-bold">{p.nombre}</p>
-                        {p.enConstruccion && <span className="text-[9px] text-[#DC8D6C] font-semibold">(En Construcción)</span>}
+                        <p className="font-bold text-[11px]">{p.nombre}</p>
+                        {p.enConstruccion && <span className="text-[8px] text-[#DC8D6C] font-semibold">(En Construcción)</span>}
                       </div>
                     </button>
                   ))}
@@ -185,14 +163,14 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => { setDropdownCitasOpen(!dropdownCitasOpen); setDropdownSalasOpen(false); }}
-                className="bg-[#CDD6A9] text-[#676E5E] hover:bg-[#97A884] hover:text-white text-xs font-bold px-3.5 py-2 rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-xs"
+                className="bg-[#CDD6A9] text-[#676E5E] hover:bg-[#97A884] hover:text-white text-[10px] sm:text-xs font-bold px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl transition cursor-pointer flex items-center gap-1 shadow-xs"
               >
                 <span>Agenda de Reuniones</span>
-                <span className="text-[10px]">v</span>
+                <span className="text-[9px]">v</span>
               </button>
 
               {dropdownCitasOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl border-2 border-[#97A884] shadow-xl py-2 z-50 text-xs">
+                <div className="absolute right-0 mt-2 w-60 sm:w-64 bg-white rounded-2xl border-2 border-[#97A884] shadow-xl py-2 z-50 text-xs">
                   <p className="px-3 py-1 font-bold text-[10px] text-[#97A884] uppercase tracking-wider border-b border-[#E6E7D5]">
                     Agendar Cita en:
                   </p>
@@ -201,11 +179,11 @@ export default function HomePage() {
                       key={p.id}
                       type="button"
                       onClick={() => handleOpenPortal(p.id, 'agendar')}
-                      className="w-full text-left px-3.5 py-2.5 hover:bg-[#CDD6A9]/30 text-[#676E5E] font-medium flex items-center gap-2 border-b border-[#E6E7D5]/50 last:border-0 cursor-pointer"
+                      className="w-full text-left px-3 py-2 hover:bg-[#CDD6A9]/30 text-[#676E5E] font-medium flex items-center gap-2 border-b border-[#E6E7D5]/50 last:border-0 cursor-pointer"
                     >
                       <img src={p.logo} alt="" className="w-5 h-5 object-contain rounded-md border border-[#97A884]" />
                       <div className="truncate">
-                        <p className="font-bold">{p.nombre}</p>
+                        <p className="font-bold text-[11px]">{p.nombre}</p>
                       </div>
                     </button>
                   ))}
@@ -213,9 +191,10 @@ export default function HomePage() {
               )}
             </div>
 
+            {/* Botón Administrador ASL */}
             <Link
               href="/admin"
-              className="bg-[#DC8D6C] text-white border border-[#DC8D6C] hover:bg-[#c37858] text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-xs"
+              className="bg-[#DC8D6C] text-white border border-[#DC8D6C] hover:bg-[#c37858] text-[10px] sm:text-xs font-bold px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl transition shadow-xs text-center"
             >
               Administración ASL
             </Link>
@@ -225,17 +204,17 @@ export default function HomePage() {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-white border-b-2 border-[#E6C693] py-12 px-4 sm:px-6 lg:px-8 text-center">
-        <div className="max-w-5xl mx-auto space-y-6">
-          <span className="inline-block bg-[#CDD6A9] text-[#676E5E] text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider border border-[#97A884]">
+      <section className="bg-white border-b-2 border-[#E6C693] py-10 px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-5xl mx-auto space-y-5">
+          <span className="inline-block bg-[#CDD6A9] text-[#676E5E] text-[10px] sm:text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider border border-[#97A884]">
             Tecnología con Alma & Empatía | Baja Carga Sensorial (Ley TEA N° 21.545)
           </span>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#676E5E] leading-tight">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-[#676E5E] leading-tight">
             Desarrollo y soluciones accesibles para PYME y comercio asociado
           </h2>
 
-          <p className="text-sm sm:text-base text-[#676E5E]/90 max-w-3xl mx-auto leading-relaxed font-medium bg-[#E6E7D5]/40 p-6 rounded-3xl border border-[#97A884]/40 shadow-xs">
+          <p className="text-xs sm:text-base text-[#676E5E]/90 max-w-3xl mx-auto leading-relaxed font-medium bg-[#E6E7D5]/40 p-5 sm:p-6 rounded-3xl border border-[#97A884]/40 shadow-xs">
             Desarrollamos soluciones tecnológicas amables diseñadas por y para personas con neurodivergencia y condiciones crónicas de salud, unificando el sistema metabólico, el movimiento adaptado y la sabiduría preventiva. ASL Ideas SpA Casa Matriz es la creadora de las tres aplicaciones del ecosistema, desarrolladora de soluciones a medida para el emprendedor.
           </p>
         </div>
