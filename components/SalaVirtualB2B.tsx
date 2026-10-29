@@ -41,85 +41,139 @@ export default function SalaVirtualB2B({
 }: SalaVirtualB2BProps) {
   const [modo, setModo] = useState<'ficha' | 'videollamada' | 'agendar' | 'cancelar'>(initialMode);
   const [esPantallaCompleta, setEsPantallaCompleta] = useState<boolean>(false);
+  
+  // Referencias HTML
+  const videoRef = useRef<HTMLVideoElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (isOpen) {
-      setModo(initialMode);
-    }
-  }, [isOpen, initialMode]);
-
-  const [plataforma, setPlataforma] = useState<string>(
-    portalData?.nombre || initialApp || '1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)'
-  );
-  const [motivo, setMotivo] = useState<string>(
-    'Videoreunión de Trabajo / Cotización de Vitrina B2B'
-  );
-  const [fecha, setFecha] = useState<string>('');
-  const [hora, setHora] = useState<string>('10:30 AM (Bloque Mañana)');
-  const [nombre, setNombre] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [reservaConfirmada, setReservaConfirmada] = useState<boolean>(false);
-
-  // Estados de la Sala de Video
+  // Stream de Cámara y Micrófono Real
+  const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const [micActivo, setMicActivo] = useState<boolean>(true);
-  const [camActiva, setCamActiva] = useState<boolean>(true);
-  const [transcribiendo, setTranscribiendo] = useState<boolean>(true);
-  const [mensajeEstado, setMensajeEstado] = useState<string>('');
+  const [camActiva, setCamActiva] = useState<boolean>(false);
+  const [errorCamara, setErrorCamara] = useState<string>('');
 
-  // Archivos Adjuntos Interactivos
-  const [archivosSubidos, setArchivosSubidos] = useState<ArchivoAdjunto[]>([
-    { nombre: 'Presentacion_Vitrina_B2B_ASL.pdf', tamano: '1.2 MB', fecha: 'Hoy 10:00 AM' },
-    { nombre: 'Ficha_Tecnica_Accesibilidad_Ley_TEA.pdf', tamano: '840 KB', fecha: 'Hoy 10:05 AM' }
-  ]);
-
-  // Transcripción en Vivo
+  // Transcripción de Voz Real
+  const [transcribiendo, setTranscribiendo] = useState<boolean>(false);
   const [transcripcion, setTranscripcion] = useState<string[]>([
     'ASL Bot: Sala de Video Reunión iniciada bajo cifrado Ley N° 21.663.',
-    'Sistemas: Entorno configurado con baja carga sensorial (Ley TEA N° 21.545).',
-    'Anfitrión ASL: "Bienvenidos a la reunión interactiva de ASL Ideas SpA."'
+    'Sistemas: Entorno configurado con baja carga sensorial (Ley TEA N° 21.545).'
   ]);
+
+  // Archivos Adjuntos
+  const [archivosSubidos, setArchivosSubidos] = useState<ArchivoAdjunto[]>([]);
+  const [mensajeEstado, setMensajeEstado] = useState<string>('');
 
   // Minuta y Notas
   const [minuta, setMinuta] = useState<string>(
     'COMPROMISOS DE LA REUNIÓN B2B:\n1. Revisión de propuesta de Vitrina Virtual PYME.\n2. Demostración de software adaptado con baja carga sensorial.\n3. Coordinación de prueba piloto institucional.'
   );
 
+  const [plataforma, setPlataforma] = useState<string>(
+    portalData?.nombre || initialApp || '1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)'
+  );
+  const [motivo, setMotivo] = useState<string>('Videoreunión de Trabajo / Cotización de Vitrina B2B');
+  const [fecha, setFecha] = useState<string>('');
+  const [hora, setHora] = useState<string>('10:30 AM (Bloque Mañana)');
+  const [nombre, setNombre] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [reservaConfirmada, setReservaConfirmada] = useState<boolean>(false);
   const [codigoReservaCancel, setCodigoReservaCancel] = useState('');
   const [emailCancel, setEmailCancel] = useState('');
   const [canceladoExito, setCanceladoExito] = useState(false);
 
-  // Bucle de Transcripción Simulado en Tiempo Real
   useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (transcribiendo && modo === 'videollamada') {
-      const frasesLive = [
-        'Anfitrión ASL: "Presentando el módulo de accesibilidad cognitiva y lectura fácil."',
-        'Participante B2B: "Confirmado el requerimiento de integración con fichas encriptadas SOAP."',
-        'Sistema IA: "Generando resumen de compromisos clave para la minuta."',
-        'Anfitrión ASL: "Ajustando paleta de colores amables sin sobrecarga sensorial para la Web App."'
-      ];
-      let i = 0;
-      interval = setInterval(() => {
-        setTranscripcion(prev => [...prev, frasesLive[i % frasesLive.length]]);
-        i++;
-      }, 3500);
+    if (isOpen) {
+      setModo(initialMode);
+    } else {
+      detenerCamara();
     }
-    return () => clearInterval(interval);
-  }, [transcribiendo, modo]);
+  }, [isOpen, initialMode]);
 
-  if (!isOpen) return null;
+  // Iniciar Cámara Web Real
+  const iniciarCamara = async () => {
+    try {
+      setErrorCamara('');
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: 'user' },
+        audio: true
+      });
+      setMediaStream(stream);
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+      setCamActiva(true);
+      setMicActivo(true);
+      setMensajeEstado('Cámara y Micrófono conectados en tiempo real');
+      setTimeout(() => setMensajeEstado(''), 3000);
+    } catch (err: any) {
+      console.error('Error accediendo a la cámara:', err);
+      setErrorCamara('No se pudo acceder a la cámara/micrófono. Revisa los permisos de tu navegador.');
+      setCamActiva(false);
+    }
+  };
 
-  const currentNombre = portalData?.nombre || initialApp || 'ASL Ideas SpA';
-  const currentLogo = portalData?.logo || appLogo || '/logo-asl.png.png';
-  const currentOficina = portalData?.oficinaNum || 'Oficina Virtual 01';
-  const currentSubtitulo = portalData?.subtitulo || 'Casa Matriz - Desarrollo B2B y Licencias Inclusivas';
-  const currentLeyes = portalData?.leyes || ['Ley TEA N° 21.545', 'Accesibilidad Cognitiva UI/UX'];
-  const currentDescLarga = portalData?.descripcionLarga || 'Especialistas en desarrollo de software accesible a medida para municipalidades, empresas e instituciones de salud.';
-  const currentServicios = portalData?.serviciosClave || ['Licencias B2B de Software', 'Vitrinas Virtuales PYME', 'Consultoría UI/UX en Ley TEA'];
-  const currentBeneficios = portalData?.beneficios || ['Entornos de baja carga sensorial', 'Integración ágil con Supabase', 'Cumplimiento normativo estricto'];
+  // Detener Cámara Web Real
+  const detenerCamara = () => {
+    if (mediaStream) {
+      mediaStream.getTracks().forEach(track => track.stop());
+      setMediaStream(null);
+    }
+    setCamActiva(false);
+  };
 
-  // Manejo de Carga de Archivos Reales del Usuario
+  // Alternar Micrófono Real
+  const toggleMic = () => {
+    if (mediaStream) {
+      const audioTracks = mediaStream.getAudioTracks();
+      audioTracks.forEach(track => {
+        track.enabled = !micActivo;
+      });
+      setMicActivo(!micActivo);
+      setMensajeEstado(!micActivo ? 'Micrófono Activado' : 'Micrófono Silenciado');
+      setTimeout(() => setMensajeEstado(''), 2500);
+    } else {
+      iniciarCamara();
+    }
+  };
+
+  // Alternar Cámara Real
+  const toggleCam = () => {
+    if (camActiva) {
+      detenerCamara();
+    } else {
+      iniciarCamara();
+    }
+  };
+
+  // Reconocimiento de Voz Real (Web Speech API)
+  useEffect(() => {
+    let recognition: any = null;
+    if (typeof window !== 'undefined' && transcribiendo) {
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = false;
+        recognition.lang = 'es-CL';
+
+        recognition.onresult = (event: any) => {
+          const current = event.resultIndex;
+          const transcriptText = event.results[current][0].transcript;
+          setTranscripcion(prev => [...prev, `Voz en vivo: "${transcriptText}"`]);
+        };
+
+        recognition.start();
+      } else {
+        setTranscripcion(prev => [...prev, 'Sistema: El navegador no soporta transcripción por voz directa. Se usará modo asistido.']);
+      }
+    }
+    return () => {
+      if (recognition) recognition.stop();
+    };
+  }, [transcribiendo]);
+
+  // Manejo de Carga Real de Archivos
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const nuevos: ArchivoAdjunto[] = [];
@@ -129,12 +183,11 @@ export default function SalaVirtualB2B({
         nuevos.push({
           nombre: f.name,
           tamano: sizeStr,
-          fecha: 'Recién subido'
+          fecha: 'Ahora'
         });
       });
       setArchivosSubidos(prev => [...prev, ...nuevos]);
-      setMensajeEstado(`${nuevos.length} archivo(s) cargado(s) exitosamente`);
-      setTranscripcion(prev => [...prev, `Sistema: Archivo adjuntado por usuario (${nuevos.map(n => n.nombre).join(', ')})`]);
+      setMensajeEstado(`${nuevos.length} archivo(s) subido(s) correctamente`);
       setTimeout(() => setMensajeEstado(''), 3000);
     }
   };
@@ -143,75 +196,39 @@ export default function SalaVirtualB2B({
     const borrado = archivosSubidos[index];
     setArchivosSubidos(prev => prev.filter((_, i) => i !== index));
     setMensajeEstado(`Archivo "${borrado.nombre}" eliminado`);
-    setTimeout(() => setMensajeEstado(''), 3000);
+    setTimeout(() => setMensajeEstado(''), 2500);
   };
 
-  const handleConfirmarReserva = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!nombre.trim() || !email.trim() || !fecha) {
-      alert('Por favor completa todos los campos requeridos.');
-      return;
-    }
-    setReservaConfirmada(true);
-  };
-
-  const handleConfirmarCancelacion = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!codigoReservaCancel.trim() || !emailCancel.trim()) {
-      alert('Por favor ingresa tu código de reserva y correo registrado.');
-      return;
-    }
-    setCanceladoExito(true);
-  };
-
-  const toggleMic = () => {
-    const nuevoEstado = !micActivo;
-    setMicActivo(nuevoEstado);
-    const msg = nuevoEstado ? 'Micrófono Activado' : 'Micrófono Silenciado';
-    setMensajeEstado(msg);
-    setTranscripcion(prev => [...prev, `Sistema: ${msg}`]);
-    setTimeout(() => setMensajeEstado(''), 3000);
-  };
-
-  const toggleCam = () => {
-    const nuevoEstado = !camActiva;
-    setCamActiva(nuevoEstado);
-    const msg = nuevoEstado ? 'Cámara Activada (Transmisión HD)' : 'Cámara Apagada';
-    setMensajeEstado(msg);
-    setTranscripcion(prev => [...prev, `Sistema: ${msg}`]);
-    setTimeout(() => setMensajeEstado(''), 3000);
-  };
-
-  const toggleTranscribir = () => {
-    const nuevoEstado = !transcribiendo;
-    setTranscribiendo(nuevoEstado);
-    if (nuevoEstado) {
-      setMensajeEstado('Transcripción automática activada en tiempo real');
+  // Activar/Desactivar Pantalla Completa Real
+  const togglePantallaCompleta = () => {
+    if (!esPantallaCompleta) {
+      if (containerRef.current?.requestFullscreen) {
+        containerRef.current.requestFullscreen();
+      }
+      setEsPantallaCompleta(true);
     } else {
-      setMensajeEstado('Transcripción pausada');
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+      setEsPantallaCompleta(false);
     }
-    setTimeout(() => setMensajeEstado(''), 3000);
   };
 
-  const copiarMinuta = () => {
-    navigator.clipboard.writeText(minuta);
-    setMensajeEstado('Minuta copiada al portapapeles');
-    setTimeout(() => setMensajeEstado(''), 3000);
-  };
+  if (!isOpen) return null;
 
-  const descargarMinutaTxt = () => {
-    const blob = new Blob([minuta], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `Minuta_Reunion_ASL_${new Date().toISOString().slice(0, 10)}.txt`;
-    link.click();
-    URL.revokeObjectURL(url);
-  };
+  const currentNombre = portalData?.nombre || initialApp || 'ASL Ideas SpA';
+  const currentLogo = portalData?.logo || appLogo || '/logo-asl.png.png';
+  const currentOficina = portalData?.oficinaNum || 'Oficina Virtual 01';
+  const currentSubtitulo = portalData?.subtitulo || 'Casa Matriz - Desarrollo B2B y Licencias Inclusivas';
+  const currentLeyes = portalData?.leyes || ['Ley TEA N° 21.545', 'Accesibilidad Cognitiva UI/UX'];
+  const currentDescLarga = portalData?.descripcionLarga || 'Especialistas en desarrollo de software accesible a medida.';
+  const currentServicios = portalData?.serviciosClave || ['Licencias B2B de Software', 'Vitrinas Virtuales PYME'];
+  const currentBeneficios = portalData?.beneficios || ['Entornos de baja carga sensorial', 'Cumplimiento normativo estricto'];
 
   return (
     <div className="fixed inset-0 z-50 bg-[#676E5E]/80 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
       <div 
+        ref={containerRef}
         className={`bg-[#E6E7D5] transition-all duration-300 ${
           esPantallaCompleta 
             ? 'w-full h-full rounded-none border-0 p-4 sm:p-8 space-y-6 overflow-y-auto' 
@@ -219,7 +236,7 @@ export default function SalaVirtualB2B({
         } text-[#676E5E]`}
       >
         
-        {/* Cabecera del Modal con Ícono de Pantalla Completa */}
+        {/* Cabecera del Modal con Pantalla Completa */}
         <div className="flex flex-wrap justify-between items-center border-b border-[#97A884]/40 pb-4 gap-2">
           <div className="flex items-center space-x-3">
             <img 
@@ -232,27 +249,24 @@ export default function SalaVirtualB2B({
                 {currentOficina} — {currentNombre}
               </span>
               <h3 className="text-base sm:text-xl font-extrabold text-[#676E5E] mt-0.5">
-                {modo === 'ficha' ? `Ficha Técnica: ${currentNombre}` : modo === 'videollamada' ? 'Sala Virtual Interactiva en Vivo' : modo === 'agendar' ? 'Agendar Reunión B2B' : 'Cancelar o Reprogramar Reunión'}
+                {modo === 'ficha' ? `Ficha Técnica: ${currentNombre}` : modo === 'videollamada' ? 'Sala Virtual Interactiva en Vivo' : modo === 'agendar' ? 'Agendar Reunión B2B' : 'Cancelar o Reprogramar'}
               </h3>
             </div>
           </div>
 
           <div className="flex items-center space-x-2">
-            
-            {/* Ícono/Botón de Cuadradito para Desplegar Pantalla Completa */}
             <button
               type="button"
-              onClick={() => setEsPantallaCompleta(!esPantallaCompleta)}
+              onClick={togglePantallaCompleta}
               className="text-xs font-bold text-[#676E5E] bg-white hover:bg-[#CDD6A9] px-3 py-1.5 rounded-xl border-2 border-[#97A884] transition cursor-pointer flex items-center gap-1.5 shadow-xs"
-              title={esPantallaCompleta ? 'Restaurar tamaño normal' : 'Desplegar en pantalla completa'}
             >
               <span className="text-sm font-black">🗖</span>
-              <span>{esPantallaCompleta ? 'Salir' : 'Pantalla Completa'}</span>
+              <span>{esPantallaCompleta ? 'Restaurar' : 'Pantalla Completa'}</span>
             </button>
 
             <button
               type="button"
-              onClick={onClose}
+              onClick={() => { detenerCamara(); onClose(); }}
               className="text-xs font-bold text-white bg-[#DC8D6C] hover:bg-[#c37858] px-3.5 py-1.5 rounded-xl transition cursor-pointer"
             >
               Cerrar
@@ -266,7 +280,7 @@ export default function SalaVirtualB2B({
             type="button"
             onClick={() => setModo('videollamada')}
             className={`flex-1 py-2 rounded-xl transition text-center cursor-pointer ${
-              modo === 'videollamada' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:text-[#676E5E]'
+              modo === 'videollamada' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E]'
             }`}
           >
             Sala en Vivo
@@ -275,7 +289,7 @@ export default function SalaVirtualB2B({
             type="button"
             onClick={() => setModo('ficha')}
             className={`flex-1 py-2 rounded-xl transition text-center cursor-pointer ${
-              modo === 'ficha' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:text-[#676E5E]'
+              modo === 'ficha' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E]'
             }`}
           >
             Ficha de Oficina
@@ -284,7 +298,7 @@ export default function SalaVirtualB2B({
             type="button"
             onClick={() => { setModo('agendar'); setReservaConfirmada(false); }}
             className={`flex-1 py-2 rounded-xl transition text-center cursor-pointer ${
-              modo === 'agendar' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:text-[#676E5E]'
+              modo === 'agendar' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E]'
             }`}
           >
             Agendar Cita
@@ -293,7 +307,7 @@ export default function SalaVirtualB2B({
             type="button"
             onClick={() => { setModo('cancelar'); setCanceladoExito(false); }}
             className={`flex-1 py-2 rounded-xl transition text-center cursor-pointer ${
-              modo === 'cancelar' ? 'bg-[#DC8D6C] text-white shadow-xs' : 'text-[#676E5E] hover:text-[#DC8D6C]'
+              modo === 'cancelar' ? 'bg-[#DC8D6C] text-white shadow-xs' : 'text-[#676E5E]'
             }`}
           >
             Cancelar/Reprogramar
@@ -304,62 +318,50 @@ export default function SalaVirtualB2B({
         {modo === 'videollamada' && (
           <div className="space-y-6 text-xs">
             {mensajeEstado && (
-              <div className="bg-[#CDD6A9] text-[#676E5E] p-2.5 rounded-xl font-bold text-center border border-[#97A884] animate-pulse">
+              <div className="bg-[#CDD6A9] text-[#676E5E] p-2.5 rounded-xl font-bold text-center border border-[#97A884]">
                 {mensajeEstado}
               </div>
             )}
 
-            {/* Pantalla de Video Interactivamente Simulada en Vivo */}
-            <div className={`bg-[#2D3227] rounded-3xl p-6 text-white text-center relative flex flex-col justify-between shadow-2xl border-2 border-[#97A884] ${esPantallaCompleta ? 'min-h-[420px]' : 'min-h-[300px]'}`}>
+            {/* Pantalla de Video Conectada a la Cámara Real */}
+            <div className={`bg-[#2D3227] rounded-3xl p-4 sm:p-6 text-white text-center relative flex flex-col justify-between shadow-2xl border-2 border-[#97A884] ${esPantallaCompleta ? 'min-h-[420px]' : 'min-h-[300px]'}`}>
               
               <div className="flex justify-between items-center text-[10px]">
                 <span className="bg-[#CDD6A9] text-[#676E5E] font-bold px-3 py-1 rounded-md border border-[#97A884] flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
-                  REC EN VIVO — Cifrado Ley N° 21.663
+                  <span className={`w-2.5 h-2.5 rounded-full ${camActiva ? 'bg-red-500 animate-ping' : 'bg-gray-400'}`}></span>
+                  {camActiva ? 'CÁMARA Y MICRÓFONO EN VIVO' : 'SALA EN ESPERA'}
                 </span>
-                <span className="text-[#CDD6A9] font-mono">Baja Carga Sensorial Ley TEA</span>
+                <span className="text-[#CDD6A9] font-mono">Cifrado Ley N° 21.663</span>
               </div>
 
-              {/* Visor Visual de Cámara */}
-              <div className="my-6 space-y-3">
-                <div className={`w-32 h-32 mx-auto rounded-3xl border-4 transition-all duration-300 p-2 flex items-center justify-center shadow-2xl relative overflow-hidden ${
-                  camActiva ? 'bg-gradient-to-b from-white to-[#E6E7D5] border-[#E6C693]' : 'bg-black/90 border-gray-700'
-                }`}>
-                  <img src={currentLogo} alt={currentNombre} className={`w-full h-full object-contain transition-opacity duration-300 ${camActiva ? 'opacity-100' : 'opacity-20'}`} />
-                  
-                  {camActiva ? (
-                    <span className="absolute bottom-2 right-2 bg-green-600 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-md border border-white">
-                      HD 1080p
-                    </span>
-                  ) : (
-                    <div className="absolute inset-0 bg-black/70 flex items-center justify-center text-[10px] font-bold text-white uppercase tracking-wider">
-                      Cámara Apagada
-                    </div>
-                  )}
-                </div>
+              {/* Reproductor de Video HTML5 NATIVO */}
+              <div className="my-4 relative max-w-xl mx-auto w-full aspect-video bg-black/90 rounded-2xl overflow-hidden border-2 border-[#E6C693] flex items-center justify-center">
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  muted
+                  className={`w-full h-full object-cover ${camActiva ? 'block' : 'hidden'}`}
+                />
 
-                <div>
-                  <p className="text-base font-extrabold text-white">{plataforma}</p>
-                  <p className="text-[10px] text-[#CDD6A9] uppercase tracking-wider font-semibold">Transmisión Interactiva B2B en Vivo</p>
-                </div>
-
-                {/* Indicadores de Micrófono y Cámara */}
-                <div className="flex justify-center items-center gap-4 text-[11px] text-[#CDD6A9] font-medium pt-1">
-                  <div className="flex items-center gap-1.5">
-                    <span>Micrófono:</span>
-                    <span className={`font-bold px-2.5 py-0.5 rounded-md text-[10px] ${micActivo ? 'bg-green-700 text-white' : 'bg-red-600 text-white'}`}>
-                      {micActivo ? 'Encendido' : 'Silenciado'}
-                    </span>
+                {!camActiva && (
+                  <div className="space-y-3 p-4">
+                    <img src={currentLogo} alt={currentNombre} className="w-16 h-16 mx-auto object-contain opacity-40" />
+                    <p className="text-xs font-bold text-white">La cámara web está apagada</p>
+                    <button
+                      type="button"
+                      onClick={iniciarCamara}
+                      className="bg-[#CDD6A9] text-[#676E5E] font-extrabold px-4 py-2 rounded-xl hover:bg-[#97A884] hover:text-white transition cursor-pointer text-xs"
+                    >
+                      Activar Cámara y Micrófono Real
+                    </button>
                   </div>
-                  <span>|</span>
-                  <div className="flex items-center gap-1.5">
-                    <span>Cámara:</span>
-                    <span className={`font-bold px-2.5 py-0.5 rounded-md text-[10px] ${camActiva ? 'bg-green-700 text-white' : 'bg-gray-600 text-white'}`}>
-                      {camActiva ? 'Transmitiendo HD' : 'Apagada'}
-                    </span>
-                  </div>
-                </div>
+                )}
               </div>
+
+              {errorCamara && (
+                <p className="text-red-400 text-[11px] font-bold pb-2">{errorCamara}</p>
+              )}
 
               {/* Botones de Control de la Sala */}
               <div className="flex flex-wrap justify-center gap-2.5 pt-3 border-t border-[#676E5E]/60">
@@ -367,28 +369,30 @@ export default function SalaVirtualB2B({
                   type="button"
                   onClick={toggleMic}
                   className={`px-4 py-2.5 rounded-2xl font-bold text-xs transition cursor-pointer shadow-sm ${
-                    micActivo ? 'bg-[#676E5E] hover:bg-[#52584b] text-white' : 'bg-[#DC8D6C] text-white font-extrabold'
+                    micActivo ? 'bg-green-700 text-white' : 'bg-[#DC8D6C] text-white'
                   }`}
                 >
-                  {micActivo ? 'Silenciar Micrófono' : 'Activar Micrófono'}
+                  {micActivo ? 'Micrófono Activado' : 'Activar Micrófono'}
                 </button>
+
                 <button
                   type="button"
                   onClick={toggleCam}
                   className={`px-4 py-2.5 rounded-2xl font-bold text-xs transition cursor-pointer shadow-sm ${
-                    camActiva ? 'bg-[#676E5E] hover:bg-[#52584b] text-white' : 'bg-[#DC8D6C] text-white font-extrabold'
+                    camActiva ? 'bg-green-700 text-white' : 'bg-[#676E5E] text-white hover:bg-[#52584b]'
                   }`}
                 >
                   {camActiva ? 'Apagar Cámara' : 'Encender Cámara'}
                 </button>
+
                 <button
                   type="button"
-                  onClick={toggleTranscribir}
+                  onClick={() => setTranscribiendo(!transcribiendo)}
                   className={`px-4 py-2.5 rounded-2xl font-bold text-xs transition cursor-pointer shadow-sm ${
-                    transcribiendo ? 'bg-[#E6C693] text-[#676E5E] font-extrabold animate-pulse' : 'bg-[#676E5E] text-white hover:bg-[#52584b]'
+                    transcribiendo ? 'bg-[#E6C693] text-[#676E5E] font-extrabold' : 'bg-[#676E5E] text-white hover:bg-[#52584b]'
                   }`}
                 >
-                  {transcribiendo ? 'Transcripción en Vivo...' : 'Transcribir Reunión'}
+                  {transcribiendo ? 'Transcribiendo Voz...' : 'Transcribir Reunión'}
                 </button>
               </div>
             </div>
@@ -396,7 +400,7 @@ export default function SalaVirtualB2B({
             {/* Módulos Interactivos: Archivos, Transcripción y Minuta */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
               
-              {/* 1. Módulo Adjuntar y Ver Archivos con Carga Real */}
+              {/* 1. Subida Real de Archivos */}
               <div className="bg-white p-4 sm:p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-2">
@@ -410,7 +414,6 @@ export default function SalaVirtualB2B({
                     </button>
                   </div>
 
-                  {/* Input de archivo real oculto */}
                   <input
                     type="file"
                     ref={fileInputRef}
@@ -421,7 +424,7 @@ export default function SalaVirtualB2B({
 
                   <div className="space-y-2 mt-3 max-h-40 overflow-y-auto pr-1">
                     {archivosSubidos.length === 0 ? (
-                      <p className="text-[11px] text-[#97A884] italic text-center py-4">No hay archivos adjuntos aún.</p>
+                      <p className="text-[11px] text-[#97A884] italic text-center py-4">Presiona "+ Subir Archivo" para adjuntar documentos.</p>
                     ) : (
                       archivosSubidos.map((f, i) => (
                         <div key={i} className="p-2.5 bg-[#E6E7D5]/70 rounded-2xl border border-[#97A884]/40 flex justify-between items-center text-[11px]">
@@ -430,11 +433,10 @@ export default function SalaVirtualB2B({
                             <span className="text-[9px] text-[#97A884] font-mono">{f.tamano} • {f.fecha}</span>
                           </div>
                           
-                          {/* Botón X funcional para eliminar archivo */}
                           <button
                             type="button"
                             onClick={() => eliminarArchivo(i)}
-                            className="w-6 h-6 rounded-full bg-red-100 hover:bg-red-600 text-red-600 hover:text-white font-black text-[11px] flex items-center justify-center transition cursor-pointer shrink-0"
+                            className="w-6 h-6 rounded-full bg-red-100 hover:bg-red-600 text-red-600 hover:text-white font-black text-[12px] flex items-center justify-center transition cursor-pointer shrink-0"
                             title="Eliminar este archivo"
                           >
                             ×
@@ -450,7 +452,7 @@ export default function SalaVirtualB2B({
                 </p>
               </div>
 
-              {/* 2. Módulo Transcripción en Vivo */}
+              {/* 2. Transcripción en Vivo por Voz */}
               <div className="bg-white p-4 sm:p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-2">
@@ -472,7 +474,7 @@ export default function SalaVirtualB2B({
                 </div>
 
                 <div className="flex justify-between items-center border-t border-[#97A884]/20 pt-2">
-                  <span className="text-[9px] text-[#97A884] font-semibold">Ley TEA N° 21.545 - Lectura Fácil</span>
+                  <span className="text-[9px] text-[#97A884] font-semibold">Ley TEA N° 21.545</span>
                   <button
                     type="button"
                     onClick={() => {
@@ -487,52 +489,32 @@ export default function SalaVirtualB2B({
                 </div>
               </div>
 
-              {/* 3. Módulo Minuta y Compromisos */}
+              {/* 3. Minuta y Notas */}
               <div className="bg-white p-4 sm:p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-2">
                     <h4 className="font-extrabold text-[#676E5E] text-xs uppercase tracking-wider">Minuta y Compromisos</h4>
-                    <div className="flex gap-1">
-                      <button
-                        type="button"
-                        onClick={copiarMinuta}
-                        className="bg-[#CDD6A9] text-[#676E5E] font-bold px-2 py-0.5 rounded-md text-[10px] cursor-pointer"
-                      >
-                        Copiar
-                      </button>
-                      <button
-                        type="button"
-                        onClick={descargarMinutaTxt}
-                        className="bg-[#676E5E] text-white font-bold px-2 py-0.5 rounded-md text-[10px] cursor-pointer"
-                      >
-                        Descargar
-                      </button>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const blob = new Blob([minuta], { type: 'text/plain;charset=utf-8' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'Minuta_ASL.txt';
+                        a.click();
+                      }}
+                      className="bg-[#676E5E] text-white font-bold px-2.5 py-1 rounded-lg text-[9px] cursor-pointer"
+                    >
+                      Descargar TXT
+                    </button>
                   </div>
 
                   <textarea
                     value={minuta}
                     onChange={(e) => setMinuta(e.target.value)}
-                    className="w-full h-40 p-3 bg-[#FAF8F5] border border-[#97A884] rounded-2xl text-[11px] text-[#676E5E] outline-none focus:border-[#676E5E] mt-3 font-medium leading-relaxed"
-                    placeholder="Escribe aquí los acuerdos de la reunión..."
+                    className="w-full h-40 p-3 bg-[#FAF8F5] border border-[#97A884] rounded-2xl text-[11px] text-[#676E5E] outline-none mt-3 font-medium leading-relaxed"
                   />
-                </div>
-
-                <div className="flex gap-2 pt-1">
-                  <button
-                    type="button"
-                    onClick={() => setMinuta(prev => prev + '\n- Se acuerda envío de cotización B2B.')}
-                    className="text-[9px] bg-[#E6E7D5] text-[#676E5E] font-bold px-2 py-1 rounded-lg border border-[#97A884]/40 hover:bg-[#CDD6A9] cursor-pointer"
-                  >
-                    + Cotización
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setMinuta(prev => prev + '\n- Se coordina prueba de software Ley TEA.')}
-                    className="text-[9px] bg-[#E6E7D5] text-[#676E5E] font-bold px-2 py-1 rounded-lg border border-[#97A884]/40 hover:bg-[#CDD6A9] cursor-pointer"
-                  >
-                    + Ley TEA
-                  </button>
                 </div>
               </div>
 
@@ -540,7 +522,7 @@ export default function SalaVirtualB2B({
           </div>
         )}
 
-        {/* MODO 0: FICHA DE LA OFICINA VIRTUAL */}
+        {/* MODO FICHA TÉCNICA */}
         {modo === 'ficha' && (
           <div className="bg-white p-6 rounded-3xl border-2 border-[#97A884] shadow-md space-y-6 text-xs">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#97A884]/30 pb-4">
@@ -556,38 +538,11 @@ export default function SalaVirtualB2B({
                   <p className="text-xs font-bold text-[#97A884] uppercase tracking-wider">{currentSubtitulo}</p>
                 </div>
               </div>
-              <div className="flex flex-wrap gap-1">
-                {currentLeyes.map((ley, i) => (
-                  <span key={i} className="text-[10px] font-bold bg-[#CDD6A9] text-[#676E5E] border border-[#97A884] px-2 py-0.5 rounded-md">
-                    {ley}
-                  </span>
-                ))}
-              </div>
             </div>
 
             <div className="space-y-2 bg-[#FAF8F5] p-4 rounded-2xl border border-[#97A884]/40">
               <h4 className="font-extrabold text-[#676E5E] uppercase tracking-wider text-[11px]">Reseña Oficial & Propósito</h4>
               <p className="text-xs text-[#676E5E]/90 leading-relaxed font-medium">{currentDescLarga}</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-[#E6E7D5]/60 p-4 rounded-2xl border border-[#97A884]/40 space-y-2">
-                <h4 className="font-extrabold text-[#676E5E] uppercase tracking-wider text-[10px]">Módulos y Servicios Clave:</h4>
-                <ul className="space-y-1 list-disc list-inside text-[#676E5E]">
-                  {currentServicios.map((s, idx) => (
-                    <li key={idx} className="font-medium">{s}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="bg-[#E6E7D5]/60 p-4 rounded-2xl border border-[#97A884]/40 space-y-2">
-                <h4 className="font-extrabold text-[#676E5E] uppercase tracking-wider text-[10px]">Beneficios Principales:</h4>
-                <ul className="space-y-1 list-disc list-inside text-[#676E5E]">
-                  {currentBeneficios.map((b, idx) => (
-                    <li key={idx} className="font-medium">{b}</li>
-                  ))}
-                </ul>
-              </div>
             </div>
 
             <div className="pt-2 flex flex-col sm:flex-row gap-3">
@@ -598,176 +553,8 @@ export default function SalaVirtualB2B({
               >
                 Ingresar a Sala Virtual en Vivo
               </button>
-              <button
-                type="button"
-                onClick={() => { setModo('agendar'); setReservaConfirmada(false); }}
-                className="bg-[#CDD6A9] text-[#676E5E] hover:bg-[#97A884] hover:text-white text-xs font-bold px-5 py-3 rounded-2xl transition shadow-xs cursor-pointer font-extrabold"
-              >
-                Agendar Cita B2B
-              </button>
             </div>
           </div>
-        )}
-
-        {/* MODO 2: AGENDAR REUNIÓN */}
-        {modo === 'agendar' && (
-          reservaConfirmada ? (
-            <div className="bg-white p-6 rounded-2xl border border-[#97A884] text-center space-y-4 shadow-xs">
-              <div className="w-12 h-12 mx-auto bg-[#CDD6A9] rounded-full flex items-center justify-center text-[#676E5E] font-extrabold text-sm border-2 border-[#97A884]">
-                OK
-              </div>
-              <h4 className="text-lg font-bold text-[#676E5E]">Video Reunión Agendada Exitosamente</h4>
-              <p className="text-xs text-[#676E5E] leading-relaxed">
-                Hemos registrado la cita para <strong>{nombre}</strong> ({email}). El acceso a la sala virtual para el día <strong>{fecha}</strong> a las <strong>{hora}</strong> se enviará a tu correo.
-              </p>
-              <button
-                type="button"
-                onClick={() => { setReservaConfirmada(false); setModo('videollamada'); }}
-                className="bg-[#676E5E] text-white text-xs font-bold px-6 py-2.5 rounded-xl hover:bg-[#52584b] transition cursor-pointer"
-              >
-                Ingresar a la Sala Virtual Ahora
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleConfirmarReserva} className="space-y-4 text-xs">
-              <div className="space-y-1">
-                <label className="font-bold text-[#676E5E] uppercase tracking-wider block">
-                  1. Selecciona la Aplicación o Unidad *
-                </label>
-                <select
-                  value={plataforma}
-                  onChange={(e) => setPlataforma(e.target.value)}
-                  className="w-full p-3 bg-white border border-[#97A884] rounded-xl text-[#676E5E] font-medium outline-none"
-                >
-                  <option value="1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)">1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)</option>
-                  <option value="2. LAWENMOLL Salud Integrativa">2. LAWENMOLL Salud Integrativa</option>
-                  <option value="3. Wellness Web App (Movimiento Adaptado)">3. Wellness Web App (Movimiento Adaptado)</option>
-                  <option value="4. Sabiduría Ancestral / Bienestar (Fitoterapia Nativa)">4. Sabiduría Ancestral / Bienestar (Fitoterapia Nativa)</option>
-                </select>
-              </div>
-
-              <div className="space-y-1">
-                <label className="font-bold text-[#676E5E] uppercase tracking-wider block">
-                  2. Motivo de la Cita *
-                </label>
-                <select
-                  value={motivo}
-                  onChange={(e) => setMotivo(e.target.value)}
-                  className="w-full p-3 bg-white border border-[#97A884] rounded-xl text-[#676E5E] font-medium outline-none"
-                >
-                  <option value="Videoreunión de Trabajo / Cotización de Vitrina B2B">Videoreunión de Trabajo / Cotización de Vitrina B2B</option>
-                  <option value="Demostración de Software Accesibilidad Cognitiva Ley TEA">Demostración de Software Accesibilidad Cognitiva Ley TEA</option>
-                  <option value="Consultoría Institucional B2B">Consultoría Institucional B2B</option>
-                </select>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="font-bold text-[#676E5E] uppercase tracking-wider block">Fecha *</label>
-                  <input
-                    type="date"
-                    value={fecha}
-                    onChange={(e) => setFecha(e.target.value)}
-                    className="w-full p-3 bg-white border border-[#97A884] rounded-xl text-[#676E5E] font-medium outline-none"
-                    required
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="font-bold text-[#676E5E] uppercase tracking-wider block">Bloque Horario *</label>
-                  <select
-                    value={hora}
-                    onChange={(e) => setHora(e.target.value)}
-                    className="w-full p-3 bg-white border border-[#97A884] rounded-xl text-[#676E5E] font-medium outline-none"
-                  >
-                    <option value="09:30 AM (Bloque Mañana)">09:30 AM (Bloque Mañana)</option>
-                    <option value="10:30 AM (Bloque Mañana)">10:30 AM (Bloque Mañana)</option>
-                    <option value="12:00 PM (Bloque Mediodía)">12:00 PM (Bloque Mediodía)</option>
-                    <option value="15:30 PM (Bloque Tarde)">15:30 PM (Bloque Tarde)</option>
-                    <option value="17:00 PM (Bloque Tarde)">17:00 PM (Bloque Tarde)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="font-bold text-[#676E5E] uppercase tracking-wider block">Nombre Completo / Empresa *</label>
-                  <input
-                    type="text"
-                    value={nombre}
-                    onChange={(e) => setNombre(e.target.value)}
-                    placeholder="Nombre o Institución..."
-                    className="w-full p-3 bg-white border border-[#97A884] rounded-xl text-[#676E5E] outline-none"
-                    required
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="font-bold text-[#676E5E] uppercase tracking-wider block">Correo Electrónico *</label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="contacto@aslideas.cl"
-                    className="w-full p-3 bg-white border border-[#97A884] rounded-xl text-[#676E5E] outline-none"
-                    required
-                  />
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-[#676E5E] hover:bg-[#52584b] text-white text-xs font-bold py-3.5 rounded-2xl transition shadow-md mt-4 cursor-pointer"
-              >
-                Confirmar y Agendar Reunión
-              </button>
-            </form>
-          )
-        )}
-
-        {/* MODO 3: CANCELAR O REPROGRAMAR */}
-        {modo === 'cancelar' && (
-          canceladoExito ? (
-            <div className="bg-white p-6 rounded-2xl border border-[#DC8D6C] text-center space-y-4 shadow-xs">
-              <h4 className="text-lg font-bold text-[#DC8D6C]">Solicitud de Cancelación Recibida</h4>
-              <p className="text-xs text-[#676E5E] leading-relaxed">
-                La reunión con código <strong>{codigoReservaCancel}</strong> para el correo <strong>{emailCancel}</strong> ha sido procesada.
-              </p>
-              <button
-                type="button"
-                onClick={() => { setCanceladoExito(false); onClose(); }}
-                className="bg-[#676E5E] text-white text-xs font-bold px-6 py-2.5 rounded-xl hover:bg-[#52584b] transition cursor-pointer"
-              >
-                Volver al Sitio
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleConfirmarCancelacion} className="space-y-4 text-xs">
-              <div className="space-y-1">
-                <label className="font-bold text-[#DC8D6C] uppercase tracking-wider block">Código de Reserva o RUT *</label>
-                <input
-                  type="text"
-                  value={codigoReservaCancel}
-                  onChange={(e) => setCodigoReservaCancel(e.target.value)}
-                  placeholder="Ej: ASL-8921"
-                  className="w-full p-3 bg-white border border-[#DC8D6C] rounded-xl text-[#676E5E] outline-none"
-                  required
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="font-bold text-[#DC8D6C] uppercase tracking-wider block">Correo Electrónico Registrado *</label>
-                <input
-                  type="email"
-                  value={emailCancel}
-                  onChange={(e) => setEmailCancel(e.target.value)}
-                  placeholder="contacto@aslideas.cl"
-                  className="w-full p-3 bg-white border border-[#DC8D6C] rounded-xl text-[#676E5E] outline-none"
-                  required
-                />
-              </div>
-              <button type="submit" className="w-full bg-[#DC8D6C] hover:bg-[#c37858] text-white font-bold py-3.5 rounded-2xl transition cursor-pointer">
-                Confirmar Cancelación o Reprogramación
-              </button>
-            </form>
-          )
         )}
 
       </div>
