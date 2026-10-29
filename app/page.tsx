@@ -21,7 +21,7 @@ export interface PortalItem {
 export default function HomePage() {
   const [selectedPortalId, setSelectedPortalId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [modalInitialMode, setModalInitialMode] = useState<'agendar' | 'cancelar' | 'videollamada'>('videollamada');
+  const [modalInitialMode, setModalInitialMode] = useState<'ficha' | 'videollamada' | 'agendar' | 'cancelar'>('ficha');
   const [mostrarGuiaInstalacion, setMostrarGuiaInstalacion] = useState(false);
   const [cargandoDescarga, setCargandoDescarga] = useState(false);
 
@@ -83,7 +83,7 @@ export default function HomePage() {
     },
   ];
 
-  const handleOpenPortal = (id?: string, mode: 'agendar' | 'cancelar' | 'videollamada' = 'videollamada') => {
+  const handleOpenPortal = (id?: string, mode: 'ficha' | 'videollamada' | 'agendar' | 'cancelar' = 'ficha') => {
     setSelectedPortalId(id ?? 'asl-ideas-b2b');
     setModalInitialMode(mode);
     setIsModalOpen(true);
@@ -95,7 +95,7 @@ export default function HomePage() {
     setCargandoDescarga(true);
     setTimeout(() => {
       setCargandoDescarga(false);
-      handleOpenPortal(id, 'videollamada');
+      handleOpenPortal(id, 'ficha');
     }, 1200);
   };
 
@@ -144,7 +144,7 @@ export default function HomePage() {
                     <button
                       key={p.id}
                       type="button"
-                      onClick={() => handleOpenPortal(p.id, 'videollamada')}
+                      onClick={() => handleOpenPortal(p.id, 'ficha')}
                       className="w-full text-left px-3 py-2 hover:bg-[#CDD6A9]/30 text-[#676E5E] font-medium flex items-center gap-2 border-b border-[#E6E7D5]/50 last:border-0 cursor-pointer"
                     >
                       <img src={p.logo} alt="" className="w-5 h-5 object-contain rounded-md border border-[#97A884]" />
@@ -382,10 +382,10 @@ export default function HomePage() {
               <div className="pt-2 border-t border-[#97A884]/30 flex items-center justify-between gap-3">
                 <button
                   type="button"
-                  onClick={() => handleOpenPortal(portal.id, 'videollamada')}
+                  onClick={() => handleOpenPortal(portal.id, 'ficha')}
                   className="flex-1 bg-[#676E5E] hover:bg-[#52584b] text-white text-xs font-bold py-3 rounded-2xl transition shadow-sm text-center cursor-pointer"
                 >
-                  Ingresar a Sala
+                  Ver Ficha / Ingresar
                 </button>
                 <button
                   type="button"

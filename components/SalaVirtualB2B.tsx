@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export interface PortalInfo {
   id: string;
@@ -20,7 +20,7 @@ export interface SalaVirtualB2BProps {
   isOpen: boolean;
   onClose: () => void;
   portalData?: PortalInfo;
-  initialMode?: 'agendar' | 'cancelar' | 'videollamada';
+  initialMode?: 'ficha' | 'videollamada' | 'agendar' | 'cancelar';
   initialApp?: string;
   appLogo?: string;
 }
@@ -29,11 +29,18 @@ export default function SalaVirtualB2B({
   isOpen,
   onClose,
   portalData,
-  initialMode = 'videollamada',
+  initialMode = 'ficha',
   initialApp,
   appLogo,
 }: SalaVirtualB2BProps) {
-  const [modo, setModo] = useState<'agendar' | 'cancelar' | 'videollamada'>(initialMode);
+  const [modo, setModo] = useState<'ficha' | 'videollamada' | 'agendar' | 'cancelar'>(initialMode);
+
+  useEffect(() => {
+    if (isOpen) {
+      setModo(initialMode);
+    }
+  }, [isOpen, initialMode]);
+
   const [plataforma, setPlataforma] = useState<string>(
     portalData?.nombre || initialApp || '1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)'
   );
@@ -67,6 +74,15 @@ export default function SalaVirtualB2B({
   const [canceladoExito, setCanceladoExito] = useState(false);
 
   if (!isOpen) return null;
+
+  const currentNombre = portalData?.nombre || initialApp || 'ASL Ideas SpA';
+  const currentLogo = portalData?.logo || appLogo || '/logo-asl.png.png';
+  const currentOficina = portalData?.oficinaNum || 'Oficina Virtual 01';
+  const currentSubtitulo = portalData?.subtitulo || 'Casa Matriz - Desarrollo B2B y Licencias Inclusivas';
+  const currentLeyes = portalData?.leyes || ['Ley TEA N° 21.545', 'Accesibilidad Cognitiva UI/UX'];
+  const currentDescLarga = portalData?.descripcionLarga || 'Especialistas en desarrollo de software accesible a medida para municipalidades, empresas e instituciones de salud. Creamos vitrinas virtuales y entornos digitales amables con baja carga sensorial.';
+  const currentServicios = portalData?.serviciosClave || ['Licencias B2B de Software', 'Vitrinas Virtuales PYME', 'Consultoría UI/UX en Ley TEA'];
+  const currentBeneficios = portalData?.beneficios || ['Entornos de baja carga sensorial', 'Integración ágil con Supabase', 'Cumplimiento normativo estricto'];
 
   const handleConfirmarReserva = (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,16 +154,16 @@ export default function SalaVirtualB2B({
         <div className="flex justify-between items-center border-b border-[#97A884]/40 pb-4">
           <div className="flex items-center space-x-3">
             <img 
-              src="/logo-asl.png.png" 
-              alt="Logo ASL Ideas" 
-              className="w-10 h-10 object-contain rounded-xl border-2 border-[#E6C693] bg-white p-0.5 shadow-xs" 
+              src={currentLogo} 
+              alt={`Logo ${currentNombre}`} 
+              className="w-10 h-10 object-contain rounded-xl border-2 border-[#E6C693] bg-white p-0.5 shadow-xs shrink-0" 
             />
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-3 py-0.5 rounded-full border border-[#97A884]">
-                Sala Virtual B2B
+                {currentOficina} — {currentNombre}
               </span>
               <h3 className="text-lg sm:text-xl font-extrabold text-[#676E5E] mt-0.5">
-                {modo === 'videollamada' ? 'Sala Virtual Interactiva en Vivo' : modo === 'agendar' ? 'Agendar Reunión B2B' : 'Cancelar o Reprogramar Reunión'}
+                {modo === 'ficha' ? `Ficha Técnica: ${currentNombre}` : modo === 'videollamada' ? 'Sala Virtual Interactiva en Vivo' : modo === 'agendar' ? 'Agendar Reunión B2B' : 'Cancelar o Reprogramar Reunión'}
               </h3>
             </div>
           </div>
@@ -161,11 +177,20 @@ export default function SalaVirtualB2B({
         </div>
 
         {/* Pestañas de Navegación del Modal */}
-        <div className="flex bg-[#CDD6A9]/50 p-1 rounded-2xl border border-[#97A884] text-xs font-bold gap-1">
+        <div className="flex flex-wrap sm:flex-nowrap bg-[#CDD6A9]/50 p-1 rounded-2xl border border-[#97A884] text-xs font-bold gap-1">
+          <button
+            type="button"
+            onClick={() => setModo('ficha')}
+            className={`flex-1 py-2 rounded-xl transition text-center cursor-pointer ${
+              modo === 'ficha' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:text-[#676E5E]'
+            }`}
+          >
+            Ficha de Oficina
+          </button>
           <button
             type="button"
             onClick={() => setModo('videollamada')}
-            className={`flex-1 py-2.5 rounded-xl transition text-center cursor-pointer ${
+            className={`flex-1 py-2 rounded-xl transition text-center cursor-pointer ${
               modo === 'videollamada' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:text-[#676E5E]'
             }`}
           >
@@ -174,7 +199,7 @@ export default function SalaVirtualB2B({
           <button
             type="button"
             onClick={() => { setModo('agendar'); setReservaConfirmada(false); }}
-            className={`flex-1 py-2.5 rounded-xl transition text-center cursor-pointer ${
+            className={`flex-1 py-2 rounded-xl transition text-center cursor-pointer ${
               modo === 'agendar' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:text-[#676E5E]'
             }`}
           >
@@ -183,13 +208,85 @@ export default function SalaVirtualB2B({
           <button
             type="button"
             onClick={() => { setModo('cancelar'); setCanceladoExito(false); }}
-            className={`flex-1 py-2.5 rounded-xl transition text-center cursor-pointer ${
+            className={`flex-1 py-2 rounded-xl transition text-center cursor-pointer ${
               modo === 'cancelar' ? 'bg-[#DC8D6C] text-white shadow-xs' : 'text-[#676E5E] hover:text-[#DC8D6C]'
             }`}
           >
-            Cancelar o Reprogramar
+            Cancelar/Reprogramar
           </button>
         </div>
+
+        {/* MODO 0: FICHA DE LA OFICINA VIRTUAL */}
+        {modo === 'ficha' && (
+          <div className="bg-white p-6 rounded-3xl border-2 border-[#97A884] shadow-md space-y-6 text-xs">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#97A884]/30 pb-4">
+              <div className="flex items-center space-x-4">
+                <div className="w-16 h-16 rounded-2xl border-2 border-[#E6C693] p-1 overflow-hidden bg-white shrink-0 shadow-sm flex items-center justify-center">
+                  <img src={currentLogo} alt={currentNombre} className="w-full h-full object-contain" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-2.5 py-0.5 rounded-md border border-[#97A884]">
+                    {currentOficina}
+                  </span>
+                  <h3 className="text-xl font-black text-[#676E5E] mt-1">{currentNombre}</h3>
+                  <p className="text-xs font-bold text-[#97A884] uppercase tracking-wider">{currentSubtitulo}</p>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-1">
+                {currentLeyes.map((ley, i) => (
+                  <span key={i} className="text-[10px] font-bold bg-[#CDD6A9] text-[#676E5E] border border-[#97A884] px-2 py-0.5 rounded-md">
+                    {ley}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Reseña Completa y Propósito */}
+            <div className="space-y-2 bg-[#FAF8F5] p-4 rounded-2xl border border-[#97A884]/40">
+              <h4 className="font-extrabold text-[#676E5E] uppercase tracking-wider text-[11px]">Reseña Oficial & Propósito</h4>
+              <p className="text-xs text-[#676E5E]/90 leading-relaxed font-medium">{currentDescLarga}</p>
+            </div>
+
+            {/* Servicios y Beneficios Clave */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-[#E6E7D5]/60 p-4 rounded-2xl border border-[#97A884]/40 space-y-2">
+                <h4 className="font-extrabold text-[#676E5E] uppercase tracking-wider text-[10px]">Módulos y Servicios Clave:</h4>
+                <ul className="space-y-1 list-disc list-inside text-[#676E5E]">
+                  {currentServicios.map((s, idx) => (
+                    <li key={idx} className="font-medium">{s}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="bg-[#E6E7D5]/60 p-4 rounded-2xl border border-[#97A884]/40 space-y-2">
+                <h4 className="font-extrabold text-[#676E5E] uppercase tracking-wider text-[10px]">Beneficios Principales:</h4>
+                <ul className="space-y-1 list-disc list-inside text-[#676E5E]">
+                  {currentBeneficios.map((b, idx) => (
+                    <li key={idx} className="font-medium">{b}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Acciones Directas */}
+            <div className="pt-2 flex flex-col sm:flex-row gap-3">
+              <button
+                type="button"
+                onClick={() => setModo('videollamada')}
+                className="flex-1 bg-[#676E5E] hover:bg-[#52584b] text-white text-xs font-bold py-3 rounded-2xl transition shadow-sm text-center cursor-pointer"
+              >
+                Ingresar a Sala Virtual en Vivo
+              </button>
+              <button
+                type="button"
+                onClick={() => { setModo('agendar'); setReservaConfirmada(false); }}
+                className="bg-[#CDD6A9] text-[#676E5E] hover:bg-[#97A884] hover:text-white text-xs font-bold px-5 py-3 rounded-2xl transition shadow-xs cursor-pointer font-extrabold"
+              >
+                Agendar Reunión B2B
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* MODO 1: VIDEOLLAMADA INTERACTIVA */}
         {modo === 'videollamada' && (
@@ -211,7 +308,7 @@ export default function SalaVirtualB2B({
               {/* Pantalla con Logo de Carga ASL */}
               <div className="my-4 space-y-3">
                 <div className="w-24 h-24 mx-auto bg-white rounded-2xl border-2 border-[#E6C693] p-2 flex items-center justify-center shadow-md">
-                  <img src="/logo-asl.png.png" alt="Logo ASL Ideas Web App" className="w-full h-full object-contain" />
+                  <img src={currentLogo} alt={currentNombre} className="w-full h-full object-contain" />
                 </div>
                 <div>
                   <p className="text-sm font-bold text-white">{plataforma}</p>
