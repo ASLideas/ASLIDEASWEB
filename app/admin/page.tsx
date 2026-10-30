@@ -28,7 +28,7 @@ interface GastoCajaChica {
 }
 
 export default function AdminPage() {
-  const [seccion, setSeccion] = useState<'estadisticas' | 'contabilidad' | 'cajachica' | 'notas' | 'reporte'>('cajachica');
+  const [seccion, setSeccion] = useState<'estadisticas' | 'contabilidad' | 'cajachica' | 'notas' | 'pyme' | 'reporte'>('estadisticas');
 
   // Estado Libro Contable
   const [transacciones, setTransacciones] = useState<Transaccion[]>([
@@ -52,6 +52,28 @@ export default function AdminPage() {
       concepto: 'Fichas Clínicas SOAP y Consultas Salud Integrativa',
       monto: 850000,
       comprobante: 'Boleta N° 4501',
+      estado: 'Pagado',
+    },
+    {
+      id: '3',
+      fecha: '2026-10-22',
+      app: 'wellness',
+      tipo: 'ingreso',
+      categoria: 'Suscripción',
+      concepto: 'Membresías Programa Movimiento Adaptado',
+      monto: 420000,
+      comprobante: 'Transbank Voucher #882',
+      estado: 'Pagado',
+    },
+    {
+      id: '4',
+      fecha: '2026-10-25',
+      app: 'casamatriz',
+      tipo: 'egreso',
+      categoria: 'Servidores / TI',
+      concepto: 'Infraestructura Cloud Vercel y Supabase',
+      monto: 145000,
+      comprobante: 'Factura Vercel Inc. #992',
       estado: 'Pagado',
     },
   ]);
@@ -80,7 +102,7 @@ export default function AdminPage() {
     },
   ]);
 
-  // Formulario y Estados de Edición de Caja Chica
+  // Formulario de Caja Chica
   const [editandoCajaId, setEditandoCajaId] = useState<string | null>(null);
   const [respCaja, setRespCaja] = useState('');
   const [motivoCaja, setMotivoCaja] = useState('');
@@ -89,22 +111,21 @@ export default function AdminPage() {
   const [obsCaja, setObsCaja] = useState('');
   const [archivoAdjunto, setArchivoAdjunto] = useState<FileList | null>(null);
 
-  // Estado Notas
+  // Estado Bitácora y Notas
   const [notasList, setNotasList] = useState<string[]>([
     'Nota Contable 01: Revisión de facturación electrónica mensual con S.I.I.',
+    'Nota de Respaldo 02: Declaración de inicio de actividades SpA en Servicio de Impuestos Internos.'
   ]);
   const [nuevaNota, setNuevaNota] = useState('');
 
   // Previsualizador de Archivos (Modal)
   const [archivoPrevisualizar, setArchivoPrevisualizar] = useState<{ url: string; nombre: string } | null>(null);
 
-  // Funciones para Eliminar y Editar en Caja Chica
+  // Funciones Caja Chica
   const eliminarGastoCajaChica = (id: string) => {
     if (confirm('¿Estás seguro de eliminar este registro de Caja Chica?')) {
       setCajaChicaList(prev => prev.filter(c => c.id !== id));
-      if (editandoCajaId === id) {
-        cancelarEdicionCaja();
-      }
+      if (editandoCajaId === id) cancelarEdicionCaja();
     }
   };
 
@@ -134,12 +155,12 @@ export default function AdminPage() {
     let urlObj = '';
     let nombreArchivo = '';
     if (archivoAdjunto && archivoAdjunto.length > 0) {
-      urlObj = URL.createObjectURL(archivoAdjunto[0]);
-      nombreArchivo = archivoAdjunto[0].name;
+      const file = archivoAdjunto[0];
+      urlObj = URL.createObjectURL(file);
+      nombreArchivo = file.name;
     }
 
     if (editandoCajaId) {
-      // Guardar Edición
       setCajaChicaList(prev =>
         prev.map(item => {
           if (item.id === editandoCajaId) {
@@ -161,7 +182,6 @@ export default function AdminPage() {
       );
       cancelarEdicionCaja();
     } else {
-      // Crear Nuevo Registro
       const nuevoGasto: GastoCajaChica = {
         id: Date.now().toString(),
         fecha: new Date().toISOString().split('T')[0],
@@ -179,19 +199,11 @@ export default function AdminPage() {
     }
   };
 
-  // Cálculos Financieros
-  const transaccionesValidas = transacciones.filter(t => t.estado !== 'Anulado');
-  const totalIngresos = transaccionesValidas.filter(t => t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0);
-  const totalEgresos = transaccionesValidas.filter(t => t.tipo === 'egreso').reduce((a, c) => a + c.monto, 0);
-  const totalCajaChicaUsado = cajaChicaList.reduce((a, c) => a + c.monto, 0);
-  const saldoCajaChicaDisponible = fondoCajaChica - totalCajaChicaUsado;
-  const balanceNetoGlobal = totalIngresos - (totalEgresos + totalCajaChicaUsado);
-
-  const ingresosPorApp = {
-    casamatriz: transaccionesValidas.filter(t => t.app === 'casamatriz' && t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0),
-    lawenmoll: transaccionesValidas.filter(t => t.app === 'lawenmoll' && t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0),
-    wellness: transaccionesValidas.filter(t => t.app === 'wellness' && t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0),
-    bienestar: transaccionesValidas.filter(t => t.app === 'bienestar' && t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0),
+  // Funciones Libro Diario
+  const eliminarTransaccion = (id: string) => {
+    if (confirm('¿Estás seguro de anular/eliminar este registro contable?')) {
+      setTransacciones(prev => prev.filter(t => t.id !== id));
+    }
   };
 
   const handleAgregarTransaccion = (e: React.FormEvent) => {
@@ -222,6 +234,23 @@ export default function AdminPage() {
     }
   };
 
+  // Cálculos Financieros Generales
+  const transaccionesValidas = transacciones.filter(t => t.estado !== 'Anulado');
+  const totalIngresos = transaccionesValidas.filter(t => t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0);
+  const totalEgresos = transaccionesValidas.filter(t => t.tipo === 'egreso').reduce((a, c) => a + c.monto, 0);
+  const totalCajaChicaUsado = cajaChicaList.reduce((a, c) => a + c.monto, 0);
+  const saldoCajaChicaDisponible = fondoCajaChica - totalCajaChicaUsado;
+  const balanceNetoGlobal = totalIngresos - (totalEgresos + totalCajaChicaUsado);
+
+  const ingresosPorApp = {
+    casamatriz: transaccionesValidas.filter(t => t.app === 'casamatriz' && t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0),
+    lawenmoll: transaccionesValidas.filter(t => t.app === 'lawenmoll' && t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0),
+    wellness: transaccionesValidas.filter(t => t.app === 'wellness' && t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0),
+    bienestar: transaccionesValidas.filter(t => t.app === 'bienestar' && t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0),
+  };
+
+  const maxIngresoApp = Math.max(ingresosPorApp.casamatriz, ingresosPorApp.lawenmoll, ingresosPorApp.wellness, ingresosPorApp.bienestar, 1);
+
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#676E5E] p-3 sm:p-8">
       <div className="max-w-6xl mx-auto bg-[#E6E7D5] rounded-3xl border-2 border-[#97A884] shadow-xl overflow-hidden flex flex-col">
@@ -234,7 +263,7 @@ export default function AdminPage() {
             </div>
             <div>
               <span className="text-[10px] font-extrabold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-2.5 py-0.5 rounded-full border border-[#97A884]">
-                ASL Core Center — Consola Financiera
+                ASL Core Center — Consola Financiera & Operaciones
               </span>
               <h1 className="text-lg sm:text-2xl font-black text-[#676E5E] mt-0.5">Control Contable & Flujo de Caja</h1>
             </div>
@@ -256,23 +285,23 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* Menú de Navegación Contable */}
+        {/* Menú de Navegación Contable y PYME */}
         <div className="p-4 bg-[#CDD6A9]/40 border-b border-[#97A884]/30">
           <div className="flex flex-wrap bg-white/70 p-1.5 rounded-2xl border border-[#97A884] text-xs font-bold gap-1">
             <button
               type="button"
               onClick={() => setSeccion('estadisticas')}
               className={`flex-1 py-2.5 rounded-xl transition font-black cursor-pointer ${
-                seccion === 'estadisticas' ? 'bg-[#676E5E] text-white' : 'text-[#676E5E] hover:bg-white/80'
+                seccion === 'estadisticas' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:bg-white/80'
               }`}
             >
-              📊 Estadísticas
+              📊 Gráficos & Estadísticas
             </button>
             <button
               type="button"
               onClick={() => setSeccion('contabilidad')}
               className={`flex-1 py-2.5 rounded-xl transition font-black cursor-pointer ${
-                seccion === 'contabilidad' ? 'bg-[#676E5E] text-white' : 'text-[#676E5E] hover:bg-white/80'
+                seccion === 'contabilidad' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:bg-white/80'
               }`}
             >
               📖 Libro Diario
@@ -281,7 +310,7 @@ export default function AdminPage() {
               type="button"
               onClick={() => setSeccion('cajachica')}
               className={`flex-1 py-2.5 rounded-xl transition font-black cursor-pointer ${
-                seccion === 'cajachica' ? 'bg-[#676E5E] text-white' : 'text-[#676E5E] hover:bg-white/80'
+                seccion === 'cajachica' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:bg-white/80'
               }`}
             >
               ✈️ Caja Chica & Documentos
@@ -290,16 +319,25 @@ export default function AdminPage() {
               type="button"
               onClick={() => setSeccion('notas')}
               className={`flex-1 py-2.5 rounded-xl transition font-black cursor-pointer ${
-                seccion === 'notas' ? 'bg-[#676E5E] text-white' : 'text-[#676E5E] hover:bg-white/80'
+                seccion === 'notas' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:bg-white/80'
               }`}
             >
-              📝 Notas de Respaldo
+              📝 Bitácora & Respaldos
+            </button>
+            <button
+              type="button"
+              onClick={() => setSeccion('pyme')}
+              className={`flex-1 py-2.5 rounded-xl transition font-black cursor-pointer ${
+                seccion === 'pyme' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:bg-white/80'
+              }`}
+            >
+              🏛️ Trámites & Herramientas PYME
             </button>
             <button
               type="button"
               onClick={() => setSeccion('reporte')}
               className={`flex-1 py-2.5 rounded-xl transition font-black cursor-pointer ${
-                seccion === 'reporte' ? 'bg-[#676E5E] text-white' : 'text-[#676E5E] hover:bg-white/80'
+                seccion === 'reporte' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:bg-white/80'
               }`}
             >
               📄 Reporte PDF
@@ -310,9 +348,11 @@ export default function AdminPage() {
         {/* CONTENIDO PRINCIPAL */}
         <div className="p-5 sm:p-8 space-y-6">
 
-          {/* MÓDULO ESTADÍSTICAS */}
+          {/* MÓDULO 1: ESTADÍSTICAS Y GRÁFICOS VISUALES */}
           {seccion === 'estadisticas' && (
             <div className="space-y-6 text-xs">
+              
+              {/* Tarjetas Informativas */}
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                 <div className="p-4 bg-white rounded-2xl border-2 border-[#97A884] text-center shadow-xs">
                   <span className="text-[10px] font-bold uppercase text-[#97A884]">1. Casa Matriz B2B</span>
@@ -331,10 +371,144 @@ export default function AdminPage() {
                   <p className="text-lg font-black text-green-800 mt-1">$ {ingresosPorApp.bienestar.toLocaleString('es-CL')} CLP</p>
                 </div>
               </div>
+
+              {/* GRÁFICO VISUAL DE BARRAS DE INGRESOS POR APP */}
+              <div className="bg-white p-6 rounded-3xl border-2 border-[#97A884] space-y-4 shadow-sm">
+                <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-3">
+                  <h3 className="font-extrabold text-xs uppercase tracking-wider text-[#676E5E]">
+                    📊 Gráfico de Ingresos por Unidad de Negocio (CLP)
+                  </h3>
+                  <span className="text-[10px] bg-[#CDD6A9] text-[#676E5E] px-2.5 py-0.5 rounded-full font-bold">
+                    Actualizado en Tiempo Real
+                  </span>
+                </div>
+
+                {/* Contenedor del Gráfico de Barras SVG */}
+                <div className="h-56 w-full flex items-end justify-around pt-6 pb-2 px-4 bg-[#FAF8F5] rounded-2xl border border-[#97A884]/40">
+                  
+                  {/* Barra 1: Casa Matriz */}
+                  <div className="flex flex-col items-center h-full justify-end w-1/5 group">
+                    <span className="text-[10px] font-bold text-emerald-800 mb-1 opacity-90 font-mono">
+                      $ {ingresosPorApp.casamatriz.toLocaleString('es-CL')}
+                    </span>
+                    <div 
+                      className="w-full bg-emerald-700 rounded-t-xl transition-all duration-500 shadow-md group-hover:bg-emerald-800"
+                      style={{ height: `${Math.max((ingresosPorApp.casamatriz / maxIngresoApp) * 100, 8)}%` }}
+                    />
+                    <span className="text-[10px] font-extrabold text-[#676E5E] mt-2 text-center truncate w-full">
+                      Casa Matriz B2B
+                    </span>
+                  </div>
+
+                  {/* Barra 2: LAWENMOLL */}
+                  <div className="flex flex-col items-center h-full justify-end w-1/5 group">
+                    <span className="text-[10px] font-bold text-teal-800 mb-1 opacity-90 font-mono">
+                      $ {ingresosPorApp.lawenmoll.toLocaleString('es-CL')}
+                    </span>
+                    <div 
+                      className="w-full bg-teal-600 rounded-t-xl transition-all duration-500 shadow-md group-hover:bg-teal-700"
+                      style={{ height: `${Math.max((ingresosPorApp.lawenmoll / maxIngresoApp) * 100, 8)}%` }}
+                    />
+                    <span className="text-[10px] font-extrabold text-[#676E5E] mt-2 text-center truncate w-full">
+                      LAWENMOLL
+                    </span>
+                  </div>
+
+                  {/* Barra 3: Wellness Web App */}
+                  <div className="flex flex-col items-center h-full justify-end w-1/5 group">
+                    <span className="text-[10px] font-bold text-amber-800 mb-1 opacity-90 font-mono">
+                      $ {ingresosPorApp.wellness.toLocaleString('es-CL')}
+                    </span>
+                    <div 
+                      className="w-full bg-amber-600 rounded-t-xl transition-all duration-500 shadow-md group-hover:bg-amber-700"
+                      style={{ height: `${Math.max((ingresosPorApp.wellness / maxIngresoApp) * 100, 8)}%` }}
+                    />
+                    <span className="text-[10px] font-extrabold text-[#676E5E] mt-2 text-center truncate w-full">
+                      Wellness App
+                    </span>
+                  </div>
+
+                  {/* Barra 4: Bienestar Ancestral */}
+                  <div className="flex flex-col items-center h-full justify-end w-1/5 group">
+                    <span className="text-[10px] font-bold text-olive-800 mb-1 opacity-90 font-mono">
+                      $ {ingresosPorApp.bienestar.toLocaleString('es-CL')}
+                    </span>
+                    <div 
+                      className="w-full bg-[#676E5E] rounded-t-xl transition-all duration-500 shadow-md group-hover:bg-[#52584b]"
+                      style={{ height: `${Math.max((ingresosPorApp.bienestar / maxIngresoApp) * 100, 8)}%` }}
+                    />
+                    <span className="text-[10px] font-extrabold text-[#676E5E] mt-2 text-center truncate w-full">
+                      Bienestar
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+
+              {/* GRÁFICO DE MARGEN OPERATIVO Y PARTICIPACIÓN */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3">
+                  <h3 className="font-extrabold text-xs uppercase tracking-wider text-[#676E5E]">
+                    📈 Comparativa Flujo de Caja
+                  </h3>
+                  <div className="space-y-2 font-mono text-xs">
+                    <div>
+                      <div className="flex justify-between font-bold mb-1">
+                        <span>Ingresos Totales</span>
+                        <span className="text-green-700">$ {totalIngresos.toLocaleString('es-CL')}</span>
+                      </div>
+                      <div className="w-full bg-gray-200 h-3 rounded-full overflow-hidden">
+                        <div className="bg-green-600 h-full w-full" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="flex justify-between font-bold mb-1">
+                        <span>Gastos Operativos & Caja Chica</span>
+                        <span className="text-red-600">$ {(totalEgresos + totalCajaChicaUsado).toLocaleString('es-CL')}</span>
+                      </div>
+                      <div className="w-full bg-gray-200 h-3 rounded-full overflow-hidden">
+                        <div 
+                          className="bg-red-500 h-full" 
+                          style={{ width: `${totalIngresos > 0 ? ((totalEgresos + totalCajaChicaUsado) / totalIngresos) * 100 : 0}%` }} 
+                        />
+                      </div>
+                    </div>
+
+                    <div className="pt-2 border-t border-[#97A884]/30">
+                      <div className="flex justify-between font-extrabold text-sm">
+                        <span>Margen Neto Disponible</span>
+                        <span className="text-[#676E5E]">$ {balanceNetoGlobal.toLocaleString('es-CL')}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3">
+                  <h3 className="font-extrabold text-xs uppercase tracking-wider text-[#676E5E]">
+                    🍩 Porcentaje de Participación de Ventas
+                  </h3>
+                  <div className="w-full bg-gray-200 h-8 rounded-xl overflow-hidden flex font-bold text-[10px] text-white">
+                    <div style={{ width: `${totalIngresos > 0 ? (ingresosPorApp.casamatriz / totalIngresos) * 100 : 25}%` }} className="bg-emerald-700 flex items-center justify-center">
+                      B2B ({Math.round(totalIngresos > 0 ? (ingresosPorApp.casamatriz / totalIngresos) * 100 : 0)}%)
+                    </div>
+                    <div style={{ width: `${totalIngresos > 0 ? (ingresosPorApp.lawenmoll / totalIngresos) * 100 : 25}%` }} className="bg-teal-600 flex items-center justify-center">
+                      LAWENMOLL ({Math.round(totalIngresos > 0 ? (ingresosPorApp.lawenmoll / totalIngresos) * 100 : 0)}%)
+                    </div>
+                    <div style={{ width: `${totalIngresos > 0 ? (ingresosPorApp.wellness / totalIngresos) * 100 : 25}%` }} className="bg-amber-600 flex items-center justify-center">
+                      Wellness ({Math.round(totalIngresos > 0 ? (ingresosPorApp.wellness / totalIngresos) * 100 : 0)}%)
+                    </div>
+                  </div>
+                  <p className="text-[10px] text-gray-500 italic pt-2">
+                    *Métrica consolidada conforme a las normas contables de la empresa.
+                  </p>
+                </div>
+              </div>
+
             </div>
           )}
 
-          {/* MÓDULO LIBRO DIARIO */}
+          {/* MÓDULO 2: LIBRO DIARIO */}
           {seccion === 'contabilidad' && (
             <div className="space-y-6 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -398,7 +572,7 @@ export default function AdminPage() {
                 </button>
               </form>
 
-              {/* Tabla Libro Diario */}
+              {/* Tabla Libro Diario con Opción de Borrar */}
               <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
@@ -408,6 +582,7 @@ export default function AdminPage() {
                       <th className="p-3">Concepto</th>
                       <th className="p-3">Comprobante</th>
                       <th className="p-3 text-right">Monto (CLP)</th>
+                      <th className="p-3 text-center">Acción</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#97A884]/20 font-medium">
@@ -420,6 +595,15 @@ export default function AdminPage() {
                         <td className={`p-3 text-right font-bold font-mono ${t.tipo === 'ingreso' ? 'text-green-700' : 'text-red-600'}`}>
                           {t.tipo === 'ingreso' ? '+' : '-'} $ {t.monto.toLocaleString('es-CL')}
                         </td>
+                        <td className="p-3 text-center">
+                          <button
+                            type="button"
+                            onClick={() => eliminarTransaccion(t.id)}
+                            className="bg-red-100 hover:bg-red-600 text-red-700 hover:text-white font-bold px-2 py-0.5 rounded text-[10px] transition cursor-pointer"
+                          >
+                            Anular
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -428,7 +612,7 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* MÓDULO CAJA CHICA CON BOTONES DE EDITAR, ELIMINAR Y VISUALIZAR DOCUMENTO */}
+          {/* MÓDULO 3: CAJA CHICA CON BOTONES Y VISOR INTEGRADO */}
           {seccion === 'cajachica' && (
             <div className="space-y-6 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -446,11 +630,11 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Formulario Caja Chica (Alta y Edición) */}
+              {/* Formulario Caja Chica */}
               <form onSubmit={handleAgregarOEditarCajaChica} className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-4 shadow-sm">
                 <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-2">
                   <h3 className="font-extrabold uppercase text-xs text-[#676E5E]">
-                    {editandoCajaId ? '✏️ Editando Gasto de Caja Chica' : '➕ Rendir Gasto de Caja Chica (Boleta / Factura)'}
+                    {editandoCajaId ? '✏️ Editando Rendición de Gasto' : '➕ Rendir Gasto de Caja Chica (Boleta / Factura)'}
                   </h3>
                   {editandoCajaId && (
                     <button
@@ -470,7 +654,7 @@ export default function AdminPage() {
                   </div>
                   <div>
                     <label className="font-bold block mb-1">Motivo / Viático</label>
-                    <input type="text" placeholder="Ej: Bencina / Peaje Reunión Municipal" value={motivoCaja} onChange={e => setMotivoCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" required />
+                    <input type="text" placeholder="Ej: Pasajes / Bencina Reunión Municipal" value={motivoCaja} onChange={e => setMotivoCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" required />
                   </div>
                 </div>
 
@@ -484,7 +668,7 @@ export default function AdminPage() {
                     <input type="text" placeholder="Boleta N° 1022" value={compCaja} onChange={e => setCompCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" />
                   </div>
                   <div>
-                    <label className="font-bold block mb-1">Adjuntar Respaldo (Foto / PDF)</label>
+                    <label className="font-bold block mb-1">Subir Foto o PDF (Respaldo)</label>
                     <input
                       type="file"
                       accept="image/*,application/pdf"
@@ -495,18 +679,18 @@ export default function AdminPage() {
                 </div>
 
                 <div>
-                  <label className="font-bold block mb-1">Observación o Nota Aclaratoria</label>
-                  <input type="text" placeholder="Ej: Pasajes autorizados para firma de convenio B2B" value={obsCaja} onChange={e => setObsCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" />
+                  <label className="font-bold block mb-1">Observaciones o Notas de Referencia</label>
+                  <input type="text" placeholder="Ej: Traslado autorizado por gerencia para firma de convenio" value={obsCaja} onChange={e => setObsCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" />
                 </div>
 
                 <button type="submit" className="bg-[#676E5E] text-white font-extrabold px-6 py-2.5 rounded-xl cursor-pointer">
-                  {editandoCajaId ? '💾 Guardar Cambios en Gasto' : '+ Registrar Gasto en Caja Chica'}
+                  {editandoCajaId ? '💾 Guardar Cambios' : '+ Registrar Gasto y Adjuntar Documento'}
                 </button>
               </form>
 
               {/* Lista de Rendiciones con Botones de Editar, Eliminar y Previsualizar */}
               <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3">
-                <h3 className="font-extrabold uppercase text-xs text-[#676E5E]">Planilla de Rendición de Caja Chica</h3>
+                <h3 className="font-extrabold uppercase text-xs text-[#676E5E]">Planilla de Rendición con Respaldos Digitales</h3>
                 {cajaChicaList.map(item => (
                   <div key={item.id} className="p-3.5 bg-[#FAF8F5] rounded-2xl border border-[#97A884]/40 flex flex-wrap justify-between items-center text-xs gap-3">
                     <div className="space-y-0.5">
@@ -515,7 +699,7 @@ export default function AdminPage() {
                         Fecha: {item.fecha} • Resp: {item.responsable} • Doc: {item.comprobante}
                       </span>
                       {item.archivoNombre && (
-                        <span className="text-[10px] font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded-md border border-green-200 inline-block mt-1">
+                        <span className="text-[10px] font-bold text-green-800 bg-green-50 px-2.5 py-0.5 rounded-md border border-green-200 inline-block mt-1">
                           📎 Respaldo Digital: {item.archivoNombre}
                         </span>
                       )}
@@ -529,14 +713,14 @@ export default function AdminPage() {
                         - $ {item.monto.toLocaleString('es-CL')} CLP
                       </span>
 
-                      {/* BOTÓN VISUALIZAR ARCHIVO */}
+                      {/* BOTÓN PREVISUALIZAR */}
                       {item.archivoUrl && (
                         <button
                           type="button"
                           onClick={() => setArchivoPrevisualizar({ url: item.archivoUrl!, nombre: item.archivoNombre || 'Respaldo' })}
                           className="bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-bold px-3 py-1.5 rounded-xl text-[10px] transition cursor-pointer"
                         >
-                          👁️ Ver Respaldo
+                          👁️ Previsualizar
                         </button>
                       )}
 
@@ -564,7 +748,7 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* MÓDULO NOTAS */}
+          {/* MÓDULO 4: BITÁCORA Y NOTAS DE RESPALDO */}
           {seccion === 'notas' && (
             <div className="bg-white p-6 rounded-3xl border-2 border-[#97A884] space-y-5 text-xs">
               <h3 className="font-extrabold uppercase text-xs tracking-wider">Bitácora & Notas de Respaldo Administrativo</h3>
@@ -573,7 +757,7 @@ export default function AdminPage() {
                 <textarea
                   value={nuevaNota}
                   onChange={e => setNuevaNota(e.target.value)}
-                  placeholder="Escribe una observación o nota aclaratoria para los contadores..."
+                  placeholder="Escribe una observación contable, referencia de boleta o nota para el equipo directivo/contadores..."
                   className="w-full h-24 p-3 bg-[#FAF8F5] border border-[#97A884] rounded-2xl outline-none"
                 />
                 <button
@@ -602,7 +786,160 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* MÓDULO REPORTE PDF */}
+          {/* MÓDULO 5: HERRAMIENTAS Y TRÁMITES INSTITUCIONALES PYME */}
+          {seccion === 'pyme' && (
+            <div className="space-y-5 text-xs">
+              <div className="bg-white p-6 rounded-3xl border-2 border-[#97A884] space-y-3">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-2.5 py-0.5 rounded-full border border-[#97A884]">
+                  Ecosistema de Trámites Oficiales
+                </span>
+                <h3 className="text-base font-black text-[#676E5E]">
+                  Plataformas Requeridas para Registro & Operación de ASL Ideas SpA
+                </h3>
+                <p className="text-gray-600">
+                  Accesos directos a las instituciones del Estado y servicios requeridos para la formalización contable, tributaria y operativa de la PYME.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                {/* Card 1: Tu Empresa en un Día */}
+                <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xl">🏢</span>
+                      <span className="bg-blue-100 text-blue-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Constitución</span>
+                    </div>
+                    <h4 className="font-black text-sm text-[#676E5E] mt-2">Tu Empresa en un Día (RES)</h4>
+                    <p className="text-[11px] text-gray-500 mt-1">
+                      Gestión de estatutos, RUT provisorio y registro de firma electrónica de la SpA.
+                    </p>
+                  </div>
+                  <a
+                    href="[suspicious link removed]"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
+                  >
+                    Ir al Portal Oficial →
+                  </a>
+                </div>
+
+                {/* Card 2: S.I.I. */}
+                <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xl">📄</span>
+                      <span className="bg-green-100 text-green-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Tributaria</span>
+                    </div>
+                    <h4 className="font-black text-sm text-[#676E5E] mt-2">Servicio de Impuestos Internos (S.I.I.)</h4>
+                    <p className="text-[11px] text-gray-500 mt-1">
+                      Inicio de Actividades, emisión de Facturación Electrónica y declaración mensual F29.
+                    </p>
+                  </div>
+                  <a
+                    href="[suspicious link removed]"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
+                  >
+                    Ir al SII →
+                  </a>
+                </div>
+
+                {/* Card 3: TGR */}
+                <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xl">🏛️</span>
+                      <span className="bg-amber-100 text-amber-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Finanzas Públicas</span>
+                    </div>
+                    <h4 className="font-black text-sm text-[#676E5E] mt-2">Tesorería General (TGR)</h4>
+                    <p className="text-[11px] text-gray-500 mt-1">
+                      Pago de impuestos diferidos, patente municipal y certificados de deuda fiscal.
+                    </p>
+                  </div>
+                  <a
+                    href="[suspicious link removed]"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
+                  >
+                    Ir a TGR →
+                  </a>
+                </div>
+
+                {/* Card 4: Previred */}
+                <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xl">💼</span>
+                      <span className="bg-purple-100 text-purple-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Previsional</span>
+                    </div>
+                    <h4 className="font-black text-sm text-[#676E5E] mt-2">Previred</h4>
+                    <p className="text-[11px] text-gray-500 mt-1">
+                      Declaración y pago de cotizaciones previsionales del equipo y fundadores.
+                    </p>
+                  </div>
+                  <a
+                    href="[suspicious link removed]"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
+                  >
+                    Ir a Previred →
+                  </a>
+                </div>
+
+                {/* Card 5: CORFO / SERCOTEC */}
+                <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xl">🚀</span>
+                      <span className="bg-emerald-100 text-emerald-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Financiamiento</span>
+                    </div>
+                    <h4 className="font-black text-sm text-[#676E5E] mt-2">CORFO & SERCOTEC</h4>
+                    <p className="text-[11px] text-gray-500 mt-1">
+                      Postulación a fondos públicos para innovación en salud digital e inclusión.
+                    </p>
+                  </div>
+                  <a
+                    href="[suspicious link removed]"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
+                  >
+                    Ir a CORFO →
+                  </a>
+                </div>
+
+                {/* Card 6: Infraestructura Vercel & Supabase */}
+                <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xl">☁️</span>
+                      <span className="bg-gray-100 text-gray-800 font-bold text-[9px] px-2 py-0.5 rounded-full">TI & Cloud</span>
+                    </div>
+                    <h4 className="font-black text-sm text-[#676E5E] mt-2">Vercel & Supabase Cloud</h4>
+                    <p className="text-[11px] text-gray-500 mt-1">
+                      Servidores y base de datos con encriptación bajo la Ley N° 21.663.
+                    </p>
+                  </div>
+                  <a
+                    href="[suspicious link removed]"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
+                  >
+                    Ir a Vercel →
+                  </a>
+                </div>
+
+              </div>
+            </div>
+          )}
+
+          {/* MÓDULO 6: REPORTE IMPRIMIBLE PARA CONTADORES */}
           {seccion === 'reporte' && (
             <div className="bg-white p-6 sm:p-10 rounded-3xl border-2 border-[#97A884] space-y-6 text-xs">
               <div className="flex justify-between items-center border-b-2 border-[#97A884] pb-5">
