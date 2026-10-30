@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { SalaVirtualB2B } from '@/components/SalaVirtualB2B';
+import SalaVirtualB2B from '@/components/SalaVirtualB2B';
 
 export default function ComunidadPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,12 +46,11 @@ export default function ComunidadPage() {
           </div>
         </div>
 
-        {/* MODAL SALA VIRTUAL B2B (Llamada limpia sin propiedades incompatibles) */}
+        {/* MODAL SALA VIRTUAL B2B */}
         <SalaVirtualB2B 
-  isOpen={isModalOpen} 
-  onClose={() => setIsModalOpen(false)} 
-/>
-        
+          isOpen={isModalOpen} 
+          onClose={() => setIsModalOpen(false)} 
+        />
 
       </div>
     </div>
