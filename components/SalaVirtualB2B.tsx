@@ -103,20 +103,20 @@ export default function SalaVirtualB2B({
     }
   }, [isOpen, initialMode]);
 
-  // Motor de Reconocimiento de Voz
+  // Motor de Reconocimiento de Voz Robusto
   const activarTranscriptorVoz = () => {
     if (typeof window === 'undefined') return;
 
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      setEstadoTranscriptor('Navegador sin motor de voz nativo. Usa la entrada de texto.');
+      setEstadoTranscriptor('Navegador sin soporte de voz nativo. Usa la entrada de texto.');
       return;
     }
 
     try {
       if (recognitionRef.current) {
-        try { recognitionRef.current.stop(); } catch (e) {}
+        try { recognitionRef.current.abort(); } catch (e) {}
       }
 
       const rec = new SpeechRecognition();
@@ -150,7 +150,7 @@ export default function SalaVirtualB2B({
         if (event.error === 'not-allowed') {
           setEstadoTranscriptor('Permiso de micrófono denegado para transcripción');
           setTranscribiendo(false);
-        } else {
+        } else if (event.error !== 'no-speech') {
           setEstadoTranscriptor('Reconectando canal de voz...');
         }
       };
@@ -158,7 +158,11 @@ export default function SalaVirtualB2B({
       rec.onend = () => {
         setTextoEnVivo('');
         if (transcribiendo) {
-          try { rec.start(); } catch (err) {}
+          setTimeout(() => {
+            try { rec.start(); } catch (err) {}
+          }, 400);
+        } else {
+          setEstadoTranscriptor('Transcriptor en pausa');
         }
       };
 
@@ -166,7 +170,7 @@ export default function SalaVirtualB2B({
       recognitionRef.current = rec;
     } catch (e) {
       console.error('Error al iniciar transcripción:', e);
-      setEstadoTranscriptor('Error al conectar micrófono de transcripción');
+      setEstadoTranscriptor('Error al conectar servicio de voz');
     }
   };
 
@@ -175,7 +179,7 @@ export default function SalaVirtualB2B({
     setEstadoTranscriptor('Transcriptor en pausa');
     setTextoEnVivo('');
     if (recognitionRef.current) {
-      try { recognitionRef.current.stop(); } catch (e) {}
+      try { recognitionRef.current.abort(); } catch (e) {}
     }
   };
 
@@ -682,7 +686,7 @@ export default function SalaVirtualB2B({
                         <p key={idx} className="border-b border-[#97A884]/20 pb-1 last:border-0 leading-relaxed">{t}</p>
                       ))}
 
-                      {/* Texto que se va hablando en vivo */}
+                      {/* Texto en vivo mientras se habla */}
                       {textoEnVivo && (
                         <p className="text-green-800 font-bold italic animate-pulse">
                           Hablando: "{textoEnVivo}"
@@ -757,7 +761,7 @@ export default function SalaVirtualB2B({
             </div>
           )}
 
-          {/* MODO AGENDAR REUNIÓN (FIEL A LA IMAGEN WHATSAPP 21.14.45) */}
+          {/* MODO AGENDAR REUNIÓN */}
           {modo === 'agendar' && (
             reservaConfirmada ? (
               <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-[#97A884] text-center space-y-4 shadow-sm">
