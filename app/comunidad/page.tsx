@@ -48,9 +48,10 @@ export default function ComunidadPage() {
 
         {/* MODAL SALA VIRTUAL B2B (Llamada limpia sin propiedades incompatibles) */}
         <SalaVirtualB2B 
-          isOpen={isModalOpen} 
-          onClose={() => setIsModalOpen(false)} 
-        />
+  isOpen={isModalOpen} 
+  onClose={() => setIsModalOpen(false)} 
+/>
+        
 
       </div>
     </div>
