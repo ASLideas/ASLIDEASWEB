@@ -12,10 +12,10 @@ interface ParticipanteB2B {
 }
 
 export default function HomePage() {
-  // Intro Splash Loader inspirado en la referencia Wellness App
+  // Estado para la Intro Circular de Carga
   const [cargandoWeb, setCargandoWeb] = useState(true);
 
-  // Navegación de Pestañas Principales
+  // Navegación de Pestañas
   const [pestañaActiva, setPestañaActiva] = useState<'ficha' | 'reunion' | 'agendar' | 'contacto'>('reunion');
   const [modoVista, setModoVista] = useState<'dividida' | 'galeria'>('dividida');
 
@@ -23,7 +23,7 @@ export default function HomePage() {
   const [participantes, setParticipantes] = useState<ParticipanteB2B[]>([
     {
       id: '1',
-      nombre: 'ASL Ideas SpA (Equipo de Diseño & Desarrollo)',
+      nombre: '1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)',
       empresaRol: 'Anfitrión B2B',
       camara: true,
       mic: true,
@@ -37,18 +37,18 @@ export default function HomePage() {
     },
     {
       id: '3',
-      nombre: 'Invitado / Socio Comercial',
+      nombre: 'Invitado Secundario (Familiar / Acompañante)',
       empresaRol: 'Acompañante B2B',
       camara: true,
       mic: false,
     },
   ]);
 
-  // Simular la carga inicial de la web
+  // Simulación de Carga Inicial
   useEffect(() => {
     const timer = setTimeout(() => {
       setCargandoWeb(false);
-    }, 2400);
+    }, 2500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -81,73 +81,103 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#676E5E] relative overflow-x-hidden font-sans">
       
-      {/* 1. INTRO SPLASH / CARGA DE LA WEB (ESTILO REFERENCIA WELLNESS APP) */}
+      {/* 1. INTRO DE CARGA CIRCULAR CON LOGO ASL IDEAS */}
       {cargandoWeb && (
         <div className="fixed inset-0 z-50 bg-[#FAF8F5] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-700">
-          <div className="relative flex flex-col items-center space-y-6 max-w-md bg-[#E6E7D5] p-8 sm:p-10 rounded-3xl border-2 border-[#97A884] shadow-2xl">
+          <div className="relative flex flex-col items-center space-y-6 max-w-sm">
             
-            {/* Logo Oficial de ASL Ideas */}
-            <div className="relative w-28 h-28 sm:w-32 sm:h-32 bg-white rounded-3xl p-3 border-4 border-[#97A884] shadow-xl flex items-center justify-center">
-              <img 
-                src="/logo-asl.png.png" 
-                alt="ASL Ideas SpA" 
-                className="w-full h-full object-contain"
-              />
+            {/* Contenedor Circular con Anillo de Progreso Giro SVG */}
+            <div className="relative w-36 h-36 sm:w-44 sm:h-44 flex items-center justify-center">
+              
+              {/* Anillo de Carga Giratorio */}
+              <svg className="absolute inset-0 w-full h-full animate-spin text-[#97A884]" viewBox="0 0 100 100">
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="44"
+                  fill="none"
+                  stroke="#E6E7D5"
+                  strokeWidth="6"
+                />
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="44"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="6"
+                  strokeDasharray="200"
+                  strokeDashoffset="60"
+                  strokeLinecap="round"
+                />
+              </svg>
+
+              {/* Marco Circular Interior con el Logo */}
+              <div className="relative w-28 h-28 sm:w-34 sm:h-34 bg-white rounded-full p-4 border-4 border-[#97A884] shadow-2xl flex items-center justify-center overflow-hidden">
+                <img 
+                  src="/logo-asl.png.png" 
+                  alt="ASL Ideas SpA" 
+                  className="w-full h-full object-contain"
+                />
+              </div>
             </div>
 
+            {/* Textos de Bienvenida */}
             <div className="space-y-1.5">
               <span className="text-[10px] font-extrabold uppercase tracking-widest bg-[#CDD6A9] text-[#676E5E] px-3 py-1 rounded-full border border-[#97A884]">
-                ASL Ideas SpA • Vitrinas Virtuales & Apps para PYMEs
+                ASL Ideas SpA • Vitrinas Virtuales
               </span>
-              <h2 className="text-xl sm:text-2xl font-black text-[#676E5E] pt-1">
-                Cargando Portal Corporativo...
+              <h2 className="text-xl sm:text-2xl font-black text-[#676E5E] pt-2">
+                Iniciando Plataforma...
               </h2>
               <p className="text-xs text-gray-600">
-                Diseño inclusivo, aplicaciones web a medida y soluciones digitales B2B
+                Cargando entorno B2B e interfaz accesible Ley N° 21.545
               </p>
             </div>
 
-            {/* Barra de Progreso */}
-            <div className="w-full bg-white h-2.5 rounded-full overflow-hidden border border-[#97A884]">
-              <div className="bg-[#676E5E] h-full animate-[progress_2s_ease-in-out_infinite] w-4/5 rounded-full" />
-            </div>
-
             <span className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">
-              Diseño Inclusivo & Accesibilidad Cognitiva Ley N° 21.545
+              Conexión Cifrada • Ley N° 21.663
             </span>
 
           </div>
         </div>
       )}
 
-      {/* 2. PLATAFORMA B2B DE ASL IDEAS SPA */}
-      <div className="p-4 sm:p-8 max-w-7xl mx-auto space-y-6">
+      {/* 2. PLATAFORMA B2B PRINCIPAL */}
+      <div className="p-3 sm:p-8 max-w-7xl mx-auto space-y-6">
         
-        {/* Cabecera Superior */}
-        <div className="flex flex-wrap justify-between items-center bg-[#E6E7D5] p-4 sm:p-5 rounded-2xl border border-[#97A884] shadow-xs gap-3">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-white rounded-xl border border-[#97A884] p-1 flex items-center justify-center">
+        {/* Cabecera Superior Adaptativa Móvil */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#E6E7D5] p-4 sm:p-5 rounded-2xl border border-[#97A884] shadow-xs gap-3">
+          <div className="flex items-center space-x-3 min-w-0">
+            {/* Logo de Encabezado visible y flexible */}
+            <div className="w-12 h-12 bg-white rounded-2xl border border-[#97A884] p-1.5 flex-shrink-0 flex items-center justify-center shadow-xs">
               <img src="/logo-asl.png.png" alt="ASL Ideas Logo" className="w-full h-full object-contain" />
             </div>
-            <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider bg-[#CDD6A9] px-2.5 py-0.5 rounded-full border border-[#97A884]">
+            <div className="min-w-0">
+              <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-[#CDD6A9] px-2.5 py-0.5 rounded-full border border-[#97A884] inline-block truncate max-w-full">
                 CASA MATRIZ B2B — ASL IDEAS SPA
               </span>
-              <h1 className="text-lg sm:text-xl font-black text-[#676E5E] mt-0.5">
-                Vitrinas Virtuales y Desarrollo de Aplicaciones para PYMEs
+              <h1 className="text-base sm:text-xl font-black text-[#676E5E] mt-0.5 truncate">
+                Vitrinas Virtuales y Desarrollo para PYMEs
               </h1>
             </div>
           </div>
 
-          <Link 
-            href="/admin" 
-            className="text-xs bg-white hover:bg-[#CDD6A9] font-bold text-[#676E5E] px-4 py-2 rounded-xl border border-[#97A884] transition"
-          >
-            Administrar Portal
-          </Link>
+          <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-2 border-t sm:border-t-0 pt-2 sm:pt-0 border-[#97A884]/30">
+            <Link 
+              href="/admin" 
+              className="text-xs bg-white hover:bg-[#CDD6A9] font-bold text-[#676E5E] px-3.5 py-2 rounded-xl border border-[#97A884] transition"
+            >
+              Administrar
+            </Link>
+            {/* Logo de la derecha garantizado en móviles */}
+            <div className="w-10 h-10 bg-white rounded-xl border border-[#97A884] p-1 flex-shrink-0 flex items-center justify-center shadow-xs">
+              <img src="/logo-asl.png.png" alt="ASL Ideas" className="w-full h-full object-contain" />
+            </div>
+          </div>
         </div>
 
-        {/* Pestañas de Navegación B2B */}
+        {/* Pestañas de Navegación */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-[#E6E7D5] p-1.5 rounded-2xl border border-[#97A884] text-xs font-bold text-center">
           <button 
             type="button"
@@ -156,7 +186,7 @@ export default function HomePage() {
               pestañaActiva === 'ficha' ? 'bg-[#676E5E] text-white shadow-xs' : 'hover:bg-white text-[#676E5E]'
             }`}
           >
-            Servicios B2B & Vitrinas
+            Servicios B2B
           </button>
           <button 
             type="button"
@@ -165,7 +195,7 @@ export default function HomePage() {
               pestañaActiva === 'reunion' ? 'bg-[#676E5E] text-white shadow-xs' : 'hover:bg-white text-[#676E5E]'
             }`}
           >
-            Sala de Video Reunión B2B ({participantes.length} Cámaras)
+            Sala de Video Reunión ({participantes.length})
           </button>
           <button 
             type="button"
@@ -199,18 +229,18 @@ export default function HomePage() {
 
         {/* PESTAÑA: SALA DE VIDEO REUNIÓN B2B */}
         {pestañaActiva === 'reunion' && (
-          <div className="bg-[#2D362D] text-white p-5 sm:p-6 rounded-3xl border-2 border-[#97A884] space-y-4 shadow-2xl">
+          <div className="bg-[#2D362D] text-white p-4 sm:p-6 rounded-3xl border-2 border-[#97A884] space-y-4 shadow-2xl">
             
-            {/* Barra de Control de la Sala */}
+            {/* Barra de Control */}
             <div className="flex flex-wrap justify-between items-center text-xs gap-2 border-b border-white/20 pb-3">
               <div className="flex items-center space-x-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
                 <span className="bg-[#CDD6A9] text-[#676E5E] font-extrabold px-3 py-1 rounded-full border border-[#97A884]">
-                  SALA DE REUNIÓN B2B EN VIVO • {participantes.length} Cámaras
+                  REUNIÓN B2B EN VIVO • {participantes.length} Cámaras
                 </span>
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <button
                   type="button"
                   onClick={() => setModoVista('dividida')}
@@ -239,7 +269,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* GRILLA DE PANTALLAS B2B (CON ÍCONOS SVG VECTORIALES - SIN EMOJIS) */}
+            {/* GRILLA DE PANTALLAS (CON ÍCONOS SVG VECTORIALES) */}
             <div className={`grid gap-4 ${
               modoVista === 'dividida' 
                 ? 'grid-cols-1 md:grid-cols-2' 
@@ -248,11 +278,11 @@ export default function HomePage() {
               {participantes.map((p) => (
                 <div 
                   key={p.id}
-                  className="relative bg-slate-900 border-2 border-[#97A884] rounded-2xl p-4 min-h-[260px] flex flex-col justify-between shadow-lg"
+                  className="relative bg-slate-900 border-2 border-[#97A884] rounded-2xl p-4 min-h-[250px] flex flex-col justify-between shadow-lg overflow-hidden"
                 >
-                  {/* Nombre del participante */}
+                  {/* Encabezado del recuadro */}
                   <div className="flex justify-between items-center z-10">
-                    <span className="text-[10px] font-bold bg-black/70 px-2.5 py-1 rounded-full text-white border border-white/20 truncate max-w-[190px]">
+                    <span className="text-[10px] font-bold bg-black/70 px-2.5 py-1 rounded-full text-white border border-white/20 truncate max-w-[180px]">
                       {p.nombre}
                     </span>
                     <div className="flex gap-1">
@@ -310,7 +340,7 @@ export default function HomePage() {
             <div className="bg-black/40 p-3 rounded-2xl border border-white/10 flex flex-wrap justify-between items-center gap-3 text-xs">
               <div className="flex items-center space-x-2">
                 <span className="font-bold text-slate-300">Audio Entrante:</span>
-                <div className="w-32 bg-slate-700 h-2 rounded-full overflow-hidden">
+                <div className="w-28 sm:w-32 bg-slate-700 h-2 rounded-full overflow-hidden">
                   <div className="bg-gradient-to-r from-emerald-400 to-amber-400 h-full w-3/4 animate-pulse" />
                 </div>
                 <span className="text-[10px] font-mono text-emerald-400">0% dB</span>
@@ -329,7 +359,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Paneles Informativos Inferiores B2B */}
+            {/* Paneles Inferiores */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs pt-2">
               <div className="bg-white text-[#676E5E] p-3 rounded-2xl border border-[#97A884]">
                 <div className="flex justify-between items-center mb-1.5">
@@ -375,13 +405,15 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* PIE DE PÁGINA CORPORATIVO */}
+        {/* PIE DE PÁGINA CON LOGO RESPONSIVO */}
         <div className="bg-[#E6E7D5] p-6 rounded-2xl border border-[#97A884] flex flex-col items-center justify-center text-center space-y-3 shadow-xs">
-          <img 
-            src="/logo-asl.png.png" 
-            alt="ASL Ideas SpA" 
-            className="w-20 h-20 sm:w-28 sm:h-28 object-contain drop-shadow-md transition-transform hover:scale-105" 
-          />
+          <div className="w-20 h-20 sm:w-28 sm:h-28 flex-shrink-0 flex items-center justify-center">
+            <img 
+              src="/logo-asl.png.png" 
+              alt="ASL Ideas SpA" 
+              className="w-full h-full object-contain drop-shadow-md transition-transform hover:scale-105" 
+            />
+          </div>
           <p className="font-bold text-xs text-[#676E5E]">
             ASL Ideas SpA • Vitrinas Virtuales & Desarrollo de Aplicaciones para PYMEs
           </p>
