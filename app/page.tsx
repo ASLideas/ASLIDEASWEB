@@ -3,48 +3,48 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-interface Participante {
+interface ParticipanteB2B {
   id: string;
   nombre: string;
-  rol: string;
+  empresaRol: string;
   camara: boolean;
   mic: boolean;
 }
 
 export default function HomePage() {
-  // Estado para la Pantalla de Carga / Intro inicial con Logo
+  // Intro Splash Loader inspirado en la referencia Wellness App
   const [cargandoWeb, setCargandoWeb] = useState(true);
 
-  // Navegación por Pestañas Principales
-  const [pestañaActiva, setPestañaActiva] = useState<'ficha' | 'sala' | 'agendar' | 'cancelar'>('sala');
+  // Navegación de Pestañas Principales
+  const [pestañaActiva, setPestañaActiva] = useState<'ficha' | 'reunion' | 'agendar' | 'contacto'>('reunion');
   const [modoVista, setModoVista] = useState<'dividida' | 'galeria'>('dividida');
 
-  // Participantes de la Videollamada (Sin Emojis)
-  const [participantes, setParticipantes] = useState<Participante[]>([
+  // Participantes de la Reunión B2B (Sin Emojis)
+  const [participantes, setParticipantes] = useState<ParticipanteB2B[]>([
     {
       id: '1',
-      nombre: '1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)',
-      rol: 'Anfitrión / Especialista',
+      nombre: 'ASL Ideas SpA (Equipo de Diseño & Desarrollo)',
+      empresaRol: 'Anfitrión B2B',
       camara: true,
       mic: true,
     },
     {
       id: '2',
-      nombre: 'Cliente / Paciente Conectado',
-      rol: 'Cliente Principal',
+      nombre: 'Cliente PYME / Empresa B2B',
+      empresaRol: 'Cliente Principal',
       camara: true,
       mic: true,
     },
     {
       id: '3',
-      nombre: 'Invitado Secundario (Familiar / Acompañante)',
-      rol: 'Acompañante',
+      nombre: 'Invitado / Socio Comercial',
+      empresaRol: 'Acompañante B2B',
       camara: true,
       mic: false,
     },
   ]);
 
-  // Simulación de pantalla de espera / intro de carga
+  // Simular la carga inicial de la web
   useEffect(() => {
     const timer = setTimeout(() => {
       setCargandoWeb(false);
@@ -70,8 +70,8 @@ export default function HomePage() {
       ...participantes,
       {
         id: Date.now().toString(),
-        nombre: `Cliente / Invitado ${num}`,
-        rol: 'Invitado',
+        nombre: `Cliente PYME ${num}`,
+        empresaRol: 'Invitado B2B',
         camara: true,
         mic: true,
       },
@@ -81,12 +81,12 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#676E5E] relative overflow-x-hidden font-sans">
       
-      {/* 1. PANTALLA DE ESPERA / INTRO DE CARGA WEB CON LOGO DE ASL IDEAS */}
+      {/* 1. INTRO SPLASH / CARGA DE LA WEB (ESTILO REFERENCIA WELLNESS APP) */}
       {cargandoWeb && (
-        <div className="fixed inset-0 z-50 bg-[#FAF8F5] flex flex-col items-center justify-center p-6 text-center">
+        <div className="fixed inset-0 z-50 bg-[#FAF8F5] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-700">
           <div className="relative flex flex-col items-center space-y-6 max-w-md bg-[#E6E7D5] p-8 sm:p-10 rounded-3xl border-2 border-[#97A884] shadow-2xl">
             
-            {/* Logo oficial de ASL Ideas */}
+            {/* Logo Oficial de ASL Ideas */}
             <div className="relative w-28 h-28 sm:w-32 sm:h-32 bg-white rounded-3xl p-3 border-4 border-[#97A884] shadow-xl flex items-center justify-center">
               <img 
                 src="/logo-asl.png.png" 
@@ -97,13 +97,13 @@ export default function HomePage() {
 
             <div className="space-y-1.5">
               <span className="text-[10px] font-extrabold uppercase tracking-widest bg-[#CDD6A9] text-[#676E5E] px-3 py-1 rounded-full border border-[#97A884]">
-                ASL Ideas SpA • Salud Digital Inclusiva
+                ASL Ideas SpA • Vitrinas Virtuales & Apps para PYMEs
               </span>
               <h2 className="text-xl sm:text-2xl font-black text-[#676E5E] pt-1">
-                Cargando Plataforma Web...
+                Cargando Portal Corporativo...
               </h2>
               <p className="text-xs text-gray-600">
-                Iniciando entorno accesible y sistema encriptado Ley N° 21.663
+                Diseño inclusivo, aplicaciones web a medida y soluciones digitales B2B
               </p>
             </div>
 
@@ -113,14 +113,14 @@ export default function HomePage() {
             </div>
 
             <span className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">
-              Conexión Cifrada • Accesibilidad Cognitiva Ley N° 21.545
+              Diseño Inclusivo & Accesibilidad Cognitiva Ley N° 21.545
             </span>
 
           </div>
         </div>
       )}
 
-      {/* 2. PLATAFORMA WEB PRINCIPAL */}
+      {/* 2. PLATAFORMA B2B DE ASL IDEAS SPA */}
       <div className="p-4 sm:p-8 max-w-7xl mx-auto space-y-6">
         
         {/* Cabecera Superior */}
@@ -131,10 +131,10 @@ export default function HomePage() {
             </div>
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider bg-[#CDD6A9] px-2.5 py-0.5 rounded-full border border-[#97A884]">
-                OFICINA VIRTUAL 01 — ASL IDEAS SPA
+                CASA MATRIZ B2B — ASL IDEAS SPA
               </span>
               <h1 className="text-lg sm:text-xl font-black text-[#676E5E] mt-0.5">
-                Plataforma de Teleatención y Salud Integrativa
+                Vitrinas Virtuales y Desarrollo de Aplicaciones para PYMEs
               </h1>
             </div>
           </div>
@@ -143,11 +143,11 @@ export default function HomePage() {
             href="/admin" 
             className="text-xs bg-white hover:bg-[#CDD6A9] font-bold text-[#676E5E] px-4 py-2 rounded-xl border border-[#97A884] transition"
           >
-            Administrar
+            Administrar Portal
           </Link>
         </div>
 
-        {/* Pestañas de Navegación */}
+        {/* Pestañas de Navegación B2B */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-[#E6E7D5] p-1.5 rounded-2xl border border-[#97A884] text-xs font-bold text-center">
           <button 
             type="button"
@@ -156,16 +156,16 @@ export default function HomePage() {
               pestañaActiva === 'ficha' ? 'bg-[#676E5E] text-white shadow-xs' : 'hover:bg-white text-[#676E5E]'
             }`}
           >
-            Ficha de Oficina
+            Servicios B2B & Vitrinas
           </button>
           <button 
             type="button"
-            onClick={() => setPestañaActiva('sala')}
+            onClick={() => setPestañaActiva('reunion')}
             className={`py-2.5 rounded-xl transition cursor-pointer ${
-              pestañaActiva === 'sala' ? 'bg-[#676E5E] text-white shadow-xs' : 'hover:bg-white text-[#676E5E]'
+              pestañaActiva === 'reunion' ? 'bg-[#676E5E] text-white shadow-xs' : 'hover:bg-white text-[#676E5E]'
             }`}
           >
-            Sala en Vivo ({participantes.length} Cámaras)
+            Sala de Video Reunión B2B ({participantes.length} Cámaras)
           </button>
           <button 
             type="button"
@@ -174,39 +174,39 @@ export default function HomePage() {
               pestañaActiva === 'agendar' ? 'bg-[#676E5E] text-white shadow-xs' : 'hover:bg-white text-[#676E5E]'
             }`}
           >
-            Agendar Cita
+            Agendar Demostración
           </button>
           <button 
             type="button"
-            onClick={() => setPestañaActiva('cancelar')}
+            onClick={() => setPestañaActiva('contacto')}
             className={`py-2.5 rounded-xl transition cursor-pointer ${
-              pestañaActiva === 'cancelar' ? 'bg-[#676E5E] text-white shadow-xs' : 'hover:bg-white text-[#676E5E]'
+              pestañaActiva === 'contacto' ? 'bg-[#676E5E] text-white shadow-xs' : 'hover:bg-white text-[#676E5E]'
             }`}
           >
-            Cancelar / Reprogramar
+            Contacto & Proyectos
           </button>
         </div>
 
-        {/* PESTAÑA: FICHA DE OFICINA */}
+        {/* PESTAÑA: SERVICIOS B2B */}
         {pestañaActiva === 'ficha' && (
           <div className="bg-white p-6 rounded-3xl border border-[#97A884] space-y-4">
-            <h2 className="text-lg font-black text-[#676E5E]">Ficha Operativa de Casa Matriz</h2>
+            <h2 className="text-lg font-black text-[#676E5E]">Vitrinas Virtuales y Desarrollo para PYMEs</h2>
             <p className="text-xs text-gray-600 leading-relaxed">
-              Gestión corporativa, licencias tecnológicas B2B, convenios institucionales con municipalidades y consultoría en accesibilidad cognitiva UI/UX para neurodivergencias.
+              Diseño de interfaces inclusivas, soluciones digitales de vitrinas interactivas, licencias tecnológicas y desarrollo de aplicaciones personalizadas para pequeñas y medianas empresas.
             </p>
           </div>
         )}
 
-        {/* PESTAÑA: SALA EN VIVO MULTI-CLIENTE (SIN EMOJIS) */}
-        {pestañaActiva === 'sala' && (
+        {/* PESTAÑA: SALA DE VIDEO REUNIÓN B2B */}
+        {pestañaActiva === 'reunion' && (
           <div className="bg-[#2D362D] text-white p-5 sm:p-6 rounded-3xl border-2 border-[#97A884] space-y-4 shadow-2xl">
             
-            {/* Barra de Control */}
+            {/* Barra de Control de la Sala */}
             <div className="flex flex-wrap justify-between items-center text-xs gap-2 border-b border-white/20 pb-3">
               <div className="flex items-center space-x-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
                 <span className="bg-[#CDD6A9] text-[#676E5E] font-extrabold px-3 py-1 rounded-full border border-[#97A884]">
-                  SALA INTERACTIVA LISTA • {participantes.length} Cámaras Activas
+                  SALA DE REUNIÓN B2B EN VIVO • {participantes.length} Cámaras
                 </span>
               </div>
 
@@ -218,7 +218,7 @@ export default function HomePage() {
                     modoVista === 'dividida' ? 'bg-white text-[#676E5E] border-white' : 'bg-black/40 text-white border-white/20'
                   }`}
                 >
-                  Mismo Tamaño (50/50)
+                  Vista 50/50
                 </button>
                 <button
                   type="button"
@@ -239,7 +239,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* GRILLA DE PANTALLAS (CON ÍCONOS SVG VECTORIALES - SIN EMOJIS) */}
+            {/* GRILLA DE PANTALLAS B2B (CON ÍCONOS SVG VECTORIALES - SIN EMOJIS) */}
             <div className={`grid gap-4 ${
               modoVista === 'dividida' 
                 ? 'grid-cols-1 md:grid-cols-2' 
@@ -250,7 +250,7 @@ export default function HomePage() {
                   key={p.id}
                   className="relative bg-slate-900 border-2 border-[#97A884] rounded-2xl p-4 min-h-[260px] flex flex-col justify-between shadow-lg"
                 >
-                  {/* Título de la pantalla */}
+                  {/* Nombre del participante */}
                   <div className="flex justify-between items-center z-10">
                     <span className="text-[10px] font-bold bg-black/70 px-2.5 py-1 rounded-full text-white border border-white/20 truncate max-w-[190px]">
                       {p.nombre}
@@ -277,7 +277,7 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  {/* Silueta vectorial sobria SVG en lugar de emoji */}
+                  {/* Silueta vectorial SVG sobria */}
                   {p.camara ? (
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-gradient-to-b from-slate-800 to-slate-900">
                       <div className="w-16 h-16 rounded-full bg-[#52584B] border-2 border-[#CDD6A9] flex items-center justify-center mb-2 shadow-md">
@@ -286,7 +286,7 @@ export default function HomePage() {
                         </svg>
                       </div>
                       <span className="text-white font-bold text-xs text-center">{p.nombre}</span>
-                      <span className="text-[10px] text-emerald-400 mt-0.5">Transmisión Cifrada en Vivo</span>
+                      <span className="text-[10px] text-emerald-400 mt-0.5">Conexión HD Cifrada</span>
                     </div>
                   ) : (
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-slate-950 text-slate-500">
@@ -299,7 +299,7 @@ export default function HomePage() {
 
                   {/* Barra inferior */}
                   <div className="z-10 mt-auto flex justify-between items-center bg-black/70 backdrop-blur-xs px-2.5 py-1 rounded-xl text-[10px]">
-                    <span className="text-slate-300">{p.rol}</span>
+                    <span className="text-slate-300">{p.empresaRol}</span>
                     <span className="text-emerald-400 font-bold">Conectado</span>
                   </div>
                 </div>
@@ -329,53 +329,53 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Paneles Informativos Inferiores */}
+            {/* Paneles Informativos Inferiores B2B */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs pt-2">
               <div className="bg-white text-[#676E5E] p-3 rounded-2xl border border-[#97A884]">
                 <div className="flex justify-between items-center mb-1.5">
-                  <span className="font-extrabold uppercase text-[10px]">Archivos Adjuntos</span>
-                  <button type="button" className="bg-[#CDD6A9] text-[#676E5E] font-bold px-2 py-0.5 rounded text-[10px]">+ Subir</button>
+                  <span className="font-extrabold uppercase text-[10px]">Documentos de Proyecto</span>
+                  <button type="button" className="bg-[#CDD6A9] text-[#676E5E] font-bold px-2 py-0.5 rounded text-[10px]">+ Adjuntar</button>
                 </div>
-                <p className="text-[11px] text-gray-500 italic">No hay archivos adjuntos en esta sesión.</p>
+                <p className="text-[11px] text-gray-500 italic">Espacio para requerimientos de vitrina virtual o app.</p>
               </div>
 
               <div className="bg-white text-[#676E5E] p-3 rounded-2xl border border-[#97A884]">
                 <div className="flex justify-between items-center mb-1.5">
-                  <span className="font-extrabold uppercase text-[10px]">Transcripción en Vivo</span>
+                  <span className="font-extrabold uppercase text-[10px]">Transcripción B2B</span>
                   <span className="text-[10px] text-emerald-600 font-bold">Escuchando...</span>
                 </div>
-                <p className="text-[11px] text-gray-500 italic">Iniciando transcripción automática de audio...</p>
+                <p className="text-[11px] text-gray-500 italic">Transcripción automática de minutas comerciales.</p>
               </div>
 
               <div className="bg-white text-[#676E5E] p-3 rounded-2xl border border-[#97A884]">
                 <div className="flex justify-between items-center mb-1.5">
-                  <span className="font-extrabold uppercase text-[10px]">Minuta y Compromisos</span>
+                  <span className="font-extrabold uppercase text-[10px]">Acuerdos Comerciales</span>
                   <span className="text-[10px] text-gray-400">Autoguardado</span>
                 </div>
-                <p className="text-[11px] text-gray-500 italic">Registrando acuerdo de atención e indicaciones.</p>
+                <p className="text-[11px] text-gray-500 italic">Registro de compromisos de diseño y alcance.</p>
               </div>
             </div>
 
           </div>
         )}
 
-        {/* PESTAÑA: AGENDAR CITA */}
+        {/* PESTAÑA: AGENDAR DEMOSTRACIÓN */}
         {pestañaActiva === 'agendar' && (
           <div className="bg-white p-6 rounded-3xl border border-[#97A884] space-y-4">
-            <h2 className="text-lg font-black text-[#676E5E]">Agendamiento de Citas en Línea</h2>
-            <p className="text-xs text-gray-600">Selecciona el servicio y la fecha disponible para tu sesión virtual o presencial.</p>
+            <h2 className="text-lg font-black text-[#676E5E]">Agendar Demostración Comercial B2B</h2>
+            <p className="text-xs text-gray-600">Reserva una reunión con nuestro equipo de diseño para evaluar el desarrollo de tu vitrina virtual o aplicación PYME.</p>
           </div>
         )}
 
-        {/* PESTAÑA: CANCELAR / REPROGRAMAR */}
-        {pestañaActiva === 'cancelar' && (
+        {/* PESTAÑA: CONTACTO & PROYECTOS */}
+        {pestañaActiva === 'contacto' && (
           <div className="bg-white p-6 rounded-3xl border border-[#97A884] space-y-4">
-            <h2 className="text-lg font-black text-[#676E5E]">Gestión de Citas Registradas</h2>
-            <p className="text-xs text-gray-600">Ingresa tu RUT o código de reserva para modificar tu horario o cancelar la atención.</p>
+            <h2 className="text-lg font-black text-[#676E5E]">Contacto Comercial B2B</h2>
+            <p className="text-xs text-gray-600">Envíanos los detalles de tu empresa o convenio municipal para coordinar una propuesta técnica.</p>
           </div>
         )}
 
-        {/* PIE DE PÁGINA CON LOGO OFICIAL AMPLIO */}
+        {/* PIE DE PÁGINA CORPORATIVO */}
         <div className="bg-[#E6E7D5] p-6 rounded-2xl border border-[#97A884] flex flex-col items-center justify-center text-center space-y-3 shadow-xs">
           <img 
             src="/logo-asl.png.png" 
@@ -383,7 +383,7 @@ export default function HomePage() {
             className="w-20 h-20 sm:w-28 sm:h-28 object-contain drop-shadow-md transition-transform hover:scale-105" 
           />
           <p className="font-bold text-xs text-[#676E5E]">
-            ASL Ideas SpA • Sistema de Teleatención Multiusuario con Accesibilidad Cognitiva (Ley N° 21.545)
+            ASL Ideas SpA • Vitrinas Virtuales & Desarrollo de Aplicaciones para PYMEs
           </p>
         </div>
 
