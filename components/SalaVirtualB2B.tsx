@@ -110,7 +110,7 @@ export default function SalaVirtualB2B({
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      setEstadoTranscriptor('Navegador sin soporte de voz nativo. Usa la entrada de texto.');
+      setEstadoTranscriptor('Navegador sin soporte de voz nativo. Usa la entrada manual.');
       return;
     }
 
@@ -132,9 +132,11 @@ export default function SalaVirtualB2B({
       rec.onresult = (event: any) => {
         let textoTemporal = '';
         for (let i = event.resultIndex; i < event.results.length; ++i) {
-          if (event.results[i] && event.results[i][0]) {
-            const segmento = event.results[i][0].transcript || '';
-            if (event.results[i].isFinal) {
+          const res = event.results[i];
+          // Extracción correcta con [0].transcript
+          if (res && res[0] && res[0].transcript) {
+            const segmento = res[0].transcript;
+            if (res.isFinal) {
               const fraseFinal = segmento.trim();
               if (fraseFinal) {
                 setTranscripcion(prev => [...prev, `Participante: "${fraseFinal}"`]);
@@ -148,7 +150,7 @@ export default function SalaVirtualB2B({
       };
 
       rec.onerror = (event: any) => {
-        console.warn('Error en SpeechRecognition:', event.error);
+        console.warn('SpeechRecognition error:', event.error);
         if (event.error === 'not-allowed') {
           setEstadoTranscriptor('Permiso de micrófono denegado para transcripción');
           setTranscribiendo(false);
@@ -162,7 +164,7 @@ export default function SalaVirtualB2B({
         if (transcribiendo) {
           setTimeout(() => {
             try { rec.start(); } catch (err) {}
-          }, 400);
+          }, 300);
         } else {
           setEstadoTranscriptor('Transcriptor en pausa');
         }
@@ -666,7 +668,7 @@ export default function SalaVirtualB2B({
                   </p>
                 </div>
 
-                {/* 2. Transcripción en Vivo en Tiempo Real */}
+                {/* 2. Transcripción en Vivo en Tiempo Real Corregida */}
                 <div className="bg-white p-4 sm:p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-2">
@@ -688,7 +690,7 @@ export default function SalaVirtualB2B({
                         <p key={idx} className="border-b border-[#97A884]/20 pb-1 last:border-0 leading-relaxed">{t}</p>
                       ))}
 
-                      {/* Texto en vivo corregido sin 'undefined' */}
+                      {/* Texto en vivo mientras se habla (limpio sin undefined) */}
                       {textoEnVivo && (
                         <p className="text-green-800 font-bold italic animate-pulse">
                           Hablando: "{textoEnVivo}"
