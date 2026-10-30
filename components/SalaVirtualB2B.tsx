@@ -50,7 +50,7 @@ export default function SalaVirtualB2B({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Stream de Cámara y Micrófono Real
+  // Stream de Cámara y Micrófono
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const [micActivo, setMicActivo] = useState<boolean>(true);
   const [camActiva, setCamActiva] = useState<boolean>(false);
@@ -59,7 +59,7 @@ export default function SalaVirtualB2B({
   // Previsualizador de Archivos
   const [archivoPrevisualizar, setArchivoPrevisualizar] = useState<ArchivoAdjunto | null>(null);
 
-  // Transcripción por Voz
+  // Transcripción en Vivo
   const [transcribiendo, setTranscribiendo] = useState<boolean>(true);
   const [estadoTranscriptor, setEstadoTranscriptor] = useState<string>('Escuchando voz en vivo...');
   const [transcripcion, setTranscripcion] = useState<string[]>([
@@ -74,11 +74,12 @@ export default function SalaVirtualB2B({
   ]);
   const [mensajeEstado, setMensajeEstado] = useState<string>('');
 
-  // Minuta y Compromisos
+  // Minuta y Notas
   const [minuta, setMinuta] = useState<string>(
     'COMPROMISOS DE LA REUNIÓN B2B:\n1. Revisión de propuesta de Vitrina Virtual PYME.\n2. Demostración de software adaptado con baja carga sensorial.\n3. Coordinación de prueba piloto institucional.'
   );
 
+  // Estados del Formulario de Agendar Cita (Fiel a la Imagen)
   const [plataforma, setPlataforma] = useState<string>(
     portalData?.nombre || initialApp || '1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)'
   );
@@ -98,7 +99,7 @@ export default function SalaVirtualB2B({
     }
   }, [isOpen, initialMode]);
 
-  // Motor de Transcripción por Voz Continuo (SpeechRecognition con Auto-Reinicio)
+  // Motor de Transcripción Continuo
   useEffect(() => {
     let recognition: any = null;
     let fallbackInterval: NodeJS.Timeout | null = null;
@@ -122,7 +123,7 @@ export default function SalaVirtualB2B({
           recognition.onresult = (event: any) => {
             for (let i = event.resultIndex; i < event.results.length; ++i) {
               if (event.results[i].isFinal) {
-                const texto = event.results[i][0].transcript.trim();
+                const texto = event.results[i].transcript.trim();
                 if (texto) {
                   setTranscripcion(prev => [...prev, `Participante: "${texto}"`]);
                 }
@@ -135,11 +136,8 @@ export default function SalaVirtualB2B({
           };
 
           recognition.onend = () => {
-            // Auto-reiniciar reconección si la transcripción sigue encendida
             if (transcribiendo) {
-              try {
-                recognition.start();
-              } catch (e) {}
+              try { recognition.start(); } catch (e) {}
             }
           };
 
@@ -149,7 +147,6 @@ export default function SalaVirtualB2B({
         }
       }
 
-      // Bucle de asistencia si la voz nativa del navegador no captura audio
       const frasesLive = [
         'Anfitrión ASL: "Presentando módulo de accesibilidad cognitiva y lectura fácil."',
         'Participante B2B: "Confirmado el requerimiento de integración con fichas encriptadas SOAP."',
@@ -256,7 +253,6 @@ export default function SalaVirtualB2B({
     }
   };
 
-  // Carga Real de Archivos con Creación de URL de Previsualización
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const nuevos: ArchivoAdjunto[] = [];
@@ -325,7 +321,7 @@ export default function SalaVirtualB2B({
         } text-[#676E5E]`}
       >
         
-        {/* Cabecera del Modal Sin Emojis */}
+        {/* Cabecera del Modal */}
         <div className="sticky top-0 z-20 bg-[#E6E7D5] p-3 sm:p-5 border-b border-[#97A884]/40 flex flex-wrap justify-between items-center gap-2 shrink-0">
           <div className="flex items-center space-x-2.5">
             <img 
@@ -572,7 +568,7 @@ export default function SalaVirtualB2B({
               {/* Módulos Interactivos: Archivos, Transcripción y Minuta */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                 
-                {/* 1. Módulo Archivos Adjuntos con Visor Integrado */}
+                {/* 1. Módulo Archivos Adjuntos */}
                 <div className="bg-white p-4 sm:p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-2">
@@ -710,33 +706,126 @@ export default function SalaVirtualB2B({
             </div>
           )}
 
-          {/* MODO AGENDAR REUNIÓN */}
+          {/* MODO AGENDAR REUNIÓN (FIEL A LA IMAGEN WATSAPP 21.14.45) */}
           {modo === 'agendar' && (
-            <div className="bg-white p-6 rounded-3xl border-2 border-[#97A884] space-y-4">
-              <h4 className="text-base font-bold text-[#676E5E]">Agendar Cita B2B</h4>
-              <p className="text-xs text-[#676E5E]">Selecciona la fecha y hora para coordinar una reunión de trabajo.</p>
-              <form onSubmit={(e) => { e.preventDefault(); setReservaConfirmada(true); }} className="space-y-3 text-xs">
-                <input
-                  type="text"
-                  placeholder="Nombre o Empresa"
-                  value={nombre}
-                  onChange={(e) => setNombre(e.target.value)}
-                  className="w-full p-3 bg-white border border-[#97A884] rounded-xl text-[#676E5E]"
-                  required
-                />
-                <input
-                  type="email"
-                  placeholder="Correo electrónico"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full p-3 bg-white border border-[#97A884] rounded-xl text-[#676E5E]"
-                  required
-                />
-                <button type="submit" className="w-full bg-[#676E5E] text-white font-bold py-3 rounded-2xl cursor-pointer">
-                  Confirmar Reserva
+            reservaConfirmada ? (
+              <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-[#97A884] text-center space-y-4 shadow-sm">
+                <div className="w-12 h-12 mx-auto bg-[#CDD6A9] rounded-full flex items-center justify-center text-[#676E5E] font-black text-base border-2 border-[#97A884]">
+                  OK
+                </div>
+                <h4 className="text-lg font-black text-[#676E5E]">Reunión B2B Agendada Exitosamente</h4>
+                <p className="text-xs text-[#676E5E] leading-relaxed max-w-md mx-auto">
+                  Hemos registrado la cita para <strong>{nombre}</strong> ({email}) en la unidad <strong>{plataforma}</strong> para el día <strong>{fecha || 'Fecha Seleccionada'}</strong> a las <strong>{hora}</strong>.
+                </p>
+                <div className="pt-2 flex justify-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => { setReservaConfirmada(false); setModo('videollamada'); }}
+                    className="bg-[#676E5E] text-white text-xs font-bold px-6 py-3 rounded-2xl hover:bg-[#52584b] transition cursor-pointer shadow-md"
+                  >
+                    Ingresar a la Sala Virtual Ahora
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={(e) => { e.preventDefault(); setReservaConfirmada(true); }} className="bg-white p-5 sm:p-8 rounded-3xl border-2 border-[#97A884] space-y-5 text-xs shadow-sm">
+                
+                {/* 1. SELECCIONA LA APLICACIÓN O UNIDAD */}
+                <div className="space-y-1.5">
+                  <label className="font-bold text-[#676E5E] uppercase tracking-wider block text-[11px]">
+                    1. SELECCIONA LA APLICACIÓN O UNIDAD *
+                  </label>
+                  <select
+                    value={plataforma}
+                    onChange={(e) => setPlataforma(e.target.value)}
+                    className="w-full p-3.5 bg-[#FAF8F5] border border-[#97A884] rounded-2xl text-[#676E5E] font-medium outline-none focus:border-[#676E5E]"
+                  >
+                    <option value="1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)">1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)</option>
+                    <option value="2. LAWENMOLL Salud Integrativa">2. LAWENMOLL Salud Integrativa</option>
+                    <option value="3. Wellness Web App (Movimiento Adaptado)">3. Wellness Web App (Movimiento Adaptado)</option>
+                    <option value="4. Sabiduría Ancestral / Bienestar (Fitoterapia Nativa)">4. Sabiduría Ancestral / Bienestar (Fitoterapia Nativa)</option>
+                  </select>
+                </div>
+
+                {/* 2. MOTIVO DE LA CITA */}
+                <div className="space-y-1.5">
+                  <label className="font-bold text-[#676E5E] uppercase tracking-wider block text-[11px]">
+                    2. MOTIVO DE LA CITA *
+                  </label>
+                  <select
+                    value={motivo}
+                    onChange={(e) => setMotivo(e.target.value)}
+                    className="w-full p-3.5 bg-[#FAF8F5] border border-[#97A884] rounded-2xl text-[#676E5E] font-medium outline-none focus:border-[#676E5E]"
+                  >
+                    <option value="Videoreunión de Trabajo / Cotización de Vitrina B2B">Videoreunión de Trabajo / Cotización de Vitrina B2B</option>
+                    <option value="Demostración de Software Accesibilidad Cognitiva Ley TEA">Demostración de Software Accesibilidad Cognitiva Ley TEA</option>
+                    <option value="Consultoría Institucional B2B">Consultoría Institucional B2B</option>
+                  </select>
+                </div>
+
+                {/* FILA EN 2 COLUMNAS: FECHA Y BLOQUE HORARIO */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="font-bold text-[#676E5E] uppercase tracking-wider block text-[11px]">FECHA *</label>
+                    <input
+                      type="date"
+                      value={fecha}
+                      onChange={(e) => setFecha(e.target.value)}
+                      className="w-full p-3.5 bg-[#FAF8F5] border border-[#97A884] rounded-2xl text-[#676E5E] font-medium outline-none focus:border-[#676E5E]"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="font-bold text-[#676E5E] uppercase tracking-wider block text-[11px]">BLOQUE HORARIO *</label>
+                    <select
+                      value={hora}
+                      onChange={(e) => setHora(e.target.value)}
+                      className="w-full p-3.5 bg-[#FAF8F5] border border-[#97A884] rounded-2xl text-[#676E5E] font-medium outline-none focus:border-[#676E5E]"
+                    >
+                      <option value="09:30 AM (Bloque Mañana)">09:30 AM (Bloque Mañana)</option>
+                      <option value="10:30 AM (Bloque Mañana)">10:30 AM (Bloque Mañana)</option>
+                      <option value="12:00 PM (Bloque Mediodía)">12:00 PM (Bloque Mediodía)</option>
+                      <option value="15:30 PM (Bloque Tarde)">15:30 PM (Bloque Tarde)</option>
+                      <option value="17:00 PM (Bloque Tarde)">17:00 PM (Bloque Tarde)</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* FILA EN 2 COLUMNAS: NOMBRE Y CORREO */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="font-bold text-[#676E5E] uppercase tracking-wider block text-[11px]">NOMBRE COMPLETO / EMPRESA *</label>
+                    <input
+                      type="text"
+                      value={nombre}
+                      onChange={(e) => setNombre(e.target.value)}
+                      placeholder="Nombre o Institución..."
+                      className="w-full p-3.5 bg-[#FAF8F5] border border-[#97A884] rounded-2xl text-[#676E5E] outline-none focus:border-[#676E5E]"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="font-bold text-[#676E5E] uppercase tracking-wider block text-[11px]">CORREO ELECTRÓNICO *</label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="contacto@aslideas.cl"
+                      className="w-full p-3.5 bg-[#FAF8F5] border border-[#97A884] rounded-2xl text-[#676E5E] outline-none focus:border-[#676E5E]"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* BOTÓN SUBMIT COMPLETO EN OLIVA */}
+                <button
+                  type="submit"
+                  className="w-full bg-[#676E5E] hover:bg-[#52584b] text-white text-xs font-bold py-4 rounded-2xl transition shadow-md cursor-pointer mt-2"
+                >
+                  Confirmar y Agendar Reunión
                 </button>
               </form>
-            </div>
+            )
           )}
 
           {/* MODO CANCELAR */}
@@ -763,7 +852,7 @@ export default function SalaVirtualB2B({
 
         </div>
 
-        {/* VISUALIZADOR DE ARCHIVOS EN PANTALLA (PDF E IMÁGENES) */}
+        {/* VISUALIZADOR DE ARCHIVOS EN PANTALLA */}
         {archivoPrevisualizar && (
           <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
             <div className="bg-[#E6E7D5] max-w-3xl w-full rounded-3xl border-2 border-[#97A884] p-5 space-y-4 shadow-2xl flex flex-col max-h-[85vh]">
@@ -785,7 +874,6 @@ export default function SalaVirtualB2B({
                 </button>
               </div>
 
-              {/* Visor iframe nativo para ver PDF en vivo */}
               <div className="flex-1 bg-white rounded-2xl border border-[#97A884] overflow-hidden min-h-[320px] flex items-center justify-center relative">
                 {archivoPrevisualizar.tipo.startsWith('image/') ? (
                   <img src={archivoPrevisualizar.url} alt={archivoPrevisualizar.nombre} className="max-h-[60vh] w-auto object-contain p-2 rounded-xl" />
