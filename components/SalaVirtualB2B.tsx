@@ -60,9 +60,10 @@ export default function SalaVirtualB2B({
   // Previsualizador de Archivos
   const [archivoPrevisualizar, setArchivoPrevisualizar] = useState<ArchivoAdjunto | null>(null);
 
-  // Transcripción por Voz
+  // Transcripción en Tiempo Real
   const [transcribiendo, setTranscribiendo] = useState<boolean>(false);
-  const [estadoTranscriptor, setEstadoTranscriptor] = useState<string>('Transcriptor listo para escuchar');
+  const [estadoTranscriptor, setEstadoTranscriptor] = useState<string>('Presiona "Activar Transcriptor" para escuchar voz');
+  const [textoEnVivo, setTextoEnVivo] = useState<string>('');
   const [textoManual, setTextoManual] = useState<string>('');
   const [transcripcion, setTranscripcion] = useState<string[]>([
     'ASL Bot: Sala de Video Reunión iniciada bajo cifrado Ley N° 21.663.',
@@ -81,7 +82,7 @@ export default function SalaVirtualB2B({
     'COMPROMISOS DE LA REUNIÓN B2B:\n1. Revisión de propuesta de Vitrina Virtual PYME.\n2. Demostración de software adaptado con baja carga sensorial.\n3. Coordinación de prueba piloto institucional.'
   );
 
-  // Estados del Formulario de Agendar Cita
+  // Formulario Agendar Cita
   const [plataforma, setPlataforma] = useState<string>(
     portalData?.nombre || initialApp || '1. Casa Matriz ASL Ideas SpA (Desarrollo B2B y Licencias)'
   );
@@ -102,20 +103,20 @@ export default function SalaVirtualB2B({
     }
   }, [isOpen, initialMode]);
 
-  // Iniciar Transcriptor de Voz por Clic Directo del Usuario
+  // Motor de Reconocimiento de Voz
   const activarTranscriptorVoz = () => {
     if (typeof window === 'undefined') return;
 
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      setEstadoTranscriptor('Navegador sin soporte de voz nativa. Usa entrada de texto.');
+      setEstadoTranscriptor('Navegador sin motor de voz nativo. Usa la entrada de texto.');
       return;
     }
 
     try {
       if (recognitionRef.current) {
-        recognitionRef.current.stop();
+        try { recognitionRef.current.stop(); } catch (e) {}
       }
 
       const rec = new SpeechRecognition();
@@ -129,22 +130,33 @@ export default function SalaVirtualB2B({
       };
 
       rec.onresult = (event: any) => {
+        let textoTemporal = '';
         for (let i = event.resultIndex; i < event.results.length; ++i) {
+          const segmento = event.results[i].transcript;
           if (event.results[i].isFinal) {
-            const frase = event.results[i].transcript.trim();
-            if (frase) {
-              setTranscripcion(prev => [...prev, `Participante: "${frase}"`]);
+            const fraseFinal = segmento.trim();
+            if (fraseFinal) {
+              setTranscripcion(prev => [...prev, `Participante: "${fraseFinal}"`]);
             }
+          } else {
+            textoTemporal += segmento;
           }
+        }
+        setTextoEnVivo(textoTemporal);
+      };
+
+      rec.onerror = (event: any) => {
+        console.warn('Error en SpeechRecognition:', event.error);
+        if (event.error === 'not-allowed') {
+          setEstadoTranscriptor('Permiso de micrófono denegado para transcripción');
+          setTranscribiendo(false);
+        } else {
+          setEstadoTranscriptor('Reconectando canal de voz...');
         }
       };
 
-      rec.onerror = (e: any) => {
-        console.warn('Error en SpeechRecognition:', e);
-        setEstadoTranscriptor('Reconectando canal de voz...');
-      };
-
       rec.onend = () => {
+        setTextoEnVivo('');
         if (transcribiendo) {
           try { rec.start(); } catch (err) {}
         }
@@ -153,13 +165,15 @@ export default function SalaVirtualB2B({
       rec.start();
       recognitionRef.current = rec;
     } catch (e) {
-      console.error('Error al iniciar transcriptor:', e);
+      console.error('Error al iniciar transcripción:', e);
+      setEstadoTranscriptor('Error al conectar micrófono de transcripción');
     }
   };
 
   const detenerTranscriptor = () => {
     setTranscribiendo(false);
     setEstadoTranscriptor('Transcriptor en pausa');
+    setTextoEnVivo('');
     if (recognitionRef.current) {
       try { recognitionRef.current.stop(); } catch (e) {}
     }
@@ -173,16 +187,15 @@ export default function SalaVirtualB2B({
     }
   };
 
-  // Agregar Nota / Mensaje Manualmente a la Transcripción
   const agregarComentarioManual = (e: React.FormEvent) => {
     e.preventDefault();
     if (textoManual.trim()) {
-      setTranscripcion(prev => [...prev, `Anotación: "${textoManual.trim()}"`]);
+      setTranscripcion(prev => [...prev, `Participante: "${textoManual.trim()}"`]);
       setTextoManual('');
     }
   };
 
-  // Analizador de Audio Real con Web Audio API
+  // Analizador de Audio en Tiempo Real (Web Audio API)
   useEffect(() => {
     let audioCtx: AudioContext | null = null;
     let analyser: AnalyserNode | null = null;
@@ -204,7 +217,8 @@ export default function SalaVirtualB2B({
             sum += dataArray[i];
           }
           const average = sum / dataArray.length;
-          setNivelVolumen(Math.min(100, Math.round((average / 128) * 100)));
+          const vol = Math.min(100, Math.round((average / 128) * 100));
+          setNivelVolumen(vol);
           animFrame = requestAnimationFrame(updateVolume);
         };
         updateVolume();
@@ -652,12 +666,12 @@ export default function SalaVirtualB2B({
                     <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-2">
                       <div>
                         <h4 className="font-extrabold text-[#676E5E] text-xs uppercase tracking-wider">Transcripción en Vivo</h4>
-                        <span className="text-[9px] font-semibold text-green-700">{estadoTranscriptor}</span>
+                        <span className="text-[9px] font-semibold text-green-700 block mt-0.5">{estadoTranscriptor}</span>
                       </div>
                       <button
                         type="button"
-                        onClick={() => setTranscripcion([])}
-                        className="text-[#DC8D6C] hover:underline font-bold text-[10px] cursor-pointer"
+                        onClick={() => { setTranscripcion([]); setTextoEnVivo(''); }}
+                        className="text-[#DC8D6C] hover:underline font-bold text-[10px] cursor-pointer shrink-0"
                       >
                         Limpiar
                       </button>
@@ -665,8 +679,15 @@ export default function SalaVirtualB2B({
 
                     <div className="h-36 overflow-y-auto bg-[#E6E7D5]/50 p-3 rounded-2xl text-[10px] space-y-2 font-mono text-[#676E5E] border border-[#97A884]/30 mt-2">
                       {transcripcion.map((t, idx) => (
-                        <p key={idx} className="border-b border-[#97A884]/20 pb-1 last:border-0">{t}</p>
+                        <p key={idx} className="border-b border-[#97A884]/20 pb-1 last:border-0 leading-relaxed">{t}</p>
                       ))}
+
+                      {/* Texto que se va hablando en vivo */}
+                      {textoEnVivo && (
+                        <p className="text-green-800 font-bold italic animate-pulse">
+                          Hablando: "{textoEnVivo}"
+                        </p>
+                      )}
                     </div>
 
                     {/* Entradas Manuales / Notas Inmediatas */}
@@ -675,7 +696,7 @@ export default function SalaVirtualB2B({
                         type="text"
                         value={textoManual}
                         onChange={(e) => setTextoManual(e.target.value)}
-                        placeholder="Escribe o dicta un comentario..."
+                        placeholder="Dicta o escribe un comentario..."
                         className="flex-1 p-2 bg-[#FAF8F5] border border-[#97A884] rounded-xl text-[10px] text-[#676E5E] outline-none"
                       />
                       <button
