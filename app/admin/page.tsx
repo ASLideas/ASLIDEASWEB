@@ -447,7 +447,6 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Formulario Libro Diario */}
               <form onSubmit={handleAgregarTransaccion} className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-4">
                 <h3 className="font-extrabold uppercase text-xs">Registrar Movimiento en Libro Diario</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -493,7 +492,6 @@ export default function AdminPage() {
                 </button>
               </form>
 
-              {/* Tabla Libro Diario */}
               <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
@@ -533,7 +531,7 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* MÓDULO 3: CAJA CHICA CON PREVISUALIZACIÓN Y ARCHIVOS */}
+          {/* MÓDULO 3: CAJA CHICA CON PREVISUALIZACIÓN */}
           {seccion === 'cajachica' && (
             <div className="space-y-6 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -551,7 +549,6 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Formulario Caja Chica */}
               <form onSubmit={handleAgregarOEditarCajaChica} className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-4 shadow-sm">
                 <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-2">
                   <h3 className="font-extrabold uppercase text-xs text-[#676E5E]">
@@ -599,7 +596,6 @@ export default function AdminPage() {
                   </div>
                 </div>
 
-                {/* Vista Previa Instantánea */}
                 {previewUrlForm && (
                   <div className="p-3 bg-[#FAF8F5] rounded-2xl border-2 border-dashed border-[#97A884] space-y-2">
                     <span className="text-[10px] font-bold text-green-800 uppercase block">
@@ -629,7 +625,6 @@ export default function AdminPage() {
                 </button>
               </form>
 
-              {/* Lista de Rendiciones */}
               <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3">
                 <h3 className="font-extrabold uppercase text-xs text-[#676E5E]">Planilla de Rendición con Respaldos Digitales</h3>
                 {cajaChicaList.map(item => (
@@ -736,24 +731,24 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* MÓDULO 5: TRÁMITES Y HERRAMIENTAS PYME CON ENLACES DIRECTOS Y FUNCIONALES */}
+          {/* MÓDULO 5: TRÁMITES Y HERRAMIENTAS PYME CON ENLACES EXACTOS Y BOTONES BLOQUEADOS PARA ETAPA 2 */}
           {seccion === 'pyme' && (
             <div className="space-y-5 text-xs">
               <div className="bg-white p-6 rounded-3xl border-2 border-[#97A884] space-y-3">
                 <span className="text-[10px] font-extrabold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-2.5 py-0.5 rounded-full border border-[#97A884]">
-                  Ecosistema de Trámites Oficiales
+                  Ecosistema de Trámites Oficiales — Etapa 1
                 </span>
                 <h3 className="text-base font-black text-[#676E5E]">
                   Plataformas Requeridas para Registro & Operación de ASL Ideas SpA
                 </h3>
                 <p className="text-gray-600">
-                  Acceso inmediato a las instituciones del Estado y servicios tecnológicos requeridos para la constitución, facturación y financiamiento de la empresa.
+                  Acceso inmediato a las herramientas activas de la Etapa 1. Los servicios correspondientes a etapas futuras se encuentran inhabilitados temporalmente.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 
-                {/* 1. Tu Empresa en un Día */}
+                {/* 1. Tu Empresa en un Día (ACTIVO) */}
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
@@ -766,7 +761,7 @@ export default function AdminPage() {
                     </p>
                   </div>
                   <a
-                    href="[suspicious link removed]"
+                    href="https://www.registrodeempresasysociedades.cl/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block text-center bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-extrabold p-2.5 rounded-xl border border-[#97A884] transition text-[11px]"
@@ -775,7 +770,7 @@ export default function AdminPage() {
                   </a>
                 </div>
 
-                {/* 2. S.I.I. */}
+                {/* 2. S.I.I. (ACTIVO) */}
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
@@ -784,11 +779,11 @@ export default function AdminPage() {
                     </div>
                     <h4 className="font-black text-sm text-[#676E5E] mt-2">Servicio de Impuestos Internos</h4>
                     <p className="text-[11px] text-gray-500 mt-1">
-                      Inicio de Actividades, Facturación Electrónica y Declaración de Impuestos F29.
+                      Inicio de Actividades, Facturación Electrónica y Declaración F29.
                     </p>
                   </div>
                   <a
-                    href="[suspicious link removed]"
+                    href="https://www.sii.cl/servicios_online/1042-3264.html"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block text-center bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-extrabold p-2.5 rounded-xl border border-[#97A884] transition text-[11px]"
@@ -797,29 +792,29 @@ export default function AdminPage() {
                   </a>
                 </div>
 
-                {/* 3. TGR */}
+                {/* 3. TGR (ACTIVO) */}
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
                       <span className="text-2xl">🏛️</span>
-                      <span className="bg-amber-100 text-amber-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Tesoreria</span>
+                      <span className="bg-amber-100 text-amber-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Tesorería</span>
                     </div>
                     <h4 className="font-black text-sm text-[#676E5E] mt-2">Tesorería General (TGR)</h4>
                     <p className="text-[11px] text-gray-500 mt-1">
-                      Pago de contribuciones, patentes y certificados fiscales de tesorería.
+                      Pago de contribuciones, patentes y certificados fiscales.
                     </p>
                   </div>
                   <a
-                    href="[suspicious link removed]"
+                    href="https://tgr.gob.cl/contribuciones/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block text-center bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-extrabold p-2.5 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
-                    Ir a TGR →
+                    Ir a TGR Contribuciones →
                   </a>
                 </div>
 
-                {/* 4. Previred */}
+                {/* 4. Previred (ACTIVO) */}
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
@@ -828,20 +823,20 @@ export default function AdminPage() {
                     </div>
                     <h4 className="font-black text-sm text-[#676E5E] mt-2">Previred</h4>
                     <p className="text-[11px] text-gray-500 mt-1">
-                      Declaración y pago mensual de cotizaciones previsionales del personal.
+                      Portal de declaración y pago mensual de cotizaciones previsionales.
                     </p>
                   </div>
                   <a
-                    href="[suspicious link removed]"
+                    href="https://www.previred.com/wPortal/login/login.jsp"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block text-center bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-extrabold p-2.5 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
-                    Ir a Previred →
+                    Ir a Portal Previred →
                   </a>
                 </div>
 
-                {/* 5. CORFO */}
+                {/* 5. CORFO (ACTIVO) */}
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
@@ -850,20 +845,20 @@ export default function AdminPage() {
                     </div>
                     <h4 className="font-black text-sm text-[#676E5E] mt-2">CORFO Chile</h4>
                     <p className="text-[11px] text-gray-500 mt-1">
-                      Postulación a fondos de innovación en salud e inclusión digital.
+                      Programas y convocatorias de innovación tecnológica e inclusión.
                     </p>
                   </div>
                   <a
-                    href="[suspicious link removed]"
+                    href="https://www.corfo.gob.cl/sites/cpp/programasyconvocatorias/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block text-center bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-extrabold p-2.5 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
-                    Ir a CORFO →
+                    Ir a Programas CORFO →
                   </a>
                 </div>
 
-                {/* 6. SERCOTEC */}
+                {/* 6. SERCOTEC (ACTIVO) */}
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
@@ -872,42 +867,42 @@ export default function AdminPage() {
                     </div>
                     <h4 className="font-black text-sm text-[#676E5E] mt-2">SERCOTEC</h4>
                     <p className="text-[11px] text-gray-500 mt-1">
-                      Capital Semilla, Abeja y fondos de fortalecimiento gremial y pyme.
+                      Capital Abeja Emprende y fondos de fortalecimiento pyme.
                     </p>
                   </div>
                   <a
-                    href="[suspicious link removed]"
+                    href="https://www.sercotec.cl/programas/capital-abeja-emprende/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block text-center bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-extrabold p-2.5 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
-                    Ir a SERCOTEC →
+                    Ir a Capital Abeja →
                   </a>
                 </div>
 
-                {/* 7. Vercel Cloud */}
+                {/* 7. Vercel Cloud (ACTIVO) */}
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
                       <span className="text-2xl">☁️</span>
-                      <span className="bg-gray-100 text-gray-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Hosting & TI</span>
+                      <span className="bg-gray-100 text-gray-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Hosting & Cloud</span>
                     </div>
-                    <h4 className="font-black text-sm text-[#676E5E] mt-2">Vercel Cloud</h4>
+                    <h4 className="font-black text-sm text-[#676E5E] mt-2">Vercel Web Console</h4>
                     <p className="text-[11px] text-gray-500 mt-1">
-                      Consola de despliegue web y servidores de producción bajo la Ley N° 21.663.
+                      Servidor de producción ASL Ideas Web y monitoreo de ciberseguridad.
                     </p>
                   </div>
                   <a
-                    href="[suspicious link removed]"
+                    href="https://vercel.com/aslideas1979-6681s-projects/aslideasweb"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block text-center bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-extrabold p-2.5 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
-                    Ir a Vercel →
+                    Ir a Dashboard Vercel →
                   </a>
                 </div>
 
-                {/* 8. Supabase */}
+                {/* 8. Supabase (ACTIVO) */}
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
@@ -916,7 +911,7 @@ export default function AdminPage() {
                     </div>
                     <h4 className="font-black text-sm text-[#676E5E] mt-2">Supabase Database</h4>
                     <p className="text-[11px] text-gray-500 mt-1">
-                      Base de datos relacional PostgreSQL con encriptación para fichas clínicas.
+                      Editor de tablas y fichas clínicas con encriptación.
                     </p>
                   </div>
                   <a
@@ -925,15 +920,59 @@ export default function AdminPage() {
                     rel="noopener noreferrer"
                     className="block text-center bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-extrabold p-2.5 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
-                    Ir a Supabase →
+                    Ir a Editor Supabase →
                   </a>
+                </div>
+
+                {/* 9. Mercado Público (BLOQUEADO / ETAPA 2) */}
+                <div className="bg-gray-100 p-5 rounded-3xl border-2 border-gray-300 space-y-3 shadow-none opacity-60 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-2xl grayscale">🏛️</span>
+                      <span className="bg-gray-200 text-gray-700 font-bold text-[9px] px-2 py-0.5 rounded-full">
+                        🔒 Bloqueado / Etapa 2
+                      </span>
+                    </div>
+                    <h4 className="font-black text-sm text-gray-600 mt-2">Mercado Público & Compra Ágil</h4>
+                    <p className="text-[11px] text-gray-400 mt-1">
+                      Registro de proveedores del Estado y licitaciones municipales.
+                    </p>
+                  </div>
+                  <button
+                    disabled
+                    className="w-full text-center bg-gray-200 text-gray-500 font-extrabold p-2.5 rounded-xl border border-gray-300 cursor-not-allowed text-[11px]"
+                  >
+                    🔒 Inhabilitado (Etapa 2)
+                  </button>
+                </div>
+
+                {/* 10. Cuenta Corriente Empresa (BLOQUEADO / ETAPA 2) */}
+                <div className="bg-gray-100 p-5 rounded-3xl border-2 border-gray-300 space-y-3 shadow-none opacity-60 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-2xl grayscale">💳</span>
+                      <span className="bg-gray-200 text-gray-700 font-bold text-[9px] px-2 py-0.5 rounded-full">
+                        🔒 Bloqueado / Etapa 2
+                      </span>
+                    </div>
+                    <h4 className="font-black text-sm text-gray-600 mt-2">Banca Empresa (Cuenta Corriente)</h4>
+                    <p className="text-[11px] text-gray-400 mt-1">
+                      Portal bancario de cuenta corriente jurídica y línea de crédito.
+                    </p>
+                  </div>
+                  <button
+                    disabled
+                    className="w-full text-center bg-gray-200 text-gray-500 font-extrabold p-2.5 rounded-xl border border-gray-300 cursor-not-allowed text-[11px]"
+                  >
+                    🔒 Inhabilitado (Etapa 2)
+                  </button>
                 </div>
 
               </div>
             </div>
           )}
 
-          {/* MÓDULO 6: REPORTE IMPRIMIBLE PARA CONTADORES */}
+          {/* MÓDULO 6: REPORTE IMPRIMIBLE */}
           {seccion === 'reporte' && (
             <div className="bg-white p-6 sm:p-10 rounded-3xl border-2 border-[#97A884] space-y-6 text-xs">
               <div className="flex justify-between items-center border-b-2 border-[#97A884] pb-5">
