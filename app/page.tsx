@@ -12,14 +12,14 @@ interface Participante {
 }
 
 export default function HomePage() {
-  // Pantalla de espera / Intro de carga
+  // Estado para la Pantalla de Carga / Intro inicial con Logo
   const [cargandoWeb, setCargandoWeb] = useState(true);
 
   // Navegación por Pestañas Principales
   const [pestañaActiva, setPestañaActiva] = useState<'ficha' | 'sala' | 'agendar' | 'cancelar'>('sala');
   const [modoVista, setModoVista] = useState<'dividida' | 'galeria'>('dividida');
 
-  // Participantes de la Videollamada
+  // Participantes de la Videollamada (Sin Emojis)
   const [participantes, setParticipantes] = useState<Participante[]>([
     {
       id: '1',
@@ -44,11 +44,11 @@ export default function HomePage() {
     },
   ]);
 
-  // Simular la carga inicial de la web
+  // Simulación de pantalla de espera / intro de carga
   useEffect(() => {
     const timer = setTimeout(() => {
       setCargandoWeb(false);
-    }, 2200);
+    }, 2400);
     return () => clearTimeout(timer);
   }, []);
 
@@ -81,7 +81,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#676E5E] relative overflow-x-hidden font-sans">
       
-      {/* 1. INTRO / PANTALLA DE CARGA DE LA WEB (SIN EMOJIS) */}
+      {/* 1. PANTALLA DE ESPERA / INTRO DE CARGA WEB CON LOGO DE ASL IDEAS */}
       {cargandoWeb && (
         <div className="fixed inset-0 z-50 bg-[#FAF8F5] flex flex-col items-center justify-center p-6 text-center">
           <div className="relative flex flex-col items-center space-y-6 max-w-md bg-[#E6E7D5] p-8 sm:p-10 rounded-3xl border-2 border-[#97A884] shadow-2xl">
@@ -103,7 +103,7 @@ export default function HomePage() {
                 Cargando Plataforma Web...
               </h2>
               <p className="text-xs text-gray-600">
-                Iniciando ecosistema accesible y entorno cifrado Ley N° 21.663
+                Iniciando entorno accesible y sistema encriptado Ley N° 21.663
               </p>
             </div>
 
@@ -120,7 +120,7 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* 2. CONTENIDO PRINCIPAL DE LA PLATAFORMA WEB */}
+      {/* 2. PLATAFORMA WEB PRINCIPAL */}
       <div className="p-4 sm:p-8 max-w-7xl mx-auto space-y-6">
         
         {/* Cabecera Superior */}
@@ -147,7 +147,7 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {/* Pestañas de Navegación Originales */}
+        {/* Pestañas de Navegación */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-[#E6E7D5] p-1.5 rounded-2xl border border-[#97A884] text-xs font-bold text-center">
           <button 
             type="button"
@@ -187,7 +187,7 @@ export default function HomePage() {
           </button>
         </div>
 
-        {/* PESTAÑA 1: FICHA DE OFICINA */}
+        {/* PESTAÑA: FICHA DE OFICINA */}
         {pestañaActiva === 'ficha' && (
           <div className="bg-white p-6 rounded-3xl border border-[#97A884] space-y-4">
             <h2 className="text-lg font-black text-[#676E5E]">Ficha Operativa de Casa Matriz</h2>
@@ -197,11 +197,11 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* PESTAÑA 2: SALA EN VIVO MULTI-CLIENTE (SIN EMOJIS) */}
+        {/* PESTAÑA: SALA EN VIVO MULTI-CLIENTE (SIN EMOJIS) */}
         {pestañaActiva === 'sala' && (
           <div className="bg-[#2D362D] text-white p-5 sm:p-6 rounded-3xl border-2 border-[#97A884] space-y-4 shadow-2xl">
             
-            {/* Barra Superior de Control de la Sala */}
+            {/* Barra de Control */}
             <div className="flex flex-wrap justify-between items-center text-xs gap-2 border-b border-white/20 pb-3">
               <div className="flex items-center space-x-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -239,7 +239,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* GRILLA DE PANTALLAS DE VIDEO DE PARTICIPANTES */}
+            {/* GRILLA DE PANTALLAS (CON ÍCONOS SVG VECTORIALES - SIN EMOJIS) */}
             <div className={`grid gap-4 ${
               modoVista === 'dividida' 
                 ? 'grid-cols-1 md:grid-cols-2' 
@@ -250,7 +250,7 @@ export default function HomePage() {
                   key={p.id}
                   className="relative bg-slate-900 border-2 border-[#97A884] rounded-2xl p-4 min-h-[260px] flex flex-col justify-between shadow-lg"
                 >
-                  {/* Nombre del participante y botones de estado */}
+                  {/* Título de la pantalla */}
                   <div className="flex justify-between items-center z-10">
                     <span className="text-[10px] font-bold bg-black/70 px-2.5 py-1 rounded-full text-white border border-white/20 truncate max-w-[190px]">
                       {p.nombre}
@@ -277,7 +277,7 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  {/* Silueta vectorial SVG del usuario en lugar de emojis */}
+                  {/* Silueta vectorial sobria SVG en lugar de emoji */}
                   {p.camara ? (
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-gradient-to-b from-slate-800 to-slate-900">
                       <div className="w-16 h-16 rounded-full bg-[#52584B] border-2 border-[#CDD6A9] flex items-center justify-center mb-2 shadow-md">
@@ -297,7 +297,7 @@ export default function HomePage() {
                     </div>
                   )}
 
-                  {/* Barra inferior del participante */}
+                  {/* Barra inferior */}
                   <div className="z-10 mt-auto flex justify-between items-center bg-black/70 backdrop-blur-xs px-2.5 py-1 rounded-xl text-[10px]">
                     <span className="text-slate-300">{p.rol}</span>
                     <span className="text-emerald-400 font-bold">Conectado</span>
@@ -306,7 +306,7 @@ export default function HomePage() {
               ))}
             </div>
 
-            {/* Barra de Controles e Indicador de Audio */}
+            {/* Barra de Audio y Estado */}
             <div className="bg-black/40 p-3 rounded-2xl border border-white/10 flex flex-wrap justify-between items-center gap-3 text-xs">
               <div className="flex items-center space-x-2">
                 <span className="font-bold text-slate-300">Audio Entrante:</span>
@@ -359,7 +359,7 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* PESTAÑA 3: AGENDAR CITA */}
+        {/* PESTAÑA: AGENDAR CITA */}
         {pestañaActiva === 'agendar' && (
           <div className="bg-white p-6 rounded-3xl border border-[#97A884] space-y-4">
             <h2 className="text-lg font-black text-[#676E5E]">Agendamiento de Citas en Línea</h2>
@@ -367,7 +367,7 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* PESTAÑA 4: CANCELAR / REPROGRAMAR */}
+        {/* PESTAÑA: CANCELAR / REPROGRAMAR */}
         {pestañaActiva === 'cancelar' && (
           <div className="bg-white p-6 rounded-3xl border border-[#97A884] space-y-4">
             <h2 className="text-lg font-black text-[#676E5E]">Gestión de Citas Registradas</h2>
@@ -375,7 +375,7 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* PIE DE PÁGINA (LOGO DESTACADO Y AMPLIO) */}
+        {/* PIE DE PÁGINA CON LOGO OFICIAL AMPLIO */}
         <div className="bg-[#E6E7D5] p-6 rounded-2xl border border-[#97A884] flex flex-col items-center justify-center text-center space-y-3 shadow-xs">
           <img 
             src="/logo-asl.png.png" 
