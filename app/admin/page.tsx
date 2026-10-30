@@ -22,6 +22,8 @@ interface GastoCajaChica {
   motivo: string;
   monto: number;
   comprobante: string;
+  archivoUrl?: string;
+  archivoNombre?: string;
 }
 
 export default function AdminPage() {
@@ -75,7 +77,7 @@ export default function AdminPage() {
     },
   ]);
 
-  // Formulario Libro Diario (Corregido con [0])
+  // Formulario Libro Diario
   const [fecha, setFecha] = useState<string>(new Date().toISOString().split('T')[0]);
   const [app, setApp] = useState<Transaccion['app']>('casamatriz');
   const [tipo, setTipo] = useState<Transaccion['tipo']>('ingreso');
@@ -94,6 +96,7 @@ export default function AdminPage() {
       motivo: 'Pasajes y Viático Reunión B2B Convenio Municipal',
       monto: 45000,
       comprobante: 'Boleta Copec N° 8812',
+      archivoNombre: 'Boleta_Bencina_8812.pdf',
     },
   ]);
 
@@ -101,6 +104,10 @@ export default function AdminPage() {
   const [motivoCaja, setMotivoCaja] = useState('');
   const [montoCaja, setMontoCaja] = useState('');
   const [compCaja, setCompCaja] = useState('');
+  const [archivoAdjunto, setArchivoAdjunto] = useState<File | null>(null);
+
+  // Visor de Archivos en Modal
+  const [archivoPrevisualizar, setArchivoPrevisualizar] = useState<{ url: string; nombre: string } | null>(null);
 
   // Cálculos Financieros Generales
   const totalIngresos = transacciones.filter(t => t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0);
@@ -140,18 +147,28 @@ export default function AdminPage() {
   const handleAgregarCajaChica = (e: React.FormEvent) => {
     e.preventDefault();
     if (!motivoCaja || !montoCaja) return;
+
+    let urlObj = '';
+    if (archivoAdjunto) {
+      urlObj = URL.createObjectURL(archivoAdjunto);
+    }
+
     const nuevoGasto: GastoCajaChica = {
       id: Date.now().toString(),
-      fecha: new Date().toISOString().split('T')[0], // Corregido con [0]
+      fecha: new Date().toISOString().split('T')[0],
       responsable: respCaja || 'Dirección General',
       motivo: motivoCaja,
       monto: Number(montoCaja),
-      comprobante: compCaja || 'Boleta de Respaldos',
+      comprobante: compCaja || 'Boleta / Factura Adjunta',
+      archivoUrl: urlObj,
+      archivoNombre: archivoAdjunto ? archivoAdjunto.name : undefined,
     };
+
     setCajaChicaList([nuevoGasto, ...cajaChicaList]);
     setMotivoCaja('');
     setMontoCaja('');
     setCompCaja('');
+    setArchivoAdjunto(null);
   };
 
   return (
@@ -216,7 +233,7 @@ export default function AdminPage() {
                 seccion === 'cajachica' ? 'bg-[#676E5E] text-white' : 'text-[#676E5E] hover:bg-white/80'
               }`}
             >
-              ✈️ Caja Chica & Operaciones
+              ✈️ Caja Chica & Documentos
             </button>
             <button
               type="button"
@@ -367,7 +384,7 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* MÓDULO 3: CAJA CHICA & GASTOS OPERACIONALES */}
+          {/* MÓDULO 3: CAJA CHICA CON ADJUNTO DE DOCUMENTOS Y BOLETAS */}
           {seccion === 'cajachica' && (
             <div className="space-y-6 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -385,9 +402,9 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Formulario Rendición de Caja Chica */}
+              {/* Formulario Rendición de Caja Chica con Archivo */}
               <form onSubmit={handleAgregarCajaChica} className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-4">
-                <h3 className="font-extrabold uppercase text-xs">Rendir Gasto de Caja Chica (Viajes / Pasajes / Viáticos)</h3>
+                <h3 className="font-extrabold uppercase text-xs">Rendir Gasto de Caja Chica con Archivo Adjunto (Boleta, Factura, Foto)</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="font-bold block mb-1">Responsable del Gasto</label>
@@ -395,38 +412,65 @@ export default function AdminPage() {
                   </div>
                   <div>
                     <label className="font-bold block mb-1">Motivo o Destino del Viaje</label>
-                    <input type="text" placeholder="Ej: Reunión B2B Presentación Vitrina Virtual" value={motivoCaja} onChange={e => setMotivoCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" required />
+                    <input type="text" placeholder="Ej: Pasajes / Bencina Reunión B2B" value={motivoCaja} onChange={e => setMotivoCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" required />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
                     <label className="font-bold block mb-1">Monto Gastado (CLP)</label>
                     <input type="number" placeholder="25000" value={montoCaja} onChange={e => setMontoCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl font-mono" required />
                   </div>
                   <div>
-                    <label className="font-bold block mb-1">N° Boleta / Respaldos</label>
-                    <input type="text" placeholder="Boleta de Bencina / Peaje N° 1022" value={compCaja} onChange={e => setCompCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" />
+                    <label className="font-bold block mb-1">N° Boleta / Factura</label>
+                    <input type="text" placeholder="Boleta N° 1022" value={compCaja} onChange={e => setCompCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" />
+                  </div>
+                  <div>
+                    <label className="font-bold block mb-1">Subir Foto o PDF (Boleta/Factura)</label>
+                    <input
+                      type="file"
+                      accept="image/*,application/pdf"
+                      onChange={e => e.target.files && setArchivoAdjunto(e.target.files[0])}
+                      className="w-full p-2 bg-[#FAF8F5] border border-[#97A884] rounded-xl text-xs"
+                    />
                   </div>
                 </div>
 
                 <button type="submit" className="bg-[#676E5E] text-white font-extrabold px-6 py-2.5 rounded-xl cursor-pointer">
-                  + Registrar Gasto en Caja Chica
+                  + Registrar Gasto y Adjuntar Respaldo
                 </button>
               </form>
 
-              {/* Historial de Caja Chica */}
+              {/* Historial de Caja Chica con Visualizador de Archivos */}
               <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3">
-                <h3 className="font-extrabold uppercase text-xs">Planilla de Rendición de Gastos Menores</h3>
+                <h3 className="font-extrabold uppercase text-xs">Planilla de Rendición con Respaldos Digitales</h3>
                 {cajaChicaList.map(item => (
-                  <div key={item.id} className="p-3 bg-[#FAF8F5] rounded-2xl border border-[#97A884]/40 flex justify-between items-center text-xs">
+                  <div key={item.id} className="p-3 bg-[#FAF8F5] rounded-2xl border border-[#97A884]/40 flex flex-wrap justify-between items-center text-xs gap-2">
                     <div>
                       <p className="font-bold text-[#676E5E]">{item.motivo}</p>
                       <span className="text-[10px] text-gray-500 font-mono">{item.fecha} • {item.responsable} • {item.comprobante}</span>
+                      {item.archivoNombre && (
+                        <p className="text-[10px] font-semibold text-green-700 mt-0.5">
+                          📎 Respaldo: {item.archivoNombre}
+                        </p>
+                      )}
                     </div>
-                    <span className="font-black text-red-600 font-mono text-sm">
-                      - $ {item.monto.toLocaleString('es-CL')} CLP
-                    </span>
+
+                    <div className="flex items-center gap-3">
+                      <span className="font-black text-red-600 font-mono text-sm">
+                        - $ {item.monto.toLocaleString('es-CL')} CLP
+                      </span>
+
+                      {item.archivoUrl && (
+                        <button
+                          type="button"
+                          onClick={() => setArchivoPrevisualizar({ url: item.archivoUrl!, nombre: item.archivoNombre || 'Respaldo' })}
+                          className="bg-[#CDD6A9] text-[#676E5E] hover:bg-[#97A884] hover:text-white font-extrabold px-3 py-1 rounded-xl text-[10px] transition cursor-pointer"
+                        >
+                          Ver Respaldo
+                        </button>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -510,6 +554,49 @@ export default function AdminPage() {
 
         </div>
       </div>
+
+      {/* VISUALIZADOR MODAL DE BOLETAS / FACTURAS */}
+      {archivoPrevisualizar && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
+          <div className="bg-[#E6E7D5] max-w-2xl w-full rounded-3xl border-2 border-[#97A884] p-5 space-y-4 shadow-2xl flex flex-col max-h-[85vh]">
+            <div className="flex justify-between items-center border-b border-[#97A884]/40 pb-3">
+              <div>
+                <span className="text-[9px] font-bold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-2 py-0.5 rounded-md border border-[#97A884]">
+                  Respaldo de Caja Chica
+                </span>
+                <h4 className="font-black text-[#676E5E] text-sm mt-0.5 truncate max-w-md">
+                  {archivoPrevisualizar.nombre}
+                </h4>
+              </div>
+              <button
+                type="button"
+                onClick={() => setArchivoPrevisualizar(null)}
+                className="bg-[#DC8D6C] text-white font-bold text-xs px-3.5 py-1.5 rounded-xl cursor-pointer"
+              >
+                Cerrar
+              </button>
+            </div>
+
+            <div className="flex-1 bg-white rounded-2xl border border-[#97A884] overflow-hidden min-h-[300px] flex items-center justify-center p-2">
+              <iframe 
+                src={archivoPrevisualizar.url} 
+                title={archivoPrevisualizar.nombre}
+                className="w-full h-full min-h-[320px] border-0 rounded-xl"
+              />
+            </div>
+
+            <div className="flex justify-end">
+              <a
+                href={archivoPrevisualizar.url}
+                download={archivoPrevisualizar.nombre}
+                className="bg-[#676E5E] text-white font-bold text-xs px-4 py-2 rounded-xl"
+              >
+                Descargar Documento
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
