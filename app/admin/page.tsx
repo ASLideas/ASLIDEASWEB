@@ -12,7 +12,7 @@ interface Transaccion {
   concepto: string;
   monto: number;
   comprobante: string;
-  estado: 'Pagado' | 'Facturado' | 'Pendiente';
+  estado: 'Pagado' | 'Facturado' | 'Pendiente' | 'Anulado';
 }
 
 interface GastoCajaChica {
@@ -24,10 +24,11 @@ interface GastoCajaChica {
   comprobante: string;
   archivoUrl?: string;
   archivoNombre?: string;
+  observaciones?: string;
 }
 
 export default function AdminPage() {
-  const [seccion, setSeccion] = useState<'estadisticas' | 'contabilidad' | 'cajachica' | 'reporte'>('estadisticas');
+  const [seccion, setSeccion] = useState<'estadisticas' | 'contabilidad' | 'cajachica' | 'notas' | 'reporte'>('estadisticas');
 
   // Estado Libro Contable
   const [transacciones, setTransacciones] = useState<Transaccion[]>([
@@ -97,6 +98,7 @@ export default function AdminPage() {
       monto: 45000,
       comprobante: 'Boleta Copec N° 8812',
       archivoNombre: 'Boleta_Bencina_8812.pdf',
+      observaciones: 'Viaje de prospección comercial licitación municipal.'
     },
   ]);
 
@@ -104,24 +106,45 @@ export default function AdminPage() {
   const [motivoCaja, setMotivoCaja] = useState('');
   const [montoCaja, setMontoCaja] = useState('');
   const [compCaja, setCompCaja] = useState('');
+  const [obsCaja, setObsCaja] = useState('');
   const [archivoAdjunto, setArchivoAdjunto] = useState<File | null>(null);
 
-  // Visor de Archivos en Modal
+  // Estado Notas y Fuentes de Respaldo
+  const [notasList, setNotasList] = useState<string[]>([
+    'Nota Contable 01: Revisión de facturación electrónica mensual realizada con S.I.I.',
+    'Nota de Respaldo 02: Rendición de caja chica correspondiente a traslados autorizados.'
+  ]);
+  const [nuevaNota, setNuevaNota] = useState('');
+
+  // Previsualizador de Documentos
   const [archivoPrevisualizar, setArchivoPrevisualizar] = useState<{ url: string; nombre: string } | null>(null);
 
+  // Funciones para Anular / Eliminar
+  const eliminarTransaccion = (id: string) => {
+    if (confirm('¿Estás seguro de anular/eliminar este registro contable?')) {
+      setTransacciones(prev => prev.filter(t => t.id !== id));
+    }
+  };
+
+  const eliminarGastoCajaChica = (id: string) => {
+    if (confirm('¿Estás seguro de anular/eliminar este gasto de Caja Chica?')) {
+      setCajaChicaList(prev => prev.filter(c => c.id !== id));
+    }
+  };
+
   // Cálculos Financieros Generales
-  const totalIngresos = transacciones.filter(t => t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0);
-  const totalEgresos = transacciones.filter(t => t.tipo === 'egreso').reduce((a, c) => a + c.monto, 0);
+  const transaccionesValidas = transacciones.filter(t => t.estado !== 'Anulado');
+  const totalIngresos = transaccionesValidas.filter(t => t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0);
+  const totalEgresos = transaccionesValidas.filter(t => t.tipo === 'egreso').reduce((a, c) => a + c.monto, 0);
   const totalCajaChicaUsado = cajaChicaList.reduce((a, c) => a + c.monto, 0);
   const saldoCajaChicaDisponible = fondoCajaChica - totalCajaChicaUsado;
   const balanceNetoGlobal = totalIngresos - (totalEgresos + totalCajaChicaUsado);
 
-  // Cálculos por App
   const ingresosPorApp = {
-    casamatriz: transacciones.filter(t => t.app === 'casamatriz' && t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0),
-    lawenmoll: transacciones.filter(t => t.app === 'lawenmoll' && t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0),
-    wellness: transacciones.filter(t => t.app === 'wellness' && t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0),
-    bienestar: transacciones.filter(t => t.app === 'bienestar' && t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0),
+    casamatriz: transaccionesValidas.filter(t => t.app === 'casamatriz' && t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0),
+    lawenmoll: transaccionesValidas.filter(t => t.app === 'lawenmoll' && t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0),
+    wellness: transaccionesValidas.filter(t => t.app === 'wellness' && t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0),
+    bienestar: transaccionesValidas.filter(t => t.app === 'bienestar' && t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0),
   };
 
   const handleAgregarTransaccion = (e: React.FormEvent) => {
@@ -162,13 +185,23 @@ export default function AdminPage() {
       comprobante: compCaja || 'Boleta / Factura Adjunta',
       archivoUrl: urlObj,
       archivoNombre: archivoAdjunto ? archivoAdjunto.name : undefined,
+      observaciones: obsCaja || undefined,
     };
 
     setCajaChicaList([nuevoGasto, ...cajaChicaList]);
     setMotivoCaja('');
     setMontoCaja('');
     setCompCaja('');
+    setObsCaja('');
     setArchivoAdjunto(null);
+  };
+
+  const handleAgregarNota = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (nuevaNota.trim()) {
+      setNotasList([...notasList, `[${new Date().toLocaleDateString('es-CL')}] ${nuevaNota.trim()}`]);
+      setNuevaNota('');
+    }
   };
 
   return (
@@ -205,7 +238,7 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* Menú de Módulos Contables */}
+        {/* Menú de Navegación Contable */}
         <div className="p-4 bg-[#CDD6A9]/40 border-b border-[#97A884]/30">
           <div className="flex flex-wrap bg-white/70 p-1.5 rounded-2xl border border-[#97A884] text-xs font-bold gap-1">
             <button
@@ -215,7 +248,7 @@ export default function AdminPage() {
                 seccion === 'estadisticas' ? 'bg-[#676E5E] text-white' : 'text-[#676E5E] hover:bg-white/80'
               }`}
             >
-              📊 Estadísticas & Métricas
+              📊 Estadísticas
             </button>
             <button
               type="button"
@@ -224,7 +257,7 @@ export default function AdminPage() {
                 seccion === 'contabilidad' ? 'bg-[#676E5E] text-white' : 'text-[#676E5E] hover:bg-white/80'
               }`}
             >
-              📖 Libro Diario & Flujo de Caja
+              📖 Libro Diario
             </button>
             <button
               type="button"
@@ -233,7 +266,16 @@ export default function AdminPage() {
                 seccion === 'cajachica' ? 'bg-[#676E5E] text-white' : 'text-[#676E5E] hover:bg-white/80'
               }`}
             >
-              ✈️ Caja Chica & Documentos
+              ✈️ Caja Chica & Boletas
+            </button>
+            <button
+              type="button"
+              onClick={() => setSeccion('notas')}
+              className={`flex-1 py-2.5 rounded-xl transition font-black cursor-pointer ${
+                seccion === 'notas' ? 'bg-[#676E5E] text-white' : 'text-[#676E5E] hover:bg-white/80'
+              }`}
+            >
+              📝 Notas de Respaldo
             </button>
             <button
               type="button"
@@ -242,7 +284,7 @@ export default function AdminPage() {
                 seccion === 'reporte' ? 'bg-[#676E5E] text-white' : 'text-[#676E5E] hover:bg-white/80'
               }`}
             >
-              📄 Reporte para Contadores (PDF)
+              📄 Reporte PDF
             </button>
           </div>
         </div>
@@ -250,7 +292,7 @@ export default function AdminPage() {
         {/* CONTENIDO PRINCIPAL */}
         <div className="p-5 sm:p-8 space-y-6">
 
-          {/* MÓDULO 1: ESTADÍSTICAS Y MÉTRICAS POR APP */}
+          {/* MÓDULO 1: ESTADÍSTICAS */}
           {seccion === 'estadisticas' && (
             <div className="space-y-6 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
@@ -272,7 +314,6 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Barra Visual de Participación Financiera */}
               <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs">
                 <h3 className="font-extrabold text-xs uppercase tracking-wider text-[#676E5E]">Distribución de Ingresos por Unidad de Negocio</h3>
                 <div className="w-full bg-gray-200 h-6 rounded-xl overflow-hidden flex font-bold text-[10px] text-white">
@@ -290,7 +331,7 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* MÓDULO 2: LIBRO DIARIO Y FLUJO DE CAJA */}
+          {/* MÓDULO 2: LIBRO DIARIO CON BOTÓN DE ANULAR / BORRAR */}
           {seccion === 'contabilidad' && (
             <div className="space-y-6 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -354,7 +395,7 @@ export default function AdminPage() {
                 </button>
               </form>
 
-              {/* Tabla de Transacciones */}
+              {/* Tabla de Transacciones con Opción de Borrar */}
               <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
@@ -364,6 +405,7 @@ export default function AdminPage() {
                       <th className="p-3">Concepto</th>
                       <th className="p-3">Comprobante</th>
                       <th className="p-3 text-right">Monto (CLP)</th>
+                      <th className="p-3 text-center">Acción</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#97A884]/20 font-medium">
@@ -376,6 +418,15 @@ export default function AdminPage() {
                         <td className={`p-3 text-right font-bold font-mono ${t.tipo === 'ingreso' ? 'text-green-700' : 'text-red-600'}`}>
                           {t.tipo === 'ingreso' ? '+' : '-'} $ {t.monto.toLocaleString('es-CL')}
                         </td>
+                        <td className="p-3 text-center">
+                          <button
+                            type="button"
+                            onClick={() => eliminarTransaccion(t.id)}
+                            className="bg-red-100 hover:bg-red-600 text-red-700 hover:text-white font-extrabold px-2.5 py-1 rounded-lg text-[10px] transition cursor-pointer"
+                          >
+                            Anular / Borrar
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -384,7 +435,7 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* MÓDULO 3: CAJA CHICA CON ADJUNTO DE DOCUMENTOS Y BOLETAS */}
+          {/* MÓDULO 3: CAJA CHICA CON ADJUNTO Y BOTÓN BORRAR */}
           {seccion === 'cajachica' && (
             <div className="space-y-6 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -402,9 +453,9 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Formulario Rendición de Caja Chica con Archivo */}
+              {/* Formulario Rendición de Caja Chica */}
               <form onSubmit={handleAgregarCajaChica} className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-4">
-                <h3 className="font-extrabold uppercase text-xs">Rendir Gasto de Caja Chica con Archivo Adjunto (Boleta, Factura, Foto)</h3>
+                <h3 className="font-extrabold uppercase text-xs">Rendir Gasto de Caja Chica (Boleta / Factura / Foto)</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="font-bold block mb-1">Responsable del Gasto</label>
@@ -412,7 +463,7 @@ export default function AdminPage() {
                   </div>
                   <div>
                     <label className="font-bold block mb-1">Motivo o Destino del Viaje</label>
-                    <input type="text" placeholder="Ej: Pasajes / Bencina Reunión B2B" value={motivoCaja} onChange={e => setMotivoCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" required />
+                    <input type="text" placeholder="Ej: Bencina Reunión Municipal" value={motivoCaja} onChange={e => setMotivoCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" required />
                   </div>
                 </div>
 
@@ -426,7 +477,7 @@ export default function AdminPage() {
                     <input type="text" placeholder="Boleta N° 1022" value={compCaja} onChange={e => setCompCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" />
                   </div>
                   <div>
-                    <label className="font-bold block mb-1">Subir Foto o PDF (Boleta/Factura)</label>
+                    <label className="font-bold block mb-1">Subir Archivo de Respaldo</label>
                     <input
                       type="file"
                       accept="image/*,application/pdf"
@@ -436,12 +487,17 @@ export default function AdminPage() {
                   </div>
                 </div>
 
+                <div>
+                  <label className="font-bold block mb-1">Observación o Nota Aclaratoria</label>
+                  <input type="text" placeholder="Ej: Pasajes autorizados por gerencia para firma de convenio" value={obsCaja} onChange={e => setObsCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" />
+                </div>
+
                 <button type="submit" className="bg-[#676E5E] text-white font-extrabold px-6 py-2.5 rounded-xl cursor-pointer">
                   + Registrar Gasto y Adjuntar Respaldo
                 </button>
               </form>
 
-              {/* Historial de Caja Chica con Visualizador de Archivos */}
+              {/* Lista de Caja Chica con Botón de Borrar y Previsualizar */}
               <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3">
                 <h3 className="font-extrabold uppercase text-xs">Planilla de Rendición con Respaldos Digitales</h3>
                 {cajaChicaList.map(item => (
@@ -454,10 +510,13 @@ export default function AdminPage() {
                           📎 Respaldo: {item.archivoNombre}
                         </p>
                       )}
+                      {item.observaciones && (
+                        <p className="text-[10px] text-gray-600 italic mt-0.5">💬 Nota: {item.observaciones}</p>
+                      )}
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      <span className="font-black text-red-600 font-mono text-sm">
+                    <div className="flex items-center gap-2">
+                      <span className="font-black text-red-600 font-mono text-sm mr-2">
                         - $ {item.monto.toLocaleString('es-CL')} CLP
                       </span>
 
@@ -470,6 +529,14 @@ export default function AdminPage() {
                           Ver Respaldo
                         </button>
                       )}
+
+                      <button
+                        type="button"
+                        onClick={() => eliminarGastoCajaChica(item.id)}
+                        className="bg-red-100 hover:bg-red-600 text-red-700 hover:text-white font-extrabold px-2.5 py-1 rounded-lg text-[10px] transition cursor-pointer"
+                      >
+                        Anular
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -477,11 +544,47 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* MÓDULO 4: REPORTE DESCARGABLE PARA CONTADORES */}
+          {/* MÓDULO 4: NOTAS DE RESPALDO Y FUENTES AÑADIDAS */}
+          {seccion === 'notas' && (
+            <div className="bg-white p-6 rounded-3xl border-2 border-[#97A884] space-y-5 text-xs">
+              <h3 className="font-extrabold uppercase text-xs tracking-wider">Bitácora & Notas de Respaldo Administrativo</h3>
+              
+              <form onSubmit={handleAgregarNota} className="space-y-3">
+                <textarea
+                  value={nuevaNota}
+                  onChange={e => setNuevaNota(e.target.value)}
+                  placeholder="Escribe una observación, aclaración contable o fuente de referencia para los contadores..."
+                  className="w-full h-24 p-3 bg-[#FAF8F5] border border-[#97A884] rounded-2xl outline-none"
+                />
+                <button
+                  type="submit"
+                  className="bg-[#676E5E] text-white font-bold px-5 py-2.5 rounded-xl cursor-pointer"
+                >
+                  + Añadir Nota de Respaldo
+                </button>
+              </form>
+
+              <div className="space-y-2 pt-2 border-t border-[#97A884]/30">
+                <h4 className="font-bold text-xs">Notas Registradas:</h4>
+                {notasList.map((nota, idx) => (
+                  <div key={idx} className="p-3 bg-[#FAF8F5] rounded-xl border border-[#97A884]/40 font-medium text-xs flex justify-between items-center">
+                    <p>{nota}</p>
+                    <button
+                      type="button"
+                      onClick={() => setNotasList(notasList.filter((_, i) => i !== idx))}
+                      className="text-red-700 font-bold text-[10px] bg-red-100 px-2 py-0.5 rounded-md"
+                    >
+                      Quitar
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* MÓDULO 5: REPORTE IMPRIMIBLE PARA CONTADORES */}
           {seccion === 'reporte' && (
             <div className="bg-white p-6 sm:p-10 rounded-3xl border-2 border-[#97A884] space-y-6 text-xs">
-              
-              {/* Membrete Oficial */}
               <div className="flex justify-between items-center border-b-2 border-[#97A884] pb-5">
                 <div className="flex items-center space-x-4">
                   <img src="/logo-asl.png.png" alt="ASL Ideas SpA" className="w-14 h-14 object-contain" />
@@ -500,7 +603,6 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Resumen Ejecutivo */}
               <div className="space-y-3">
                 <h3 className="font-extrabold uppercase text-xs tracking-wider text-[#676E5E]">1. BALANCE GENERAL DE OPERACIONES</h3>
                 <div className="grid grid-cols-3 gap-4 p-4 bg-[#FAF8F5] rounded-2xl border border-[#97A884]/40 text-center font-mono">
@@ -519,26 +621,6 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Desglose por Aplicación */}
-              <div className="space-y-3">
-                <h3 className="font-extrabold uppercase text-xs tracking-wider text-[#676E5E]">2. DESGLOSE DE INGRESOS POR UNIDAD DE NEGOCIO</h3>
-                <table className="w-full text-left border-collapse border border-[#97A884]/40">
-                  <thead className="bg-[#CDD6A9]/30 text-[10px] uppercase font-bold">
-                    <tr>
-                      <th className="p-2 border border-[#97A884]/40">Unidad de Negocio</th>
-                      <th className="p-2 border border-[#97A884]/40 text-right">Monto Recaudado (CLP)</th>
-                    </tr>
-                  </thead>
-                  <tbody className="font-mono">
-                    <tr><td className="p-2 border">1. Casa Matriz ASL Ideas SpA (Desarrollo B2B)</td><td className="p-2 border text-right">$ {ingresosPorApp.casamatriz.toLocaleString('es-CL')}</td></tr>
-                    <tr><td className="p-2 border">2. LAWENMOLL (Salud Integrativa & Fichas SOAP)</td><td className="p-2 border text-right">$ {ingresosPorApp.lawenmoll.toLocaleString('es-CL')}</td></tr>
-                    <tr><td className="p-2 border">3. Wellness Web App (Movimiento Adaptado)</td><td className="p-2 border text-right">$ {ingresosPorApp.wellness.toLocaleString('es-CL')}</td></tr>
-                    <tr><td className="p-2 border">4. Bienestar Ancestral (Herbolaria)</td><td className="p-2 border text-right">$ {ingresosPorApp.bienestar.toLocaleString('es-CL')}</td></tr>
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Botón Imprimir / PDF */}
               <div className="pt-4 flex justify-end gap-3 border-t border-[#97A884]/30">
                 <button
                   type="button"
