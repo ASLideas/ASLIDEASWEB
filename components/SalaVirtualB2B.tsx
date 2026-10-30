@@ -55,26 +55,25 @@ export default function SalaVirtualB2B({
   const [micActivo, setMicActivo] = useState<boolean>(true);
   const [camActiva, setCamActiva] = useState<boolean>(false);
   const [nivelVolumen, setNivelVolumen] = useState<number>(0);
-  const [errorCamara, setErrorCamara] = useState<string>('');
 
-  // Previsualizador de Archivos
+  // Previsualizador de Archivos Integrado
   const [archivoPrevisualizar, setArchivoPrevisualizar] = useState<ArchivoAdjunto | null>(null);
 
-  // Transcripción de Voz
+  // Transcripción en Vivo Limpia sin Emojis
   const [transcribiendo, setTranscribiendo] = useState<boolean>(true);
   const [transcripcion, setTranscripcion] = useState<string[]>([
-    'ASL Bot: Sala de Video Reunión iniciada bajo cifrado de ciberseguridad Ley N° 21.663.',
-    'Sistemas: Entorno configurado con baja carga sensorial para neurodivergencias (Ley TEA N° 21.545).',
+    'ASL Bot: Sala de Video Reunión iniciada bajo cifrado Ley N° 21.663.',
+    'Sistemas: Entorno configurado con baja carga sensorial para Ley TEA N° 21.545.',
     'Anfitrión ASL: "Bienvenidos a la reunión interactiva de ASL Ideas SpA."'
   ]);
 
-  // Archivos Adjuntos
+  // Lista de Archivos
   const [archivosSubidos, setArchivosSubidos] = useState<ArchivoAdjunto[]>([
     { id: '1', nombre: 'Presentacion_Vitrina_B2B_ASL.pdf', tamano: '1.2 MB', fecha: 'Hoy 10:00 AM', tipo: 'application/pdf', url: '/Prompt_Maestro_ASL_Ideas_SpA.md' },
   ]);
   const [mensajeEstado, setMensajeEstado] = useState<string>('');
 
-  // Minuta y Notas
+  // Minuta y Compromisos
   const [minuta, setMinuta] = useState<string>(
     'COMPROMISOS DE LA REUNIÓN B2B:\n1. Revisión de propuesta de Vitrina Virtual PYME.\n2. Demostración de software adaptado con baja carga sensorial.\n3. Coordinación de prueba piloto institucional.'
   );
@@ -98,7 +97,7 @@ export default function SalaVirtualB2B({
     }
   }, [isOpen, initialMode]);
 
-  // Bucle de Transcripción Asistida en Tiempo Real
+  // Transcripción en Vivo sin Emojis
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (transcribiendo && modo === 'videollamada') {
@@ -156,10 +155,9 @@ export default function SalaVirtualB2B({
     };
   }, [mediaStream, micActivo]);
 
-  // Iniciar Cámara Web Real
+  // Iniciar Cámara y Micrófono
   const iniciarCamara = async () => {
     try {
-      setErrorCamara('');
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: 'user' },
         audio: true
@@ -170,11 +168,10 @@ export default function SalaVirtualB2B({
       }
       setCamActiva(true);
       setMicActivo(true);
-      setMensajeEstado('🟢 Cámara y Micrófono conectados en tiempo real');
+      setMensajeEstado('Cámara y Micrófono conectados en tiempo real');
       setTimeout(() => setMensajeEstado(''), 3000);
     } catch (err: any) {
       console.error('Error accediendo a la cámara:', err);
-      setErrorCamara('Modo interactivo activo. Cámara simulada en vivo habilitada.');
       setCamActiva(true);
     }
   };
@@ -189,7 +186,7 @@ export default function SalaVirtualB2B({
 
   const toggleMic = () => {
     setMicActivo(!micActivo);
-    setMensajeEstado(!micActivo ? '🟢 Micrófono Activado' : '🔴 Micrófono Silenciado');
+    setMensajeEstado(!micActivo ? 'Micrófono Activado' : 'Micrófono Silenciado');
     setTimeout(() => setMensajeEstado(''), 2500);
   };
 
@@ -201,7 +198,7 @@ export default function SalaVirtualB2B({
     }
   };
 
-  // Carga Real de Archivos con Previsualización Directa
+  // Carga Real de Archivos con Creación de URL de Previsualización
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const nuevos: ArchivoAdjunto[] = [];
@@ -219,7 +216,7 @@ export default function SalaVirtualB2B({
         });
       });
       setArchivosSubidos(prev => [...prev, ...nuevos]);
-      setMensajeEstado(`✔ ${nuevos.length} archivo(s) cargado(s) y listo(s) para visualizar`);
+      setMensajeEstado(`${nuevos.length} archivo(s) cargado(s) y listo(s) para previsualizar`);
       setTranscripcion(prev => [...prev, `Sistema: Archivo compartido (${nuevos.map(n => n.nombre).join(', ')})`]);
       setTimeout(() => setMensajeEstado(''), 3500);
     }
@@ -260,7 +257,7 @@ export default function SalaVirtualB2B({
   return (
     <div className="fixed inset-0 z-50 bg-[#676E5E]/85 backdrop-blur-xs flex items-center justify-center p-1 sm:p-4 overflow-hidden">
       
-      {/* Contenedor Modal Ajustado a la Pantalla sin Requerir Zoom */}
+      {/* Contenedor Modal */}
       <div 
         ref={containerRef}
         className={`bg-[#E6E7D5] transition-all duration-300 flex flex-col ${
@@ -270,7 +267,7 @@ export default function SalaVirtualB2B({
         } text-[#676E5E]`}
       >
         
-        {/* Cabecera FIJA del Modal (Siempre visible para cerrar en cualquier dispositivo) */}
+        {/* Cabecera del Modal Sin Emojis */}
         <div className="sticky top-0 z-20 bg-[#E6E7D5] p-3 sm:p-5 border-b border-[#97A884]/40 flex flex-wrap justify-between items-center gap-2 shrink-0">
           <div className="flex items-center space-x-2.5">
             <img 
@@ -294,8 +291,7 @@ export default function SalaVirtualB2B({
               onClick={togglePantallaCompleta}
               className="text-xs font-bold text-[#676E5E] bg-white hover:bg-[#CDD6A9] px-2.5 py-1.5 rounded-xl border-2 border-[#97A884] transition cursor-pointer flex items-center gap-1 shadow-xs"
             >
-              <span className="text-sm font-black">🗖</span>
-              <span className="hidden sm:inline">{esPantallaCompleta ? 'Restaurar' : 'Pantalla Completa'}</span>
+              <span>{esPantallaCompleta ? 'Restaurar Pantalla' : 'Pantalla Completa'}</span>
             </button>
 
             <button
@@ -303,12 +299,12 @@ export default function SalaVirtualB2B({
               onClick={() => { detenerCamara(); onClose(); }}
               className="text-xs font-extrabold text-white bg-[#DC8D6C] hover:bg-[#c37858] px-3.5 py-1.5 rounded-xl transition cursor-pointer shadow-md"
             >
-              Cerrar ✖
+              Cerrar
             </button>
           </div>
         </div>
 
-        {/* Pestañas de Navegación del Modal */}
+        {/* Pestañas del Modal Sin Emojis */}
         <div className="px-3 sm:px-5 shrink-0">
           <div className="flex flex-wrap sm:flex-nowrap bg-[#CDD6A9]/50 p-1 rounded-2xl border border-[#97A884] text-xs font-bold gap-1">
             <button
@@ -318,7 +314,7 @@ export default function SalaVirtualB2B({
                 modo === 'ficha' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:bg-white/50'
               }`}
             >
-              📋 Ficha de Oficina
+              Ficha de Oficina
             </button>
             <button
               type="button"
@@ -327,7 +323,7 @@ export default function SalaVirtualB2B({
                 modo === 'videollamada' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:bg-white/50'
               }`}
             >
-              🎥 Sala en Vivo
+              Sala en Vivo
             </button>
             <button
               type="button"
@@ -336,7 +332,7 @@ export default function SalaVirtualB2B({
                 modo === 'agendar' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:bg-white/50'
               }`}
             >
-              📅 Agendar Cita
+              Agendar Cita
             </button>
             <button
               type="button"
@@ -345,12 +341,12 @@ export default function SalaVirtualB2B({
                 modo === 'cancelar' ? 'bg-[#DC8D6C] text-white shadow-xs' : 'text-[#676E5E] hover:bg-white/50'
               }`}
             >
-              ✖ Reprogramar
+              Cancelar / Reprogramar
             </button>
           </div>
         </div>
 
-        {/* CUERPO DEL MODAL CON DESPLAZAMIENTO FLUIDO */}
+        {/* CUERPO PRINCIPAL DEL MODAL */}
         <div className="flex-1 overflow-y-auto px-3 sm:px-5 pb-5 space-y-4">
 
           {/* MODO 0: FICHA COMPLETA DE LA OFICINA VIRTUAL */}
@@ -409,14 +405,14 @@ export default function SalaVirtualB2B({
                   onClick={() => setModo('videollamada')}
                   className="flex-1 bg-[#676E5E] hover:bg-[#52584b] text-white text-xs sm:text-sm font-bold py-3.5 rounded-2xl transition shadow-md text-center cursor-pointer"
                 >
-                  🎥 Ingresar a Sala Virtual en Vivo
+                  Ingresar a Sala Virtual en Vivo
                 </button>
                 <button
                   type="button"
                   onClick={() => { setModo('agendar'); setReservaConfirmada(false); }}
                   className="bg-[#CDD6A9] text-[#676E5E] hover:bg-[#97A884] hover:text-white text-xs sm:text-sm font-bold px-6 py-3.5 rounded-2xl transition shadow-xs cursor-pointer font-extrabold"
                 >
-                  📅 Agendar Cita B2B
+                  Agendar Cita B2B
                 </button>
               </div>
             </div>
@@ -431,18 +427,18 @@ export default function SalaVirtualB2B({
                 </div>
               )}
 
-              {/* Pantalla de Video Conectada a la Cámara Real */}
+              {/* Pantalla de Video */}
               <div className="bg-[#2D3227] rounded-3xl p-4 sm:p-6 text-white text-center relative flex flex-col justify-between shadow-2xl border-2 border-[#97A884] min-h-[280px]">
                 
                 <div className="flex justify-between items-center text-[10px]">
                   <span className="bg-[#CDD6A9] text-[#676E5E] font-bold px-3 py-1 rounded-md border border-[#97A884] flex items-center gap-1.5">
                     <span className={`w-2.5 h-2.5 rounded-full ${camActiva ? 'bg-red-500 animate-ping' : 'bg-gray-400'}`}></span>
-                    {camActiva ? 'TRANSMISIÓN Y CÁMARA EN VIVO' : 'SALA INTERACTIVA READY'}
+                    {camActiva ? 'TRANSMISIÓN Y CÁMARA EN VIVO' : 'SALA INTERACTIVA LISTA'}
                   </span>
                   <span className="text-[#CDD6A9] font-mono">Cifrado Ley N° 21.663</span>
                 </div>
 
-                {/* Reproductor de Video HTML5 NATIVO */}
+                {/* Visor de Video */}
                 <div className="my-3 relative max-w-xl mx-auto w-full aspect-video bg-black/90 rounded-2xl overflow-hidden border-2 border-[#E6C693] flex items-center justify-center">
                   <video
                     ref={videoRef}
@@ -461,13 +457,13 @@ export default function SalaVirtualB2B({
                         onClick={iniciarCamara}
                         className="bg-[#CDD6A9] text-[#676E5E] font-extrabold px-4 py-2.5 rounded-xl hover:bg-[#97A884] hover:text-white transition cursor-pointer text-xs shadow-md"
                       >
-                        🎥 Encender Cámara Web y Micrófono Real
+                        Encender Cámara Web y Micrófono Real
                       </button>
                     </div>
                   )}
                 </div>
 
-                {/* Analizador de Volumen / Vúmetro Real */}
+                {/* Vúmetro de Audio */}
                 <div className="bg-[#1E221A] p-2.5 rounded-xl border border-[#676E5E] max-w-md mx-auto w-full flex items-center justify-between gap-3 text-[10px] text-[#CDD6A9]">
                   <span className="font-bold">Audio Entrante:</span>
                   <div className="flex items-center gap-1 flex-1 justify-center">
@@ -481,7 +477,7 @@ export default function SalaVirtualB2B({
                   <span className="font-semibold text-green-400 font-mono">{micActivo ? `${nivelVolumen}% dB` : 'Silenciado'}</span>
                 </div>
 
-                {/* Botones de Control de la Sala */}
+                {/* Botones de Control de la Sala Sin Emojis */}
                 <div className="flex flex-wrap justify-center gap-2.5 pt-3 mt-3 border-t border-[#676E5E]/60">
                   <button
                     type="button"
@@ -490,7 +486,7 @@ export default function SalaVirtualB2B({
                       micActivo ? 'bg-green-700 text-white' : 'bg-[#DC8D6C] text-white'
                     }`}
                   >
-                    {micActivo ? '🎙️ Micrófono Activado' : '🎙️ Activar Micrófono'}
+                    {micActivo ? 'Micrófono Activado' : 'Activar Micrófono'}
                   </button>
 
                   <button
@@ -500,7 +496,7 @@ export default function SalaVirtualB2B({
                       camActiva ? 'bg-green-700 text-white' : 'bg-[#676E5E] text-white hover:bg-[#52584b]'
                     }`}
                   >
-                    {camActiva ? '📹 Apagar Cámara' : '📹 Encender Cámara'}
+                    {camActiva ? 'Apagar Cámara' : 'Encender Cámara'}
                   </button>
 
                   <button
@@ -510,7 +506,7 @@ export default function SalaVirtualB2B({
                       transcribiendo ? 'bg-[#E6C693] text-[#676E5E] font-extrabold' : 'bg-[#676E5E] text-white hover:bg-[#52584b]'
                     }`}
                   >
-                    {transcribiendo ? '🗣️ Transcribiendo Voz...' : '🗣️ Activar Transcriptor'}
+                    {transcribiendo ? 'Transcribiendo Voz...' : 'Activar Transcriptor'}
                   </button>
                 </div>
               </div>
@@ -518,7 +514,7 @@ export default function SalaVirtualB2B({
               {/* Módulos Interactivos: Archivos, Transcripción y Minuta */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                 
-                {/* 1. Módulo Archivos Adjuntos con Previsualizador Directo */}
+                {/* 1. Módulo Archivos Adjuntos con Visor Directo */}
                 <div className="bg-white p-4 sm:p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-2">
@@ -545,32 +541,32 @@ export default function SalaVirtualB2B({
                         <p className="text-[11px] text-[#97A884] italic text-center py-4">Presiona "+ Subir Archivo" para adjuntar documentos.</p>
                       ) : (
                         archivosSubidos.map((f) => (
-                          <div key={f.id} className="p-3 bg-[#FAF8F5] rounded-2xl border-2 border-green-600/40 space-y-1.5 text-[11px] shadow-xs">
+                          <div key={f.id} className="p-3 bg-[#FAF8F5] rounded-2xl border border-[#97A884]/40 space-y-2 text-[11px] shadow-xs">
                             <div className="flex justify-between items-start gap-2">
                               <div className="truncate">
                                 <p className="font-bold text-[#676E5E] truncate">{f.nombre}</p>
                                 <span className="text-[9px] text-[#97A884] font-mono">{f.tamano} • {f.fecha}</span>
                               </div>
-                              <span className="bg-green-100 text-green-800 text-[9px] font-extrabold px-2 py-0.5 rounded-md border border-green-400 shrink-0">
-                                ✔ Listo
+                              <span className="bg-[#CDD6A9] text-[#676E5E] text-[9px] font-extrabold px-2 py-0.5 rounded-md border border-[#97A884] shrink-0">
+                                Listo
                               </span>
                             </div>
 
-                            {/* Botón Ver para Visualizar el Archivo Subido */}
-                            <div className="flex justify-end gap-2 pt-1 border-t border-[#E6E7D5]">
+                            {/* Botones de Acción Sin Emojis */}
+                            <div className="flex justify-end gap-2 pt-1.5 border-t border-[#E6E7D5]">
                               <button
                                 type="button"
                                 onClick={() => setArchivoPrevisualizar(f)}
-                                className="text-[10px] font-bold text-white bg-[#676E5E] px-2.5 py-1 rounded-lg hover:bg-[#52584b] transition cursor-pointer"
+                                className="text-[10px] font-extrabold text-white bg-[#676E5E] px-3 py-1 rounded-lg hover:bg-[#52584b] transition cursor-pointer shadow-xs"
                               >
-                                👁️ Ver / Abrir
+                                Previsualizar
                               </button>
                               <button
                                 type="button"
                                 onClick={() => eliminarArchivo(f.id)}
-                                className="text-[10px] font-bold text-red-700 bg-red-100 hover:bg-red-600 hover:text-white px-2 py-1 rounded-lg transition cursor-pointer"
+                                className="text-[10px] font-bold text-red-700 bg-red-100 hover:bg-red-600 hover:text-white px-2.5 py-1 rounded-lg transition cursor-pointer"
                               >
-                                🗑️ Quitar
+                                Eliminar
                               </button>
                             </div>
                           </div>
@@ -707,42 +703,50 @@ export default function SalaVirtualB2B({
 
         </div>
 
-        {/* MODAL SECUNDARIO: VISUALIZADOR DE ARCHIVO SUBIDO */}
+        {/* VISUALIZADOR INTERNO DE ARCHIVOS PDF E IMÁGENES */}
         {archivoPrevisualizar && (
-          <div className="fixed inset-0 z-60 bg-black/80 backdrop-blur-xs flex items-center justify-center p-4">
-            <div className="bg-white max-w-2xl w-full rounded-3xl border-2 border-[#97A884] p-5 space-y-4 shadow-2xl">
-              <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-3">
-                <h4 className="font-extrabold text-[#676E5E] text-sm truncate pr-2">
-                  📄 Previsualizando: {archivoPrevisualizar.nombre}
-                </h4>
+          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
+            <div className="bg-[#E6E7D5] max-w-3xl w-full rounded-3xl border-2 border-[#97A884] p-5 space-y-4 shadow-2xl flex flex-col max-h-[85vh]">
+              <div className="flex justify-between items-center border-b border-[#97A884]/40 pb-3">
+                <div>
+                  <span className="text-[9px] font-bold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-2 py-0.5 rounded-md border border-[#97A884]">
+                    Previsualización en Pantalla
+                  </span>
+                  <h4 className="font-black text-[#676E5E] text-sm sm:text-base mt-0.5 truncate max-w-md">
+                    {archivoPrevisualizar.nombre}
+                  </h4>
+                </div>
                 <button
                   type="button"
                   onClick={() => setArchivoPrevisualizar(null)}
-                  className="bg-[#DC8D6C] text-white font-bold text-xs px-3 py-1 rounded-xl cursor-pointer"
+                  className="bg-[#DC8D6C] text-white font-bold text-xs px-3.5 py-1.5 rounded-xl cursor-pointer shadow-sm hover:bg-[#c37858] transition"
                 >
-                  Cerrar Vista ✖
+                  Cerrar Vista
                 </button>
               </div>
 
-              <div className="bg-[#E6E7D5]/40 p-4 rounded-2xl min-h-[220px] max-h-[60vh] overflow-y-auto flex items-center justify-center border border-[#97A884]/30">
+              {/* Contenedor de Previsualización Integrada sin Forzar Descarga */}
+              <div className="flex-1 bg-white rounded-2xl border border-[#97A884] overflow-hidden min-h-[300px] flex items-center justify-center relative">
                 {archivoPrevisualizar.tipo.startsWith('image/') ? (
-                  <img src={archivoPrevisualizar.url} alt={archivoPrevisualizar.nombre} className="max-h-80 object-contain rounded-xl shadow-md" />
+                  <img src={archivoPrevisualizar.url} alt={archivoPrevisualizar.nombre} className="max-h-[60vh] w-auto object-contain p-2 rounded-xl" />
                 ) : (
-                  <div className="text-center space-y-3">
-                    <span className="text-3xl">📄</span>
-                    <p className="text-xs font-bold text-[#676E5E]">{archivoPrevisualizar.nombre}</p>
-                    <p className="text-[10px] text-[#97A884] font-mono">Tamaño: {archivoPrevisualizar.tamano}</p>
-                    <a
-                      href={archivoPrevisualizar.url}
-                      download={archivoPrevisualizar.nombre}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block bg-[#676E5E] text-white font-bold text-xs px-4 py-2 rounded-xl shadow-xs"
-                    >
-                      Descargar / Abrir Archivo
-                    </a>
-                  </div>
+                  <iframe 
+                    src={archivoPrevisualizar.url} 
+                    title={archivoPrevisualizar.nombre}
+                    className="w-full h-full min-h-[350px] border-0"
+                  />
                 )}
+              </div>
+
+              <div className="flex justify-between items-center text-xs pt-1">
+                <span className="text-[10px] text-[#97A884] font-mono">Tamaño: {archivoPrevisualizar.tamano}</span>
+                <a
+                  href={archivoPrevisualizar.url}
+                  download={archivoPrevisualizar.nombre}
+                  className="bg-[#676E5E] text-white font-bold text-xs px-4 py-2 rounded-xl hover:bg-[#52584b] transition cursor-pointer"
+                >
+                  Descargar Copia
+                </a>
               </div>
             </div>
           </div>
