@@ -103,7 +103,7 @@ export default function SalaVirtualB2B({
     }
   }, [isOpen, initialMode]);
 
-  // Motor de Reconocimiento de Voz Robusto
+  // Motor de Reconocimiento de Voz Corregido (Lectura [0].transcript)
   const activarTranscriptorVoz = () => {
     if (typeof window === 'undefined') return;
 
@@ -132,14 +132,16 @@ export default function SalaVirtualB2B({
       rec.onresult = (event: any) => {
         let textoTemporal = '';
         for (let i = event.resultIndex; i < event.results.length; ++i) {
-          const segmento = event.results[i].transcript;
-          if (event.results[i].isFinal) {
-            const fraseFinal = segmento.trim();
-            if (fraseFinal) {
-              setTranscripcion(prev => [...prev, `Participante: "${fraseFinal}"`]);
+          if (event.results[i] && event.results[i][0]) {
+            const segmento = event.results[i][0].transcript || '';
+            if (event.results[i].isFinal) {
+              const fraseFinal = segmento.trim();
+              if (fraseFinal) {
+                setTranscripcion(prev => [...prev, `Participante: "${fraseFinal}"`]);
+              }
+            } else {
+              textoTemporal += segmento;
             }
-          } else {
-            textoTemporal += segmento;
           }
         }
         setTextoEnVivo(textoTemporal);
@@ -686,7 +688,7 @@ export default function SalaVirtualB2B({
                         <p key={idx} className="border-b border-[#97A884]/20 pb-1 last:border-0 leading-relaxed">{t}</p>
                       ))}
 
-                      {/* Texto en vivo mientras se habla */}
+                      {/* Texto en vivo corregido sin 'undefined' */}
                       {textoEnVivo && (
                         <p className="text-green-800 font-bold italic animate-pulse">
                           Hablando: "{textoEnVivo}"
