@@ -28,7 +28,7 @@ interface GastoCajaChica {
 }
 
 export default function AdminPage() {
-  const [seccion, setSeccion] = useState<'estadisticas' | 'contabilidad' | 'cajachica' | 'notas' | 'reporte'>('estadisticas');
+  const [seccion, setSeccion] = useState<'estadisticas' | 'contabilidad' | 'cajachica' | 'notas' | 'reporte'>('cajachica');
 
   // Estado Libro Contable
   const [transacciones, setTransacciones] = useState<Transaccion[]>([
@@ -52,28 +52,6 @@ export default function AdminPage() {
       concepto: 'Fichas Clínicas SOAP y Consultas Salud Integrativa',
       monto: 850000,
       comprobante: 'Boleta N° 4501',
-      estado: 'Pagado',
-    },
-    {
-      id: '3',
-      fecha: '2026-10-22',
-      app: 'wellness',
-      tipo: 'ingreso',
-      categoria: 'Suscripción',
-      concepto: 'Membresías Programa Movimiento Adaptado',
-      monto: 420000,
-      comprobante: 'Transbank Voucher #882',
-      estado: 'Pagado',
-    },
-    {
-      id: '4',
-      fecha: '2026-10-25',
-      app: 'casamatriz',
-      tipo: 'egreso',
-      categoria: 'Servidores / TI',
-      concepto: 'Infraestructura Cloud Vercel y Supabase',
-      monto: 145000,
-      comprobante: 'Factura Vercel Inc. #992',
       estado: 'Pagado',
     },
   ]);
@@ -102,37 +80,106 @@ export default function AdminPage() {
     },
   ]);
 
+  // Formulario y Estados de Edición de Caja Chica
+  const [editandoCajaId, setEditandoCajaId] = useState<string | null>(null);
   const [respCaja, setRespCaja] = useState('');
   const [motivoCaja, setMotivoCaja] = useState('');
   const [montoCaja, setMontoCaja] = useState('');
   const [compCaja, setCompCaja] = useState('');
   const [obsCaja, setObsCaja] = useState('');
-  const [archivoAdjunto, setArchivoAdjunto] = useState<File | null>(null);
+  const [archivoAdjunto, setArchivoAdjunto] = useState<FileList | null>(null);
 
-  // Estado Notas y Fuentes de Respaldo
+  // Estado Notas
   const [notasList, setNotasList] = useState<string[]>([
-    'Nota Contable 01: Revisión de facturación electrónica mensual realizada con S.I.I.',
-    'Nota de Respaldo 02: Rendición de caja chica correspondiente a traslados autorizados.'
+    'Nota Contable 01: Revisión de facturación electrónica mensual con S.I.I.',
   ]);
   const [nuevaNota, setNuevaNota] = useState('');
 
-  // Previsualizador de Documentos
+  // Previsualizador de Archivos (Modal)
   const [archivoPrevisualizar, setArchivoPrevisualizar] = useState<{ url: string; nombre: string } | null>(null);
 
-  // Funciones para Anular / Eliminar
-  const eliminarTransaccion = (id: string) => {
-    if (confirm('¿Estás seguro de anular/eliminar este registro contable?')) {
-      setTransacciones(prev => prev.filter(t => t.id !== id));
-    }
-  };
-
+  // Funciones para Eliminar y Editar en Caja Chica
   const eliminarGastoCajaChica = (id: string) => {
-    if (confirm('¿Estás seguro de anular/eliminar este gasto de Caja Chica?')) {
+    if (confirm('¿Estás seguro de eliminar este registro de Caja Chica?')) {
       setCajaChicaList(prev => prev.filter(c => c.id !== id));
+      if (editandoCajaId === id) {
+        cancelarEdicionCaja();
+      }
     }
   };
 
-  // Cálculos Financieros Generales
+  const iniciarEdicionCaja = (item: GastoCajaChica) => {
+    setEditandoCajaId(item.id);
+    setRespCaja(item.responsable);
+    setMotivoCaja(item.motivo);
+    setMontoCaja(item.monto.toString());
+    setCompCaja(item.comprobante);
+    setObsCaja(item.observaciones || '');
+  };
+
+  const cancelarEdicionCaja = () => {
+    setEditandoCajaId(null);
+    setRespCaja('');
+    setMotivoCaja('');
+    setMontoCaja('');
+    setCompCaja('');
+    setObsCaja('');
+    setArchivoAdjunto(null);
+  };
+
+  const handleAgregarOEditarCajaChica = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!motivoCaja || !montoCaja) return;
+
+    let urlObj = '';
+    let nombreArchivo = '';
+    if (archivoAdjunto && archivoAdjunto.length > 0) {
+      urlObj = URL.createObjectURL(archivoAdjunto[0]);
+      nombreArchivo = archivoAdjunto[0].name;
+    }
+
+    if (editandoCajaId) {
+      // Guardar Edición
+      setCajaChicaList(prev =>
+        prev.map(item => {
+          if (item.id === editandoCajaId) {
+            return {
+              ...item,
+              responsable: respCaja || 'Dirección General',
+              motivo: motivoCaja,
+              monto: Number(montoCaja),
+              comprobante: compCaja || item.comprobante,
+              observaciones: obsCaja || item.observaciones,
+              ...(urlObj && {
+                archivoUrl: urlObj,
+                archivoNombre: nombreArchivo,
+              }),
+            };
+          }
+          return item;
+        })
+      );
+      cancelarEdicionCaja();
+    } else {
+      // Crear Nuevo Registro
+      const nuevoGasto: GastoCajaChica = {
+        id: Date.now().toString(),
+        fecha: new Date().toISOString().split('T')[0],
+        responsable: respCaja || 'Dirección General',
+        motivo: motivoCaja,
+        monto: Number(montoCaja),
+        comprobante: compCaja || 'Boleta / Factura Adjunta',
+        archivoUrl: urlObj || undefined,
+        archivoNombre: nombreArchivo || undefined,
+        observaciones: obsCaja || undefined,
+      };
+
+      setCajaChicaList([nuevoGasto, ...cajaChicaList]);
+      cancelarEdicionCaja();
+    }
+  };
+
+  // Cálculos Financieros
   const transaccionesValidas = transacciones.filter(t => t.estado !== 'Anulado');
   const totalIngresos = transaccionesValidas.filter(t => t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0);
   const totalEgresos = transaccionesValidas.filter(t => t.tipo === 'egreso').reduce((a, c) => a + c.monto, 0);
@@ -165,35 +212,6 @@ export default function AdminPage() {
     setConcepto('');
     setMonto('');
     setComprobante('');
-  };
-
-  const handleAgregarCajaChica = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!motivoCaja || !montoCaja) return;
-
-    let urlObj = '';
-    if (archivoAdjunto) {
-      urlObj = URL.createObjectURL(archivoAdjunto);
-    }
-
-    const nuevoGasto: GastoCajaChica = {
-      id: Date.now().toString(),
-      fecha: new Date().toISOString().split('T')[0],
-      responsable: respCaja || 'Dirección General',
-      motivo: motivoCaja,
-      monto: Number(montoCaja),
-      comprobante: compCaja || 'Boleta / Factura Adjunta',
-      archivoUrl: urlObj,
-      archivoNombre: archivoAdjunto ? archivoAdjunto.name : undefined,
-      observaciones: obsCaja || undefined,
-    };
-
-    setCajaChicaList([nuevoGasto, ...cajaChicaList]);
-    setMotivoCaja('');
-    setMontoCaja('');
-    setCompCaja('');
-    setObsCaja('');
-    setArchivoAdjunto(null);
   };
 
   const handleAgregarNota = (e: React.FormEvent) => {
@@ -266,7 +284,7 @@ export default function AdminPage() {
                 seccion === 'cajachica' ? 'bg-[#676E5E] text-white' : 'text-[#676E5E] hover:bg-white/80'
               }`}
             >
-              ✈️ Caja Chica & Boletas
+              ✈️ Caja Chica & Documentos
             </button>
             <button
               type="button"
@@ -292,7 +310,7 @@ export default function AdminPage() {
         {/* CONTENIDO PRINCIPAL */}
         <div className="p-5 sm:p-8 space-y-6">
 
-          {/* MÓDULO 1: ESTADÍSTICAS */}
+          {/* MÓDULO ESTADÍSTICAS */}
           {seccion === 'estadisticas' && (
             <div className="space-y-6 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
@@ -313,25 +331,10 @@ export default function AdminPage() {
                   <p className="text-lg font-black text-green-800 mt-1">$ {ingresosPorApp.bienestar.toLocaleString('es-CL')} CLP</p>
                 </div>
               </div>
-
-              <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs">
-                <h3 className="font-extrabold text-xs uppercase tracking-wider text-[#676E5E]">Distribución de Ingresos por Unidad de Negocio</h3>
-                <div className="w-full bg-gray-200 h-6 rounded-xl overflow-hidden flex font-bold text-[10px] text-white">
-                  <div style={{ width: `${totalIngresos > 0 ? (ingresosPorApp.casamatriz / totalIngresos) * 100 : 25}%` }} className="bg-emerald-700 flex items-center justify-center">
-                    B2B ({Math.round(totalIngresos > 0 ? (ingresosPorApp.casamatriz / totalIngresos) * 100 : 0)}%)
-                  </div>
-                  <div style={{ width: `${totalIngresos > 0 ? (ingresosPorApp.lawenmoll / totalIngresos) * 100 : 25}%` }} className="bg-teal-600 flex items-center justify-center">
-                    LAWENMOLL ({Math.round(totalIngresos > 0 ? (ingresosPorApp.lawenmoll / totalIngresos) * 100 : 0)}%)
-                  </div>
-                  <div style={{ width: `${totalIngresos > 0 ? (ingresosPorApp.wellness / totalIngresos) * 100 : 25}%` }} className="bg-amber-600 flex items-center justify-center">
-                    Wellness ({Math.round(totalIngresos > 0 ? (ingresosPorApp.wellness / totalIngresos) * 100 : 0)}%)
-                  </div>
-                </div>
-              </div>
             </div>
           )}
 
-          {/* MÓDULO 2: LIBRO DIARIO CON BOTÓN DE ANULAR / BORRAR */}
+          {/* MÓDULO LIBRO DIARIO */}
           {seccion === 'contabilidad' && (
             <div className="space-y-6 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -349,7 +352,7 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Formulario Transacciones */}
+              {/* Formulario Libro Diario */}
               <form onSubmit={handleAgregarTransaccion} className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-4">
                 <h3 className="font-extrabold uppercase text-xs">Registrar Movimiento en Libro Diario</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -395,7 +398,7 @@ export default function AdminPage() {
                 </button>
               </form>
 
-              {/* Tabla de Transacciones con Opción de Borrar */}
+              {/* Tabla Libro Diario */}
               <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
@@ -405,7 +408,6 @@ export default function AdminPage() {
                       <th className="p-3">Concepto</th>
                       <th className="p-3">Comprobante</th>
                       <th className="p-3 text-right">Monto (CLP)</th>
-                      <th className="p-3 text-center">Acción</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#97A884]/20 font-medium">
@@ -418,15 +420,6 @@ export default function AdminPage() {
                         <td className={`p-3 text-right font-bold font-mono ${t.tipo === 'ingreso' ? 'text-green-700' : 'text-red-600'}`}>
                           {t.tipo === 'ingreso' ? '+' : '-'} $ {t.monto.toLocaleString('es-CL')}
                         </td>
-                        <td className="p-3 text-center">
-                          <button
-                            type="button"
-                            onClick={() => eliminarTransaccion(t.id)}
-                            className="bg-red-100 hover:bg-red-600 text-red-700 hover:text-white font-extrabold px-2.5 py-1 rounded-lg text-[10px] transition cursor-pointer"
-                          >
-                            Anular / Borrar
-                          </button>
-                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -435,7 +428,7 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* MÓDULO 3: CAJA CHICA CON ADJUNTO Y BOTÓN BORRAR */}
+          {/* MÓDULO CAJA CHICA CON BOTONES DE EDITAR, ELIMINAR Y VISUALIZAR DOCUMENTO */}
           {seccion === 'cajachica' && (
             <div className="space-y-6 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -453,17 +446,31 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Formulario Rendición de Caja Chica */}
-              <form onSubmit={handleAgregarCajaChica} className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-4">
-                <h3 className="font-extrabold uppercase text-xs">Rendir Gasto de Caja Chica (Boleta / Factura / Foto)</h3>
+              {/* Formulario Caja Chica (Alta y Edición) */}
+              <form onSubmit={handleAgregarOEditarCajaChica} className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-4 shadow-sm">
+                <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-2">
+                  <h3 className="font-extrabold uppercase text-xs text-[#676E5E]">
+                    {editandoCajaId ? '✏️ Editando Gasto de Caja Chica' : '➕ Rendir Gasto de Caja Chica (Boleta / Factura)'}
+                  </h3>
+                  {editandoCajaId && (
+                    <button
+                      type="button"
+                      onClick={cancelarEdicionCaja}
+                      className="bg-gray-200 text-gray-700 font-bold px-3 py-1 rounded-lg text-[10px]"
+                    >
+                      Cancelar Edición
+                    </button>
+                  )}
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="font-bold block mb-1">Responsable del Gasto</label>
                     <input type="text" placeholder="Ej: Equipo Comercial ASL" value={respCaja} onChange={e => setRespCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" />
                   </div>
                   <div>
-                    <label className="font-bold block mb-1">Motivo o Destino del Viaje</label>
-                    <input type="text" placeholder="Ej: Bencina Reunión Municipal" value={motivoCaja} onChange={e => setMotivoCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" required />
+                    <label className="font-bold block mb-1">Motivo / Viático</label>
+                    <input type="text" placeholder="Ej: Bencina / Peaje Reunión Municipal" value={motivoCaja} onChange={e => setMotivoCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" required />
                   </div>
                 </div>
 
@@ -477,11 +484,11 @@ export default function AdminPage() {
                     <input type="text" placeholder="Boleta N° 1022" value={compCaja} onChange={e => setCompCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" />
                   </div>
                   <div>
-                    <label className="font-bold block mb-1">Subir Archivo de Respaldo</label>
+                    <label className="font-bold block mb-1">Adjuntar Respaldo (Foto / PDF)</label>
                     <input
                       type="file"
                       accept="image/*,application/pdf"
-                      onChange={e => e.target.files && setArchivoAdjunto(e.target.files[0])}
+                      onChange={e => setArchivoAdjunto(e.target.files)}
                       className="w-full p-2 bg-[#FAF8F5] border border-[#97A884] rounded-xl text-xs"
                     />
                   </div>
@@ -489,53 +496,66 @@ export default function AdminPage() {
 
                 <div>
                   <label className="font-bold block mb-1">Observación o Nota Aclaratoria</label>
-                  <input type="text" placeholder="Ej: Pasajes autorizados por gerencia para firma de convenio" value={obsCaja} onChange={e => setObsCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" />
+                  <input type="text" placeholder="Ej: Pasajes autorizados para firma de convenio B2B" value={obsCaja} onChange={e => setObsCaja(e.target.value)} className="w-full p-2.5 bg-[#FAF8F5] border border-[#97A884] rounded-xl" />
                 </div>
 
                 <button type="submit" className="bg-[#676E5E] text-white font-extrabold px-6 py-2.5 rounded-xl cursor-pointer">
-                  + Registrar Gasto y Adjuntar Respaldo
+                  {editandoCajaId ? '💾 Guardar Cambios en Gasto' : '+ Registrar Gasto en Caja Chica'}
                 </button>
               </form>
 
-              {/* Lista de Caja Chica con Botón de Borrar y Previsualizar */}
+              {/* Lista de Rendiciones con Botones de Editar, Eliminar y Previsualizar */}
               <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3">
-                <h3 className="font-extrabold uppercase text-xs">Planilla de Rendición con Respaldos Digitales</h3>
+                <h3 className="font-extrabold uppercase text-xs text-[#676E5E]">Planilla de Rendición de Caja Chica</h3>
                 {cajaChicaList.map(item => (
-                  <div key={item.id} className="p-3 bg-[#FAF8F5] rounded-2xl border border-[#97A884]/40 flex flex-wrap justify-between items-center text-xs gap-2">
-                    <div>
-                      <p className="font-bold text-[#676E5E]">{item.motivo}</p>
-                      <span className="text-[10px] text-gray-500 font-mono">{item.fecha} • {item.responsable} • {item.comprobante}</span>
+                  <div key={item.id} className="p-3.5 bg-[#FAF8F5] rounded-2xl border border-[#97A884]/40 flex flex-wrap justify-between items-center text-xs gap-3">
+                    <div className="space-y-0.5">
+                      <p className="font-bold text-[#676E5E] text-sm">{item.motivo}</p>
+                      <span className="text-[10px] text-gray-500 font-mono block">
+                        Fecha: {item.fecha} • Resp: {item.responsable} • Doc: {item.comprobante}
+                      </span>
                       {item.archivoNombre && (
-                        <p className="text-[10px] font-semibold text-green-700 mt-0.5">
-                          📎 Respaldo: {item.archivoNombre}
-                        </p>
+                        <span className="text-[10px] font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded-md border border-green-200 inline-block mt-1">
+                          📎 Respaldo Digital: {item.archivoNombre}
+                        </span>
                       )}
                       {item.observaciones && (
-                        <p className="text-[10px] text-gray-600 italic mt-0.5">💬 Nota: {item.observaciones}</p>
+                        <p className="text-[10px] text-gray-600 italic">💬 Nota: {item.observaciones}</p>
                       )}
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="font-black text-red-600 font-mono text-sm mr-2">
+                      <span className="font-black text-red-600 font-mono text-base mr-3">
                         - $ {item.monto.toLocaleString('es-CL')} CLP
                       </span>
 
+                      {/* BOTÓN VISUALIZAR ARCHIVO */}
                       {item.archivoUrl && (
                         <button
                           type="button"
                           onClick={() => setArchivoPrevisualizar({ url: item.archivoUrl!, nombre: item.archivoNombre || 'Respaldo' })}
-                          className="bg-[#CDD6A9] text-[#676E5E] hover:bg-[#97A884] hover:text-white font-extrabold px-3 py-1 rounded-xl text-[10px] transition cursor-pointer"
+                          className="bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-bold px-3 py-1.5 rounded-xl text-[10px] transition cursor-pointer"
                         >
-                          Ver Respaldo
+                          👁️ Ver Respaldo
                         </button>
                       )}
 
+                      {/* BOTÓN EDITAR */}
+                      <button
+                        type="button"
+                        onClick={() => iniciarEdicionCaja(item)}
+                        className="bg-amber-100 hover:bg-amber-600 text-amber-800 hover:text-white font-extrabold px-3 py-1.5 rounded-xl text-[10px] transition cursor-pointer"
+                      >
+                        ✏️ Editar
+                      </button>
+
+                      {/* BOTÓN ELIMINAR */}
                       <button
                         type="button"
                         onClick={() => eliminarGastoCajaChica(item.id)}
-                        className="bg-red-100 hover:bg-red-600 text-red-700 hover:text-white font-extrabold px-2.5 py-1 rounded-lg text-[10px] transition cursor-pointer"
+                        className="bg-red-100 hover:bg-red-600 text-red-700 hover:text-white font-extrabold px-3 py-1.5 rounded-xl text-[10px] transition cursor-pointer"
                       >
-                        Anular
+                        🗑️ Eliminar
                       </button>
                     </div>
                   </div>
@@ -544,7 +564,7 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* MÓDULO 4: NOTAS DE RESPALDO Y FUENTES AÑADIDAS */}
+          {/* MÓDULO NOTAS */}
           {seccion === 'notas' && (
             <div className="bg-white p-6 rounded-3xl border-2 border-[#97A884] space-y-5 text-xs">
               <h3 className="font-extrabold uppercase text-xs tracking-wider">Bitácora & Notas de Respaldo Administrativo</h3>
@@ -553,7 +573,7 @@ export default function AdminPage() {
                 <textarea
                   value={nuevaNota}
                   onChange={e => setNuevaNota(e.target.value)}
-                  placeholder="Escribe una observación, aclaración contable o fuente de referencia para los contadores..."
+                  placeholder="Escribe una observación o nota aclaratoria para los contadores..."
                   className="w-full h-24 p-3 bg-[#FAF8F5] border border-[#97A884] rounded-2xl outline-none"
                 />
                 <button
@@ -582,7 +602,7 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* MÓDULO 5: REPORTE IMPRIMIBLE PARA CONTADORES */}
+          {/* MÓDULO REPORTE PDF */}
           {seccion === 'reporte' && (
             <div className="bg-white p-6 sm:p-10 rounded-3xl border-2 border-[#97A884] space-y-6 text-xs">
               <div className="flex justify-between items-center border-b-2 border-[#97A884] pb-5">
@@ -637,14 +657,14 @@ export default function AdminPage() {
         </div>
       </div>
 
-      {/* VISUALIZADOR MODAL DE BOLETAS / FACTURAS */}
+      {/* VISUALIZADOR MODAL DE BOLETAS Y FACTURAS */}
       {archivoPrevisualizar && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
           <div className="bg-[#E6E7D5] max-w-2xl w-full rounded-3xl border-2 border-[#97A884] p-5 space-y-4 shadow-2xl flex flex-col max-h-[85vh]">
             <div className="flex justify-between items-center border-b border-[#97A884]/40 pb-3">
               <div>
                 <span className="text-[9px] font-bold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-2 py-0.5 rounded-md border border-[#97A884]">
-                  Respaldo de Caja Chica
+                  Respaldo Digital
                 </span>
                 <h4 className="font-black text-[#676E5E] text-sm mt-0.5 truncate max-w-md">
                   {archivoPrevisualizar.nombre}
