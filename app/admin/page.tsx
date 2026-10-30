@@ -29,7 +29,7 @@ interface GastoCajaChica {
 }
 
 export default function AdminPage() {
-  const [seccion, setSeccion] = useState<'estadisticas' | 'contabilidad' | 'cajachica' | 'notas' | 'pyme' | 'reporte'>('cajachica');
+  const [seccion, setSeccion] = useState<'estadisticas' | 'contabilidad' | 'cajachica' | 'notas' | 'pyme' | 'reporte'>('pyme');
 
   // Estado Libro Contable
   const [transacciones, setTransacciones] = useState<Transaccion[]>([
@@ -92,7 +92,7 @@ export default function AdminPage() {
   const [archivoAdjunto, setArchivoAdjunto] = useState<File | null>(null);
   const [previewUrlForm, setPreviewUrlForm] = useState<string | null>(null);
 
-  // Estado Notas y Fuentes de Respaldo
+  // Estado Notas
   const [notasList, setNotasList] = useState<string[]>([
     'Nota Contable 01: Revisión de facturación electrónica mensual realizada con S.I.I.',
   ]);
@@ -101,7 +101,7 @@ export default function AdminPage() {
   // Modal para Ver Archivo a Pantalla Completa
   const [archivoPrevisualizar, setArchivoPrevisualizar] = useState<{ url: string; nombre: string; esImagen: boolean } | null>(null);
 
-  // Captura de archivo con previsualización inmediata en el formulario
+  // Captura de archivo con previsualización en vivo
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
@@ -277,7 +277,7 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* Menú de Navegación Contable y PYME */}
+        {/* Menú de Navegación */}
         <div className="p-4 bg-[#CDD6A9]/40 border-b border-[#97A884]/30">
           <div className="flex flex-wrap bg-white/70 p-1.5 rounded-2xl border border-[#97A884] text-xs font-bold gap-1">
             <button
@@ -533,7 +533,7 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* MÓDULO 3: CAJA CHICA CON VISUALIZACIÓN EN VIVO DE ARCHIVOS */}
+          {/* MÓDULO 3: CAJA CHICA CON PREVISUALIZACIÓN Y ARCHIVOS */}
           {seccion === 'cajachica' && (
             <div className="space-y-6 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -551,7 +551,7 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Formulario Caja Chica con Vista Previa en Vivo */}
+              {/* Formulario Caja Chica */}
               <form onSubmit={handleAgregarOEditarCajaChica} className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-4 shadow-sm">
                 <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-2">
                   <h3 className="font-extrabold uppercase text-xs text-[#676E5E]">
@@ -599,7 +599,7 @@ export default function AdminPage() {
                   </div>
                 </div>
 
-                {/* ZONA DE PREVISUALIZACIÓN INSTANTÁNEA ANTES DE GUARDAR */}
+                {/* Vista Previa Instantánea */}
                 {previewUrlForm && (
                   <div className="p-3 bg-[#FAF8F5] rounded-2xl border-2 border-dashed border-[#97A884] space-y-2">
                     <span className="text-[10px] font-bold text-green-800 uppercase block">
@@ -629,14 +629,12 @@ export default function AdminPage() {
                 </button>
               </form>
 
-              {/* LISTA DE RENDICIONES CON VISUALIZACIÓN DIRECTA */}
+              {/* Lista de Rendiciones */}
               <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3">
                 <h3 className="font-extrabold uppercase text-xs text-[#676E5E]">Planilla de Rendición con Respaldos Digitales</h3>
                 {cajaChicaList.map(item => (
                   <div key={item.id} className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#97A884]/40 flex flex-wrap justify-between items-center text-xs gap-3">
                     <div className="flex items-start space-x-3">
-                      
-                      {/* MINIATURA VISUAL SI ES IMAGEN */}
                       {item.archivoUrl && item.esImagen && (
                         <div className="w-14 h-14 bg-white rounded-xl border border-[#97A884] overflow-hidden flex items-center justify-center shrink-0 shadow-xs">
                           <img src={item.archivoUrl} alt={item.archivoNombre || 'Respaldo'} className="w-full h-full object-cover" />
@@ -664,7 +662,6 @@ export default function AdminPage() {
                         - $ {item.monto.toLocaleString('es-CL')} CLP
                       </span>
 
-                      {/* BOTÓN VER ARCHIVO PANTALLA COMPLETA */}
                       {item.archivoUrl && (
                         <button
                           type="button"
@@ -739,7 +736,7 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* MÓDULO 5: HERRAMIENTAS Y TRÁMITES INSTITUCIONALES CON ENLACES FUNCIONALES */}
+          {/* MÓDULO 5: TRÁMITES Y HERRAMIENTAS PYME CON ENLACES DIRECTOS Y FUNCIONALES */}
           {seccion === 'pyme' && (
             <div className="space-y-5 text-xs">
               <div className="bg-white p-6 rounded-3xl border-2 border-[#97A884] space-y-3">
@@ -750,31 +747,31 @@ export default function AdminPage() {
                   Plataformas Requeridas para Registro & Operación de ASL Ideas SpA
                 </h3>
                 <p className="text-gray-600">
-                  Accesos directos a las instituciones del Estado y servicios requeridos para la formalización contable, tributaria y operativa de la PYME.
+                  Acceso inmediato a las instituciones del Estado y servicios tecnológicos requeridos para la constitución, facturación y financiamiento de la empresa.
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 
                 {/* 1. Tu Empresa en un Día */}
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
-                      <span className="text-xl">🏢</span>
+                      <span className="text-2xl">🏢</span>
                       <span className="bg-blue-100 text-blue-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Constitución</span>
                     </div>
-                    <h4 className="font-black text-sm text-[#676E5E] mt-2">Tu Empresa en un Día (RES)</h4>
+                    <h4 className="font-black text-sm text-[#676E5E] mt-2">Tu Empresa en un Día</h4>
                     <p className="text-[11px] text-gray-500 mt-1">
-                      Gestión de estatutos, RUT provisorio y registro de firma electrónica de la SpA.
+                      Registro de Empresas y Sociedades (RES), estatutos y firma electrónica.
                     </p>
                   </div>
                   <a
                     href="[suspicious link removed]"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
+                    className="block text-center bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-extrabold p-2.5 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
-                    Ir al Portal Oficial →
+                    Ir a Tu Empresa en un Día →
                   </a>
                 </div>
 
@@ -782,19 +779,19 @@ export default function AdminPage() {
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
-                      <span className="text-xl">📄</span>
+                      <span className="text-2xl">📄</span>
                       <span className="bg-green-100 text-green-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Tributaria</span>
                     </div>
-                    <h4 className="font-black text-sm text-[#676E5E] mt-2">Servicio de Impuestos Internos (S.I.I.)</h4>
+                    <h4 className="font-black text-sm text-[#676E5E] mt-2">Servicio de Impuestos Internos</h4>
                     <p className="text-[11px] text-gray-500 mt-1">
-                      Inicio de Actividades, emisión de Facturación Electrónica y declaración mensual F29.
+                      Inicio de Actividades, Facturación Electrónica y Declaración de Impuestos F29.
                     </p>
                   </div>
                   <a
                     href="[suspicious link removed]"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
+                    className="block text-center bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-extrabold p-2.5 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
                     Ir al SII →
                   </a>
@@ -804,19 +801,19 @@ export default function AdminPage() {
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
-                      <span className="text-xl">🏛️</span>
-                      <span className="bg-amber-100 text-amber-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Finanzas Públicas</span>
+                      <span className="text-2xl">🏛️</span>
+                      <span className="bg-amber-100 text-amber-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Tesoreria</span>
                     </div>
                     <h4 className="font-black text-sm text-[#676E5E] mt-2">Tesorería General (TGR)</h4>
                     <p className="text-[11px] text-gray-500 mt-1">
-                      Pago de impuestos diferidos, patente municipal y certificados de deuda fiscal.
+                      Pago de contribuciones, patentes y certificados fiscales de tesorería.
                     </p>
                   </div>
                   <a
                     href="[suspicious link removed]"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
+                    className="block text-center bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-extrabold p-2.5 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
                     Ir a TGR →
                   </a>
@@ -826,65 +823,109 @@ export default function AdminPage() {
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
-                      <span className="text-xl">💼</span>
+                      <span className="text-2xl">💼</span>
                       <span className="bg-purple-100 text-purple-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Previsional</span>
                     </div>
                     <h4 className="font-black text-sm text-[#676E5E] mt-2">Previred</h4>
                     <p className="text-[11px] text-gray-500 mt-1">
-                      Declaración y pago de cotizaciones previsionales del equipo y fundadores.
+                      Declaración y pago mensual de cotizaciones previsionales del personal.
                     </p>
                   </div>
                   <a
                     href="[suspicious link removed]"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
+                    className="block text-center bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-extrabold p-2.5 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
                     Ir a Previred →
                   </a>
                 </div>
 
-                {/* 5. CORFO / SERCOTEC */}
+                {/* 5. CORFO */}
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
-                      <span className="text-xl">🚀</span>
-                      <span className="bg-emerald-100 text-emerald-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Financiamiento</span>
+                      <span className="text-2xl">🚀</span>
+                      <span className="bg-emerald-100 text-emerald-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Fondo Público</span>
                     </div>
-                    <h4 className="font-black text-sm text-[#676E5E] mt-2">CORFO & SERCOTEC</h4>
+                    <h4 className="font-black text-sm text-[#676E5E] mt-2">CORFO Chile</h4>
                     <p className="text-[11px] text-gray-500 mt-1">
-                      Postulación a fondos públicos para innovación en salud digital e inclusión.
+                      Postulación a fondos de innovación en salud e inclusión digital.
                     </p>
                   </div>
                   <a
                     href="[suspicious link removed]"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
+                    className="block text-center bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-extrabold p-2.5 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
                     Ir a CORFO →
                   </a>
                 </div>
 
-                {/* 6. Infraestructura Vercel & Supabase */}
+                {/* 6. SERCOTEC */}
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
-                      <span className="text-xl">☁️</span>
-                      <span className="bg-gray-100 text-gray-800 font-bold text-[9px] px-2 py-0.5 rounded-full">TI & Cloud</span>
+                      <span className="text-2xl">🌱</span>
+                      <span className="bg-teal-100 text-teal-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Fomento PYME</span>
                     </div>
-                    <h4 className="font-black text-sm text-[#676E5E] mt-2">Vercel & Supabase Cloud</h4>
+                    <h4 className="font-black text-sm text-[#676E5E] mt-2">SERCOTEC</h4>
                     <p className="text-[11px] text-gray-500 mt-1">
-                      Servidores y base de datos con encriptación bajo la Ley N° 21.663.
+                      Capital Semilla, Abeja y fondos de fortalecimiento gremial y pyme.
                     </p>
                   </div>
                   <a
                     href="[suspicious link removed]"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
+                    className="block text-center bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-extrabold p-2.5 rounded-xl border border-[#97A884] transition text-[11px]"
+                  >
+                    Ir a SERCOTEC →
+                  </a>
+                </div>
+
+                {/* 7. Vercel Cloud */}
+                <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-2xl">☁️</span>
+                      <span className="bg-gray-100 text-gray-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Hosting & TI</span>
+                    </div>
+                    <h4 className="font-black text-sm text-[#676E5E] mt-2">Vercel Cloud</h4>
+                    <p className="text-[11px] text-gray-500 mt-1">
+                      Consola de despliegue web y servidores de producción bajo la Ley N° 21.663.
+                    </p>
+                  </div>
+                  <a
+                    href="[suspicious link removed]"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-center bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-extrabold p-2.5 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
                     Ir a Vercel →
+                  </a>
+                </div>
+
+                {/* 8. Supabase */}
+                <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-2xl">⚡</span>
+                      <span className="bg-emerald-100 text-emerald-800 font-bold text-[9px] px-2 py-0.5 rounded-full">Base de Datos</span>
+                    </div>
+                    <h4 className="font-black text-sm text-[#676E5E] mt-2">Supabase Database</h4>
+                    <p className="text-[11px] text-gray-500 mt-1">
+                      Base de datos relacional PostgreSQL con encriptación para fichas clínicas.
+                    </p>
+                  </div>
+                  <a
+                    href="[suspicious link removed]"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-center bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-extrabold p-2.5 rounded-xl border border-[#97A884] transition text-[11px]"
+                  >
+                    Ir a Supabase →
                   </a>
                 </div>
 
