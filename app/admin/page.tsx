@@ -24,11 +24,12 @@ interface GastoCajaChica {
   comprobante: string;
   archivoUrl?: string;
   archivoNombre?: string;
+  esImagen?: boolean;
   observaciones?: string;
 }
 
 export default function AdminPage() {
-  const [seccion, setSeccion] = useState<'estadisticas' | 'contabilidad' | 'cajachica' | 'notas' | 'pyme' | 'reporte'>('estadisticas');
+  const [seccion, setSeccion] = useState<'estadisticas' | 'contabilidad' | 'cajachica' | 'notas' | 'pyme' | 'reporte'>('cajachica');
 
   // Estado Libro Contable
   const [transacciones, setTransacciones] = useState<Transaccion[]>([
@@ -54,28 +55,6 @@ export default function AdminPage() {
       comprobante: 'Boleta N° 4501',
       estado: 'Pagado',
     },
-    {
-      id: '3',
-      fecha: '2026-10-22',
-      app: 'wellness',
-      tipo: 'ingreso',
-      categoria: 'Suscripción',
-      concepto: 'Membresías Programa Movimiento Adaptado',
-      monto: 420000,
-      comprobante: 'Transbank Voucher #882',
-      estado: 'Pagado',
-    },
-    {
-      id: '4',
-      fecha: '2026-10-25',
-      app: 'casamatriz',
-      tipo: 'egreso',
-      categoria: 'Servidores / TI',
-      concepto: 'Infraestructura Cloud Vercel y Supabase',
-      monto: 145000,
-      comprobante: 'Factura Vercel Inc. #992',
-      estado: 'Pagado',
-    },
   ]);
 
   // Formulario Libro Diario
@@ -98,30 +77,40 @@ export default function AdminPage() {
       monto: 45000,
       comprobante: 'Boleta Copec N° 8812',
       archivoNombre: 'Boleta_Bencina_8812.pdf',
+      esImagen: false,
       observaciones: 'Viaje de prospección comercial licitación municipal.'
     },
   ]);
 
-  // Formulario de Caja Chica
+  // Formulario y Estados de Edición de Caja Chica
   const [editandoCajaId, setEditandoCajaId] = useState<string | null>(null);
   const [respCaja, setRespCaja] = useState('');
   const [motivoCaja, setMotivoCaja] = useState('');
   const [montoCaja, setMontoCaja] = useState('');
   const [compCaja, setCompCaja] = useState('');
   const [obsCaja, setObsCaja] = useState('');
-  const [archivoAdjunto, setArchivoAdjunto] = useState<FileList | null>(null);
+  const [archivoAdjunto, setArchivoAdjunto] = useState<File | null>(null);
+  const [previewUrlForm, setPreviewUrlForm] = useState<string | null>(null);
 
-  // Estado Bitácora y Notas
+  // Estado Notas y Fuentes de Respaldo
   const [notasList, setNotasList] = useState<string[]>([
-    'Nota Contable 01: Revisión de facturación electrónica mensual con S.I.I.',
-    'Nota de Respaldo 02: Declaración de inicio de actividades SpA en Servicio de Impuestos Internos.'
+    'Nota Contable 01: Revisión de facturación electrónica mensual realizada con S.I.I.',
   ]);
   const [nuevaNota, setNuevaNota] = useState('');
 
-  // Previsualizador de Archivos (Modal)
-  const [archivoPrevisualizar, setArchivoPrevisualizar] = useState<{ url: string; nombre: string } | null>(null);
+  // Modal para Ver Archivo a Pantalla Completa
+  const [archivoPrevisualizar, setArchivoPrevisualizar] = useState<{ url: string; nombre: string; esImagen: boolean } | null>(null);
 
-  // Funciones Caja Chica
+  // Captura de archivo con previsualización inmediata en el formulario
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const selectedFile = e.target.files[0];
+      setArchivoAdjunto(selectedFile);
+      const url = URL.createObjectURL(selectedFile);
+      setPreviewUrlForm(url);
+    }
+  };
+
   const eliminarGastoCajaChica = (id: string) => {
     if (confirm('¿Estás seguro de eliminar este registro de Caja Chica?')) {
       setCajaChicaList(prev => prev.filter(c => c.id !== id));
@@ -136,6 +125,11 @@ export default function AdminPage() {
     setMontoCaja(item.monto.toString());
     setCompCaja(item.comprobante);
     setObsCaja(item.observaciones || '');
+    if (item.archivoUrl) {
+      setPreviewUrlForm(item.archivoUrl);
+    } else {
+      setPreviewUrlForm(null);
+    }
   };
 
   const cancelarEdicionCaja = () => {
@@ -146,19 +140,16 @@ export default function AdminPage() {
     setCompCaja('');
     setObsCaja('');
     setArchivoAdjunto(null);
+    setPreviewUrlForm(null);
   };
 
   const handleAgregarOEditarCajaChica = (e: React.FormEvent) => {
     e.preventDefault();
     if (!motivoCaja || !montoCaja) return;
 
-    let urlObj = '';
-    let nombreArchivo = '';
-    if (archivoAdjunto && archivoAdjunto.length > 0) {
-      const file = archivoAdjunto[0];
-      urlObj = URL.createObjectURL(file);
-      nombreArchivo = file.name;
-    }
+    let urlObj = previewUrlForm || '';
+    let nombreArchivo = archivoAdjunto ? archivoAdjunto.name : '';
+    let esImg = archivoAdjunto ? archivoAdjunto.type.startsWith('image/') : false;
 
     if (editandoCajaId) {
       setCajaChicaList(prev =>
@@ -173,7 +164,8 @@ export default function AdminPage() {
               observaciones: obsCaja || item.observaciones,
               ...(urlObj && {
                 archivoUrl: urlObj,
-                archivoNombre: nombreArchivo,
+                archivoNombre: nombreArchivo || item.archivoNombre,
+                esImagen: archivoAdjunto ? esImg : item.esImagen,
               }),
             };
           }
@@ -191,6 +183,7 @@ export default function AdminPage() {
         comprobante: compCaja || 'Boleta / Factura Adjunta',
         archivoUrl: urlObj || undefined,
         archivoNombre: nombreArchivo || undefined,
+        esImagen: esImg,
         observaciones: obsCaja || undefined,
       };
 
@@ -199,7 +192,6 @@ export default function AdminPage() {
     }
   };
 
-  // Funciones Libro Diario
   const eliminarTransaccion = (id: string) => {
     if (confirm('¿Estás seguro de anular/eliminar este registro contable?')) {
       setTransacciones(prev => prev.filter(t => t.id !== id));
@@ -234,7 +226,7 @@ export default function AdminPage() {
     }
   };
 
-  // Cálculos Financieros Generales
+  // Cálculos Financieros
   const transaccionesValidas = transacciones.filter(t => t.estado !== 'Anulado');
   const totalIngresos = transaccionesValidas.filter(t => t.tipo === 'ingreso').reduce((a, c) => a + c.monto, 0);
   const totalEgresos = transaccionesValidas.filter(t => t.tipo === 'egreso').reduce((a, c) => a + c.monto, 0);
@@ -263,7 +255,7 @@ export default function AdminPage() {
             </div>
             <div>
               <span className="text-[10px] font-extrabold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-2.5 py-0.5 rounded-full border border-[#97A884]">
-                ASL Core Center — Consola Financiera & Operaciones
+                ASL Core Center — Consola Financiera
               </span>
               <h1 className="text-lg sm:text-2xl font-black text-[#676E5E] mt-0.5">Control Contable & Flujo de Caja</h1>
             </div>
@@ -313,7 +305,7 @@ export default function AdminPage() {
                 seccion === 'cajachica' ? 'bg-[#676E5E] text-white shadow-xs' : 'text-[#676E5E] hover:bg-white/80'
               }`}
             >
-              ✈️ Caja Chica & Documentos
+              ✈️ Caja Chica & Respaldo
             </button>
             <button
               type="button"
@@ -351,8 +343,6 @@ export default function AdminPage() {
           {/* MÓDULO 1: ESTADÍSTICAS Y GRÁFICOS VISUALES */}
           {seccion === 'estadisticas' && (
             <div className="space-y-6 text-xs">
-              
-              {/* Tarjetas Informativas */}
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                 <div className="p-4 bg-white rounded-2xl border-2 border-[#97A884] text-center shadow-xs">
                   <span className="text-[10px] font-bold uppercase text-[#97A884]">1. Casa Matriz B2B</span>
@@ -372,139 +362,70 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* GRÁFICO VISUAL DE BARRAS DE INGRESOS POR APP */}
               <div className="bg-white p-6 rounded-3xl border-2 border-[#97A884] space-y-4 shadow-sm">
                 <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-3">
                   <h3 className="font-extrabold text-xs uppercase tracking-wider text-[#676E5E]">
                     📊 Gráfico de Ingresos por Unidad de Negocio (CLP)
                   </h3>
                   <span className="text-[10px] bg-[#CDD6A9] text-[#676E5E] px-2.5 py-0.5 rounded-full font-bold">
-                    Actualizado en Tiempo Real
+                    Actualizado
                   </span>
                 </div>
 
-                {/* Contenedor del Gráfico de Barras SVG */}
                 <div className="h-56 w-full flex items-end justify-around pt-6 pb-2 px-4 bg-[#FAF8F5] rounded-2xl border border-[#97A884]/40">
-                  
-                  {/* Barra 1: Casa Matriz */}
                   <div className="flex flex-col items-center h-full justify-end w-1/5 group">
-                    <span className="text-[10px] font-bold text-emerald-800 mb-1 opacity-90 font-mono">
+                    <span className="text-[10px] font-bold text-emerald-800 mb-1 font-mono">
                       $ {ingresosPorApp.casamatriz.toLocaleString('es-CL')}
                     </span>
                     <div 
                       className="w-full bg-emerald-700 rounded-t-xl transition-all duration-500 shadow-md group-hover:bg-emerald-800"
-                      style={{ height: `${Math.max((ingresosPorApp.casamatriz / maxIngresoApp) * 100, 8)}%` }}
+                      style={{ height: `${Math.max((ingresosPorApp.casamatriz / maxIngresoApp) * 100, 10)}%` }}
                     />
                     <span className="text-[10px] font-extrabold text-[#676E5E] mt-2 text-center truncate w-full">
                       Casa Matriz B2B
                     </span>
                   </div>
 
-                  {/* Barra 2: LAWENMOLL */}
                   <div className="flex flex-col items-center h-full justify-end w-1/5 group">
-                    <span className="text-[10px] font-bold text-teal-800 mb-1 opacity-90 font-mono">
+                    <span className="text-[10px] font-bold text-teal-800 mb-1 font-mono">
                       $ {ingresosPorApp.lawenmoll.toLocaleString('es-CL')}
                     </span>
                     <div 
                       className="w-full bg-teal-600 rounded-t-xl transition-all duration-500 shadow-md group-hover:bg-teal-700"
-                      style={{ height: `${Math.max((ingresosPorApp.lawenmoll / maxIngresoApp) * 100, 8)}%` }}
+                      style={{ height: `${Math.max((ingresosPorApp.lawenmoll / maxIngresoApp) * 100, 10)}%` }}
                     />
                     <span className="text-[10px] font-extrabold text-[#676E5E] mt-2 text-center truncate w-full">
                       LAWENMOLL
                     </span>
                   </div>
 
-                  {/* Barra 3: Wellness Web App */}
                   <div className="flex flex-col items-center h-full justify-end w-1/5 group">
-                    <span className="text-[10px] font-bold text-amber-800 mb-1 opacity-90 font-mono">
+                    <span className="text-[10px] font-bold text-amber-800 mb-1 font-mono">
                       $ {ingresosPorApp.wellness.toLocaleString('es-CL')}
                     </span>
                     <div 
                       className="w-full bg-amber-600 rounded-t-xl transition-all duration-500 shadow-md group-hover:bg-amber-700"
-                      style={{ height: `${Math.max((ingresosPorApp.wellness / maxIngresoApp) * 100, 8)}%` }}
+                      style={{ height: `${Math.max((ingresosPorApp.wellness / maxIngresoApp) * 100, 10)}%` }}
                     />
                     <span className="text-[10px] font-extrabold text-[#676E5E] mt-2 text-center truncate w-full">
                       Wellness App
                     </span>
                   </div>
 
-                  {/* Barra 4: Bienestar Ancestral */}
                   <div className="flex flex-col items-center h-full justify-end w-1/5 group">
-                    <span className="text-[10px] font-bold text-olive-800 mb-1 opacity-90 font-mono">
+                    <span className="text-[10px] font-bold text-gray-800 mb-1 font-mono">
                       $ {ingresosPorApp.bienestar.toLocaleString('es-CL')}
                     </span>
                     <div 
                       className="w-full bg-[#676E5E] rounded-t-xl transition-all duration-500 shadow-md group-hover:bg-[#52584b]"
-                      style={{ height: `${Math.max((ingresosPorApp.bienestar / maxIngresoApp) * 100, 8)}%` }}
+                      style={{ height: `${Math.max((ingresosPorApp.bienestar / maxIngresoApp) * 100, 10)}%` }}
                     />
                     <span className="text-[10px] font-extrabold text-[#676E5E] mt-2 text-center truncate w-full">
                       Bienestar
                     </span>
                   </div>
-
                 </div>
               </div>
-
-              {/* GRÁFICO DE MARGEN OPERATIVO Y PARTICIPACIÓN */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3">
-                  <h3 className="font-extrabold text-xs uppercase tracking-wider text-[#676E5E]">
-                    📈 Comparativa Flujo de Caja
-                  </h3>
-                  <div className="space-y-2 font-mono text-xs">
-                    <div>
-                      <div className="flex justify-between font-bold mb-1">
-                        <span>Ingresos Totales</span>
-                        <span className="text-green-700">$ {totalIngresos.toLocaleString('es-CL')}</span>
-                      </div>
-                      <div className="w-full bg-gray-200 h-3 rounded-full overflow-hidden">
-                        <div className="bg-green-600 h-full w-full" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="flex justify-between font-bold mb-1">
-                        <span>Gastos Operativos & Caja Chica</span>
-                        <span className="text-red-600">$ {(totalEgresos + totalCajaChicaUsado).toLocaleString('es-CL')}</span>
-                      </div>
-                      <div className="w-full bg-gray-200 h-3 rounded-full overflow-hidden">
-                        <div 
-                          className="bg-red-500 h-full" 
-                          style={{ width: `${totalIngresos > 0 ? ((totalEgresos + totalCajaChicaUsado) / totalIngresos) * 100 : 0}%` }} 
-                        />
-                      </div>
-                    </div>
-
-                    <div className="pt-2 border-t border-[#97A884]/30">
-                      <div className="flex justify-between font-extrabold text-sm">
-                        <span>Margen Neto Disponible</span>
-                        <span className="text-[#676E5E]">$ {balanceNetoGlobal.toLocaleString('es-CL')}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3">
-                  <h3 className="font-extrabold text-xs uppercase tracking-wider text-[#676E5E]">
-                    🍩 Porcentaje de Participación de Ventas
-                  </h3>
-                  <div className="w-full bg-gray-200 h-8 rounded-xl overflow-hidden flex font-bold text-[10px] text-white">
-                    <div style={{ width: `${totalIngresos > 0 ? (ingresosPorApp.casamatriz / totalIngresos) * 100 : 25}%` }} className="bg-emerald-700 flex items-center justify-center">
-                      B2B ({Math.round(totalIngresos > 0 ? (ingresosPorApp.casamatriz / totalIngresos) * 100 : 0)}%)
-                    </div>
-                    <div style={{ width: `${totalIngresos > 0 ? (ingresosPorApp.lawenmoll / totalIngresos) * 100 : 25}%` }} className="bg-teal-600 flex items-center justify-center">
-                      LAWENMOLL ({Math.round(totalIngresos > 0 ? (ingresosPorApp.lawenmoll / totalIngresos) * 100 : 0)}%)
-                    </div>
-                    <div style={{ width: `${totalIngresos > 0 ? (ingresosPorApp.wellness / totalIngresos) * 100 : 25}%` }} className="bg-amber-600 flex items-center justify-center">
-                      Wellness ({Math.round(totalIngresos > 0 ? (ingresosPorApp.wellness / totalIngresos) * 100 : 0)}%)
-                    </div>
-                  </div>
-                  <p className="text-[10px] text-gray-500 italic pt-2">
-                    *Métrica consolidada conforme a las normas contables de la empresa.
-                  </p>
-                </div>
-              </div>
-
             </div>
           )}
 
@@ -572,7 +493,7 @@ export default function AdminPage() {
                 </button>
               </form>
 
-              {/* Tabla Libro Diario con Opción de Borrar */}
+              {/* Tabla Libro Diario */}
               <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
@@ -612,7 +533,7 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* MÓDULO 3: CAJA CHICA CON BOTONES Y VISOR INTEGRADO */}
+          {/* MÓDULO 3: CAJA CHICA CON VISUALIZACIÓN EN VIVO DE ARCHIVOS */}
           {seccion === 'cajachica' && (
             <div className="space-y-6 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -630,7 +551,7 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Formulario Caja Chica */}
+              {/* Formulario Caja Chica con Vista Previa en Vivo */}
               <form onSubmit={handleAgregarOEditarCajaChica} className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-4 shadow-sm">
                 <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-2">
                   <h3 className="font-extrabold uppercase text-xs text-[#676E5E]">
@@ -672,11 +593,31 @@ export default function AdminPage() {
                     <input
                       type="file"
                       accept="image/*,application/pdf"
-                      onChange={e => setArchivoAdjunto(e.target.files)}
+                      onChange={handleFileChange}
                       className="w-full p-2 bg-[#FAF8F5] border border-[#97A884] rounded-xl text-xs"
                     />
                   </div>
                 </div>
+
+                {/* ZONA DE PREVISUALIZACIÓN INSTANTÁNEA ANTES DE GUARDAR */}
+                {previewUrlForm && (
+                  <div className="p-3 bg-[#FAF8F5] rounded-2xl border-2 border-dashed border-[#97A884] space-y-2">
+                    <span className="text-[10px] font-bold text-green-800 uppercase block">
+                      👁️ Vista Previa del Archivo Seleccionado:
+                    </span>
+                    <div className="max-h-48 overflow-hidden rounded-xl border border-gray-300 flex items-center justify-center bg-white p-2">
+                      {archivoAdjunto?.type.startsWith('image/') ? (
+                        <img src={previewUrlForm} alt="Previsualización" className="max-h-44 object-contain rounded-lg" />
+                      ) : (
+                        <div className="p-4 text-center">
+                          <span className="text-2xl block">📄</span>
+                          <p className="font-bold text-xs text-[#676E5E]">{archivoAdjunto?.name || 'Documento PDF Adjunto'}</p>
+                          <span className="text-[10px] text-gray-500">Documento listo para guardar</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 <div>
                   <label className="font-bold block mb-1">Observaciones o Notas de Referencia</label>
@@ -688,43 +629,56 @@ export default function AdminPage() {
                 </button>
               </form>
 
-              {/* Lista de Rendiciones con Botones de Editar, Eliminar y Previsualizar */}
+              {/* LISTA DE RENDICIONES CON VISUALIZACIÓN DIRECTA */}
               <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3">
                 <h3 className="font-extrabold uppercase text-xs text-[#676E5E]">Planilla de Rendición con Respaldos Digitales</h3>
                 {cajaChicaList.map(item => (
-                  <div key={item.id} className="p-3.5 bg-[#FAF8F5] rounded-2xl border border-[#97A884]/40 flex flex-wrap justify-between items-center text-xs gap-3">
-                    <div className="space-y-0.5">
-                      <p className="font-bold text-[#676E5E] text-sm">{item.motivo}</p>
-                      <span className="text-[10px] text-gray-500 font-mono block">
-                        Fecha: {item.fecha} • Resp: {item.responsable} • Doc: {item.comprobante}
-                      </span>
-                      {item.archivoNombre && (
-                        <span className="text-[10px] font-bold text-green-800 bg-green-50 px-2.5 py-0.5 rounded-md border border-green-200 inline-block mt-1">
-                          📎 Respaldo Digital: {item.archivoNombre}
+                  <div key={item.id} className="p-4 bg-[#FAF8F5] rounded-2xl border border-[#97A884]/40 flex flex-wrap justify-between items-center text-xs gap-3">
+                    <div className="flex items-start space-x-3">
+                      
+                      {/* MINIATURA VISUAL SI ES IMAGEN */}
+                      {item.archivoUrl && item.esImagen && (
+                        <div className="w-14 h-14 bg-white rounded-xl border border-[#97A884] overflow-hidden flex items-center justify-center shrink-0 shadow-xs">
+                          <img src={item.archivoUrl} alt={item.archivoNombre || 'Respaldo'} className="w-full h-full object-cover" />
+                        </div>
+                      )}
+
+                      <div className="space-y-0.5">
+                        <p className="font-bold text-[#676E5E] text-sm">{item.motivo}</p>
+                        <span className="text-[10px] text-gray-500 font-mono block">
+                          Fecha: {item.fecha} • Resp: {item.responsable} • Doc: {item.comprobante}
                         </span>
-                      )}
-                      {item.observaciones && (
-                        <p className="text-[10px] text-gray-600 italic">💬 Nota: {item.observaciones}</p>
-                      )}
+                        {item.archivoNombre && (
+                          <span className="text-[10px] font-bold text-green-800 bg-green-50 px-2 py-0.5 rounded-md border border-green-200 inline-block mt-1">
+                            📎 Respaldo Digital: {item.archivoNombre}
+                          </span>
+                        )}
+                        {item.observaciones && (
+                          <p className="text-[10px] text-gray-600 italic">💬 Nota: {item.observaciones}</p>
+                        )}
+                      </div>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="font-black text-red-600 font-mono text-base mr-3">
+                      <span className="font-black text-red-600 font-mono text-base mr-2">
                         - $ {item.monto.toLocaleString('es-CL')} CLP
                       </span>
 
-                      {/* BOTÓN PREVISUALIZAR */}
+                      {/* BOTÓN VER ARCHIVO PANTALLA COMPLETA */}
                       {item.archivoUrl && (
                         <button
                           type="button"
-                          onClick={() => setArchivoPrevisualizar({ url: item.archivoUrl!, nombre: item.archivoNombre || 'Respaldo' })}
+                          onClick={() => setArchivoPrevisualizar({ 
+                            url: item.archivoUrl!, 
+                            nombre: item.archivoNombre || 'Respaldo Digital',
+                            esImagen: !!item.esImagen
+                          })}
                           className="bg-[#CDD6A9] hover:bg-[#97A884] hover:text-white text-[#676E5E] font-bold px-3 py-1.5 rounded-xl text-[10px] transition cursor-pointer"
                         >
-                          👁️ Previsualizar
+                          👁️ Ver Respaldo
                         </button>
                       )}
 
-                      {/* BOTÓN EDITAR */}
                       <button
                         type="button"
                         onClick={() => iniciarEdicionCaja(item)}
@@ -733,7 +687,6 @@ export default function AdminPage() {
                         ✏️ Editar
                       </button>
 
-                      {/* BOTÓN ELIMINAR */}
                       <button
                         type="button"
                         onClick={() => eliminarGastoCajaChica(item.id)}
@@ -758,7 +711,7 @@ export default function AdminPage() {
                   value={nuevaNota}
                   onChange={e => setNuevaNota(e.target.value)}
                   placeholder="Escribe una observación contable, referencia de boleta o nota para el equipo directivo/contadores..."
-                  className="w-full h-24 p-3 bg-[#FAF8F5] border border-[#97A884] rounded-2xl outline-none"
+                  className="w-full h-24 p-3 bg-[#FAF8F5] border border-[#97A884] rounded-2xl outline-none text-xs"
                 />
                 <button
                   type="submit"
@@ -776,7 +729,7 @@ export default function AdminPage() {
                     <button
                       type="button"
                       onClick={() => setNotasList(notasList.filter((_, i) => i !== idx))}
-                      className="text-red-700 font-bold text-[10px] bg-red-100 px-2 py-0.5 rounded-md"
+                      className="text-red-700 font-bold text-[10px] bg-red-100 px-2 py-0.5 rounded-md cursor-pointer"
                     >
                       Quitar
                     </button>
@@ -786,7 +739,7 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* MÓDULO 5: HERRAMIENTAS Y TRÁMITES INSTITUCIONALES PYME */}
+          {/* MÓDULO 5: HERRAMIENTAS Y TRÁMITES INSTITUCIONALES CON ENLACES FUNCIONALES */}
           {seccion === 'pyme' && (
             <div className="space-y-5 text-xs">
               <div className="bg-white p-6 rounded-3xl border-2 border-[#97A884] space-y-3">
@@ -803,7 +756,7 @@ export default function AdminPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 
-                {/* Card 1: Tu Empresa en un Día */}
+                {/* 1. Tu Empresa en un Día */}
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
@@ -818,14 +771,14 @@ export default function AdminPage() {
                   <a
                     href="[suspicious link removed]"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
                     Ir al Portal Oficial →
                   </a>
                 </div>
 
-                {/* Card 2: S.I.I. */}
+                {/* 2. S.I.I. */}
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
@@ -840,14 +793,14 @@ export default function AdminPage() {
                   <a
                     href="[suspicious link removed]"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
                     Ir al SII →
                   </a>
                 </div>
 
-                {/* Card 3: TGR */}
+                {/* 3. TGR */}
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
@@ -862,14 +815,14 @@ export default function AdminPage() {
                   <a
                     href="[suspicious link removed]"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
                     Ir a TGR →
                   </a>
                 </div>
 
-                {/* Card 4: Previred */}
+                {/* 4. Previred */}
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
@@ -884,14 +837,14 @@ export default function AdminPage() {
                   <a
                     href="[suspicious link removed]"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
                     Ir a Previred →
                   </a>
                 </div>
 
-                {/* Card 5: CORFO / SERCOTEC */}
+                {/* 5. CORFO / SERCOTEC */}
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
@@ -906,14 +859,14 @@ export default function AdminPage() {
                   <a
                     href="[suspicious link removed]"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
                     Ir a CORFO →
                   </a>
                 </div>
 
-                {/* Card 6: Infraestructura Vercel & Supabase */}
+                {/* 6. Infraestructura Vercel & Supabase */}
                 <div className="bg-white p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
@@ -928,7 +881,7 @@ export default function AdminPage() {
                   <a
                     href="[suspicious link removed]"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="block text-center bg-[#FAF8F5] hover:bg-[#CDD6A9] text-[#676E5E] font-bold p-2 rounded-xl border border-[#97A884] transition text-[11px]"
                   >
                     Ir a Vercel →
@@ -994,14 +947,14 @@ export default function AdminPage() {
         </div>
       </div>
 
-      {/* VISUALIZADOR MODAL DE BOLETAS Y FACTURAS */}
+      {/* MODAL PARA VER ARCHIVOS A PANTALLA COMPLETA */}
       {archivoPrevisualizar && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
-          <div className="bg-[#E6E7D5] max-w-2xl w-full rounded-3xl border-2 border-[#97A884] p-5 space-y-4 shadow-2xl flex flex-col max-h-[85vh]">
+          <div className="bg-[#E6E7D5] max-w-3xl w-full rounded-3xl border-2 border-[#97A884] p-5 space-y-4 shadow-2xl flex flex-col max-h-[85vh]">
             <div className="flex justify-between items-center border-b border-[#97A884]/40 pb-3">
               <div>
                 <span className="text-[9px] font-bold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-2 py-0.5 rounded-md border border-[#97A884]">
-                  Respaldo Digital
+                  Respaldo Digital Adjunto
                 </span>
                 <h4 className="font-black text-[#676E5E] text-sm mt-0.5 truncate max-w-md">
                   {archivoPrevisualizar.nombre}
@@ -1016,15 +969,23 @@ export default function AdminPage() {
               </button>
             </div>
 
-            <div className="flex-1 bg-white rounded-2xl border border-[#97A884] overflow-hidden min-h-[300px] flex items-center justify-center p-2">
-              <iframe 
-                src={archivoPrevisualizar.url} 
-                title={archivoPrevisualizar.nombre}
-                className="w-full h-full min-h-[320px] border-0 rounded-xl"
-              />
+            <div className="flex-1 bg-white rounded-2xl border border-[#97A884] overflow-hidden min-h-[320px] flex items-center justify-center p-2">
+              {archivoPrevisualizar.esImagen ? (
+                <img 
+                  src={archivoPrevisualizar.url} 
+                  alt={archivoPrevisualizar.nombre} 
+                  className="max-h-[60vh] object-contain rounded-xl shadow-xs"
+                />
+              ) : (
+                <iframe 
+                  src={archivoPrevisualizar.url} 
+                  title={archivoPrevisualizar.nombre}
+                  className="w-full h-full min-h-[350px] border-0 rounded-xl"
+                />
+              )}
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex justify-end gap-2">
               <a
                 href={archivoPrevisualizar.url}
                 download={archivoPrevisualizar.nombre}
