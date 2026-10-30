@@ -89,6 +89,17 @@ export default function SalaVirtualPage() {
     setParticipantes([...participantes, nuevo]);
   };
 
+  const descargarGuia = () => {
+    const contenido = `====================================================\nASL IDEAS SpA - GUÍA DE SALA VIRTUAL Y ACCESIBILIDAD\n====================================================\nBienvenido/a a la Sala Virtual Interactiva de Salud Integrativa.\n\nInstrucciones:\n1. Mantén tu micrófono en silencio mientras el especialista expone.\n2. Si requieres pausas sensoriales o descanso visual, puedes apagar tu cámara.\n3. Cumplimiento estricto de Ciberseguridad Ley N° 21.663 y Accesibilidad Ley N° 21.545.\n\nASL Ideas SpA - Todos los derechos reservados.`;
+    const blob = new Blob([contenido], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'ASL_Guia_Bienvenida_Sala_Virtual.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#676E5E] relative overflow-x-hidden font-sans">
       
@@ -121,6 +132,17 @@ export default function SalaVirtualPage() {
             {/* Barra de Progreso de Carga */}
             <div className="w-full bg-white h-3 rounded-full overflow-hidden border border-[#97A884]">
               <div className="bg-[#676E5E] h-full animate-[progress_2.5s_ease-in-out_infinite] w-4/5 rounded-full" />
+            </div>
+
+            {/* BOTÓN DE DESCARGA EN PANTALLA DE CARGA */}
+            <div className="pt-2 border-t border-[#97A884]/40 w-full">
+              <button
+                type="button"
+                onClick={descargarGuia}
+                className="w-full bg-white hover:bg-[#CDD6A9] text-[#676E5E] font-extrabold text-xs py-2.5 px-4 rounded-xl border border-[#97A884] transition shadow-xs flex items-center justify-center gap-2 cursor-pointer"
+              >
+                📥 Descargar Guía de Bienvenida (Pauta)
+              </button>
             </div>
 
             <span className="text-[10px] font-mono text-gray-500">
@@ -268,10 +290,15 @@ export default function SalaVirtualPage() {
             </div>
           </div>
 
-          {/* Pie de Página */}
-          <div className="p-4 bg-[#E6E7D5] border-t border-[#97A884]/40 text-center text-xs text-[#676E5E]">
-            <p className="font-bold">
-              ASL Ideas SpA • Sistema de Teleatención Multiusuario con Accesibilidad Cognitiva
+          {/* Pie de Página con Logo Ampliado */}
+          <div className="p-6 bg-[#E6E7D5] border-t border-[#97A884]/40 flex flex-col items-center justify-center text-center space-y-3">
+            <img 
+              src="/logo-asl.png.png" 
+              alt="ASL Ideas SpA" 
+              className="w-20 h-20 sm:w-28 sm:h-28 object-contain drop-shadow-md transition-transform hover:scale-105" 
+            />
+            <p className="font-bold text-xs text-[#676E5E]">
+              ASL Ideas SpA • Sistema de Teleatención Multiusuario con Accesibilidad Cognitiva (Ley N° 21.545)
             </p>
           </div>
 
