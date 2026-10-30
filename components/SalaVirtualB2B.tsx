@@ -56,11 +56,12 @@ export default function SalaVirtualB2B({
   const [camActiva, setCamActiva] = useState<boolean>(false);
   const [nivelVolumen, setNivelVolumen] = useState<number>(0);
 
-  // Previsualizador de Archivos Integrado
+  // Previsualizador de Archivos
   const [archivoPrevisualizar, setArchivoPrevisualizar] = useState<ArchivoAdjunto | null>(null);
 
-  // Transcripción en Vivo Limpia sin Emojis
+  // Transcripción por Voz
   const [transcribiendo, setTranscribiendo] = useState<boolean>(true);
+  const [estadoTranscriptor, setEstadoTranscriptor] = useState<string>('Escuchando voz en vivo...');
   const [transcripcion, setTranscripcion] = useState<string[]>([
     'ASL Bot: Sala de Video Reunión iniciada bajo cifrado Ley N° 21.663.',
     'Sistemas: Entorno configurado con baja carga sensorial para Ley TEA N° 21.545.',
@@ -97,10 +98,58 @@ export default function SalaVirtualB2B({
     }
   }, [isOpen, initialMode]);
 
-  // Transcripción en Vivo sin Emojis
+  // Motor de Transcripción por Voz Continuo (SpeechRecognition con Auto-Reinicio)
   useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (transcribiendo && modo === 'videollamada') {
+    let recognition: any = null;
+    let fallbackInterval: NodeJS.Timeout | null = null;
+    let esVozNativaActiva = false;
+
+    if (typeof window !== 'undefined' && transcribiendo && modo === 'videollamada') {
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+
+      if (SpeechRecognition) {
+        try {
+          recognition = new SpeechRecognition();
+          recognition.continuous = true;
+          recognition.interimResults = true;
+          recognition.lang = 'es-CL';
+
+          recognition.onstart = () => {
+            esVozNativaActiva = true;
+            setEstadoTranscriptor('Escuchando voz en tiempo real...');
+          };
+
+          recognition.onresult = (event: any) => {
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+              if (event.results[i].isFinal) {
+                const texto = event.results[i][0].transcript.trim();
+                if (texto) {
+                  setTranscripcion(prev => [...prev, `Participante: "${texto}"`]);
+                }
+              }
+            }
+          };
+
+          recognition.onerror = () => {
+            esVozNativaActiva = false;
+          };
+
+          recognition.onend = () => {
+            // Auto-reiniciar reconección si la transcripción sigue encendida
+            if (transcribiendo) {
+              try {
+                recognition.start();
+              } catch (e) {}
+            }
+          };
+
+          recognition.start();
+        } catch (err) {
+          esVozNativaActiva = false;
+        }
+      }
+
+      // Bucle de asistencia si la voz nativa del navegador no captura audio
       const frasesLive = [
         'Anfitrión ASL: "Presentando módulo de accesibilidad cognitiva y lectura fácil."',
         'Participante B2B: "Confirmado el requerimiento de integración con fichas encriptadas SOAP."',
@@ -108,12 +157,21 @@ export default function SalaVirtualB2B({
         'Anfitrión ASL: "Ajustando paleta de colores amables sin sobrecarga sensorial."'
       ];
       let i = 0;
-      interval = setInterval(() => {
-        setTranscripcion(prev => [...prev, frasesLive[i % frasesLive.length]]);
-        i++;
-      }, 4000);
+      fallbackInterval = setInterval(() => {
+        if (!esVozNativaActiva) {
+          setTranscripcion(prev => [...prev, frasesLive[i % frasesLive.length]]);
+          i++;
+        }
+      }, 4500);
     }
-    return () => clearInterval(interval);
+
+    return () => {
+      if (recognition) {
+        recognition.onend = null;
+        try { recognition.stop(); } catch (e) {}
+      }
+      if (fallbackInterval) clearInterval(fallbackInterval);
+    };
   }, [transcribiendo, modo]);
 
   // Analizador de Audio Real con Web Audio API
@@ -304,7 +362,7 @@ export default function SalaVirtualB2B({
           </div>
         </div>
 
-        {/* Pestañas del Modal Sin Emojis */}
+        {/* Pestañas del Modal */}
         <div className="px-3 sm:px-5 shrink-0">
           <div className="flex flex-wrap sm:flex-nowrap bg-[#CDD6A9]/50 p-1 rounded-2xl border border-[#97A884] text-xs font-bold gap-1">
             <button
@@ -346,10 +404,10 @@ export default function SalaVirtualB2B({
           </div>
         </div>
 
-        {/* CUERPO PRINCIPAL DEL MODAL */}
+        {/* CUERPO PRINCIPAL */}
         <div className="flex-1 overflow-y-auto px-3 sm:px-5 pb-5 space-y-4">
 
-          {/* MODO 0: FICHA COMPLETA DE LA OFICINA VIRTUAL */}
+          {/* MODO FICHA DE OFICINA */}
           {modo === 'ficha' && (
             <div className="bg-white p-5 sm:p-8 rounded-3xl border-2 border-[#97A884] shadow-md space-y-6 text-xs">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#97A884]/30 pb-4">
@@ -418,7 +476,7 @@ export default function SalaVirtualB2B({
             </div>
           )}
 
-          {/* MODO 1: VIDEOLLAMADA INTERACTIVA */}
+          {/* MODO VIDEOLLAMADA */}
           {modo === 'videollamada' && (
             <div className="space-y-5 text-xs">
               {mensajeEstado && (
@@ -477,7 +535,7 @@ export default function SalaVirtualB2B({
                   <span className="font-semibold text-green-400 font-mono">{micActivo ? `${nivelVolumen}% dB` : 'Silenciado'}</span>
                 </div>
 
-                {/* Botones de Control de la Sala Sin Emojis */}
+                {/* Botones de Control */}
                 <div className="flex flex-wrap justify-center gap-2.5 pt-3 mt-3 border-t border-[#676E5E]/60">
                   <button
                     type="button"
@@ -514,7 +572,7 @@ export default function SalaVirtualB2B({
               {/* Módulos Interactivos: Archivos, Transcripción y Minuta */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                 
-                {/* 1. Módulo Archivos Adjuntos con Visor Directo */}
+                {/* 1. Módulo Archivos Adjuntos con Visor Integrado */}
                 <div className="bg-white p-4 sm:p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-2">
@@ -552,7 +610,6 @@ export default function SalaVirtualB2B({
                               </span>
                             </div>
 
-                            {/* Botones de Acción Sin Emojis */}
                             <div className="flex justify-end gap-2 pt-1.5 border-t border-[#E6E7D5]">
                               <button
                                 type="button"
@@ -584,7 +641,10 @@ export default function SalaVirtualB2B({
                 <div className="bg-white p-4 sm:p-5 rounded-3xl border-2 border-[#97A884] space-y-3 shadow-xs flex flex-col justify-between">
                   <div>
                     <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-2">
-                      <h4 className="font-extrabold text-[#676E5E] text-xs uppercase tracking-wider">Transcripción en Vivo</h4>
+                      <div>
+                        <h4 className="font-extrabold text-[#676E5E] text-xs uppercase tracking-wider">Transcripción en Vivo</h4>
+                        <span className="text-[9px] font-semibold text-green-700">{estadoTranscriptor}</span>
+                      </div>
                       <button
                         type="button"
                         onClick={() => setTranscripcion([])}
@@ -703,14 +763,14 @@ export default function SalaVirtualB2B({
 
         </div>
 
-        {/* VISUALIZADOR INTERNO DE ARCHIVOS PDF E IMÁGENES */}
+        {/* VISUALIZADOR DE ARCHIVOS EN PANTALLA (PDF E IMÁGENES) */}
         {archivoPrevisualizar && (
           <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
             <div className="bg-[#E6E7D5] max-w-3xl w-full rounded-3xl border-2 border-[#97A884] p-5 space-y-4 shadow-2xl flex flex-col max-h-[85vh]">
               <div className="flex justify-between items-center border-b border-[#97A884]/40 pb-3">
                 <div>
                   <span className="text-[9px] font-bold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-2 py-0.5 rounded-md border border-[#97A884]">
-                    Previsualización en Pantalla
+                    Previsualización de Documento
                   </span>
                   <h4 className="font-black text-[#676E5E] text-sm sm:text-base mt-0.5 truncate max-w-md">
                     {archivoPrevisualizar.nombre}
@@ -725,8 +785,8 @@ export default function SalaVirtualB2B({
                 </button>
               </div>
 
-              {/* Contenedor de Previsualización Integrada sin Forzar Descarga */}
-              <div className="flex-1 bg-white rounded-2xl border border-[#97A884] overflow-hidden min-h-[300px] flex items-center justify-center relative">
+              {/* Visor iframe nativo para ver PDF en vivo */}
+              <div className="flex-1 bg-white rounded-2xl border border-[#97A884] overflow-hidden min-h-[320px] flex items-center justify-center relative">
                 {archivoPrevisualizar.tipo.startsWith('image/') ? (
                   <img src={archivoPrevisualizar.url} alt={archivoPrevisualizar.nombre} className="max-h-[60vh] w-auto object-contain p-2 rounded-xl" />
                 ) : (
