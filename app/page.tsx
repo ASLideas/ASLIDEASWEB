@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import SalaVirtualB2B from '@/components/SalaVirtualB2B';
 
@@ -19,6 +19,10 @@ export interface PortalItem {
 }
 
 export default function HomePage() {
+  // ESTADO DE CARGA E INTRO
+  const [cargandoWeb, setCargandoWeb] = useState(true);
+
+  // ESTADOS DE MODAL Y PORTALES
   const [selectedPortalId, setSelectedPortalId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalInitialMode, setModalInitialMode] = useState<'ficha' | 'videollamada' | 'agendar' | 'cancelar'>('ficha');
@@ -27,6 +31,14 @@ export default function HomePage() {
 
   const [dropdownSalasOpen, setDropdownSalasOpen] = useState(false);
   const [dropdownCitasOpen, setDropdownCitasOpen] = useState(false);
+
+  // EFECTO DE CARGA DE LA WEB (2.6 SEGUNDOS)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCargandoWeb(false);
+    }, 2600);
+    return () => clearTimeout(timer);
+  }, []);
 
   const portales: PortalItem[] = [
     {
@@ -102,13 +114,53 @@ export default function HomePage() {
   const currentPortalData = portales.find((p) => p.id === selectedPortalId);
 
   return (
-    <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] font-sans">
+    <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] font-sans relative">
       
-      {/* Encabezado Principal Ajustado para Móviles (Sin Banner Superior) */}
+      {/* 1. CAPA SUPERIOR DE INTRO DE CARGA (LOGOS PALPITANTES SIN ROMPER EL DISEÑO) */}
+      {cargandoWeb && (
+        <div className="fixed inset-0 z-50 bg-[#FAF8F5] flex flex-col items-center justify-center p-6 text-center">
+          <div className="relative flex flex-col items-center space-y-5 max-w-md bg-[#E6E7D5] p-8 sm:p-10 rounded-3xl border-2 border-[#97A884] shadow-2xl">
+            
+            <div className="w-36 h-36 rounded-full bg-white p-3 border-4 border-[#97A884] shadow-xl flex flex-col items-center justify-center animate-pulse overflow-hidden space-y-1">
+              <img 
+                src="/logo.png" 
+                alt="ASL Ideas SpA Logo" 
+                className="w-full h-12 object-contain"
+              />
+              <img 
+                src="/isotipo.png" 
+                alt="ASL Ideas SpA Isotipo" 
+                className="w-10 h-10 object-contain"
+              />
+            </div>
+
+            <div className="space-y-3 max-w-xs">
+              <span className="inline-block text-[10px] font-extrabold uppercase tracking-widest bg-[#CDD6A9] text-[#676E5E] px-3.5 py-1 rounded-full border border-[#97A884]">
+                Plataforma Digital & App PWA 📲
+              </span>
+              <h2 className="text-base sm:text-lg font-bold text-[#676E5E] leading-relaxed">
+                Desarrollo y soluciones accesibles para PYME y comercio asociado
+              </h2>
+              <p className="text-xs text-gray-600">
+                Baja carga sensorial (Ley N° 21.545) • Ciberseguridad (Ley N° 21.663)
+              </p>
+            </div>
+
+            <div className="w-full bg-white h-2.5 rounded-full overflow-hidden border border-[#97A884]">
+              <div className="bg-[#676E5E] h-full animate-pulse w-full rounded-full" />
+            </div>
+
+            <span className="text-[10px] font-mono text-gray-500">
+              Conexión encriptada • ASL Ideas SpA 2026
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* 2. ENCABEZADO Y MENÚ DE NAVEGACIÓN */}
       <header className="bg-white/95 backdrop-blur-md border-b-2 border-[#E6C693] sticky top-0 z-40 shadow-xs py-2 px-3 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           
-          {/* Identificación de la Marca */}
           <div className="flex items-center space-x-2.5">
             <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white border-2 border-[#E6C693] p-0.5 overflow-hidden shadow-xs flex items-center justify-center shrink-0">
               <img src="/logo-asl.png.png" alt="Logo ASL Ideas" className="w-full h-full object-contain" />
@@ -121,10 +173,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Línea Única de Botones (Limpia y Responsive) */}
           <div className="flex items-center justify-center flex-wrap sm:flex-nowrap gap-1.5 sm:gap-2 w-full sm:w-auto relative">
-            
-            {/* Botón Desplegable 1: Ingresar a Sala */}
             <div className="relative">
               <button
                 type="button"
@@ -158,7 +207,6 @@ export default function HomePage() {
               )}
             </div>
 
-            {/* Botón Desplegable 2: Agenda de Reuniones */}
             <div className="relative">
               <button
                 type="button"
@@ -191,19 +239,17 @@ export default function HomePage() {
               )}
             </div>
 
-            {/* Botón Administrador ASL */}
             <Link
               href="/admin"
               className="bg-[#DC8D6C] text-white border border-[#DC8D6C] hover:bg-[#c37858] text-[10px] sm:text-xs font-bold px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl transition shadow-xs text-center"
             >
               Administración ASL
             </Link>
-
           </div>
         </div>
       </header>
 
-      {/* Hero Section */}
+      {/* 3. HERO PRINCIPAL */}
       <section className="bg-white border-b-2 border-[#E6C693] py-10 px-4 sm:px-6 lg:px-8 text-center">
         <div className="max-w-5xl mx-auto space-y-5">
           <span className="inline-block bg-[#CDD6A9] text-[#676E5E] text-[10px] sm:text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider border border-[#97A884]">
@@ -220,11 +266,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Sección Descarga / Carga Web App */}
+      {/* 4. SECCIÓN DESCARGA / CARGA PWA */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white rounded-3xl border-2 border-[#97A884] p-6 sm:p-8 shadow-md space-y-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-[#97A884]/30 pb-6">
-            
             <div className="flex items-center space-x-4">
               <div className="w-20 h-20 rounded-2xl border-2 border-[#E6C693] p-1 overflow-hidden bg-white shrink-0 shadow-md flex items-center justify-center relative">
                 <img
@@ -285,7 +330,7 @@ export default function HomePage() {
                 <ol className="list-decimal list-inside space-y-1 text-[#676E5E]/90">
                   <li>Abre esta web en Google Chrome.</li>
                   <li>Presiona los 3 puntos superiores del navegador.</li>
-                  <li>Selecciona <strong>Agregar a la pantalla principal</strong> o <strong>Instalar aplicación</strong>. Podrás bajar cada una o las tres aplicaciones.</li>
+                  <li>Selecciona <strong>Agregar a la pantalla principal</strong> o <strong>Instalar aplicación</strong>.</li>
                 </ol>
               </div>
 
@@ -301,7 +346,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Las 4 Oficinas Virtuales */}
+      {/* 5. LAS 4 OFICINAS VIRTUALES */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
         <div className="text-center space-y-2">
           <span className="text-xs font-bold text-[#DC8D6C] uppercase tracking-wider bg-white px-3.5 py-1 rounded-full border border-[#DC8D6C]">
@@ -400,7 +445,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Pie de Página */}
+      {/* 6. PIE DE PÁGINA */}
       <footer className="bg-white border-t-2 border-[#E6C693] py-8 text-center text-xs text-[#676E5E] space-y-4">
         <div className="max-w-4xl mx-auto px-4 space-y-3">
           <p className="font-extrabold text-sm text-[#676E5E]">ASL Ideas SpA — Casa Matriz y Desarrollo B2B</p>
@@ -412,28 +457,26 @@ export default function HomePage() {
             <p className="font-bold uppercase text-[10px] text-[#97A884] tracking-wider">Contactos Oficiales:</p>
             <p className="font-medium">Teléfono / WhatsApp: <a href="[suspicious link removed]" target="_blank" rel="noopener noreferrer" className="font-bold underline text-[#676E5E]">+56 9 8330 2145</a></p>
             <p className="font-medium">Correos: <a href="mailto:contacto@aslideas.cl" className="underline font-bold">contacto@aslideas.cl</a> | <a href="mailto:contacto@lawenmoll.cl" className="underline font-bold">contacto@lawenmoll.cl</a></p>
-            <p className="text-[10px] text-[#97A884] italic">(Próximamente se agregarán los correos de las demás aplicaciones a medida que estén listas)</p>
           </div>
 
           <div className="flex flex-wrap justify-center gap-4 text-[11px] pt-2 font-bold text-[#676E5E]">
             <Link href="/admin" className="hover:underline">Administración ASL (/admin)</Link>
             <span>•</span>
             <Link href="/sala-virtual" className="hover:underline">Sala Virtual (/sala-virtual)</Link>
-            <span>•</span>
-            <span className="text-[#97A884]">Natural Wellness & Bienestar: En Construcción</span>
           </div>
 
           <p className="text-[10px] text-[#97A884] pt-2">© 2026 ASL Ideas SpA. Todos los derechos reservados. Cumplimiento Ley TEA N° 21.545 y Ley N° 21.663.</p>
         </div>
       </footer>
 
-      {/* Modal de Sala Virtual */}
+      {/* 7. MODAL SALA VIRTUAL B2B */}
       <SalaVirtualB2B
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         portalData={currentPortalData}
         initialMode={modalInitialMode}
       />
+
     </main>
   );
 }
