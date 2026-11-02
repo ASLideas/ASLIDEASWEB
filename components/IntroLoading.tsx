@@ -35,19 +35,19 @@ export default function IntroLoading({ onComplete, duracionMs = 3200 }: IntroLoa
         desvanecer ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
-      <div className="flex flex-col items-center max-w-md w-full text-center space-y-5">
+      <div className="flex flex-col items-center max-w-md w-full text-center space-y-6">
         
-        {/* CIRCUNFERENCIA CON LOGO Y EFECTO PALPITANTE */}
+        {/* CIRCUNFERENCIA EXACTA CON LOGO COMPLETO Y PALPITANTE */}
         <div className="relative flex items-center justify-center my-2">
-          {/* Halo exterior palpitante */}
-          <div className="absolute w-44 h-44 sm:w-52 sm:h-52 rounded-full bg-[#97A884]/30 animate-ping" />
+          {/* Halo exterior de pulso del mismo tamaño */}
+          <div className="absolute w-44 h-44 sm:w-52 sm:h-52 rounded-full bg-[#97A884]/40 animate-ping" />
           
-          {/* Círculo blanco limpio con borde */}
-          <div className="relative w-36 h-36 sm:w-44 sm:h-44 bg-[#FAF8F5] rounded-full p-4 border-4 border-[#97A884] shadow-2xl flex items-center justify-center animate-pulse">
+          {/* Círculo perfecto ajustado al tamaño de la imagen */}
+          <div className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-full border-4 border-[#97A884] shadow-2xl overflow-hidden bg-white flex items-center justify-center animate-pulse">
             <img
               src="/isotipo.png"
               alt="Logo ASL Ideas SpA"
-              className="w-24 h-24 sm:w-28 sm:h-28 object-contain"
+              className="w-full h-full object-cover rounded-full"
             />
           </div>
         </div>
