@@ -1,0 +1,76 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+
+interface IntroLoadingProps {
+  onComplete?: () => void;
+  duracionMs?: number;
+}
+
+export default function IntroLoading({ onComplete, duracionMs = 3000 }: IntroLoadingProps) {
+  const [visible, setVisible] = useState(true);
+  const [desvanecer, setDesvanecer] = useState(false);
+
+  useEffect(() => {
+    const timerFade = setTimeout(() => {
+      setDesvanecer(true);
+    }, duracionMs - 500);
+
+    const timerComplete = setTimeout(() => {
+      setVisible(false);
+      if (onComplete) onComplete();
+    }, duracionMs);
+
+    return () => {
+      clearTimeout(timerFade);
+      clearTimeout(timerComplete);
+    };
+  }, [duracionMs, onComplete]);
+
+  if (!visible) return null;
+
+  return (
+    <div
+      className={`fixed inset-0 z-50 bg-[#E6E7D5] flex flex-col items-center justify-center p-6 transition-opacity duration-500 ${
+        desvanecer ? 'opacity-0 pointer-events-none' : 'opacity-100'
+      }`}
+    >
+      <div className="flex flex-col items-center max-w-lg text-center space-y-6">
+        
+        {/* CONTENEDOR CIRCULAR PALPITANTE (ISOTIPO Y LOGO) */}
+        <div className="relative flex items-center justify-center">
+          <div className="absolute w-44 h-44 rounded-full bg-white/60 animate-ping" />
+          
+          <div className="relative w-36 h-36 sm:w-44 sm:h-44 bg-white rounded-full p-4 border-4 border-[#97A884] shadow-2xl flex flex-col items-center justify-center animate-pulse space-y-1">
+            <img
+              src="/isotipo.png"
+              alt="Isotipo ASL Ideas"
+              className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
+            />
+            <img
+              src="/logo-asl.png.png"
+              alt="Logo ASL Ideas SpA"
+              className="w-24 sm:w-28 object-contain"
+            />
+          </div>
+        </div>
+
+        {/* TEXTO INSTITUCIONAL */}
+        <div className="space-y-2 max-w-md">
+          <h2 className="text-base sm:text-lg font-black text-[#676E5E] tracking-tight leading-snug">
+            Desarrollo y soluciones accesibles para PYME y comercio asociado
+          </h2>
+          <p className="text-xs font-semibold text-[#97A884] uppercase tracking-wider">
+            ASL Ideas SpA — Salud Digital e Inclusión
+          </p>
+        </div>
+
+        {/* BARRA DE CARGA */}
+        <div className="w-28 h-1.5 bg-white/70 rounded-full overflow-hidden mt-2">
+          <div className="w-full h-full bg-[#676E5E] animate-pulse" />
+        </div>
+
+      </div>
+    </div>
+  );
+}

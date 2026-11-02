@@ -1,24 +1,21 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 
 interface IntroLoadingProps {
   onComplete?: () => void;
   duracionMs?: number;
 }
 
-export default function IntroLoading({ onComplete, duracionMs = 2500 }: IntroLoadingProps) {
+export default function IntroLoading({ onComplete, duracionMs = 3000 }: IntroLoadingProps) {
   const [visible, setVisible] = useState(true);
   const [desvanecer, setDesvanecer] = useState(false);
 
   useEffect(() => {
-    // Inicia el efecto de desvanecimiento suave antes de desmontar
     const timerFade = setTimeout(() => {
       setDesvanecer(true);
     }, duracionMs - 500);
 
-    // Oculta completamente la intro
     const timerComplete = setTimeout(() => {
       setVisible(false);
       if (onComplete) onComplete();
@@ -40,33 +37,36 @@ export default function IntroLoading({ onComplete, duracionMs = 2500 }: IntroLoa
     >
       <div className="flex flex-col items-center max-w-lg text-center space-y-6">
         
-        {/* LOGO PALPITANTE EN MARCO CIRCULAR CON FONDO BLANCO */}
+        {/* CONTENEDOR CIRCULAR PALPITANTE CON ISOTIPO Y LOGO */}
         <div className="relative flex items-center justify-center">
-          {/* Anillo de pulso suave exterior */}
-          <div className="absolute w-36 h-36 rounded-full bg-white/60 animate-ping" />
+          <div className="absolute w-44 h-44 rounded-full bg-white/60 animate-ping" />
           
-          {/* Contenedor circular blanco */}
-          <div className="relative w-32 h-32 sm:w-40 sm:h-40 bg-white rounded-full p-4 border-4 border-[#97A884] shadow-xl flex items-center justify-center animate-pulse">
+          <div className="relative w-36 h-36 sm:w-44 sm:h-44 bg-white rounded-full p-4 border-4 border-[#97A884] shadow-2xl flex flex-col items-center justify-center animate-pulse space-y-1">
             <img
-              src="/logoASLideas.jpeg"
+              src="/isotipo.png"
+              alt="Isotipo ASL Ideas"
+              className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
+            />
+            <img
+              src="/logo-asl.png.png"
               alt="Logo ASL Ideas SpA"
-              className="w-full h-full object-contain rounded-full"
+              className="w-24 sm:w-28 object-contain"
             />
           </div>
         </div>
 
-        {/* TEXTO INSTITUCIONAL SIN EMOJIS */}
-        <div className="space-y-2">
+        {/* TEXTO INSTITUCIONAL */}
+        <div className="space-y-2 max-w-md">
           <h2 className="text-base sm:text-lg font-black text-[#676E5E] tracking-tight leading-snug">
             Desarrollo y soluciones accesibles para PYME y comercio asociado
           </h2>
           <p className="text-xs font-semibold text-[#97A884] uppercase tracking-wider">
-            ASL Ideas SpA — Plataforma de Salud Digital e Inclusión
+            ASL Ideas SpA — Salud Digital e Inclusión
           </p>
         </div>
 
-        {/* INDICADOR DE CARGA SENCILLO */}
-        <div className="w-24 h-1 bg-white/60 rounded-full overflow-hidden mt-4">
+        {/* BARRA DE CARGA */}
+        <div className="w-28 h-1.5 bg-white/70 rounded-full overflow-hidden mt-2">
           <div className="w-full h-full bg-[#676E5E] animate-pulse" />
         </div>
 
