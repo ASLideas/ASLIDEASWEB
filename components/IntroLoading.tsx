@@ -10,6 +10,9 @@ interface IntroLoadingProps {
 export default function IntroLoading({ onComplete, duracionMs = 3200 }: IntroLoadingProps) {
   const [visible, setVisible] = useState(true);
   const [desvanecer, setDesvanecer] = useState(false);
+  
+  // Lista de rutas probables del logo en la carpeta public
+  const [imgSrc, setImgSrc] = useState('/LOGO_asl.png');
 
   useEffect(() => {
     const timerFade = setTimeout(() => {
@@ -29,6 +32,19 @@ export default function IntroLoading({ onComplete, duracionMs = 3200 }: IntroLoa
 
   if (!visible) return null;
 
+  // Si una imagen no existe en Vercel, prueba automáticamente la siguiente opción
+  const handleImgError = () => {
+    if (imgSrc === '/LOGO_asl.png') {
+      setImgSrc('/logo.png');
+    } else if (imgSrc === '/logo.png') {
+      setImgSrc('/logoASLideas.jpeg');
+    } else if (imgSrc === '/logoASLideas.jpeg') {
+      setImgSrc('/LOGO_BIENESTAR.png');
+    } else if (imgSrc === '/LOGO_BIENESTAR.png') {
+      setImgSrc('/isotipo.png');
+    }
+  };
+
   return (
     <div
       className={`fixed inset-0 z-50 bg-[#E6E7D5] flex flex-col items-center justify-center p-6 transition-opacity duration-500 ${
@@ -37,25 +53,21 @@ export default function IntroLoading({ onComplete, duracionMs = 3200 }: IntroLoa
     >
       <div className="flex flex-col items-center max-w-md w-full text-center space-y-6">
         
-        {/* LOGO FLOR DE LOTO CIRCUITO EN CIRCUNFERENCIA UNIFORME */}
+        {/* CIRCUNFERENCIA CON LOGO OFICIAL */}
         <div className="relative flex items-center justify-center my-2">
-          {/* Aura suave de pulso exterior */}
           <div className="absolute w-52 h-52 sm:w-60 sm:h-60 rounded-full bg-[#97A884]/30 animate-ping" />
           
-          {/* Circunferencia limpia con el logo loto dentro */}
-          <div className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-full border-4 border-[#97A884] bg-white shadow-2xl overflow-hidden p-3 flex items-center justify-center animate-pulse">
+          <div className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-full border-4 border-[#97A884] bg-white shadow-2xl overflow-hidden p-4 flex items-center justify-center animate-pulse">
             <img
-              src="/LOGO_asl.png"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = '/logoASLideas.jpeg';
-              }}
+              src={imgSrc}
+              onError={handleImgError}
               alt="ASL Ideas SpA Logo"
               className="w-full h-full object-contain rounded-full"
             />
           </div>
         </div>
 
-        {/* MARCA INSTITUCIONAL CENTRADA */}
+        {/* MARCA INSTITUCIONAL */}
         <div className="space-y-1">
           <h1 className="text-2xl sm:text-3xl font-black text-[#676E5E] tracking-tight">
             ASL IDEAS SPA
