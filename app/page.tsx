@@ -1,40 +1,61 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import IntroLoading from '@/components/IntroLoading';
 
 export default function HomePage() {
   const [cargando, setCargando] = useState(true);
+  const [mounted, setMounted] = useState(false);
+  const [logoIndex, setLogoIndex] = useState(0);
+
+  const POSIBLES_LOGOS = [
+    '/LOGO_asl.png',
+    '/logo.png',
+    '/logoASLideas.jpeg',
+    '/LOGO_BIENESTAR.png'
+  ];
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const handleImgError = () => {
+    if (logoIndex < POSIBLES_LOGOS.length - 1) {
+      setLogoIndex((prev) => prev + 1);
+    }
+  };
+
+  if (!mounted) return null;
 
   return (
     <>
-      {/* PANTALLA DE CARGA INTRODUCCIÓN CON LOGO EN CIRCUNFERENCIA */}
+      {/* INTRO DE ESPERA */}
       {cargando && <IntroLoading onComplete={() => setCargando(false)} duracionMs={3200} />}
       
       <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] flex flex-col font-sans">
         
-        {/* CABECERA SUPERIOR */}
+        {/* CABECERA SUPERIOR LIMPIA */}
         <header className="w-full bg-[#FAF8F5] border-b border-[#97A884]/30 py-3 px-6 shadow-sm sticky top-0 z-40">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="flex items-center space-x-3">
               <img 
-                src="/LOGO_asl.png" 
-                onError={(e) => { (e.target as HTMLImageElement).src = '/logoASLideas.jpeg'; }}
-                alt="ASL Ideas SpA Logo" 
-                className="h-10 w-auto object-contain" 
+                src={POSIBLES_LOGOS[logoIndex]} 
+                onError={handleImgError}
+                alt="ASL Ideas SpA" 
+                className="h-10 w-auto object-contain rounded-full border border-[#97A884]/30" 
               />
               <div className="flex flex-col">
                 <span className="font-extrabold text-lg text-[#676E5E] leading-none">ASL Ideas SpA</span>
-                <span className="text-[10px] font-semibold text-[#52796F] tracking-wider uppercase">Salud Digital e Inclusión</span>
+                <span className="text-[11px] font-semibold text-[#52796F] tracking-wider">Soluciones Integrales e Inclusión</span>
               </div>
             </div>
             
             <nav className="flex items-center space-x-2 sm:space-x-3 text-xs sm:text-sm font-semibold">
               <a 
                 href="/sala-virtual" 
-                className="bg-[#97A884] text-white px-3 py-1.5 rounded-lg hover:bg-[#676E5E] transition shadow-sm flex items-center gap-1"
+                className="bg-[#97A884] text-white px-3.5 py-1.5 rounded-lg hover:bg-[#676E5E] transition shadow-sm"
               >
-                <span>Ingresar a Sala / Red</span>
+                Ingresar a Sala / Red
               </a>
               <a 
                 href="#oficinas" 
@@ -52,24 +73,24 @@ export default function HomePage() {
           </div>
         </header>
 
-        {/* CINTILLO LEGAL Y PROPÓSITO */}
+        {/* CINTILLO LEGAL */}
         <div className="bg-[#97A884]/20 py-2 px-4 text-center border-b border-[#97A884]/30">
           <p className="text-[11px] sm:text-xs font-bold text-[#52796F] tracking-wide uppercase">
-            TECNOLOGÍA CON ALMA Y PROPÓSITO | BAJO LA LEY 21.663 Y LEY TEA N° 21.545
+            TECNOLOGÍA CON ALMA Y PROPÓSITO | LEY N° 21.663 Y LEY TEA N° 21.545
           </p>
         </div>
 
-        {/* HERO SECTION / TÍTULO PRINCIPAL Y DESCRIPCIÓN */}
+        {/* SECCIÓN PRINCIPAL */}
         <section className="pt-10 pb-6 px-6 max-w-5xl mx-auto text-center space-y-4">
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-[#676E5E] leading-tight tracking-tight">
             Desarrollo y soluciones accesibles para PYME y comercio asociado
           </h1>
           <p className="text-xs sm:text-sm md:text-base text-[#676E5E]/90 max-w-3xl mx-auto leading-relaxed">
-            Desarrollamos soluciones tecnológicas amables diseñadas por y para personas con neurodivergencias y condiciones crónicas de salud, unificando el sistema metabólico, el movimiento adaptado y la sabiduría ancestral. ASL Ideas SpA Casa Matriz es la creadora de las tres aplicaciones del ecosistema, desarrolladora de soluciones a medida para el emprendedor.
+            Desarrollamos soluciones tecnológicas amables diseñadas por y para personas con neurodivergencias y condiciones crónicas de salud, unificando el sistema metabólico, el movimiento adaptado y la sabiduría ancestral.
           </p>
         </section>
 
-        {/* BANNER DESTACADO: LLEVA EL ECOSISTEMA */}
+        {/* BANNER ECOSISTEMA */}
         <section className="px-6 max-w-5xl mx-auto w-full mb-10">
           <div className="bg-[#FAF8F5] p-6 sm:p-8 rounded-2xl border-2 border-[#97A884]/50 shadow-md text-center space-y-4">
             <span className="inline-block px-3 py-1 bg-[#97A884]/20 text-[#52796F] text-[10px] sm:text-xs font-bold rounded-full uppercase tracking-wider">
@@ -101,7 +122,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* SECCIÓN DE LAS 4 OFICINAS VIRTUALES Y APLICACIONES */}
+        {/* SECCIÓN 4 OFICINAS VIRTUALES */}
         <section id="oficinas" className="py-8 px-6 max-w-7xl mx-auto w-full space-y-8 mb-12">
           <div className="text-center space-y-2">
             <h2 className="text-2xl sm:text-3xl font-black text-[#676E5E]">
@@ -204,7 +225,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* OFICINA 4: SABIDURÍA ANCESTRAL / BIENESTAR */}
+            {/* OFICINA 4: SABIDURÍA ANCESTRAL */}
             <div className="bg-[#FAF8F5] p-6 rounded-2xl border-2 border-[#97A884]/40 shadow-md flex flex-col justify-between space-y-4">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -239,7 +260,7 @@ export default function HomePage() {
 
         {/* PIE DE PÁGINA */}
         <footer className="mt-auto bg-[#FAF8F5] border-t border-[#97A884]/30 py-6 px-6 text-center text-xs text-[#676E5E]/80">
-          <p>© 2026 ASL Ideas SpA — Desarrollo y Soluciones Accesibles para PYME y Comercio Asociado | Ley N° 21.663 y Ley TEA N° 21.545</p>
+          <p>© 2026 ASL Ideas SpA — Soluciones Integrales e Inclusión | Ley N° 21.663 y Ley TEA N° 21.545</p>
         </footer>
 
       </main>
