@@ -37,38 +37,43 @@ export default function IntroLoading({ onComplete, duracionMs = 3200 }: IntroLoa
     >
       <div className="flex flex-col items-center max-w-md w-full text-center space-y-6">
         
-        {/* CIRCUNFERENCIA EXACTA CON LOGO COMPLETO Y PALPITANTE */}
+        {/* LOGO FLOR DE LOTO CIRCUITO EN CIRCUNFERENCIA UNIFORME */}
         <div className="relative flex items-center justify-center my-2">
-          {/* Halo exterior de pulso del mismo tamaño */}
-          <div className="absolute w-44 h-44 sm:w-52 sm:h-52 rounded-full bg-[#97A884]/40 animate-ping" />
+          {/* Aura suave de pulso exterior */}
+          <div className="absolute w-52 h-52 sm:w-60 sm:h-60 rounded-full bg-[#97A884]/30 animate-ping" />
           
-          {/* Círculo perfecto ajustado al tamaño de la imagen */}
-          <div className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-full border-4 border-[#97A884] shadow-2xl overflow-hidden bg-white flex items-center justify-center animate-pulse">
+          {/* Circunferencia limpia con el logo loto dentro */}
+          <div className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-full border-4 border-[#97A884] bg-white shadow-2xl overflow-hidden p-3 flex items-center justify-center animate-pulse">
             <img
-              src="/isotipo.png"
-              alt="Logo ASL Ideas SpA"
-              className="w-full h-full object-cover rounded-full"
+              src="/LOGO_asl.png"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = '/logoASLideas.jpeg';
+              }}
+              alt="ASL Ideas SpA Logo"
+              className="w-full h-full object-contain rounded-full"
             />
           </div>
         </div>
 
-        {/* TITULO ASL IDEAS SPA CENTRADO */}
-        <h1 className="text-2xl sm:text-3xl font-black text-[#676E5E] tracking-tight">
-          ASL Ideas SpA
-        </h1>
-
-        {/* LLAMADO DE ATENCIÓN CENTRADO */}
-        <div className="space-y-2 px-2">
-          <h2 className="text-base sm:text-lg font-bold text-[#676E5E] leading-snug">
-            Desarrollo y soluciones accesibles para PYME y comercio asociado
-          </h2>
-          <p className="text-xs font-semibold text-[#52796F] uppercase tracking-wider">
+        {/* MARCA INSTITUCIONAL CENTRADA */}
+        <div className="space-y-1">
+          <h1 className="text-2xl sm:text-3xl font-black text-[#676E5E] tracking-tight">
+            ASL IDEAS SPA
+          </h1>
+          <p className="text-xs font-bold text-[#52796F] uppercase tracking-widest">
             Salud Digital e Inclusión
           </p>
         </div>
 
-        {/* BARRA DE CARGA CENTRADA */}
-        <div className="w-28 h-1.5 bg-[#97A884]/40 rounded-full overflow-hidden mt-1">
+        {/* LLAMADO DE ATENCIÓN */}
+        <div className="space-y-2 px-2">
+          <h2 className="text-sm sm:text-base font-bold text-[#676E5E] leading-snug">
+            Desarrollo y soluciones accesibles para PYME y comercio asociado
+          </h2>
+        </div>
+
+        {/* BARRA DE CARGA */}
+        <div className="w-32 h-1.5 bg-[#97A884]/40 rounded-full overflow-hidden mt-1">
           <div className="w-full h-full bg-[#676E5E] animate-pulse" />
         </div>
 
