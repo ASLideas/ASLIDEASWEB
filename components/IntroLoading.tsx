@@ -37,7 +37,7 @@ export default function IntroLoading({ onComplete, duracionMs = 3200 }: IntroLoa
     >
       <div className="flex flex-col items-center max-w-md w-full text-center space-y-5">
         
-        {/* CIRCUNFERENCIA CON EL LOGO /logo-asl.png.png */}
+        {/* CIRCUNFERENCIA CON LOGO CIRCULAR PALPITANTE */}
         <div className="relative flex items-center justify-center my-2">
           <div className="absolute w-48 h-48 sm:w-56 sm:h-56 rounded-full bg-[#97A884]/30 animate-ping" />
           
@@ -53,7 +53,7 @@ export default function IntroLoading({ onComplete, duracionMs = 3200 }: IntroLoa
           </div>
         </div>
 
-        {/* MARCA INSTITUCIONAL (ÚNICA DECLARACIÓN) */}
+        {/* MARCA INSTITUCIONAL */}
         <div className="space-y-1">
           <h1 className="text-2xl sm:text-3xl font-black text-[#676E5E] tracking-tight">
             ASL Ideas SpA
