@@ -6,24 +6,10 @@ import IntroLoading from '@/components/IntroLoading';
 export default function HomePage() {
   const [cargando, setCargando] = useState(true);
   const [mounted, setMounted] = useState(false);
-  const [logoIndex, setLogoIndex] = useState(0);
-
-  const POSIBLES_LOGOS = [
-    '/LOGO_asl.png',
-    '/logo.png',
-    '/logoASLideas.jpeg',
-    '/LOGO_BIENESTAR.png'
-  ];
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  const handleImgError = () => {
-    if (logoIndex < POSIBLES_LOGOS.length - 1) {
-      setLogoIndex((prev) => prev + 1);
-    }
-  };
 
   if (!mounted) return null;
 
@@ -34,13 +20,13 @@ export default function HomePage() {
       
       <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] flex flex-col font-sans">
         
-        {/* CABECERA SUPERIOR LIMPIA */}
+        {/* CABECERA SUPERIOR CON 1 SOLO TÍTULO DE MARCA */}
         <header className="w-full bg-[#FAF8F5] border-b border-[#97A884]/30 py-3 px-6 shadow-sm sticky top-0 z-40">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="flex items-center space-x-3">
               <img 
-                src={POSIBLES_LOGOS[logoIndex]} 
-                onError={handleImgError}
+                src="/logo-asl.png.png" 
+                onError={(e) => { (e.target as HTMLImageElement).src = '/LOGO_asl.png'; }}
                 alt="ASL Ideas SpA" 
                 className="h-10 w-auto object-contain rounded-full border border-[#97A884]/30" 
               />

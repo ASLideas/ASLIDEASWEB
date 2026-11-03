@@ -7,18 +7,9 @@ interface IntroLoadingProps {
   duracionMs?: number;
 }
 
-const POSIBLES_LOGOS = [
-  '/LOGO_asl.png',
-  '/logo.png',
-  '/logoASLideas.jpeg',
-  '/LOGO_BIENESTAR.png',
-  '/lawenmoll_logo.jpg'
-];
-
 export default function IntroLoading({ onComplete, duracionMs = 3200 }: IntroLoadingProps) {
   const [visible, setVisible] = useState(true);
   const [desvanecer, setDesvanecer] = useState(false);
-  const [logoIndex, setLogoIndex] = useState(0);
 
   useEffect(() => {
     const timerFade = setTimeout(() => {
@@ -38,35 +29,31 @@ export default function IntroLoading({ onComplete, duracionMs = 3200 }: IntroLoa
 
   if (!visible) return null;
 
-  const handleImgError = () => {
-    if (logoIndex < POSIBLES_LOGOS.length - 1) {
-      setLogoIndex((prev) => prev + 1);
-    }
-  };
-
   return (
     <div
-      className={`fixed inset-0 z-[100] bg-[#E6E7D5] flex flex-col items-center justify-center p-6 transition-opacity duration-500 select-none ${
+      className={`fixed inset-0 z-50 bg-[#E6E7D5] flex flex-col items-center justify-center p-6 transition-opacity duration-500 select-none ${
         desvanecer ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
       <div className="flex flex-col items-center max-w-md w-full text-center space-y-5">
         
-        {/* CIRCUNFERENCIA CON LOGO OFICIAL */}
+        {/* CIRCUNFERENCIA CON EL LOGO /logo-asl.png.png */}
         <div className="relative flex items-center justify-center my-2">
           <div className="absolute w-48 h-48 sm:w-56 sm:h-56 rounded-full bg-[#97A884]/30 animate-ping" />
           
           <div className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-full border-4 border-[#97A884] bg-white shadow-2xl overflow-hidden p-3 flex items-center justify-center animate-pulse">
             <img
-              src={POSIBLES_LOGOS[logoIndex]}
-              onError={handleImgError}
+              src="/logo-asl.png.png"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = '/LOGO_asl.png';
+              }}
               alt="Logo ASL Ideas SpA"
               className="w-full h-full object-contain rounded-full"
             />
           </div>
         </div>
 
-        {/* MARCA Y SUBTÍTULO INSTITUCIONAL */}
+        {/* MARCA INSTITUCIONAL (ÚNICA DECLARACIÓN) */}
         <div className="space-y-1">
           <h1 className="text-2xl sm:text-3xl font-black text-[#676E5E] tracking-tight">
             ASL Ideas SpA
