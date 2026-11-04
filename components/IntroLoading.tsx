@@ -27,7 +27,7 @@ export default function IntroLoading({ onComplete, duracionMs = 3200 }: IntroLoa
     };
   }, [duracionMs, onComplete]);
 
-  if (visible === false) return null;
+  if (!visible) return null;
 
   return (
     <div
