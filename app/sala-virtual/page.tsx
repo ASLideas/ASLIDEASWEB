@@ -1,310 +1,195 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 
-interface Participante {
-  id: string;
-  nombre: string;
-  rol: 'Especialista' | 'Paciente' | 'Invitado' | 'Familiar';
-  camara: boolean;
-  mic: boolean;
-  avatar: string;
-}
-
 export default function SalaVirtualPage() {
-  // Estado para la Pantalla de Carga / Intro con Logo
-  const [cargandoWeb, setCargandoWeb] = useState(true);
+  // Estado para determinar cuál pantalla está en enfoque principal (1 o 2)
+  const [pantallaEnfocada, setPantallaEnfocada] = useState(1);
+  // Estado para maximizar a pantalla completa de ancho
+  const [expandida, setExpandida] = useState(false);
+  // Estados de micrófono y cámara
+  const [micActivo, setMicActivo] = useState(true);
+  const [camActiva, setCamActiva] = useState(true);
 
-  // Estados de la Sala y Múltiples Invitados
-  const [salaNombre, setSalaNombre] = useState<'Lotus' | 'Cielo' | 'Bosque' | 'Raiz'>('Lotus');
-  const [modoLayout, setModoLayout] = useState<'galeria' | 'destacado'>('galeria');
-
-  // Múltiples Cajas de Video para Clientes e Invitados
-  const [participantes, setParticipantes] = useState<Participante[]>([
-    {
-      id: '1',
-      nombre: 'Especialista ASL',
-      rol: 'Especialista',
-      camara: true,
-      mic: true,
-      avatar: '🧘‍♀️',
-    },
-    {
-      id: '2',
-      nombre: 'Cliente Principal',
-      rol: 'Paciente',
-      camara: true,
-      mic: true,
-      avatar: '😊',
-    },
-    {
-      id: '3',
-      nombre: 'Invitado 2 (Familiar)',
-      rol: 'Familiar',
-      camara: true,
-      mic: false,
-      avatar: '👴',
-    },
-    {
-      id: '4',
-      nombre: 'Invitado 3 (Acompañante)',
-      rol: 'Invitado',
-      camara: false,
-      mic: false,
-      avatar: '👩‍🦰',
-    },
-  ]);
-
-  // Simulación de pantalla de espera / intro de carga
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setCargandoWeb(false);
-    }, 2800); // 2.8 segundos de pantalla de espera
-    return () => clearTimeout(timer);
-  }, []);
-
-  const toggleCamara = (id: string) => {
-    setParticipantes(prev =>
-      prev.map(p => (p.id === id ? { ...p, camara: !p.camara } : p))
-    );
+  const pantalla1 = {
+    id: 1,
+    titulo: 'Transmisión Principal (Presentación / Instructor)',
+    subtitulo: 'Sesión de Movimiento Adaptado & Pausa Activa',
+    badge: 'PANTALLA 01',
   };
 
-  const toggleMic = (id: string) => {
-    setParticipantes(prev =>
-      prev.map(p => (p.id === id ? { ...p, mic: !p.mic } : p))
-    );
+  const pantalla2 = {
+    id: 2,
+    titulo: 'Segunda Pantalla (Cámara Secundaria / Invitado B2B)',
+    subtitulo: 'Vista en Vivo de Participante / Intérprete LSCh',
+    badge: 'PANTALLA 02',
   };
 
-  const agregarInvitado = () => {
-    const num = participantes.length + 1;
-    const nuevo: Participante = {
-      id: Date.now().toString(),
-      nombre: `Invitado ${num}`,
-      rol: 'Invitado',
-      camara: true,
-      mic: true,
-      avatar: '🧑',
-    };
-    setParticipantes([...participantes, nuevo]);
-  };
-
-  const descargarGuia = () => {
-    const contenido = `====================================================\nASL IDEAS SpA - GUÍA DE SALA VIRTUAL Y ACCESIBILIDAD\n====================================================\nBienvenido/a a la Sala Virtual Interactiva de Salud Integrativa.\n\nInstrucciones:\n1. Mantén tu micrófono en silencio mientras el especialista expone.\n2. Si requieres pausas sensoriales o descanso visual, puedes apagar tu cámara.\n3. Cumplimiento estricto de Ciberseguridad Ley N° 21.663 y Accesibilidad Ley N° 21.545.\n\nASL Ideas SpA - Todos los derechos reservados.`;
-    const blob = new Blob([contenido], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'ASL_Guia_Bienvenida_Sala_Virtual.txt';
-    a.click();
-    URL.revokeObjectURL(url);
-  };
+  const principal = pantallaEnfocada === 1 ? pantalla1 : pantalla2;
+  const secundaria = pantallaEnfocada === 1 ? pantalla2 : pantalla1;
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#676E5E] relative overflow-x-hidden font-sans">
-      
-      {/* 1. INTRO Y PANTALLA DE ESPERA / CARGA CON LOGO DE ASL IDEAS */}
-      {cargandoWeb && (
-        <div className="fixed inset-0 z-50 bg-[#FAF8F5] flex flex-col items-center justify-center p-6 text-center">
-          <div className="relative flex flex-col items-center space-y-6 max-w-md bg-[#E6E7D5] p-8 sm:p-10 rounded-3xl border-2 border-[#97A884] shadow-2xl">
-            
-            {/* Logo de ASL Ideas con animación */}
-            <div className="relative w-32 h-32 bg-white rounded-3xl p-3 border-4 border-[#97A884] shadow-2xl flex items-center justify-center animate-bounce">
-              <img 
-                src="/logo-asl.png.png" 
-                alt="ASL Ideas SpA" 
-                className="w-full h-full object-contain"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest bg-[#CDD6A9] text-[#676E5E] px-3 py-1 rounded-full border border-[#97A884]">
-                ASL Ideas SpA • Carga de Plataforma
-              </span>
-              <h2 className="text-xl sm:text-2xl font-black text-[#676E5E]">
-                Cargando Sala Virtual...
-              </h2>
-              <p className="text-xs text-gray-600">
-                Iniciando entorno multiusuario e interfaces con accesibilidad cognitiva
-              </p>
-            </div>
-
-            {/* Barra de Progreso de Carga */}
-            <div className="w-full bg-white h-3 rounded-full overflow-hidden border border-[#97A884]">
-              <div className="bg-[#676E5E] h-full animate-[progress_2.5s_ease-in-out_infinite] w-4/5 rounded-full" />
-            </div>
-
-            {/* BOTÓN DE DESCARGA EN PANTALLA DE CARGA */}
-            <div className="pt-2 border-t border-[#97A884]/40 w-full">
-              <button
-                type="button"
-                onClick={descargarGuia}
-                className="w-full bg-white hover:bg-[#CDD6A9] text-[#676E5E] font-extrabold text-xs py-2.5 px-4 rounded-xl border border-[#97A884] transition shadow-xs flex items-center justify-center gap-2 cursor-pointer"
-              >
-                📥 Descargar Guía de Bienvenida (Pauta)
-              </button>
-            </div>
-
-            <span className="text-[10px] font-mono text-gray-500">
-              Conexión encriptada bajo Ley N° 21.663
-            </span>
-
-          </div>
-        </div>
-      )}
-
-      {/* 2. SALA VIRTUAL MULTI-INVITADO EN VIVO */}
-      <div className="p-3 sm:p-8 max-w-7xl mx-auto">
-        <div className="bg-[#E6E7D5] rounded-3xl border-2 border-[#97A884] shadow-2xl overflow-hidden flex flex-col">
-          
-          {/* Cabecera */}
-          <div className="p-4 sm:p-6 bg-[#E6E7D5] border-b border-[#97A884]/40 flex flex-wrap justify-between items-center gap-3">
-            <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-white rounded-2xl border-2 border-[#E6C693] p-1.5 flex items-center justify-center shadow-xs">
-                <img src="/logo-asl.png.png" alt="ASL Ideas" className="w-full h-full object-contain" />
-              </div>
-              <div>
-                <span className="text-[10px] font-extrabold uppercase tracking-wider bg-[#CDD6A9] text-[#676E5E] px-2.5 py-0.5 rounded-full border border-[#97A884]">
-                  Sala Multiusuario • {participantes.length} Cámaras Conectadas
-                </span>
-                <h1 className="text-lg sm:text-2xl font-black text-[#676E5E] mt-0.5">
-                  Sala Virtual {salaNombre} — Transmisión Grupal
-                </h1>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={agregarInvitado}
-                className="bg-[#676E5E] hover:bg-[#52584b] text-white text-xs font-bold px-3.5 py-2 rounded-xl transition cursor-pointer"
-              >
-                + Sumar Invitado
-              </button>
-              <Link
-                href="/admin"
-                className="bg-white hover:bg-[#CDD6A9] text-[#676E5E] text-xs font-bold px-3 py-2 rounded-xl border border-[#97A884] transition"
-              >
-                ⚙️ Admin
-              </Link>
-            </div>
-          </div>
-
-          {/* Selector de Disposición de Video */}
-          <div className="p-3 bg-[#CDD6A9]/40 border-b border-[#97A884]/30 flex flex-wrap justify-between items-center text-xs gap-2">
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-[#676E5E]">Modo de Vista:</span>
-              <button
-                type="button"
-                onClick={() => setModoLayout('galeria')}
-                className={`px-3 py-1.5 rounded-xl border font-bold cursor-pointer ${
-                  modoLayout === 'galeria' ? 'bg-[#676E5E] text-white' : 'bg-white text-[#676E5E] border-[#97A884]'
-                }`}
-              >
-                🔲 Galería Mosaico ({participantes.length})
-              </button>
-              <button
-                type="button"
-                onClick={() => setModoLayout('destacado')}
-                className={`px-3 py-1.5 rounded-xl border font-bold cursor-pointer ${
-                  modoLayout === 'destacado' ? 'bg-[#676E5E] text-white' : 'bg-white text-[#676E5E] border-[#97A884]'
-                }`}
-              >
-                🎙️ Enfoque Principal
-              </button>
-            </div>
-
-            <span className="text-[11px] font-bold text-[#676E5E] bg-white px-3 py-1 rounded-xl border border-[#97A884]">
-              🔒 Cifrado Ley N° 21.663
-            </span>
-          </div>
-
-          {/* Malla de Videos Multi-Invitados */}
-          <div className="p-4 sm:p-6 bg-[#FAF8F5]">
-            <div className="bg-slate-900 rounded-3xl border-2 border-[#97A884] p-4 min-h-[520px]">
-              
-              <div className={`grid gap-4 h-full ${
-                modoLayout === 'galeria' 
-                  ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-2' 
-                  : 'grid-cols-1 lg:grid-cols-3'
-              }`}>
-                
-                {participantes.map((p, idx) => (
-                  <div
-                    key={p.id}
-                    className={`relative rounded-2xl overflow-hidden border-2 flex flex-col justify-between p-4 min-h-[220px] bg-slate-800 ${
-                      idx === 0 && modoLayout === 'destacado' ? 'lg:col-span-2 min-h-[340px] border-[#E6C693]' : 'border-slate-700'
-                    }`}
-                  >
-                    <div className="flex justify-between items-center z-10">
-                      <span className="bg-black/60 text-white font-bold text-[10px] px-2.5 py-1 rounded-full border border-white/10">
-                        {p.nombre} ({p.rol})
-                      </span>
-                      <div className="flex gap-1">
-                        <button
-                          type="button"
-                          onClick={() => toggleCamara(p.id)}
-                          className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                            p.camara ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'
-                          }`}
-                        >
-                          {p.camara ? '📷 ON' : '🚫 OFF'}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => toggleMic(p.id)}
-                          className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                            p.mic ? 'bg-blue-600 text-white' : 'bg-amber-600 text-white'
-                          }`}
-                        >
-                          {p.mic ? '🎙️ ON' : '🔇 Mute'}
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Imagen de la Cámara del Participante */}
-                    {p.camara ? (
-                      <div className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-gradient-to-b from-slate-800 to-slate-900">
-                        <div className="w-16 h-16 rounded-full bg-[#676E5E] border-2 border-[#CDD6A9] flex items-center justify-center text-3xl mb-2 shadow-lg">
-                          {p.avatar}
-                        </div>
-                        <span className="text-white font-bold text-xs">{p.nombre}</span>
-                        <span className="text-[10px] text-emerald-400">Video Transmitiendo</span>
-                      </div>
-                    ) : (
-                      <div className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-slate-950 text-slate-500">
-                        <span className="text-3xl mb-1">🚫</span>
-                        <span className="text-xs font-bold text-slate-400">Cámara Apagada</span>
-                      </div>
-                    )}
-
-                    <div className="z-10 mt-auto flex justify-between items-center bg-black/60 backdrop-blur-xs p-2 rounded-xl text-[10px] text-white">
-                      <span>Audio: {p.mic ? 'Activo' : 'Silenciado'}</span>
-                      <span className="text-emerald-400 font-bold">Conectado</span>
-                    </div>
-                  </div>
-                ))}
-
-              </div>
-
-            </div>
-          </div>
-
-          {/* Pie de Página con Logo Ampliado */}
-          <div className="p-6 bg-[#E6E7D5] border-t border-[#97A884]/40 flex flex-col items-center justify-center text-center space-y-3">
-            <img 
-              src="/logo-asl.png.png" 
-              alt="ASL Ideas SpA" 
-              className="w-20 h-20 sm:w-28 sm:h-28 object-contain drop-shadow-md transition-transform hover:scale-105" 
+    <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] font-sans flex flex-col">
+      {/* CABECERA DE LA SALA EN VIVO */}
+      <header className="bg-[#FAF8F5] border-b border-[#97A884]/30 py-3 px-6 flex items-center justify-between shadow-sm sticky top-0 z-30">
+        <div className="flex items-center space-x-3">
+          <Link href="/" className="flex items-center space-x-2">
+            <img
+              src="/logo-asl.png.png"
+              onError={(e) => { (e.target as HTMLImageElement).src = '/LOGO_asl.png'; }}
+              alt="ASL Ideas SpA"
+              className="h-9 w-auto object-contain rounded-full border border-[#97A884]/30"
             />
-            <p className="font-bold text-xs text-[#676E5E]">
-              ASL Ideas SpA • Sistema de Teleatención Multiusuario con Accesibilidad Cognitiva (Ley N° 21.545)
-            </p>
-          </div>
-
+            <span className="font-black text-base text-[#676E5E]">ASL Ideas SpA</span>
+          </Link>
+          <span className="hidden sm:inline-block px-2.5 py-0.5 bg-[#52796F]/15 text-[#52796F] text-xs font-bold rounded-full uppercase">
+            Sala Virtual en Vivo Multi-Pantalla
+          </span>
         </div>
+
+        <div className="flex items-center space-x-3">
+          <button
+            onClick={() => setPantallaEnfocada(pantallaEnfocada === 1 ? 2 : 1)}
+            className="bg-[#97A884] text-white px-3.5 py-1.5 rounded-lg text-xs font-bold hover:bg-[#676E5E] transition shadow flex items-center gap-1.5"
+          >
+            ��� <span>Intercambiar Pantallas</span>
+          </button>
+          <Link
+            href="/"
+            className="bg-rose-100 border border-rose-300 text-rose-800 px-3.5 py-1.5 rounded-lg text-xs font-bold hover:bg-rose-200 transition"
+          >
+            Salir de la Sala
+          </Link>
+        </div>
+      </header>
+
+      {/* CINTILLO LEY TEA */}
+      <div className="bg-[#97A884]/20 py-2 px-4 text-center border-b border-[#97A884]/30">
+        <p className="text-[11px] font-bold text-[#52796F] tracking-wide uppercase">
+          SALA INTERACTIVA MULTI-PANTALLA | BAJA CARGA SENSORIAL (LEY TEA N° 21.545)
+        </p>
       </div>
 
-    </div>
+      {/* CONTENEDOR DE PANTALLAS DUAL (UNA MÁS GRANDE QUE LA OTRA) */}
+      <div className="flex-1 p-4 sm:p-6 max-w-7xl w-full mx-auto flex flex-col lg:flex-row gap-6">
+        
+        {/* PANTALLA PRINCIPAL (75% AGRANDADA) */}
+        <div className={`transition-all duration-300 flex flex-col ${expandida ? 'lg:w-full' : 'lg:w-3/4'} space-y-3`}>
+          <div className="relative bg-[#FAF8F5] rounded-2xl border-2 border-[#52796F]/40 shadow-lg overflow-hidden flex-1 min-h-[380px] sm:min-h-[460px] flex flex-col justify-between p-4 sm:p-6">
+            
+            {/* TAG SUPERIOR */}
+            <div className="flex justify-between items-center z-10">
+              <span className="bg-[#52796F] text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow tracking-wider uppercase flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-300 animate-ping"></span>
+                {principal.badge} (ENFOQUE PRINCIPAL AGRANDADO)
+              </span>
+              <button
+                onClick={() => setExpandida(!expandida)}
+                className="bg-[#FAF8F5]/90 border border-[#97A884] text-[#676E5E] text-xs font-bold px-3 py-1 rounded-lg hover:bg-[#E6E7D5] transition shadow-sm"
+              >
+                {expandida ? '��� Reducir Vista' : '��� Maximizar Pantalla'}
+              </button>
+            </div>
+
+            {/* TRANSMISIÓN PRINCIPAL */}
+            <div className="my-auto text-center space-y-4 py-8">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-[#52796F]/20 border-4 border-[#52796F]/40 flex items-center justify-center text-3xl sm:text-4xl shadow-inner">
+                {principal.id === 1 ? '���' : '���'}
+              </div>
+              <div className="space-y-1">
+                <h2 className="text-xl sm:text-2xl font-black text-[#676E5E]">
+                  {principal.titulo}
+                </h2>
+                <p className="text-xs sm:text-sm text-[#52796F] font-semibold">
+                  {principal.subtitulo}
+                </p>
+              </div>
+            </div>
+
+            {/* CONTROLES INFERIORES */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[#97A884]/30 z-10">
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => setMicActivo(!micActivo)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 ${
+                    micActivo ? 'bg-[#97A884] text-white' : 'bg-rose-100 text-rose-700 border border-rose-300'
+                  }`}
+                >
+                  {micActivo ? '���️ Micrófono Encendido' : '���️ Micrófono Silenciado'}
+                </button>
+                <button
+                  onClick={() => setCamActiva(!camActiva)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 ${
+                    camActiva ? 'bg-[#97A884] text-white' : 'bg-rose-100 text-rose-700 border border-rose-300'
+                  }`}
+                >
+                  {camActiva ? '��� Cámara Encendida' : '��� Cámara Apagada'}
+                </button>
+              </div>
+
+              <button
+                onClick={() => setPantallaEnfocada(pantallaEnfocada === 1 ? 2 : 1)}
+                className="text-xs font-bold text-[#52796F] hover:underline"
+              >
+                Intercambiar con Pantalla Secundaria ⇄
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* PANTALLA SECUNDARIA (25% LATERAL / MINIANATURA) */}
+        {!expandida && (
+          <div className="lg:w-1/4 flex flex-col space-y-3">
+            <div
+              onClick={() => setPantallaEnfocada(pantallaEnfocada === 1 ? 2 : 1)}
+              className="group cursor-pointer bg-[#FAF8F5] rounded-2xl border-2 border-[#97A884]/50 shadow-md p-4 flex flex-col justify-between hover:border-[#52796F] transition-all relative overflow-hidden h-full min-h-[220px]"
+            >
+              <div className="flex justify-between items-center mb-3">
+                <span className="bg-[#97A884]/20 text-[#52796F] text-[10px] font-extrabold px-2.5 py-0.5 rounded-md uppercase">
+                  PANTALLA 02 (SECUNDARIA)
+                </span>
+                <span className="text-[10px] font-bold text-[#52796F] group-hover:underline">
+                  Clic para Agrandar ↗
+                </span>
+              </div>
+
+              <div className="my-auto text-center space-y-2 py-4">
+                <div className="w-14 h-14 mx-auto rounded-full bg-[#97A884]/20 border-2 border-[#97A884]/40 flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform">
+                  {secundaria.id === 1 ? '���' : '���'}
+                </div>
+                <h3 className="text-sm font-bold text-[#676E5E] leading-snug">
+                  {secundaria.titulo}
+                </h3>
+                <p className="text-[11px] text-[#52796F]">
+                  {secundaria.subtitulo}
+                </p>
+              </div>
+
+              <div className="pt-2 border-t border-[#97A884]/20 text-center">
+                <span className="bg-[#52796F] text-white text-[10px] font-bold px-3 py-1 rounded-lg block shadow-sm group-hover:bg-[#676E5E] transition">
+                  ��� Agrandar esta Pantalla
+                </span>
+              </div>
+            </div>
+
+            <div className="bg-[#FAF8F5]/80 p-4 rounded-xl border border-[#97A884]/30 space-y-2 text-xs">
+              <h4 className="font-extrabold text-[#676E5E]">Control Multi-Pantalla</h4>
+              <p className="text-[11px] text-[#676E5E]/80">
+                • 2 Pantallas dinámicas en simultáneo.<br />
+                • Haz clic en la miniatura para cambiar el tamaño.<br />
+                • Diseño optimizado bajo Ley TEA N° 21.545.
+              </p>
+            </div>
+          </div>
+        )}
+
+      </div>
+
+      {/* PIE DE PÁGINA */}
+      <footer className="bg-[#FAF8F5] border-t border-[#97A884]/30 py-4 px-6 text-center text-xs text-[#676E5E]/80">
+        <p>© 2026 ASL Ideas SpA — Sala Virtual en Vivo | Ley TEA N° 21.545 y Ley N° 21.663</p>
+      </footer>
+    </main>
   );
 }
