@@ -16,7 +16,15 @@ export interface SalaVirtualB2BProps {
 }
 
 export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
-  const { isOpen, onClose, onCerrar, portalNombre = 'Casa Matriz ASL Ideas SpA', initialApp, portalData } = props || {};
+  const { 
+    isOpen, 
+    onClose, 
+    onCerrar, 
+    portalNombre = 'Casa Matriz ASL Ideas SpA', 
+    initialApp, 
+    portalData 
+  } = props || {};
+
   if (isOpen === false) return null;
 
   const handleClose = onClose || onCerrar;
@@ -32,11 +40,17 @@ export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
         Transmision en vivo con doble pantalla lista en su propia ventana.
       </p>
       <div className="pt-2 flex justify-center gap-3">
-        <Link href="/sala-virtual" className="bg-[#52796F] hover:bg-[#676E5E] text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow transition">
+        <Link 
+          href="/sala-virtual" 
+          className="bg-[#52796F] hover:bg-[#676E5E] text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow transition"
+        >
           Ingresar a la Sala Virtual (/sala-virtual)
         </Link>
         {handleClose && (
-          <button onClick={handleClose} className="bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] font-bold text-xs px-4 py-2.5 rounded-xl">
+          <button 
+            onClick={handleClose} 
+            className="bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] font-bold text-xs px-4 py-2.5 rounded-xl"
+          >
             Cerrar Vista Previa
           </button>
         )}
