@@ -15,18 +15,16 @@ export interface SalaVirtualB2BProps {
   [key: string]: any;
 }
 
-export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
-  const { 
-    isOpen, 
-    onClose, 
-    onCerrar, 
-    portalNombre = '1. Casa Matriz ASL Ideas SpA', 
-    initialApp, 
-    appLogo, 
-    portalData, 
-    initialMode 
-  } = props || {};
-
+export default function SalaVirtualB2B({
+  isOpen,
+  onClose,
+  onCerrar,
+  portalNombre = '1. Casa Matriz ASL Ideas SpA',
+  initialApp,
+  appLogo,
+  portalData,
+  initialMode
+}: SalaVirtualB2BProps) {
   if (isOpen === false) return null;
 
   const handleClose = onClose || onCerrar;
@@ -42,7 +40,7 @@ export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
           {nombreMostrar}
         </h3>
         <p className="text-xs sm:text-sm text-[#52796F] max-w-lg mx-auto">
-          La sala de transmisiones en vivo con doble pantalla (principal + secundaria intercambiable), controles de audio dB y transcripci√≥n LSCh se encuentra lista en su propia ventana.
+          La sala de transmisiones en vivo con doble pantalla (principal + secundaria intercambiable), controles de audio dB y transcripcion LSCh se encuentra lista en su propia ventana.
         </p>
       </div>
 
@@ -51,7 +49,7 @@ export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
           href="/sala-virtual"
           className="bg-[#52796F] hover:bg-[#676E5E] text-white font-extrabold text-sm px-6 py-3 rounded-xl shadow-lg transition transform hover:scale-105 flex items-center gap-2"
         >
-          <span>Ì≥π Ingresar a la Sala Virtual (/sala-virtual)</span>
+          <span>Ingresar a la Sala Virtual (/sala-virtual)</span>
         </Link>
         {handleClose && (
           <button
