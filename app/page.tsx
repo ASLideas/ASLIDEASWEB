@@ -1,3 +1,4 @@
+import IntroLoading from '@/components/IntroLoading';
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -115,6 +116,7 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] font-sans relative">
+      {cargando && <IntroLoading onComplete={() => setCargando(false)} duracionMs={3200} />}
       
       {/* 1. CAPA SUPERIOR DE INTRO DE CARGA (LOGOS PALPITANTES SIN ROMPER EL DISEÑO) */}
       {cargandoWeb && (
