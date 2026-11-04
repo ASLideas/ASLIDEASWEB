@@ -130,6 +130,7 @@ export default function SalaVirtualPage() {
             <div className="bg-[#1C221D] rounded-3xl border-2 border-[#52796F]/60 p-4 sm:p-6 shadow-2xl">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 
+                {/* PANTALLA PRINCIPAL AGRANDADA */}
                 <div className={`md:col-span-2 rounded-2xl p-5 border-2 transition-all flex flex-col justify-between min-h-[340px] sm:min-h-[420px] relative overflow-hidden shadow-xl ${
                   pantallaEnfocada === 1 ? 'bg-[#262D28] border-[#97A884]' : 'bg-[#222824] border-[#52796F]'
                 }`}>
@@ -183,6 +184,7 @@ export default function SalaVirtualPage() {
                   </div>
                 </div>
 
+                {/* PANTALLA SECUNDARIA MINIATURA */}
                 <div
                   onClick={intercambiar}
                   className="group cursor-pointer bg-[#222824] hover:bg-[#2C342F] rounded-2xl p-5 border-2 border-[#52796F] flex flex-col justify-between min-h-[340px] sm:min-h-[420px] relative overflow-hidden shadow-xl transition-all"
@@ -197,8 +199,8 @@ export default function SalaVirtualPage() {
                   </div>
 
                   <div className="text-center py-6 space-y-3 z-10">
-                    <div className="w-20 h-20 mx-auto rounded-full bg-[#52796F]/30 border-2 border-[#52796F] flex items-center justify-center text-4xl shadow-inner group-hover:scale-110 transition-transform">
-                      {secundaria.id === 1 ? '���' : '���'}
+                    <div className="w-20 h-20 mx-auto rounded-full bg-[#52796F]/30 border-2 border-[#52796F] flex items-center justify-center text-xl font-bold text-emerald-300 shadow-inner group-hover:scale-110 transition-transform">
+                      {secundaria.id === 1 ? 'CAM 1' : 'LSCh'}
                     </div>
                     <div className="space-y-1">
                       <h3 className="text-sm font-extrabold text-gray-100">

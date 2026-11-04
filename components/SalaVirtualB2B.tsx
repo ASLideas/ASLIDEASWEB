@@ -40,7 +40,7 @@ export default function SalaVirtualB2B({
           {nombreMostrar}
         </h3>
         <p className="text-xs sm:text-sm text-[#52796F] max-w-lg mx-auto">
-          La sala de transmisiones en vivo con doble pantalla (principal + secundaria intercambiable), controles de audio dB y transcripcion LSCh se encuentra lista en su propia ventana.
+          La sala de transmisiones en vivo con doble pantalla (principal y secundaria intercambiable) se encuentra lista en su propia ventana.
         </p>
       </div>
 
