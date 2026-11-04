@@ -1,6 +1,6 @@
 {
   "name": "aslideasweb",
-  "version": "0.1.1793827044147",
+  "version": "0.1.1793827203431",
   "private": true,
   "scripts": {
     "dev": "next dev",
