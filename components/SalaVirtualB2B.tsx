@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 
+// Actualizado para compatibilidad total con TypeScript en Vercel
 export interface SalaVirtualB2BProps {
   isOpen?: boolean;
   onClose?: () => void;
