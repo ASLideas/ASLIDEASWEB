@@ -118,7 +118,6 @@ export default function HomePage() {
       
       {/* 1. CAPA SUPERIOR DE INTRO DE CARGA (LOGOS PALPITANTES SIN ROMPER EL DISEÑO) */}
       {cargandoWeb && <IntroLoading onComplete={() => setCargandoWeb(false)} duracionMs={3200} />}
-
       {/* 2. ENCABEZADO Y MENÚ DE NAVEGACIÓN */}
       <header className="bg-white/95 backdrop-blur-md border-b-2 border-[#E6C693] sticky top-0 z-40 shadow-xs py-2 px-3 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
