@@ -1,4 +1,3 @@
-import IntroLoading from '@/components/IntroLoading';
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -20,7 +19,6 @@ export interface PortalItem {
 }
 
 export default function HomePage() {
-  const [cargando, setCargando] = React.useState(true);
   // ESTADO DE CARGA E INTRO
   const [cargandoWeb, setCargandoWeb] = useState(true);
 
@@ -116,9 +114,7 @@ export default function HomePage() {
   const currentPortalData = portales.find((p) => p.id === selectedPortalId);
 
   return (
-    <>
-      {cargando && <IntroLoading onComplete={() => setCargando(false)} duracionMs={3200} />}
-      <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] font-sans relative">
+    <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] font-sans relative">
       
       {/* 1. CAPA SUPERIOR DE INTRO DE CARGA (LOGOS PALPITANTES SIN ROMPER EL DISEÑO) */}
       {cargandoWeb && (
