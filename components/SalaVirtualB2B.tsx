@@ -10,6 +10,8 @@ export interface SalaVirtualB2BProps {
   portalNombre?: string;
   initialApp?: string;
   appLogo?: string;
+  portalData?: any;
+  initialMode?: 'ficha' | 'videollamada' | 'agendar' | 'cancelar' | string;
 }
 
 export default function SalaVirtualB2B({ 
@@ -18,12 +20,14 @@ export default function SalaVirtualB2B({
   onCerrar,
   portalNombre = '1. Casa Matriz ASL Ideas SpA', 
   initialApp,
-  appLogo
+  appLogo,
+  portalData,
+  initialMode
 }: SalaVirtualB2BProps) {
   if (isOpen === false) return null;
 
   const handleClose = onClose || onCerrar;
-  const nombreMostrar = initialApp || portalNombre;
+  const nombreMostrar = initialApp || portalData?.nombre || portalNombre;
 
   return (
     <div className="w-full bg-[#FAF8F5] p-5 sm:p-6 rounded-2xl border-2 border-[#52796F]/40 shadow-xl space-y-4 text-center">
