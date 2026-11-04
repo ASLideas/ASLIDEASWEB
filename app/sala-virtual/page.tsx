@@ -13,8 +13,8 @@ export default function SalaVirtualPage() {
 
   const intercambiar = () => setPantallaEnfocada(prev => (prev === 1 ? 2 : 1));
 
-  const p1 = { id: 1, titulo: '1. Casa Matriz ASL Ideas SpA', subtitulo: 'Transmisión Principal Telemedicina', badge: 'PANTALLA 01' };
-  const p2 = { id: 2, titulo: 'Cámara Secundaria / Intérprete LSCh', subtitulo: 'Vista Lateral o Lengua de Señas', badge: 'PANTALLA 02' };
+  const p1 = { id: 1, titulo: '1. Casa Matriz ASL Ideas SpA', subtitulo: 'Transmision Principal Telemedicina', badge: 'PANTALLA 01' };
+  const p2 = { id: 2, titulo: 'Camara Secundaria / Interprete LSCh', subtitulo: 'Vista Lateral o Lengua de Senas', badge: 'PANTALLA 02' };
 
   const principal = pantallaEnfocada === 1 ? p1 : p2;
   const secundaria = pantallaEnfocada === 1 ? p2 : p1;
@@ -44,10 +44,10 @@ export default function SalaVirtualPage() {
               <h2 className="text-xl font-bold">{principal.titulo}</h2>
               <p className="text-xs text-emerald-200 mt-1">{principal.subtitulo}</p>
               <button onClick={() => setCamActiva(!camActiva)} className="mt-4 bg-[#FAF8F5] text-[#676E5E] text-xs font-bold px-4 py-2 rounded-xl">
-                {camActiva ? 'Cámara y Micrófono Activos' : 'Encender Cámara Real'}
+                {camActiva ? 'Camara y Microfono Activos' : 'Encender Camara Real'}
               </button>
             </div>
-            {transcriptorActivo && <p className="text-xs text-emerald-300 text-center animate-pulse">[Subtítulos LSCh en Vivo]...</p>}
+            {transcriptorActivo && <p className="text-xs text-emerald-300 text-center animate-pulse">[Subtitulos LSCh en Vivo]...</p>}
           </div>
 
           <div onClick={intercambiar} className="cursor-pointer bg-[#222824] hover:bg-[#2C342F] rounded-2xl p-5 border-2 border-[#52796F] flex flex-col justify-between text-gray-100 min-h-[350px]">
@@ -66,13 +66,13 @@ export default function SalaVirtualPage() {
 
         <div className="flex flex-wrap gap-2">
           <button onClick={() => setMicActivo(!micActivo)} className="bg-emerald-600 text-white text-xs font-bold px-4 py-2 rounded-xl">
-            {micActivo ? 'Micrófono Activado' : 'Micrófono Silenciado'}
+            {micActivo ? 'Microfono Activado' : 'Microfono Silenciado'}
           </button>
           <button onClick={() => setTranscriptorActivo(!transcriptorActivo)} className="bg-[#52796F] text-white text-xs font-bold px-4 py-2 rounded-xl">
             {transcriptorActivo ? 'Transcriptor Activado (LSCh)' : 'Activar Transcriptor LSCh'}
           </button>
           <button onClick={intercambiar} className="bg-[#97A884] text-white text-xs font-bold px-4 py-2 rounded-xl">
-            Intercambiar Posición de Pantallas
+            Intercambiar Posicion de Pantallas
           </button>
         </div>
       </div>
