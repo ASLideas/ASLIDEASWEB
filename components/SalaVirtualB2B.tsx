@@ -11,7 +11,7 @@ export interface SalaVirtualB2BProps {
   initialApp?: string;
   appLogo?: string;
   portalData?: any;
-  initialMode?: 'ficha' | 'videollamada' | 'agendar' | 'cancelar' | string;
+  initialMode?: string;
 }
 
 export default function SalaVirtualB2B({ 
@@ -48,7 +48,7 @@ export default function SalaVirtualB2B({
           href="/sala-virtual"
           className="bg-[#52796F] hover:bg-[#676E5E] text-white font-extrabold text-sm px-6 py-3 rounded-xl shadow-lg transition transform hover:scale-105 flex items-center gap-2"
         >
-          <span>ï¿½ï¿½ï¿½ Ingresar a la Sala Virtual (/sala-virtual)</span>
+          <span>í³¹ Ingresar a la Sala Virtual (/sala-virtual)</span>
         </Link>
         {handleClose && (
           <button
