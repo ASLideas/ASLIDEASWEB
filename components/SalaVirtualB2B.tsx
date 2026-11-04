@@ -15,8 +15,18 @@ export interface SalaVirtualB2BProps {
   [key: string]: any;
 }
 
-export default function SalaVirtualB2B(props: any) {
-  const { isOpen, onClose, onCerrar, portalNombre = '1. Casa Matriz ASL Ideas SpA', initialApp, portalData } = props || {};
+export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
+  const { 
+    isOpen, 
+    onClose, 
+    onCerrar, 
+    portalNombre = '1. Casa Matriz ASL Ideas SpA', 
+    initialApp, 
+    appLogo, 
+    portalData, 
+    initialMode 
+  } = props || {};
+
   if (isOpen === false) return null;
 
   const handleClose = onClose || onCerrar;
@@ -41,7 +51,7 @@ export default function SalaVirtualB2B(props: any) {
           href="/sala-virtual"
           className="bg-[#52796F] hover:bg-[#676E5E] text-white font-extrabold text-sm px-6 py-3 rounded-xl shadow-lg transition transform hover:scale-105 flex items-center gap-2"
         >
-          <span>ï¿½ï¿½ï¿½ Ingresar a la Sala Virtual (/sala-virtual)</span>
+          <span>í³¹ Ingresar a la Sala Virtual (/sala-virtual)</span>
         </Link>
         {handleClose && (
           <button
