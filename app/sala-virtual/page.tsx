@@ -20,16 +20,14 @@ export default function SalaVirtualPage() {
     id: 1,
     titulo: '1. Casa Matriz ASL Ideas SpA',
     subtitulo: 'Transmision Principal de Telemedicina & Ejercicio Adaptado',
-    badge: 'PANTALLA 01 (PRINCIPAL)',
-    icono: '���'
+    badge: 'PANTALLA 01 (PRINCIPAL)'
   };
 
   const pantalla2Data = {
     id: 2,
     titulo: 'Camara Secundaria / Interprete LSCh',
     subtitulo: 'Vista en Vivo de Participante o Lengua de Senas Chilena',
-    badge: 'PANTALLA 02 (SECUNDARIA)',
-    icono: '���'
+    badge: 'PANTALLA 02 (SECUNDARIA)'
   };
 
   const principal = pantallaEnfocada === 1 ? pantalla1Data : pantalla2Data;
@@ -62,14 +60,14 @@ export default function SalaVirtualPage() {
               modoCalma ? 'bg-[#52796F] text-white border-[#52796F]' : 'bg-[#FAF8F5] text-[#676E5E] border-[#97A884]'
             }`}
           >
-            {modoCalma ? '��� Modo Calma Activado' : '��� Activar Modo Calma (TEA)'}
+            {modoCalma ? 'Modo Calma Activado' : 'Activar Modo Calma (TEA)'}
           </button>
           
           <button
             onClick={intercambiar}
             className="bg-[#52796F] hover:bg-[#676E5E] text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition shadow flex items-center gap-1.5"
           >
-            ��� <span>Intercambiar Pantallas</span>
+            <span>Intercambiar Pantallas</span>
           </button>
 
           <Link
@@ -98,7 +96,7 @@ export default function SalaVirtualPage() {
                   : 'bg-[#FAF8F5] text-[#676E5E] hover:bg-[#E6E7D5]'
               }`}
             >
-              ��� Transmision en Vivo Dual
+              Transmision en Vivo Dual
             </button>
             <button
               onClick={() => setTabActiva('cita')}
@@ -108,7 +106,7 @@ export default function SalaVirtualPage() {
                   : 'bg-[#FAF8F5]/80 text-[#676E5E] hover:bg-[#FAF8F5]'
               }`}
             >
-              ��� Agendar Cita
+              Agendar Cita
             </button>
             <button
               onClick={() => setTabActiva('reprogramar')}
@@ -118,7 +116,7 @@ export default function SalaVirtualPage() {
                   : 'bg-[#FAF8F5]/80 text-[#676E5E] hover:bg-[#FAF8F5]'
               }`}
             >
-              ��� Cancelar / Reprogramar
+              Cancelar / Reprogramar
             </button>
           </div>
 
@@ -167,14 +165,14 @@ export default function SalaVirtualPage() {
                       onClick={() => setCamActiva(!camActiva)}
                       className="bg-[#FAF8F5] hover:bg-white text-[#676E5E] text-xs font-extrabold px-5 py-2.5 rounded-xl shadow-md transition border border-[#97A884] transform hover:scale-105"
                     >
-                      {camActiva ? '��� Camara Web y Microfono Activos' : 'Encender Camara Web y Microfono Real'}
+                      {camActiva ? 'Camara Web y Microfono Activos' : 'Encender Camara Web y Microfono Real'}
                     </button>
                   </div>
 
                   {transcriptorActivo && (
                     <div className="bg-[#1C221D]/90 border border-emerald-500/40 p-3 rounded-xl text-center z-10 mb-2">
                       <p className="text-xs font-bold text-emerald-300 animate-pulse">
-                        ��� [Subtitulos LSCh en Vivo]: "Bienvenido a la sesion de salud integrativa de ASL Ideas SpA..."
+                        [Subtitulos LSCh en Vivo]: "Bienvenido a la sesion de salud integrativa de ASL Ideas SpA..."
                       </p>
                     </div>
                   )}
@@ -194,13 +192,13 @@ export default function SalaVirtualPage() {
                       {secundaria.badge}
                     </span>
                     <span className="text-[11px] text-[#97A884] group-hover:underline font-bold">
-                      Clic para Agrandar ↗
+                      Clic para Agrandar
                     </span>
                   </div>
 
                   <div className="text-center py-6 space-y-3 z-10">
                     <div className="w-20 h-20 mx-auto rounded-full bg-[#52796F]/30 border-2 border-[#52796F] flex items-center justify-center text-4xl shadow-inner group-hover:scale-110 transition-transform">
-                      {secundaria.icono}
+                      {secundaria.id === 1 ? '���' : '���'}
                     </div>
                     <div className="space-y-1">
                       <h3 className="text-sm font-extrabold text-gray-100">
@@ -215,7 +213,7 @@ export default function SalaVirtualPage() {
                   <div className="space-y-3 z-10">
                     <div className="bg-[#52796F]/40 text-center py-2.5 rounded-xl border border-[#52796F] group-hover:bg-[#52796F] group-hover:text-white transition shadow-sm">
                       <span className="text-xs font-extrabold text-white flex items-center justify-center gap-1.5">
-                        ��� <span>Agrandar esta Pantalla</span>
+                        <span>Agrandar esta Pantalla</span>
                       </span>
                     </div>
                     <p className="text-[10px] text-center text-gray-400">
@@ -251,7 +249,7 @@ export default function SalaVirtualPage() {
                     : 'bg-rose-100 border border-rose-300 text-rose-800 hover:bg-rose-200'
                 }`}
               >
-                <span>{micActivo ? '���️ Microfono Activado' : '���️ Microfono Silenciado'}</span>
+                <span>{micActivo ? 'Microfono Activado' : 'Microfono Silenciado'}</span>
               </button>
 
               <button
@@ -262,7 +260,7 @@ export default function SalaVirtualPage() {
                     : 'bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] hover:bg-[#E6E7D5]'
                 }`}
               >
-                <span>{camActiva ? '��� Camara Activada' : 'Encender Camara'}</span>
+                <span>{camActiva ? 'Camara Activada' : 'Encender Camara'}</span>
               </button>
 
               <button
@@ -273,14 +271,14 @@ export default function SalaVirtualPage() {
                     : 'bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] hover:bg-[#E6E7D5]'
                 }`}
               >
-                <span>{transcriptorActivo ? '��� Transcriptor Activado (LSCh)' : 'Activar Transcriptor LSCh'}</span>
+                <span>{transcriptorActivo ? 'Transcriptor Activado (LSCh)' : 'Activar Transcriptor LSCh'}</span>
               </button>
 
               <button
                 onClick={intercambiar}
                 className="bg-[#97A884] hover:bg-[#676E5E] text-white px-5 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold shadow transition flex items-center gap-2"
               >
-                <span>��� Intercambiar Posicion de Pantallas</span>
+                <span>Intercambiar Posicion de Pantallas</span>
               </button>
             </div>
 
@@ -295,7 +293,7 @@ export default function SalaVirtualPage() {
             </p>
             <div className="pt-2">
               <button className="bg-[#52796F] text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-xl hover:bg-[#676E5E] transition shadow">
-                ��� Abrir Calendario de Reserva
+                Abrir Calendario de Reserva
               </button>
             </div>
           </div>
