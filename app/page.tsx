@@ -117,45 +117,7 @@ export default function HomePage() {
     <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] font-sans relative">
       
       {/* 1. CAPA SUPERIOR DE INTRO DE CARGA (LOGOS PALPITANTES SIN ROMPER EL DISEÑO) */}
-      {cargandoWeb && (
-        <div className="fixed inset-0 z-50 bg-[#FAF8F5] flex flex-col items-center justify-center p-6 text-center">
-          <div className="relative flex flex-col items-center space-y-5 max-w-md bg-[#E6E7D5] p-8 sm:p-10 rounded-3xl border-2 border-[#97A884] shadow-2xl">
-            
-            <div className="w-36 h-36 rounded-full bg-white p-3 border-4 border-[#97A884] shadow-xl flex flex-col items-center justify-center animate-pulse overflow-hidden space-y-1">
-              <img 
-                src="/logo.png" 
-                alt="ASL Ideas SpA Logo" 
-                className="w-full h-12 object-contain"
-              />
-              <img 
-                src="/isotipo.png" 
-                alt="ASL Ideas SpA Isotipo" 
-                className="w-10 h-10 object-contain"
-              />
-            </div>
-
-            <div className="space-y-3 max-w-xs">
-              <span className="inline-block text-[10px] font-extrabold uppercase tracking-widest bg-[#CDD6A9] text-[#676E5E] px-3.5 py-1 rounded-full border border-[#97A884]">
-                Plataforma Digital & App PWA 📲
-              </span>
-              <h2 className="text-base sm:text-lg font-bold text-[#676E5E] leading-relaxed">
-                Desarrollo y soluciones accesibles para PYME y comercio asociado
-              </h2>
-              <p className="text-xs text-gray-600">
-                Baja carga sensorial (Ley N° 21.545) • Ciberseguridad (Ley N° 21.663)
-              </p>
-            </div>
-
-            <div className="w-full bg-white h-2.5 rounded-full overflow-hidden border border-[#97A884]">
-              <div className="bg-[#676E5E] h-full animate-pulse w-full rounded-full" />
-            </div>
-
-            <span className="text-[10px] font-mono text-gray-500">
-              Conexión encriptada • ASL Ideas SpA 2026
-            </span>
-          </div>
-        </div>
-      )}
+      {cargandoWeb && <IntroLoading onComplete={() => setCargandoWeb(false)} duracionMs={3200} />}
 
       {/* 2. ENCABEZADO Y MENÚ DE NAVEGACIÓN */}
       <header className="bg-white/95 backdrop-blur-md border-b-2 border-[#E6C693] sticky top-0 z-40 shadow-xs py-2 px-3 sm:px-6 lg:px-8">
