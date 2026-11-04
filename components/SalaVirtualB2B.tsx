@@ -3,15 +3,28 @@
 import React from 'react';
 import Link from 'next/link';
 
-interface SalaVirtualB2BProps {
-  portalNombre?: string;
+export interface SalaVirtualB2BProps {
+  isOpen?: boolean;
+  onClose?: () => void;
   onCerrar?: () => void;
+  portalNombre?: string;
+  initialApp?: string;
+  appLogo?: string;
 }
 
 export default function SalaVirtualB2B({ 
+  isOpen,
+  onClose,
+  onCerrar,
   portalNombre = '1. Casa Matriz ASL Ideas SpA', 
-  onCerrar 
+  initialApp,
+  appLogo
 }: SalaVirtualB2BProps) {
+  if (isOpen === false) return null;
+
+  const handleClose = onClose || onCerrar;
+  const nombreMostrar = initialApp || portalNombre;
+
   return (
     <div className="w-full bg-[#FAF8F5] p-5 sm:p-6 rounded-2xl border-2 border-[#52796F]/40 shadow-xl space-y-4 text-center">
       <div className="space-y-2">
@@ -19,7 +32,7 @@ export default function SalaVirtualB2B({
           ACCESO DIRECTO A SALA VIRTUAL EN VIVO
         </span>
         <h3 className="text-lg sm:text-xl font-black text-[#676E5E]">
-          {portalNombre}
+          {nombreMostrar}
         </h3>
         <p className="text-xs sm:text-sm text-[#52796F] max-w-lg mx-auto">
           La sala de transmisiones en vivo con doble pantalla (principal + secundaria intercambiable), controles de audio dB y transcripción LSCh se encuentra lista en su propia ventana.
@@ -33,9 +46,10 @@ export default function SalaVirtualB2B({
         >
           <span>��� Ingresar a la Sala Virtual (/sala-virtual)</span>
         </Link>
-        {onCerrar && (
+        {handleClose && (
           <button
-            onClick={onCerrar}
+            onClick={handleClose}
+            aria-label="Cerrar vista previa de la sala virtual"
             className="bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] font-bold text-xs px-4 py-3 rounded-xl hover:bg-[#E6E7D5] transition"
           >
             Cerrar Vista Previa
