@@ -1,6 +1,5 @@
-import IntroLoading from '@/components/IntroLoading';
 'use client';
-
+import IntroLoading from '@/components/IntroLoading';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import SalaVirtualB2B from '@/components/SalaVirtualB2B';
