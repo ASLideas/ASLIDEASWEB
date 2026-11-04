@@ -65,9 +65,7 @@ export default function ComunidadPage() {
         </div>
       </div>
 
-      <SalaVirtualB2B)
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+      <SalaVirtualB2B isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} initialApp={currentAppName} appLogo={currentAppLogo} /> setIsModalOpen(false)}
         initialApp={currentAppName}
         appLogo={currentAppLogo}
       />

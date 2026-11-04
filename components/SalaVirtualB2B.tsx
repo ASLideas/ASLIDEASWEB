@@ -16,7 +16,7 @@ export interface SalaVirtualB2BProps {
 }
 
 export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
-  const { isOpen, onClose, onCerrar, portalNombre = '1. Casa Matriz ASL Ideas SpA', initialApp, portalData } = props || {};
+  const { isOpen, onClose, onCerrar, portalNombre = 'Casa Matriz ASL Ideas SpA', initialApp, portalData } = props || {};
   if (isOpen === false) return null;
 
   const handleClose = onClose || onCerrar;
@@ -29,7 +29,7 @@ export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
       </span>
       <h3 className="text-lg font-black text-[#676E5E]">{nombreMostrar}</h3>
       <p className="text-xs text-[#52796F] max-w-lg mx-auto">
-        Transmision en vivo con doble pantalla (principal y secundaria intercambiable) lista en su propia ventana.
+        Transmision en vivo con doble pantalla lista en su propia ventana.
       </p>
       <div className="pt-2 flex justify-center gap-3">
         <Link href="/sala-virtual" className="bg-[#52796F] hover:bg-[#676E5E] text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow transition">
