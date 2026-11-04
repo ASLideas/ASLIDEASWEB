@@ -12,6 +12,7 @@ export interface SalaVirtualB2BProps {
   appLogo?: string;
   portalData?: any;
   initialMode?: string;
+  [key: string]: any;
 }
 
 export default function SalaVirtualB2B({ 
