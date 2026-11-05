@@ -1,210 +1,5 @@
 const fs = require('fs');
 
-// A. Actualizar components/SalaVirtualB2B.tsx con Query Params dinámicos
-const b2bCode = `'use client';
-
-import React from 'react';
-import Link from 'next/link';
-
-export interface SalaVirtualB2BProps {
-  isOpen?: boolean;
-  onClose?: () => void;
-  onCerrar?: () => void;
-  portalNombre?: string;
-  initialApp?: string;
-  appLogo?: string;
-  portalData?: any;
-  initialMode?: string;
-  [key: string]: any;
-}
-
-export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
-  const { 
-    isOpen, 
-    onClose, 
-    onCerrar, 
-    portalNombre = 'Casa Matriz ASL Ideas SpA', 
-    initialApp, 
-    appLogo,
-    portalData 
-  } = props || {};
-
-  if (isOpen === false) return null;
-
-  const handleClose = onClose || onCerrar;
-  const nombreMostrar = initialApp || portalData?.nombre || portalNombre;
-  const logoMostrar = appLogo || portalData?.logo || '/LOGO_asl.png';
-
-  const queryParams = new URLSearchParams({
-    app: nombreMostrar,
-    logo: logoMostrar
-  }).toString();
-
-  return (
-    <div className="w-full bg-[#FAF8F5] p-5 sm:p-6 rounded-2xl border-2 border-[#52796F]/40 shadow-xl text-center space-y-4">
-      <div className="flex items-center justify-center space-x-3">
-        <img src={logoMostrar} alt="Logo App" className="w-8 h-8 object-contain rounded-full border p-0.5 bg-white" />
-        <span className="bg-[#52796F] text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
-          ACCESO A SALA VIRTUAL EN VIVO
-        </span>
-      </div>
-
-      <h3 className="text-lg sm:text-xl font-black text-[#676E5E]">{nombreMostrar}</h3>
-      <p className="text-xs sm:text-sm text-[#52796F] max-w-lg mx-auto">
-        Sala de videollamada en vivo vinculada directamente con la agenda B2B, control de audio dB y envío de invitaciones cifradas.
-      </p>
-
-      <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
-        <Link 
-          href={`/sala-virtual?\${queryParams}`}
-          className="bg-[#52796F] hover:bg-[#676E5E] text-white font-extrabold text-sm px-6 py-3 rounded-xl shadow-lg transition transform hover:scale-105 flex items-center gap-2"
-        >
-          ��� <span>Ingresar a la Sala de {nombreMostrar}</span>
-        </Link>
-        {handleClose && (
-          <button 
-            onClick={handleClose} 
-            className="bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] font-bold text-xs px-4 py-3 rounded-xl hover:bg-[#E6E7D5] transition"
-          >
-            Cerrar Vista Previa
-          </button>
-        )}
-      </div>
-    </div>
-  );
-}
-`;
-fs.mkdirSync('components', { recursive: true });
-fs.writeFileSync('components/SalaVirtualB2B.tsx', b2bCode, 'utf8');
-
-// B. Actualizar app/sala-virtual/page.tsx (Lectura de Params, Agenda Vinculada y Modal Invitados)
-const salaCode = `'use client';
-
-import React, { useState, Suspense } from 'react';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-
-function SalaVirtualContent() {
-  const searchParams = useSearchParams();
-  const appParam = searchParams.get('app') || 'Casa Matriz ASL Ideas SpA';
-  const logoParam = searchParams.get('logo') || '/LOGO_asl.png';
-
-  const [tabActiva, setTabActiva] = useState<'vivo' | 'oficina' | 'cita' | 'reprogramar'>('vivo');
-  const [pantallaEnfocada, setPantallaEnfocada] = useState<1 | 2>(1);
-  const [micActivo, setMicActivo] = useState(true);
-  const [camActiva, setCamActiva] = useState(false);
-  const [transcriptorActivo, setTranscriptorActivo] = useState(true);
-  const [modoCalma, setModoCalma] = useState(false);
-  const [nivelAudio, setNivelAudio] = useState(52);
-
-  // Modal para agregar invitados B2B
-  const [showModalInvitados, setShowModalInvitados] = useState(false);
-  const [emailInvitado, setEmailInvitado] = useState('');
-  const [invitadosList, setInvitadosList] = useState<string[]>([]);
-  const [copiado, setCopiado] = useState(false);
-
-  // Archivos adjuntos
-  const [archivos, setArchivos] = useState([
-    { id: 1, nombre: 'Presentacion_Vitrina_B2B_ASL.pdf', tamano: '1.2 MB', fecha: 'Hoy 10:00 AM', estado: 'Listo' }
-  ]);
-
-  // Transcripción y chat
-  const [mensajes, setMensajes] = useState([
-    { id: 1, emisor: 'ASL Bot', texto: `Sala iniciada para: \${appParam} bajo cifrado Ley N° 21.663.`, hora: '10:00 AM' },
-    { id: 2, emisor: 'Sistemas', texto: 'Entorno configurado con baja carga sensorial para Ley TEA N° 21.545.', hora: '10:01 AM' },
-    { id: 3, emisor: 'Anfitrión ASL', texto: `"Bienvenidos a la reunión interactiva de \${appParam}."`, hora: '10:02 AM' }
-  ]);
-  const [nuevoMensaje, setNuevoMensaje] = useState('');
-
-  // Agenda vinculada
-  const [formCita, setFormCita] = useState({ nombre: '', email: '', rut: '', tipo: appParam, fecha: '', hora: '10:00' });
-  const [citaActiva, setCitaActiva] = useState<any>(null);
-
-  const intercambiar = () => setPantallaEnfocada(prev => (prev === 1 ? 2 : 1));
-
-  const p1 = { id: 1, titulo: appParam, subtitulo: 'Transmisión Principal de Telemedicina & Salud Digital', badge: 'PANTALLA 01 (PRINCIPAL)' };
-  const p2 = { id: 2, titulo: 'Cámara Secundaria / Intérprete LSCh', subtitulo: 'Vista de Participante o Lengua de Señas Chilena', badge: 'PANTALLA 02 (SECUNDARIA)' };
-
-  const principal = pantallaEnfocada === 1 ? p1 : p2;
-  const secundaria = pantallaEnfocada === 1 ? p2 : p1;
-
-  const handleSubirArchivo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      const nuevo = {
-        id: Date.now(),
-        nombre: file.name,
-        tamano: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
-        fecha: 'Ahora',
-        estado: 'Listo'
-      };
-      setArchivos([...archivos, nuevo]);
-    }
-  };
-
-  const handleEnviarMensaje = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!nuevoMensaje.trim()) return;
-    const msg = {
-      id: Date.now(),
-      emisor: 'Usuario',
-      texto: nuevoMensaje,
-      hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
-    setMensajes([...mensajes, msg]);
-    setNuevoMensaje('');
-  };
-
-  const handleAgregarInvitado = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!emailInvitado.trim()) return;
-    setInvitadosList([...invitadosList, emailInvitado]);
-    setEmailInvitado('');
-    alert(`Invitación B2B enviada a \${emailInvitado} con cifrado Ley N° 21.663`);
-  };
-
-  const handleCopiarEnlace = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setCopiado(true);
-    setTimeout(() => setCopiado(false), 3000);
-  };
-
-  const handleConfirmarCita = (e: React.FormEvent) => {
-    e.preventDefault();
-    const nuevaCita = { ...formCita, id: Date.now() };
-    setCitaActiva(nuevaCita);
-    setMensajes(prev => [
-      ...prev,
-      {
-        id: Date.now(),
-        emisor: 'Sistema de Agenda',
-        texto: `Cita vinculada para \${nuevaCita.nombre} (\\({nuevaCita.tipo}) el \\){nuevaCita.fecha} a las \\({nuevaCita.hora} hrs.`,
-        hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      }
-    ]);
-  };
-
-  const handleCopiarSubtitulos = () => {
-    const textoCompleto = mensajes.map(m => `[\\){m.hora}] \\({m.emisor}: \\){m.texto}`).join('\\n');
-    navigator.clipboard.writeText(textoCompleto);
-    alert('Subtítulos copiados al portapapeles (Ley TEA N° 21.545)');
-  };
-
-  const handleDescargarMinuta = () => {
-    const contenido = `==========================================\\nASL IDEAS SpA - MINUTA Y COMPROMISOS B2B\\nApp / Portal: \${appParamPara solucionar la integración y evitar problemas de límite de texto en la consola, he resumido la actualización en un **script de Node.js ultra-optimizado**.
-
-Este script vinculará la **videollamada interactiva** con la **agenda**, adaptará dinámicamente la sala según la **App/Portal B2B** desde la que ingreses y añadirá el botón **`��� + Agregar Invitados B2B`**.
-
----
-
-### ��� **Copia y ejecuta este bloque completo en tu Git Bash:**
-
-```bash
-cd /c/Users/Dell/Desktop/aslidesas/ASLideasWEB 2>/dev/null || cd ASLideasWEB 2>/dev/null || true
-
-cat << 'EOF' > fix_vinculacion_opt.js
-const fs = require('fs');
-
 // 1. components/SalaVirtualB2B.tsx
 const b2bCode = `'use client';
 import React from 'react';
@@ -293,8 +88,8 @@ function SalaContent() {
   const intercambiar = () => setPantalla(p => (p === 1 ? 2 : 1));
 
   const handleSubirArchivo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const f = e.target.files[0];
+    if (e.target.files && e.target.files) {
+      const f = e.target.files;
       setArchivos([...archivos, { id: Date.now(), nombre: f.name, tamano: (f.size / 1024 / 1024).toFixed(1) + ' MB', fecha: 'Ahora' }]);
     }
   };
@@ -569,9 +364,10 @@ export default function SalaVirtualPage() {
 fs.mkdirSync('app/sala-virtual', { recursive: true });
 fs.writeFileSync('app/sala-virtual/page.tsx', salaCode, 'utf8');
 
-// 3. Forzar actualización de versión
+// 3. Forzar versión en package.json
 if (fs.existsSync('package.json')) {
   let pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
   pkg.version = "0.1." + Date.now();
-  fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2), 'utf8');
+  fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2), { encoding: 'utf8' });
 }
+console.log('✅ Archivo fix_vinculacion.js creado con éxito.');
