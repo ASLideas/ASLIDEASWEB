@@ -49,8 +49,8 @@ function SalaVirtualContent() {
   const secundaria = pantallaEnfocada === 1 ? p2 : p1;
 
   const handleSubirArchivo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
+    if (e.target.files && e.target.files) {
+      const file = e.target.files;
       const nuevo = {
         id: Date.now(),
         nombre: file.name,
