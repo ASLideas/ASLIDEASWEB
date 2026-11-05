@@ -774,4 +774,3 @@ export default function SalaVirtualPage() {
     </Suspense>
   );
 }
-EOF

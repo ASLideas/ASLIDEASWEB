@@ -71,4 +71,3 @@ export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
     </div>
   );
 }
-EOF
