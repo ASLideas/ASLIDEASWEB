@@ -37,7 +37,7 @@ export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
       </span>
       <h3 className="text-lg font-black text-[#676E5E]">{nombreMostrar}</h3>
       <p className="text-xs text-[#52796F] max-w-lg mx-auto">
-        Transmision en vivo con doble pantalla lista en su propia ventana.
+        Transmisión en vivo con doble pantalla lista en su propia ventana.
       </p>
       <div className="pt-2 flex justify-center gap-3">
         <Link 
