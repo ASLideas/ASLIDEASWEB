@@ -1,3 +1,4 @@
+cat << 'EOF' > app/sala-virtual/page.tsx
 'use client';
 
 import React, { useState, Suspense } from 'react';
@@ -158,7 +159,7 @@ function SalaVirtualContent() {
             onClick={() => setShowModalInvitados(true)}
             className="bg-[#52796F] hover:bg-[#676E5E] text-white px-3.5 py-1.5 rounded-xl text-xs font-extrabold shadow flex items-center gap-1.5 transition transform hover:scale-105"
           >
-            í±¥ + Agregar Invitados B2B
+            ğŸ‘¥ + Agregar Invitados B2B
           </button>
 
           <button
@@ -167,7 +168,7 @@ function SalaVirtualContent() {
               modoCalma ? 'bg-[#52796F] text-white border-[#52796F]' : 'bg-[#FAF8F5] text-[#676E5E] border-[#97A884]'
             }`}
           >
-            {modoCalma ? 'í¼¿ Modo Calma Activado' : 'í½ƒ Activar Modo Calma (TEA)'}
+            {modoCalma ? 'ğŸŒ¿ Modo Calma Activado' : 'ğŸƒ Activar Modo Calma (TEA)'}
           </button>
 
           <Link
@@ -182,7 +183,7 @@ function SalaVirtualContent() {
       {/* BANNER DE CITA VINCULADA */}
       {citaActiva && (
         <div className="bg-emerald-600 text-white py-2 px-4 text-center text-xs font-extrabold flex items-center justify-center gap-3 shadow-md">
-          <span>í³… Cita Vinculada Activa: <strong>{citaActiva.nombre}</strong> ({citaActiva.fecha} a las {citaActiva.hora} hrs)</span>
+          <span>ğŸ“… Cita Vinculada Activa: <strong>{citaActiva.nombre}</strong> ({citaActiva.fecha} a las {citaActiva.hora} hrs)</span>
           <button onClick={() => setTabActiva('vivo')} className="bg-white text-emerald-900 text-[11px] font-black px-3 py-0.5 rounded-lg shadow-xs hover:bg-emerald-50">
             Ir a la Video ReuniÃ³n
           </button>
@@ -209,7 +210,7 @@ function SalaVirtualContent() {
                   : 'bg-[#FAF8F5] text-[#676E5E] hover:bg-[#E6E7D5]'
               }`}
             >
-              <span>í³¹ Video ReuniÃ³n en Vivo</span>
+              <span>ğŸ“¹ Video ReuniÃ³n en Vivo</span>
             </button>
 
             <button
@@ -220,7 +221,7 @@ function SalaVirtualContent() {
                   : 'bg-[#FAF8F5] text-[#676E5E] hover:bg-[#E6E7D5]'
               }`}
             >
-              <span>í³… Agenda y Citas</span>
+              <span>ğŸ“… Agenda y Citas</span>
             </button>
 
             <button
@@ -231,7 +232,7 @@ function SalaVirtualContent() {
                   : 'bg-[#FAF8F5] text-[#676E5E] hover:bg-[#E6E7D5]'
               }`}
             >
-              <span>í¿›ï¸ Ficha Oficial</span>
+              <span>ğŸ›ï¸ Ficha Oficial</span>
             </button>
 
             <button
@@ -242,7 +243,7 @@ function SalaVirtualContent() {
                   : 'bg-[#FAF8F5] text-[#676E5E] hover:bg-[#E6E7D5]'
               }`}
             >
-              <span>í´„ Cancelar / Reprogramar</span>
+              <span>ğŸ”„ Cancelar / Reprogramar</span>
             </button>
           </div>
 
@@ -250,7 +251,7 @@ function SalaVirtualContent() {
             onClick={() => setShowModalInvitados(true)}
             className="text-xs font-bold text-[#52796F] hover:underline flex items-center gap-1"
           >
-            <span>í±¥ Invitar mÃ¡s participantes a {appParam}</span>
+            <span>ğŸ‘¥ Invitar mÃ¡s participantes a {appParam}</span>
           </button>
         </div>
 
@@ -297,14 +298,14 @@ function SalaVirtualContent() {
                       onClick={() => setCamActiva(!camActiva)}
                       className="bg-[#FAF8F5] hover:bg-white text-[#676E5E] text-xs font-extrabold px-5 py-2.5 rounded-xl shadow-md transition border border-[#97A884] transform hover:scale-105"
                     >
-                      {camActiva ? 'í³· CÃ¡mara Web y MicrÃ³fono Activos' : 'Encender CÃ¡mara Web y MicrÃ³fono Real'}
+                      {camActiva ? 'ğŸ“· CÃ¡mara Web y MicrÃ³fono Activos' : 'Encender CÃ¡mara Web y MicrÃ³fono Real'}
                     </button>
                   </div>
 
                   {transcriptorActivo && (
                     <div className="bg-[#1C221D]/90 border border-emerald-500/40 p-3 rounded-xl text-center z-10 mb-2">
                       <p className="text-xs font-bold text-emerald-300 animate-pulse">
-                        í²¬ [SubtÃ­tulos LSCh en Vivo]: "Bienvenidos a la reuniÃ³n interactiva de {appParam}."
+                        ğŸ’¬ [SubtÃ­tulos LSCh en Vivo]: "Bienvenidos a la reuniÃ³n interactiva de {appParam}."
                       </p>
                     </div>
                   )}
@@ -331,7 +332,7 @@ function SalaVirtualContent() {
 
                   <div className="text-center py-6 space-y-3 z-10">
                     <div className="w-20 h-20 mx-auto rounded-full bg-[#52796F]/30 border-2 border-[#52796F] flex items-center justify-center text-3xl font-bold text-emerald-300 shadow-inner group-hover:scale-110 transition-transform">
-                      {secundaria.id === 1 ? 'í³¹' : 'í±¤'}
+                      {secundaria.id === 1 ? 'ğŸ“¹' : 'ğŸ‘¤'}
                     </div>
                     <div className="space-y-1">
                       <h3 className="text-sm font-extrabold text-gray-100">
@@ -346,7 +347,7 @@ function SalaVirtualContent() {
                   <div className="space-y-3 z-10">
                     <div className="bg-[#52796F]/40 text-center py-2.5 rounded-xl border border-[#52796F] group-hover:bg-[#52796F] group-hover:text-white transition shadow-sm">
                       <span className="text-xs font-extrabold text-white flex items-center justify-center gap-1.5">
-                        í´„ <span>Agrandar esta Pantalla</span>
+                        ğŸ”„ <span>Agrandar esta Pantalla</span>
                       </span>
                     </div>
                     <p className="text-[10px] text-center text-gray-400">
@@ -384,7 +385,7 @@ function SalaVirtualContent() {
                         : 'bg-rose-100 border border-rose-300 text-rose-800 hover:bg-rose-200'
                     }`}
                   >
-                    <span>{micActivo ? 'í¾™ï¸ MicrÃ³fono Activado' : 'í¾™ï¸ MicrÃ³fono Silenciado'}</span>
+                    <span>{micActivo ? 'ğŸ™ï¸ MicrÃ³fono Activado' : 'ğŸ™ï¸ MicrÃ³fono Silenciado'}</span>
                   </button>
 
                   <button
@@ -395,7 +396,7 @@ function SalaVirtualContent() {
                         : 'bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] hover:bg-[#E6E7D5]'
                     }`}
                   >
-                    <span>{camActiva ? 'í³· CÃ¡mara Activada' : 'í³· Encender CÃ¡mara'}</span>
+                    <span>{camActiva ? 'ğŸ“· CÃ¡mara Activada' : 'ğŸ“· Encender CÃ¡mara'}</span>
                   </button>
 
                   <button
@@ -406,14 +407,14 @@ function SalaVirtualContent() {
                         : 'bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] hover:bg-[#E6E7D5]'
                     }`}
                   >
-                    <span>{transcriptorActivo ? 'í²¬ SubtÃ­tulos LSCh Activos' : 'Activar SubtÃ­tulos LSCh'}</span>
+                    <span>{transcriptorActivo ? 'ğŸ’¬ SubtÃ­tulos LSCh Activos' : 'Activar SubtÃ­tulos LSCh'}</span>
                   </button>
 
                   <button
                     onClick={intercambiar}
                     className="bg-[#97A884] hover:bg-[#676E5E] text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold shadow transition flex items-center gap-2"
                   >
-                    <span>í´„ Intercambiar Pantallas</span>
+                    <span>ğŸ”„ Intercambiar Pantallas</span>
                   </button>
                 </div>
 
@@ -421,7 +422,7 @@ function SalaVirtualContent() {
                   onClick={() => setShowModalInvitados(true)}
                   className="bg-[#52796F] hover:bg-[#676E5E] text-white px-5 py-2 rounded-xl text-xs sm:text-sm font-extrabold shadow transition flex items-center gap-2"
                 >
-                  <span>í±¥ + Agregar Invitados B2B</span>
+                  <span>ğŸ‘¥ + Agregar Invitados B2B</span>
                 </button>
               </div>
             </div>
@@ -433,7 +434,7 @@ function SalaVirtualContent() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between border-b border-[#97A884]/30 pb-3">
                     <div className="flex items-center space-x-2">
-                      <span className="text-xl">í³</span>
+                      <span className="text-xl">ğŸ“</span>
                       <h3 className="font-extrabold text-base text-[#676E5E]">Archivos Adjuntos de {appParam}</h3>
                     </div>
 
@@ -447,7 +448,7 @@ function SalaVirtualContent() {
                     {archivos.map(arc => (
                       <div key={arc.id} className="bg-white p-3.5 rounded-2xl border border-[#97A884]/30 flex items-center justify-between gap-3 shadow-xs">
                         <div className="flex items-center space-x-3 overflow-hidden">
-                          <span className="text-xl text-[#52796F]">í³„</span>
+                          <span className="text-xl text-[#52796F]">ğŸ“„</span>
                           <div className="truncate">
                             <p className="text-xs font-extrabold text-[#676E5E] truncate">{arc.nombre}</p>
                             <p className="text-[10px] font-bold text-[#52796F]">{arc.tamano} â€¢ {arc.fecha}</p>
@@ -478,7 +479,7 @@ function SalaVirtualContent() {
 
                 <div className="pt-3 border-t border-[#97A884]/30 text-center">
                   <p className="text-[10px] font-extrabold text-[#52796F] uppercase tracking-wider flex items-center justify-center gap-1">
-                    <span>í´’ Cifrado de documentos segÃºn Ley NÂ° 21.663</span>
+                    <span>ğŸ”’ Cifrado de documentos segÃºn Ley NÂ° 21.663</span>
                   </p>
                 </div>
               </div>
@@ -487,7 +488,7 @@ function SalaVirtualContent() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between border-b border-[#97A884]/30 pb-3">
                     <div className="flex items-center space-x-2">
-                      <span className="text-xl">í²¬</span>
+                      <span className="text-xl">ğŸ’¬</span>
                       <h3 className="font-extrabold text-base text-[#676E5E]">TranscripciÃ³n en Vivo & Chat</h3>
                     </div>
 
@@ -535,14 +536,14 @@ function SalaVirtualContent() {
                     onClick={handleCopiarSubtitulos}
                     className="bg-[#FAF8F5] hover:bg-[#E6E7D5] text-[#52796F] border border-[#97A884] text-xs font-extrabold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5"
                   >
-                    <span>í³‹ Copiar SubtÃ­tulos (Ley TEA NÂ° 21.545)</span>
+                    <span>ğŸ“‹ Copiar SubtÃ­tulos (Ley TEA NÂ° 21.545)</span>
                   </button>
 
                   <button
                     onClick={handleDescargarMinuta}
                     className="bg-[#52796F] hover:bg-[#676E5E] text-white text-xs font-extrabold px-4 py-2 rounded-xl shadow transition flex items-center gap-1.5"
                   >
-                    <span>í³¥ Minuta y Compromisos (Descargar .TXT)</span>
+                    <span>ğŸ“¥ Minuta y Compromisos (Descargar .TXT)</span>
                   </button>
                 </div>
               </div>
@@ -556,7 +557,7 @@ function SalaVirtualContent() {
         {tabActiva === 'cita' && (
           <div className="bg-[#FAF8F5] p-6 sm:p-8 rounded-3xl border border-[#97A884]/40 shadow-lg space-y-6 max-w-2xl mx-auto">
             <div className="text-center space-y-2">
-              <h2 className="text-xl font-black text-[#676E5E]">í³… Agendar Cita en la Sala de {appParam}</h2>
+              <h2 className="text-xl font-black text-[#676E5E]">ğŸ“… Agendar Cita en la Sala de {appParam}</h2>
               <p className="text-xs text-[#52796F]">
                 Selecciona la fecha y bloque de atenciÃ³n B2B. Al agendar, la cita quedarÃ¡ automÃ¡ticamente vinculada con la Video ReuniÃ³n en vivo.
               </p>
@@ -629,7 +630,7 @@ function SalaVirtualContent() {
                 type="submit"
                 className="w-full bg-[#52796F] hover:bg-[#676E5E] text-white font-extrabold text-sm py-3 rounded-xl shadow transition mt-2"
               >
-                í³… Confirmar Cita y Vincular a la Video ReuniÃ³n
+                ğŸ“… Confirmar Cita y Vincular a la Video ReuniÃ³n
               </button>
             </form>
           </div>
@@ -658,7 +659,7 @@ function SalaVirtualContent() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                 <div className="bg-white p-4 rounded-2xl border border-[#97A884]/30 space-y-2">
-                  <h4 className="font-extrabold text-[#52796F]">í³¹ Video ReuniÃ³n & Accesibilidad</h4>
+                  <h4 className="font-extrabold text-[#52796F]">ğŸ“¹ Video ReuniÃ³n & Accesibilidad</h4>
                   <ul className="list-disc list-inside text-xs space-y-1 text-[#676E5E]">
                     <li>Doble pantalla interactiva con IntÃ©rprete LSCh.</li>
                     <li>SubtitulaciÃ³n automÃ¡tica y minutas descargables (.TXT).</li>
@@ -667,7 +668,7 @@ function SalaVirtualContent() {
                 </div>
 
                 <div className="bg-white p-4 rounded-2xl border border-[#97A884]/30 space-y-2">
-                  <h4 className="font-extrabold text-[#52796F]">í´’ Ciberseguridad & Agenda</h4>
+                  <h4 className="font-extrabold text-[#52796F]">ğŸ”’ Ciberseguridad & Agenda</h4>
                   <ul className="list-disc list-inside text-xs space-y-1 text-[#676E5E]">
                     <li>Cifrado de documentos TLS 1.3 segÃºn Ley NÂ° 21.663.</li>
                     <li>Agendamiento de horas vinculado directamente a la reuniÃ³n.</li>
@@ -682,7 +683,7 @@ function SalaVirtualContent() {
         {/* PESTAÃ‘A 4: CANCELAR / REPROGRAMAR */}
         {tabActiva === 'reprogramar' && (
           <div className="bg-[#FAF8F5] p-6 sm:p-8 rounded-3xl border border-[#97A884]/40 shadow-lg space-y-6 max-w-xl mx-auto text-center">
-            <h2 className="text-xl font-black text-[#676E5E]">í´„ GestiÃ³n de Citas Existentes</h2>
+            <h2 className="text-xl font-black text-[#676E5E]">ğŸ”„ GestiÃ³n de Citas Existentes</h2>
             <p className="text-xs text-[#52796F]">
               Ingresa tu cÃ³digo de reserva o correo para modificar o cancelar tu atenciÃ³n en {appParam}.
             </p>
@@ -711,7 +712,7 @@ function SalaVirtualContent() {
           <div className="bg-[#FAF8F5] p-6 rounded-3xl border-2 border-[#52796F] shadow-2xl max-w-md w-full space-y-5 animate-in fade-in zoom-in duration-200">
             <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-3">
               <div className="flex items-center space-x-2">
-                <span className="text-xl">í±¥</span>
+                <span className="text-xl">ğŸ‘¥</span>
                 <h3 className="font-black text-base text-[#676E5E]">Agregar Invitados B2B</h3>
               </div>
               <button
@@ -752,7 +753,7 @@ function SalaVirtualContent() {
                 onClick={handleCopiarEnlace}
                 className="w-full bg-white hover:bg-[#E6E7D5] border border-[#97A884] text-[#676E5E] font-extrabold text-xs py-2.5 rounded-xl transition shadow-xs flex items-center justify-center gap-2"
               >
-                <span>{copiado ? 'âœ… Â¡Enlace Copiado al Portapapeles!' : 'í´— Copiar Enlace Directo a esta Sala'}</span>
+                <span>{copiado ? 'âœ… Â¡Enlace Copiado al Portapapeles!' : 'ğŸ”— Copiar Enlace Directo a esta Sala'}</span>
               </button>
             </div>
           </div>
@@ -773,3 +774,4 @@ export default function SalaVirtualPage() {
     </Suspense>
   );
 }
+EOF
