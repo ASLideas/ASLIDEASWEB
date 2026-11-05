@@ -1,4 +1,4 @@
-cat << 'EOF' > components/SalaVirtualB2B.tsx
+
 'use client';
 
 import React from 'react';

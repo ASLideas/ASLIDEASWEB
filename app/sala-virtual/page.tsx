@@ -1,4 +1,3 @@
-cat << 'EOF' > app/sala-virtual/page.tsx
 'use client';
 
 import React, { useState, Suspense } from 'react';
