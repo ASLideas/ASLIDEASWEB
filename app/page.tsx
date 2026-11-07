@@ -22,7 +22,7 @@ export default function HomePage() {
         'Consultoría UI/UX en Ley TEA'
       ],
       pills: ['Ley TEA N° 21.545', 'Accesibilidad Cognitiva UI/UX'],
-      estado: 'Oficina Oficial Active',
+      estado: 'Oficina Oficial Activa',
       enConstruccion: false
     },
     {
@@ -80,13 +80,13 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] font-sans flex flex-col">
-      {/* HEADER PRINCIPAL */}
-      <header className="bg-[#FAF8F5] border-b border-[#97A884]/30 py-3.5 px-6 flex flex-wrap items-center justify-between shadow-sm sticky top-0 z-40">
-        <div className="flex items-center space-x-3">
-          <img src="/logo-asl.png.png" alt="ASL Ideas Logo" className="h-10 w-auto object-contain rounded-full border border-[#97A884]/40 bg-white p-0.5 shadow-sm" />
+      {/* HEADER PRINCIPAL CON LOGO AGRANDADO */}
+      <header className="bg-[#FAF8F5] border-b border-[#97A884]/30 py-4 px-6 flex flex-wrap items-center justify-between shadow-sm sticky top-0 z-40">
+        <div className="flex items-center space-x-4">
+          <img src="/logo-asl.png.png" alt="ASL Ideas Logo" className="h-14 w-auto object-contain rounded-full border-2 border-[#97A884]/40 bg-white p-1 shadow-sm" />
           <div className="flex flex-col">
-            <span className="font-black text-base text-[#676E5E] leading-tight">ASL Ideas SpA</span>
-            <span className="text-[10px] font-bold text-[#52796F] uppercase tracking-wider">ESTRATEGIA DE SALUD DIGITAL INCLUSIVA</span>
+            <span className="font-black text-lg text-[#676E5E] leading-tight">ASL Ideas SpA</span>
+            <span className="text-xs font-bold text-[#52796F] uppercase tracking-wider">ESTRATEGIA DE SALUD DIGITAL INCLUSIVA</span>
           </div>
         </div>
 
@@ -97,7 +97,7 @@ export default function HomePage() {
           <div className="relative">
             <button 
               onClick={() => { setOpenSalaMenu(!openSalaMenu); setOpenAgendaMenu(false); }}
-              className="bg-[#676E5E] hover:bg-[#52796F] text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow flex items-center gap-1.5 transition"
+              className="bg-[#676E5E] hover:bg-[#52796F] text-white px-4 py-2.5 rounded-xl text-xs font-extrabold shadow flex items-center gap-1.5 transition"
             >
               <span>Ingresar a Sala ▾</span>
             </button>
@@ -110,9 +110,9 @@ export default function HomePage() {
                     key={of.id}
                     href={`/sala-virtual?app=${encodeURIComponent(of.nombre)}&logo=${encodeURIComponent(of.logo)}&tab=vivo`}
                     onClick={() => setOpenSalaMenu(false)}
-                    className="flex items-center space-x-2 p-2 hover:bg-[#E6E7D5] rounded-xl transition text-xs font-bold text-[#676E5E]"
+                    className="flex items-center space-x-3 p-2 hover:bg-[#E6E7D5] rounded-xl transition text-xs font-bold text-[#676E5E]"
                   >
-                    <img src={of.logo} alt="" className="w-6 h-6 rounded-full object-contain bg-white border border-[#97A884]" />
+                    <img src={of.logo} alt="" className="w-8 h-8 rounded-full object-contain bg-white border border-[#97A884] p-0.5" />
                     <span className="truncate">{of.nombre}</span>
                   </Link>
                 ))}
@@ -124,7 +124,7 @@ export default function HomePage() {
           <div className="relative">
             <button 
               onClick={() => { setOpenAgendaMenu(!openAgendaMenu); setOpenSalaMenu(false); }}
-              className="bg-[#E6E7D5] hover:bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] px-4 py-2 rounded-xl text-xs font-extrabold shadow-xs flex items-center gap-1.5 transition"
+              className="bg-[#E6E7D5] hover:bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] px-4 py-2.5 rounded-xl text-xs font-extrabold shadow-xs flex items-center gap-1.5 transition"
             >
               <span>Agenda de Reuniones ▾</span>
             </button>
@@ -137,9 +137,9 @@ export default function HomePage() {
                     key={of.id}
                     href={`/sala-virtual?app=${encodeURIComponent(of.nombre)}&logo=${encodeURIComponent(of.logo)}&tab=cita`}
                     onClick={() => setOpenAgendaMenu(false)}
-                    className="flex items-center space-x-2 p-2 hover:bg-[#E6E7D5] rounded-xl transition text-xs font-bold text-[#676E5E]"
+                    className="flex items-center space-x-3 p-2 hover:bg-[#E6E7D5] rounded-xl transition text-xs font-bold text-[#676E5E]"
                   >
-                    <img src={of.logo} alt="" className="w-6 h-6 rounded-full object-contain bg-white border border-[#97A884]" />
+                    <img src={of.logo} alt="" className="w-8 h-8 rounded-full object-contain bg-white border border-[#97A884] p-0.5" />
                     <span className="truncate">{of.nombre}</span>
                   </Link>
                 ))}
@@ -147,7 +147,7 @@ export default function HomePage() {
             )}
           </div>
 
-          <Link href="/admin" className="bg-[#D97757] hover:bg-[#C86D51] text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow transition">
+          <Link href="/admin" className="bg-[#D97757] hover:bg-[#C86D51] text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow transition">
             Administración ASL
           </Link>
         </nav>
@@ -170,20 +170,20 @@ export default function HomePage() {
         </p>
       </section>
 
-      {/* TARJETAS DE LAS 4 OFICINAS VIRTUALES */}
+      {/* TARJETAS CON LOGOS AGRANDADOS (w-20 h-20) */}
       <section className="p-6 max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
         {oficinas.map(of => (
           <div key={of.id} className="bg-[#FAF8F5] p-6 rounded-3xl border-2 border-[#97A884]/40 shadow-xl flex flex-col justify-between space-y-5 hover:border-[#52796F] transition">
             <div className="space-y-4">
               
               {/* CABECERA TARJETA */}
-              <div className="flex items-start justify-between border-b border-[#97A884]/30 pb-3 gap-3">
-                <div className="flex items-center space-x-3">
-                  <img src={of.logo} alt={of.nombre} className="w-12 h-12 object-contain rounded-full border-2 border-[#52796F] bg-white p-1 shadow-sm shrink-0" />
+              <div className="flex items-start justify-between border-b border-[#97A884]/30 pb-4 gap-4">
+                <div className="flex items-center space-x-4">
+                  <img src={of.logo} alt={of.nombre} className="w-20 h-20 object-contain rounded-full border-2 border-[#52796F] bg-white p-1.5 shadow-md shrink-0" />
                   <div>
-                    <span className="text-[10px] font-black text-[#52796F] uppercase tracking-wider">{of.numero}</span>
-                    <h3 className="font-black text-lg text-[#676E5E] leading-tight">{of.nombre}</h3>
-                    <p className="text-[11px] font-bold text-[#52796F] uppercase mt-0.5">{of.subtitulo}</p>
+                    <span className="text-xs font-black text-[#52796F] uppercase tracking-wider">{of.numero}</span>
+                    <h3 className="font-black text-xl text-[#676E5E] leading-tight">{of.nombre}</h3>
+                    <p className="text-xs font-bold text-[#52796F] uppercase mt-0.5">{of.subtitulo}</p>
                   </div>
                 </div>
 
