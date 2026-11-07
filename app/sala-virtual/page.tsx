@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation';
 function SalaVirtualContent() {
   const searchParams = useSearchParams();
   const appParam = searchParams.get('app') || 'Casa Matriz ASL Ideas SpA';
-  const logoParam = searchParams.get('logo') || '/logo-asl.png.png';
+  const logoParam = searchParams.get('logo') || '/LOGO_asl.png';
   const initialTab = (searchParams.get('tab') as any) || 'vivo';
 
   const [tabActiva, setTabActiva] = useState<'vivo' | 'cita' | 'oficina' | 'reprogramar'>(initialTab);
@@ -37,7 +37,7 @@ function SalaVirtualContent() {
   ]);
   const [nuevoMensaje, setNuevoMensaje] = useState('');
 
-  // Agenda Vinculada Formulario
+  // Formulario Agenda Vinculada
   const [formCita, setFormCita] = useState({
     nombre: '',
     email: '',
@@ -56,8 +56,9 @@ function SalaVirtualContent() {
   const principal = pantallaEnfocada === 1 ? p1 : p2;
   const secundaria = pantallaEnfocada === 1 ? p2 : p1;
 
+  // CORRECCIÓN CLAVE: e.target.files[0] para TypeScript FileList
   const handleSubirArchivo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files) {
+    if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       const nuevo = {
         id: Date.now(),
@@ -110,7 +111,7 @@ function SalaVirtualContent() {
       {
         id: Date.now(),
         emisor: 'Sistema de Agenda',
-        texto: `Cita vinculada para ${nuevaCita.nombre} (${nuevaCita.tipo}) el ${nuevaCita.fecha} a las ${nuevaCita.hora} hrs.`,
+        texto: `Cita vinculada para ${nuevaCita.nombre} (${nuevaCita.tipo}) el ${nuevaCita.fecha} a las ${nuevaCita.hora}.`,
         hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
     ]);
@@ -150,7 +151,7 @@ function SalaVirtualContent() {
           <Link href="/" className="flex items-center space-x-2.5">
             <img
               src={logoParam}
-              onError={(e) => { (e.target as HTMLImageElement).src = '/logo-asl.png.png'; }}
+              onError={(e) => { (e.target as HTMLImageElement).src = '/LOGO_asl.png'; }}
               alt="ASL Logo"
               className="h-10 w-auto object-contain rounded-full border border-[#97A884]/40 p-0.5 bg-white shadow-sm"
             />
@@ -265,7 +266,6 @@ function SalaVirtualContent() {
         {/* PESTAÑA 1: VIDEO REUNIÓN EN VIVO */}
         {tabActiva === 'vivo' && (
           <div className="space-y-6">
-            
             <div className="bg-[#1C221D] rounded-3xl border-2 border-[#52796F]/60 p-4 sm:p-6 shadow-2xl space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 
@@ -287,7 +287,7 @@ function SalaVirtualContent() {
                     <div className="w-24 h-24 mx-auto rounded-full bg-[#97A884]/20 border-4 border-[#97A884]/40 flex items-center justify-center p-3 shadow-inner bg-white">
                       <img
                         src={logoParam}
-                        onError={(e) => { (e.target as HTMLImageElement).src = '/logo-asl.png.png'; }}
+                        onError={(e) => { (e.target as HTMLImageElement).src = '/LOGO_asl.png'; }}
                         alt="App Logo"
                         className="w-full h-full object-contain rounded-full"
                       />
