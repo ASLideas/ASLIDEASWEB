@@ -7,9 +7,10 @@ import { useSearchParams } from 'next/navigation';
 function SalaVirtualContent() {
   const searchParams = useSearchParams();
   const appParam = searchParams.get('app') || 'Casa Matriz ASL Ideas SpA';
-  const logoParam = searchParams.get('logo') || '/LOGO_asl.png';
+  const logoParam = searchParams.get('logo') || '/logo-asl.png.png';
+  const initialTab = (searchParams.get('tab') as any) || 'vivo';
 
-  const [tabActiva, setTabActiva] = useState<'vivo' | 'cita' | 'oficina' | 'reprogramar'>('vivo');
+  const [tabActiva, setTabActiva] = useState<'vivo' | 'cita' | 'oficina' | 'reprogramar'>(initialTab);
   const [pantallaEnfocada, setPantallaEnfocada] = useState<1 | 2>(1);
   const [micActivo, setMicActivo] = useState(true);
   const [camActiva, setCamActiva] = useState(false);
@@ -17,7 +18,7 @@ function SalaVirtualContent() {
   const [modoCalma, setModoCalma] = useState(false);
   const [nivelAudio, setNivelAudio] = useState(52);
 
-  // Modal para agregar invitados B2B
+  // Modal Invitados B2B
   const [showModalInvitados, setShowModalInvitados] = useState(false);
   const [emailInvitado, setEmailInvitado] = useState('');
   const [invitadosList, setInvitadosList] = useState<string[]>([]);
@@ -28,7 +29,7 @@ function SalaVirtualContent() {
     { id: 1, nombre: 'Presentacion_Vitrina_B2B_ASL.pdf', tamano: '1.2 MB', fecha: 'Hoy 10:00 AM', estado: 'Listo' }
   ]);
 
-  // Transcripción y chat
+  // Transcripción y Chat
   const [mensajes, setMensajes] = useState([
     { id: 1, emisor: 'ASL Bot', texto: `Sala iniciada para: ${appParam} bajo cifrado Ley N° 21.663.`, hora: '10:00 AM' },
     { id: 2, emisor: 'Sistemas', texto: 'Entorno configurado con baja carga sensorial para Ley TEA N° 21.545.', hora: '10:01 AM' },
@@ -36,8 +37,15 @@ function SalaVirtualContent() {
   ]);
   const [nuevoMensaje, setNuevoMensaje] = useState('');
 
-  // Agenda vinculada
-  const [formCita, setFormCita] = useState({ nombre: '', email: '', rut: '', tipo: appParam, fecha: '', hora: '10:00' });
+  // Agenda Vinculada Formulario
+  const [formCita, setFormCita] = useState({
+    nombre: '',
+    email: '',
+    rut: '',
+    tipo: appParam,
+    fecha: '',
+    hora: '10:00 AM'
+  });
   const [citaActiva, setCitaActiva] = useState<any>(null);
 
   const intercambiar = () => setPantallaEnfocada(prev => (prev === 1 ? 2 : 1));
@@ -48,10 +56,9 @@ function SalaVirtualContent() {
   const principal = pantallaEnfocada === 1 ? p1 : p2;
   const secundaria = pantallaEnfocada === 1 ? p2 : p1;
 
-  // CORRECCIÓN CLAVE: e.target.files[0] arregla los errores de FileList
   const handleSubirArchivo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
+    if (e.target.files && e.target.files) {
+      const file = e.target.files;
       const nuevo = {
         id: Date.now(),
         nombre: file.name,
@@ -96,7 +103,7 @@ function SalaVirtualContent() {
 
   const handleConfirmarCita = (e: React.FormEvent) => {
     e.preventDefault();
-    const nuevaCita = { ...formCita, id: Date.now() };
+    const nuevaCita = { ...formCita, tipo: appParam, id: Date.now() };
     setCitaActiva(nuevaCita);
     setMensajes(prev => [
       ...prev,
@@ -143,7 +150,7 @@ function SalaVirtualContent() {
           <Link href="/" className="flex items-center space-x-2.5">
             <img
               src={logoParam}
-              onError={(e) => { (e.target as HTMLImageElement).src = '/logo.png'; }}
+              onError={(e) => { (e.target as HTMLImageElement).src = '/logo-asl.png.png'; }}
               alt="ASL Logo"
               className="h-10 w-auto object-contain rounded-full border border-[#97A884]/40 p-0.5 bg-white shadow-sm"
             />
@@ -183,7 +190,7 @@ function SalaVirtualContent() {
       {/* BANNER DE CITA VINCULADA */}
       {citaActiva && (
         <div className="bg-emerald-600 text-white py-2 px-4 text-center text-xs font-extrabold flex items-center justify-center gap-3 shadow-md">
-          <span>��� Cita Vinculada Activa: <strong>{citaActiva.nombre}</strong> ({citaActiva.fecha} a las {citaActiva.hora} hrs)</span>
+          <span>��� Cita Vinculada Activa: <strong>{citaActiva.nombre}</strong> ({citaActiva.fecha} a las {citaActiva.hora})</span>
           <button onClick={() => setTabActiva('vivo')} className="bg-white text-emerald-900 text-[11px] font-black px-3 py-0.5 rounded-lg shadow-xs hover:bg-emerald-50">
             Ir a la Video Reunión
           </button>
@@ -280,7 +287,7 @@ function SalaVirtualContent() {
                     <div className="w-24 h-24 mx-auto rounded-full bg-[#97A884]/20 border-4 border-[#97A884]/40 flex items-center justify-center p-3 shadow-inner bg-white">
                       <img
                         src={logoParam}
-                        onError={(e) => { (e.target as HTMLImageElement).src = '/logo.png'; }}
+                        onError={(e) => { (e.target as HTMLImageElement).src = '/logo-asl.png.png'; }}
                         alt="App Logo"
                         className="w-full h-full object-contain rounded-full"
                       />
@@ -617,20 +624,20 @@ function SalaVirtualContent() {
                     onChange={e => setFormCita({...formCita, hora: e.target.value})}
                     className="w-full px-3.5 py-2.5 border border-[#97A884] rounded-xl bg-white focus:outline-none font-bold text-[#676E5E]"
                   >
-                    <option value="09:00">09:00 AM</option>
-                    <option value="10:00">10:00 AM</option>
-                    <option value="11:30">11:30 AM</option>
-                    <option value="15:00">03:00 PM</option>
-                    <option value="16:30">04:30 PM</option>
+                    <option value="09:00 AM">09:00 AM</option>
+                    <option value="10:00 AM">10:00 AM</option>
+                    <option value="11:30 AM">11:30 AM</option>
+                    <option value="03:00 PM">03:00 PM</option>
+                    <option value="04:30 PM">04:30 PM</option>
                   </select>
                 </div>
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-[#52796F] hover:bg-[#676E5E] text-white font-extrabold text-sm py-3 rounded-xl shadow transition mt-2"
+                className="w-full bg-[#52796F] hover:bg-[#676E5E] text-white font-extrabold text-sm py-3 rounded-xl shadow transition mt-2 flex items-center justify-center gap-2"
               >
-                ��� Confirmar Cita y Vincular a la Video Reunión
+                <span>��� Confirmar Cita y Vincular a la Video Reunión</span>
               </button>
             </form>
           </div>
