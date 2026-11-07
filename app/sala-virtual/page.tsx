@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
@@ -18,18 +18,21 @@ function SalaVirtualContent() {
   const [modoCalma, setModoCalma] = useState(false);
   const [nivelAudio, setNivelAudio] = useState(52);
 
-  // Modal Invitados B2B
+  // Modales
   const [showModalInvitados, setShowModalInvitados] = useState(false);
+  const [archivoPreview, setArchivoPreview] = useState<any | null>(null);
+  
   const [emailInvitado, setEmailInvitado] = useState('');
   const [invitadosList, setInvitadosList] = useState<string[]>([]);
   const [copiado, setCopiado] = useState(false);
 
-  // Archivos adjuntos
+  // Archivos adjuntos en la sala
   const [archivos, setArchivos] = useState([
-    { id: 1, nombre: 'Presentacion_Vitrina_B2B_ASL.pdf', tamano: '1.2 MB', fecha: 'Hoy 10:00 AM', estado: 'Listo' }
+    { id: 1, nombre: 'Presentacion_Vitrina_B2B_ASL.pdf', tamano: '1.2 MB', fecha: 'Hoy 10:00 AM', estado: 'Listo', contenido: 'Documento oficial de presentación B2B para ASL Ideas SpA.' },
+    { id: 2, nombre: 'WhatsApp Image 2026-11-07 at 20.20.59.jpeg', tamano: '0.1 MB', fecha: 'Ahora', estado: 'Listo', contenido: 'Imagen cargada en la sala virtual.' }
   ]);
 
-  // Transcripción y Chat
+  // Transcripción y Chat en Vivo
   const [mensajes, setMensajes] = useState([
     { id: 1, emisor: 'ASL Bot', texto: `Sala iniciada para: ${appParam} bajo cifrado Ley N° 21.663.`, hora: '10:00 AM' },
     { id: 2, emisor: 'Sistemas', texto: 'Entorno configurado con baja carga sensorial para Ley TEA N° 21.545.', hora: '10:01 AM' },
@@ -48,6 +51,19 @@ function SalaVirtualContent() {
   });
   const [citaActiva, setCitaActiva] = useState<any>(null);
 
+  // Animación dinámica de audio cuando el micrófono está encendido
+  useEffect(() => {
+    let interval: any;
+    if (micActivo) {
+      interval = setInterval(() => {
+        setNivelAudio(Math.floor(Math.random() * 35) + 40);
+      }, 1200);
+    } else {
+      setNivelAudio(0);
+    }
+    return () => clearInterval(interval);
+  }, [micActivo]);
+
   const intercambiar = () => setPantallaEnfocada(prev => (prev === 1 ? 2 : 1));
 
   const p1 = { id: 1, titulo: appParam, subtitulo: 'Transmisión Principal de Telemedicina & Salud Digital', badge: 'PANTALLA 01 (PRINCIPAL)' };
@@ -56,7 +72,7 @@ function SalaVirtualContent() {
   const principal = pantallaEnfocada === 1 ? p1 : p2;
   const secundaria = pantallaEnfocada === 1 ? p2 : p1;
 
-  // CORRECCIÓN CLAVE: e.target.files.length > 0 para evitar errores FileList en TypeScript
+  // Manejo de subida de archivos (Uso explícito de e.target.files[0] para TypeScript)
   const handleSubirArchivo = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
@@ -65,14 +81,16 @@ function SalaVirtualContent() {
         nombre: file.name,
         tamano: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
         fecha: 'Ahora',
-        estado: 'Listo'
+        estado: 'Listo',
+        contenido: `Archivo local cargado: ${file.name} (${file.type || 'Documento general'})`
       };
-      setArchivos([...archivos, nuevo]);
+      setArchivos(prev => [...prev, nuevo]);
+      e.target.value = '';
     }
   };
 
   const handleEliminarArchivo = (id: number) => {
-    setArchivos(archivos.filter(a => a.id !== id));
+    setArchivos(prev => prev.filter(a => a.id !== id));
   };
 
   const handleEnviarMensaje = (e: React.FormEvent) => {
@@ -84,14 +102,14 @@ function SalaVirtualContent() {
       texto: nuevoMensaje,
       hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
-    setMensajes([...mensajes, msg]);
+    setMensajes(prev => [...prev, msg]);
     setNuevoMensaje('');
   };
 
   const handleAgregarInvitado = (e: React.FormEvent) => {
     e.preventDefault();
     if (!emailInvitado.trim()) return;
-    setInvitadosList([...invitadosList, emailInvitado]);
+    setInvitadosList(prev => [...prev, emailInvitado]);
     setEmailInvitado('');
     alert(`Invitación B2B enviada a ${emailInvitado} con cifrado Ley N° 21.663`);
   };
@@ -145,7 +163,7 @@ function SalaVirtualContent() {
     <main className={`min-h-screen font-sans flex flex-col transition-colors duration-500 ${
       modoCalma ? 'bg-[#EAECE6] text-[#4E5447]' : 'bg-[#E6E7D5] text-[#676E5E]'
     }`}>
-      {/* HEADER PRINCIPAL CON LOGO GRANDE */}
+      {/* HEADER PRINCIPAL */}
       <header className="bg-[#FAF8F5] border-b border-[#97A884]/30 py-4 px-6 flex items-center justify-between shadow-sm sticky top-0 z-30">
         <div className="flex items-center space-x-3">
           <Link href="/" className="flex items-center space-x-3">
@@ -207,7 +225,7 @@ function SalaVirtualContent() {
 
       <div className="flex-1 p-4 sm:p-6 max-w-7xl w-full mx-auto space-y-6">
         
-        {/* NAVEGACIÓN POR PESTAÑAS SIN EMOJIS */}
+        {/* NAVEGACIÓN POR PESTAÑAS */}
         <div className="flex flex-wrap items-center justify-between gap-3 bg-[#FAF8F5] p-3 rounded-2xl border border-[#97A884]/30 shadow-sm">
           <div className="flex items-center space-x-2 overflow-x-auto">
             <button
@@ -269,7 +287,7 @@ function SalaVirtualContent() {
             <div className="bg-[#1C221D] rounded-3xl border-2 border-[#52796F]/60 p-4 sm:p-6 shadow-2xl space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 
-                {/* PANTALLA PRINCIPAL CON LOGO DE 32px */}
+                {/* PANTALLA PRINCIPAL */}
                 <div className={`md:col-span-2 rounded-2xl p-5 border-2 transition-all flex flex-col justify-between min-h-[340px] sm:min-h-[420px] relative overflow-hidden shadow-xl ${
                   pantallaEnfocada === 1 ? 'bg-[#262D28] border-[#97A884]' : 'bg-[#222824] border-[#52796F]'
                 }`}>
@@ -338,7 +356,7 @@ function SalaVirtualContent() {
                   </div>
 
                   <div className="text-center py-6 space-y-3 z-10">
-                    <div className="w-20 h-20 mx-auto rounded-full bg-[#52796F]/30 border-2 border-[#52796F] flex items-center justify-center text-sm font-bold text-emerald-300 shadow-inner group-hover:scale-110 transition-transform">
+                    <div className="w-20 h-20 mx-auto rounded-full bg-[#52796F]/30 border-2 border-[#52796F] flex items-center justify-center text-xs font-extrabold text-emerald-300 shadow-inner group-hover:scale-110 transition-transform">
                       {secundaria.id === 1 ? 'VÍDEO' : 'PARTICIPANTE'}
                     </div>
                     <div className="space-y-1">
@@ -381,7 +399,7 @@ function SalaVirtualContent() {
                 </span>
               </div>
 
-              {/* BOTONES DE CONTROL SIN EMOJIS */}
+              {/* BOTONES DE CONTROL INTERACTIVOS */}
               <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
                 <div className="flex flex-wrap items-center gap-3">
                   <button
@@ -437,6 +455,7 @@ function SalaVirtualContent() {
             {/* ARCHIVOS Y TRANSCRIPCIÓN */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               
+              {/* BLOQUE 1: ARCHIVOS ADJUNTOS */}
               <div className="bg-[#FAF8F5] p-5 rounded-3xl border border-[#97A884]/40 shadow-lg space-y-4 flex flex-col justify-between">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between border-b border-[#97A884]/30 pb-3">
@@ -452,7 +471,7 @@ function SalaVirtualContent() {
                     {archivos.map(arc => (
                       <div key={arc.id} className="bg-white p-3.5 rounded-2xl border border-[#97A884]/30 flex items-center justify-between gap-3 shadow-xs">
                         <div className="flex items-center space-x-3 overflow-hidden">
-                          <span className="text-xs font-bold text-[#52796F] bg-[#E6E7D5] px-2 py-1 rounded-md">[DOC]</span>
+                          <span className="text-xs font-bold text-[#52796F] bg-[#E6E7D5] px-2 py-1 rounded-md shrink-0">[DOC]</span>
                           <div className="truncate">
                             <p className="text-xs font-extrabold text-[#676E5E] truncate">{arc.nombre}</p>
                             <p className="text-[10px] font-bold text-[#52796F]">{arc.tamano} • {arc.fecha}</p>
@@ -464,7 +483,7 @@ function SalaVirtualContent() {
                             {arc.estado}
                           </span>
                           <button
-                            onClick={() => alert(`Previsualizando ${arc.nombre} en entorno seguro Ley N° 21.663`)}
+                            onClick={() => setArchivoPreview(arc)}
                             className="bg-[#FAF8F5] hover:bg-[#E6E7D5] text-[#676E5E] text-[11px] font-bold px-2.5 py-1 rounded-lg border border-[#97A884]"
                           >
                             Previsualizar
@@ -488,6 +507,7 @@ function SalaVirtualContent() {
                 </div>
               </div>
 
+              {/* BLOQUE 2: TRANSCRIPCIÓN & CHAT */}
               <div className="bg-[#FAF8F5] p-5 rounded-3xl border border-[#97A884]/40 shadow-lg space-y-4 flex flex-col justify-between">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between border-b border-[#97A884]/30 pb-3">
@@ -507,12 +527,16 @@ function SalaVirtualContent() {
                   </div>
 
                   <div className="bg-white p-3.5 rounded-2xl border border-[#97A884]/30 h-[170px] overflow-y-auto space-y-2.5 text-xs">
-                    {mensajes.map(m => (
-                      <div key={m.id} className="space-y-0.5">
-                        <span className="font-extrabold text-[#52796F] text-[11px]">{m.emisor}: </span>
-                        <span className="text-[#676E5E]">{m.texto}</span>
-                      </div>
-                    ))}
+                    {mensajes.length > 0 ? (
+                      mensajes.map(m => (
+                        <div key={m.id} className="space-y-0.5">
+                          <span className="font-extrabold text-[#52796F] text-[11px]">{m.emisor}: </span>
+                          <span className="text-[#676E5E]">{m.texto}</span>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-gray-400 text-center py-8 text-xs font-bold">Sin transcripciones aún.</p>
+                    )}
                   </div>
 
                   <form onSubmit={handleEnviarMensaje} className="flex gap-2 pt-1">
@@ -707,7 +731,36 @@ function SalaVirtualContent() {
 
       </div>
 
-      {/* MODAL INVITADOS B2B SIN EMOJIS */}
+      {/* MODAL 1: PREVISUALIZAR ARCHIVO */}
+      {archivoPreview && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
+          <div className="bg-[#FAF8F5] p-6 rounded-3xl border-2 border-[#52796F] shadow-2xl max-w-lg w-full space-y-4">
+            <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-3">
+              <h3 className="font-black text-base text-[#676E5E]">Previsualización de Documento</h3>
+              <button onClick={() => setArchivoPreview(null)} className="text-gray-400 hover:text-gray-600 font-bold text-lg px-2">✕</button>
+            </div>
+
+            <div className="bg-white p-4 rounded-2xl border border-[#97A884]/30 space-y-2">
+              <p className="text-xs font-black text-[#52796F]">{archivoPreview.nombre}</p>
+              <p className="text-[11px] text-gray-500">Tamaño: {archivoPreview.tamano} | Fecha: {archivoPreview.fecha}</p>
+              <div className="pt-2 text-xs text-[#676E5E] bg-gray-50 p-3 rounded-xl border border-gray-200">
+                {archivoPreview.contenido || 'Vista previa protegida por entorno seguro Ley N° 21.663.'}
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                onClick={() => setArchivoPreview(null)}
+                className="bg-[#52796F] text-white font-bold text-xs px-4 py-2 rounded-xl"
+              >
+                Cerrar Vista Previa
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 2: INVITADOS B2B */}
       {showModalInvitados && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
           <div className="bg-[#FAF8F5] p-6 rounded-3xl border-2 border-[#52796F] shadow-2xl max-w-md w-full space-y-5 animate-in fade-in zoom-in duration-200">
