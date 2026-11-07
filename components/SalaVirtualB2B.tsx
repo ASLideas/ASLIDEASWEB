@@ -56,7 +56,7 @@ export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
           href={`/sala-virtual?${queryParams}`}
           className="bg-[#52796F] hover:bg-[#676E5E] text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition transform hover:scale-105 flex items-center gap-2"
         >
-          🚀 <span>Ingresar a la Sala de {nombreMostrar}</span>
+          ��� <span>Ingresar a la Sala de {nombreMostrar}</span>
         </Link>
         {handleClose && (
           <button 
