@@ -58,7 +58,7 @@ function SalaVirtualContent() {
 
   const handleSubirArchivo = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files) {
-      const file = e.target.files;
+      const file = e.target.files[0];
       const nuevo = {
         id: Date.now(),
         nombre: file.name,
