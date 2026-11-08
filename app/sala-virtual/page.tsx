@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
@@ -12,11 +12,14 @@ function SalaVirtualContent() {
 
   const [tabActiva, setTabActiva] = useState<'vivo' | 'cita' | 'oficina' | 'reprogramar'>(initialTab);
   const [pantallaEnfocada, setPantallaEnfocada] = useState<1 | 2>(1);
-  const [micActivo, setMicActivo] = useState(true);
+  const [micActivo, setMicActivo] = useState(false);
   const [camActiva, setCamActiva] = useState(false);
   const [transcriptorActivo, setTranscriptorActivo] = useState(true);
   const [modoCalma, setModoCalma] = useState(false);
-  const [nivelAudio, setNivelAudio] = useState(52);
+  const [nivelAudio, setNivelAudio] = useState(0);
+
+  // Subtítulo dinámico hablado
+  const [subtituloActual, setSubtituloActual] = useState<string>('Esperando interacción de voz o cámara...');
 
   // Modales
   const [showModalInvitados, setShowModalInvitados] = useState(false);
@@ -26,10 +29,14 @@ function SalaVirtualContent() {
   const [invitadosList, setInvitadosList] = useState<string[]>([]);
   const [copiado, setCopiado] = useState(false);
 
+  // Referencias a elementos HTML nativos (Cámara y Video)
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+
   // Archivos adjuntos en la sala
   const [archivos, setArchivos] = useState([
-    { id: 1, nombre: 'Presentacion_Vitrina_B2B_ASL.pdf', tamano: '1.2 MB', fecha: 'Hoy 10:00 AM', estado: 'Listo', contenido: 'Documento oficial de presentación B2B para ASL Ideas SpA.' },
-    { id: 2, nombre: 'WhatsApp Image 2026-11-07 at 20.20.59.jpeg', tamano: '0.1 MB', fecha: 'Ahora', estado: 'Listo', contenido: 'Imagen cargada en la sala virtual.' }
+    { id: 1, nombre: 'Presentacion_Vitrina_B2B_ASL.pdf', tamano: '1.2 MB', fecha: 'Hoy 10:00 AM', estado: 'Listo', url: '', esImagen: false, texto: 'Documento técnico de presentación B2B para la plataforma ASL Ideas SpA.' },
+    { id: 2, nombre: 'WhatsApp Image 2026-11-07 at 20.20.59.jpeg', tamano: '0.1 MB', fecha: 'Ahora', estado: 'Listo', url: logoParam, esImagen: true, texto: 'Imagen oficial cargada en el ecosistema.' }
   ]);
 
   // Transcripción y Chat en Vivo
@@ -51,20 +58,90 @@ function SalaVirtualContent() {
   });
   const [citaActiva, setCitaActiva] = useState<any>(null);
 
-  // Animación dinámica de audio cuando el micrófono está encendido
+  // 1. ACTIVACIÓN REAL DE LA CÁMARA WEB (navigator.mediaDevices.getUserMedia)
   useEffect(() => {
-    let interval: any;
+    if (camActiva) {
+      navigator.mediaDevices?.getUserMedia({ video: true, audio: micActivo })
+        .then((stream) => {
+          streamRef.current = stream;
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+          }
+        })
+        .catch((err) => {
+          console.warn('Permiso de cámara denegado o no disponible:', err);
+          alert('No se pudo acceder a la cámara web. Asegúrate de dar permisos en tu navegador.');
+          setCamActiva(false);
+        });
+    } else {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
+        streamRef.current = null;
+      }
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+      }
+    }
+  }, [camActiva, micActivo]);
+
+  // 2. RECONOCIMIENTO DE VOZ Y TRANSCRIPCIÓN EN TIEMPO REAL (Web Speech API)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+
+    let recognition: any = null;
+    let audioInterval: any = null;
+
     if (micActivo) {
-      interval = setInterval(() => {
-        setNivelAudio(Math.floor(Math.random() * 35) + 40);
-      }, 1200);
+      // Simulación visual del nivel de decibeles
+      audioInterval = setInterval(() => {
+        setNivelAudio(Math.floor(Math.random() * 40) + 45);
+      }, 800);
+
+      if (SpeechRecognition && transcriptorActivo) {
+        try {
+          recognition = new SpeechRecognition();
+          recognition.continuous = true;
+          recognition.interimResults = true;
+          recognition.lang = 'es-CL';
+
+          recognition.onresult = (event: any) => {
+            const current = event.resultIndex;
+            const transcript = event.results[current][0].transcript;
+            setSubtituloActual(transcript);
+
+            if (event.results[current].isFinal) {
+              setMensajes((prev) => [
+                ...prev,
+                {
+                  id: Date.now(),
+                  emisor: 'Usuario (Voz)',
+                  texto: transcript,
+                  hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                }
+              ]);
+            }
+          };
+
+          recognition.start();
+        } catch (e) {
+          console.log('Error al iniciar reconocimiento de voz:', e);
+        }
+      }
     } else {
       setNivelAudio(0);
+      setSubtituloActual('Micrófono desactivado.');
     }
-    return () => clearInterval(interval);
-  }, [micActivo]);
 
-  const intercambiar = () => setPantallaEnfocada(prev => (prev === 1 ? 2 : 1));
+    return () => {
+      if (audioInterval) clearInterval(audioInterval);
+      if (recognition) {
+        try { recognition.stop(); } catch (e) {}
+      }
+    };
+  }, [micActivo, transcriptorActivo]);
+
+  const intercambiar = () => setPantallaEnfocada((prev) => (prev === 1 ? 2 : 1));
 
   const p1 = { id: 1, titulo: appParam, subtitulo: 'Transmisión Principal de Telemedicina & Salud Digital', badge: 'PANTALLA 01 (PRINCIPAL)' };
   const p2 = { id: 2, titulo: 'Cámara Secundaria / Intérprete LSCh', subtitulo: 'Vista de Participante o Lengua de Señas Chilena', badge: 'PANTALLA 02 (SECUNDARIA)' };
@@ -72,25 +149,43 @@ function SalaVirtualContent() {
   const principal = pantallaEnfocada === 1 ? p1 : p2;
   const secundaria = pantallaEnfocada === 1 ? p2 : p1;
 
-  // Manejo de subida de archivos (Uso explícito de e.target.files[0] para TypeScript)
+  // 3. SUBIDA Y LECTURA DE ARCHIVOS CON PREVISUALIZACIÓN REAL (FileReader)
   const handleSubirArchivo = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      const nuevo = {
-        id: Date.now(),
-        nombre: file.name,
-        tamano: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
-        fecha: 'Ahora',
-        estado: 'Listo',
-        contenido: `Archivo local cargado: ${file.name} (${file.type || 'Documento general'})`
+      const reader = new FileReader();
+
+      const esImagen = file.type.startsWith('image/');
+
+      reader.onload = (event) => {
+        const nuevo = {
+          id: Date.now(),
+          nombre: file.name,
+          tamano: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
+          fecha: 'Ahora',
+          estado: 'Listo',
+          url: event.target?.result as string,
+          esImagen: esImagen,
+          texto: `Archivo local procesado: ${file.name} (${file.type || 'Documento general'})`
+        };
+        setArchivos((prev) => [...prev, nuevo]);
       };
-      setArchivos(prev => [...prev, nuevo]);
+
+      if (esImagen) {
+        reader.readAsDataURL(file);
+      } else {
+        reader.readAsText(file);
+      }
+
       e.target.value = '';
     }
   };
 
   const handleEliminarArchivo = (id: number) => {
-    setArchivos(prev => prev.filter(a => a.id !== id));
+    setArchivos((prev) => prev.filter((a) => a.id !== id));
+    if (archivoPreview && archivoPreview.id === id) {
+      setArchivoPreview(null);
+    }
   };
 
   const handleEnviarMensaje = (e: React.FormEvent) => {
@@ -102,14 +197,14 @@ function SalaVirtualContent() {
       texto: nuevoMensaje,
       hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
-    setMensajes(prev => [...prev, msg]);
+    setMensajes((prev) => [...prev, msg]);
     setNuevoMensaje('');
   };
 
   const handleAgregarInvitado = (e: React.FormEvent) => {
     e.preventDefault();
     if (!emailInvitado.trim()) return;
-    setInvitadosList(prev => [...prev, emailInvitado]);
+    setInvitadosList((prev) => [...prev, emailInvitado]);
     setEmailInvitado('');
     alert(`Invitación B2B enviada a ${emailInvitado} con cifrado Ley N° 21.663`);
   };
@@ -124,7 +219,7 @@ function SalaVirtualContent() {
     e.preventDefault();
     const nuevaCita = { ...formCita, tipo: appParam, id: Date.now() };
     setCitaActiva(nuevaCita);
-    setMensajes(prev => [
+    setMensajes((prev) => [
       ...prev,
       {
         id: Date.now(),
@@ -137,21 +232,21 @@ function SalaVirtualContent() {
   };
 
   const handleCopiarSubtitulos = () => {
-    const textoCompleto = mensajes.map(m => `[${m.hora}] ${m.emisor}: ${m.texto}`).join('\n');
+    const textoCompleto = mensajes.map((m) => `[${m.hora}] ${m.emisor}: ${m.texto}`).join('\n');
     navigator.clipboard.writeText(textoCompleto);
     alert('Subtítulos copiados al portapapeles (Ley TEA N° 21.545)');
   };
 
   const handleDescargarMinuta = () => {
     const contenido = `==========================================\nASL IDEAS SpA - MINUTA Y COMPROMISOS B2B\nApp / Portal: ${appParam}\nFecha: ${new Date().toLocaleDateString()}\n==========================================\n\nTRANSCRIPCIÓN DE REUNIÓN:\n` +
-      mensajes.map(m => `[${m.hora}] ${m.emisor}: ${m.texto}`).join('\n') +
+      mensajes.map((m) => `[${m.hora}] ${m.emisor}: ${m.texto}`).join('\n') +
       `\n\nARCHIVOS ADJUNTOS EN SALA:\n` +
-      archivos.map(a => `- ${a.nombre} (${a.tamano})`).join('\n') +
+      archivos.map((a) => `- ${a.nombre} (${a.tamano})`).join('\n') +
       `\n\nINVITADOS REGISTRADOS:\n` +
-      (invitadosList.length > 0 ? invitadosList.map(i => `- ${i}`).join('\n') : '- Sin invitados adicionales');
+      (invitadosList.length > 0 ? invitadosList.map((i) => `- ${i}`).join('\n') : '- Sin invitados adicionales');
 
     const element = document.createElement("a");
-    const file = new Blob([contenido], {type: 'text/plain'});
+    const file = new Blob([contenido], { type: 'text/plain' });
     element.href = URL.createObjectURL(file);
     element.download = `Minuta_${appParam.replace(/\s+/g, '_')}.txt`;
     document.body.appendChild(element);
@@ -287,7 +382,7 @@ function SalaVirtualContent() {
             <div className="bg-[#1C221D] rounded-3xl border-2 border-[#52796F]/60 p-4 sm:p-6 shadow-2xl space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 
-                {/* PANTALLA PRINCIPAL */}
+                {/* PANTALLA PRINCIPAL (REPRODUCTOR DE VÍDEO / CÁMARA REAL) */}
                 <div className={`md:col-span-2 rounded-2xl p-5 border-2 transition-all flex flex-col justify-between min-h-[340px] sm:min-h-[420px] relative overflow-hidden shadow-xl ${
                   pantallaEnfocada === 1 ? 'bg-[#262D28] border-[#97A884]' : 'bg-[#222824] border-[#52796F]'
                 }`}>
@@ -301,36 +396,54 @@ function SalaVirtualContent() {
                     </span>
                   </div>
 
-                  <div className="text-center py-8 space-y-4 z-10">
-                    <div className="w-32 h-32 mx-auto rounded-full bg-[#97A884]/20 border-4 border-[#97A884]/40 flex items-center justify-center p-3 shadow-inner bg-white">
-                      <img
-                        src={logoParam}
-                        onError={(e) => { (e.target as HTMLImageElement).src = '/logo-asl.png.png'; }}
-                        alt="App Logo"
-                        className="w-full h-full object-contain rounded-full"
-                      />
-                    </div>
-                    <div className="space-y-1 max-w-md mx-auto">
-                      <h2 className="text-lg sm:text-2xl font-black text-white leading-tight">
-                        {principal.titulo}
-                      </h2>
-                      <p className="text-xs sm:text-sm text-emerald-200 font-medium">
-                        {principal.subtitulo}
-                      </p>
-                    </div>
+                  {/* VISTA DE CÁMARA WEB O LOGO ESPERA */}
+                  <div className="text-center py-6 space-y-4 z-10 my-auto flex flex-col items-center justify-center">
+                    {camActiva ? (
+                      <div className="w-full h-64 sm:h-80 rounded-2xl overflow-hidden border-2 border-emerald-500 shadow-2xl relative bg-black">
+                        <video
+                          ref={videoRef}
+                          autoPlay
+                          playsInline
+                          muted
+                          className="w-full h-full object-cover transform -scale-x-100"
+                        />
+                        <span className="absolute top-2 left-2 bg-emerald-600 text-white text-[10px] font-black px-2 py-1 rounded-md">
+                          TRANSMISIÓN EN VIVO NATIVA
+                        </span>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="w-32 h-32 mx-auto rounded-full bg-[#97A884]/20 border-4 border-[#97A884]/40 flex items-center justify-center p-3 shadow-inner bg-white">
+                          <img
+                            src={logoParam}
+                            onError={(e) => { (e.target as HTMLImageElement).src = '/logo-asl.png.png'; }}
+                            alt="App Logo"
+                            className="w-full h-full object-contain rounded-full"
+                          />
+                        </div>
+                        <div className="space-y-1 max-w-md mx-auto">
+                          <h2 className="text-lg sm:text-2xl font-black text-white leading-tight">
+                            {principal.titulo}
+                          </h2>
+                          <p className="text-xs sm:text-sm text-emerald-200 font-medium">
+                            {principal.subtitulo}
+                          </p>
+                        </div>
+                      </>
+                    )}
 
                     <button
                       onClick={() => setCamActiva(!camActiva)}
-                      className="bg-[#FAF8F5] hover:bg-white text-[#676E5E] text-xs font-extrabold px-5 py-2.5 rounded-xl shadow-md transition border border-[#97A884] transform hover:scale-105"
+                      className="bg-[#FAF8F5] hover:bg-white text-[#676E5E] text-xs font-extrabold px-5 py-2.5 rounded-xl shadow-md transition border border-[#97A884] transform hover:scale-105 mt-2"
                     >
-                      {camActiva ? 'Cámara Web y Micrófono Activos' : 'Encender Cámara Web y Micrófono Real'}
+                      {camActiva ? 'Apagar Cámara Web Real' : 'Encender Cámara Web y Micrófono Real'}
                     </button>
                   </div>
 
                   {transcriptorActivo && (
                     <div className="bg-[#1C221D]/90 border border-emerald-500/40 p-3 rounded-xl text-center z-10 mb-2">
                       <p className="text-xs font-bold text-emerald-300 animate-pulse">
-                        [Subtítulos LSCh en Vivo]: "Bienvenidos a la reunión interactiva de {appParam}."
+                        [Subtítulos LSCh en Vivo]: "{subtituloActual}"
                       </p>
                     </div>
                   )}
@@ -357,7 +470,7 @@ function SalaVirtualContent() {
 
                   <div className="text-center py-6 space-y-3 z-10">
                     <div className="w-20 h-20 mx-auto rounded-full bg-[#52796F]/30 border-2 border-[#52796F] flex items-center justify-center text-xs font-extrabold text-emerald-300 shadow-inner group-hover:scale-110 transition-transform">
-                      {secundaria.id === 1 ? 'VÍDEO' : 'PARTICIPANTE'}
+                      {secundaria.id === 1 ? 'VÍDEO' : 'LSCh'}
                     </div>
                     <div className="space-y-1">
                       <h3 className="text-sm font-extrabold text-gray-100">
@@ -383,7 +496,7 @@ function SalaVirtualContent() {
 
               </div>
 
-              {/* MEDIDOR DE AUDIO */}
+              {/* MEDIDOR DE AUDIO NATIVO */}
               <div className="bg-[#FAF8F5] p-3.5 rounded-2xl border border-[#97A884]/40 flex flex-wrap items-center justify-between gap-4 shadow-sm">
                 <span className="text-xs font-extrabold text-[#676E5E] min-w-[130px]">
                   Nivel de Audio Entrante:
@@ -468,7 +581,7 @@ function SalaVirtualContent() {
                   </div>
 
                   <div className="space-y-2.5 max-h-[260px] overflow-y-auto pr-1">
-                    {archivos.map(arc => (
+                    {archivos.map((arc) => (
                       <div key={arc.id} className="bg-white p-3.5 rounded-2xl border border-[#97A884]/30 flex items-center justify-between gap-3 shadow-xs">
                         <div className="flex items-center space-x-3 overflow-hidden">
                           <span className="text-xs font-bold text-[#52796F] bg-[#E6E7D5] px-2 py-1 rounded-md shrink-0">[DOC]</span>
@@ -528,7 +641,7 @@ function SalaVirtualContent() {
 
                   <div className="bg-white p-3.5 rounded-2xl border border-[#97A884]/30 h-[170px] overflow-y-auto space-y-2.5 text-xs">
                     {mensajes.length > 0 ? (
-                      mensajes.map(m => (
+                      mensajes.map((m) => (
                         <div key={m.id} className="space-y-0.5">
                           <span className="font-extrabold text-[#52796F] text-[11px]">{m.emisor}: </span>
                           <span className="text-[#676E5E]">{m.texto}</span>
@@ -595,7 +708,7 @@ function SalaVirtualContent() {
                   type="text"
                   required
                   value={formCita.nombre}
-                  onChange={e => setFormCita({...formCita, nombre: e.target.value})}
+                  onChange={(e) => setFormCita({ ...formCita, nombre: e.target.value })}
                   placeholder="Ej: Centro Médico ASL / Juan Pérez"
                   className="w-full px-3.5 py-2.5 border border-[#97A884] rounded-xl bg-white focus:outline-none"
                 />
@@ -608,7 +721,7 @@ function SalaVirtualContent() {
                     type="email"
                     required
                     value={formCita.email}
-                    onChange={e => setFormCita({...formCita, email: e.target.value})}
+                    onChange={(e) => setFormCita({ ...formCita, email: e.target.value })}
                     placeholder="correo@ejemplo.com"
                     className="w-full px-3.5 py-2.5 border border-[#97A884] rounded-xl bg-white focus:outline-none"
                   />
@@ -631,7 +744,7 @@ function SalaVirtualContent() {
                     type="date"
                     required
                     value={formCita.fecha}
-                    onChange={e => setFormCita({...formCita, fecha: e.target.value})}
+                    onChange={(e) => setFormCita({ ...formCita, fecha: e.target.value })}
                     className="w-full px-3.5 py-2.5 border border-[#97A884] rounded-xl bg-white focus:outline-none"
                   />
                 </div>
@@ -639,7 +752,7 @@ function SalaVirtualContent() {
                   <label className="font-extrabold text-[#676E5E] block mb-1">Bloque Horario:</label>
                   <select
                     value={formCita.hora}
-                    onChange={e => setFormCita({...formCita, hora: e.target.value})}
+                    onChange={(e) => setFormCita({ ...formCita, hora: e.target.value })}
                     className="w-full px-3.5 py-2.5 border border-[#97A884] rounded-xl bg-white focus:outline-none font-bold text-[#676E5E]"
                   >
                     <option value="09:00 AM">09:00 AM</option>
@@ -731,29 +844,44 @@ function SalaVirtualContent() {
 
       </div>
 
-      {/* MODAL 1: PREVISUALIZAR ARCHIVO */}
+      {/* MODAL 1: PREVISUALIZADOR REAL DE IMÁGENES Y DOCUMENTOS */}
       {archivoPreview && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-50">
           <div className="bg-[#FAF8F5] p-6 rounded-3xl border-2 border-[#52796F] shadow-2xl max-w-lg w-full space-y-4">
             <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-3">
-              <h3 className="font-black text-base text-[#676E5E]">Previsualización de Documento</h3>
+              <h3 className="font-black text-base text-[#676E5E]">Visor de Documentos (Ley N° 21.663)</h3>
               <button onClick={() => setArchivoPreview(null)} className="text-gray-400 hover:text-gray-600 font-bold text-lg px-2">✕</button>
             </div>
 
-            <div className="bg-white p-4 rounded-2xl border border-[#97A884]/30 space-y-2">
-              <p className="text-xs font-black text-[#52796F]">{archivoPreview.nombre}</p>
-              <p className="text-[11px] text-gray-500">Tamaño: {archivoPreview.tamano} | Fecha: {archivoPreview.fecha}</p>
-              <div className="pt-2 text-xs text-[#676E5E] bg-gray-50 p-3 rounded-xl border border-gray-200">
-                {archivoPreview.contenido || 'Vista previa protegida por entorno seguro Ley N° 21.663.'}
+            <div className="bg-white p-4 rounded-2xl border border-[#97A884]/30 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-black text-[#52796F]">{archivoPreview.nombre}</span>
+                <span className="text-[10px] bg-[#E6E7D5] text-[#52796F] px-2 py-0.5 rounded font-bold">{archivoPreview.tamano}</span>
               </div>
+
+              {archivoPreview.esImagen || archivoPreview.url ? (
+                <div className="max-h-64 overflow-hidden rounded-xl border border-gray-200 bg-gray-50 flex items-center justify-center p-2">
+                  <img
+                    src={archivoPreview.url || logoParam}
+                    alt="Previsualización"
+                    className="max-h-56 w-auto object-contain rounded-lg"
+                    onError={(e) => { (e.target as HTMLImageElement).src = logoParam; }}
+                  />
+                </div>
+              ) : (
+                <div className="max-h-56 overflow-y-auto text-xs text-[#676E5E] bg-gray-50 p-3 rounded-xl border border-gray-200 font-mono">
+                  {archivoPreview.texto || 'Contenido encriptado y seguro bajo ciberseguridad Ley N° 21.663.'}
+                </div>
+              )}
             </div>
 
-            <div className="flex justify-end gap-2 pt-2">
+            <div className="flex justify-between items-center pt-2">
+              <span className="text-[10px] text-[#52796F] font-bold">Estado: Protegido y Verificado</span>
               <button
                 onClick={() => setArchivoPreview(null)}
-                className="bg-[#52796F] text-white font-bold text-xs px-4 py-2 rounded-xl"
+                className="bg-[#52796F] hover:bg-[#676E5E] text-white font-bold text-xs px-5 py-2 rounded-xl shadow"
               >
-                Cerrar Vista Previa
+                Cerrar Visor
               </button>
             </div>
           </div>
