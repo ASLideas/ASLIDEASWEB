@@ -4,11 +4,14 @@ export async function POST(req: Request) {
   try {
     const { nombre, email, asunto, mensaje, oficina } = await req.json();
 
+    // Acepta tanto BREVO_API_KEY como CLAVE_API_BREVO
+    const apiKey = process.env.BREVO_API_KEY || process.env.CLAVE_API_BREVO || '';
+
     const brevoRes = await fetch('[suspicious link removed]', {
       method: 'POST',
       headers: {
         'accept': 'application/json',
-        'api-key': process.env.BREVO_API_KEY || '',
+        'api-key': apiKey,
         'content-type': 'application/json',
       },
       body: JSON.stringify({
