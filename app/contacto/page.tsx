@@ -37,6 +37,8 @@ export default function ContactoPage() {
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#2F3E46] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-8">
+        
+        {/* Cabecera */}
         <div className="text-center space-y-3">
           <h1 className="text-3xl font-bold text-[#52796F]">Contacto e Información</h1>
           <p className="text-lg text-gray-600">
@@ -44,6 +46,7 @@ export default function ContactoPage() {
           </p>
         </div>
 
+        {/* Tarjetas de acceso directo a correos */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <a
             href="mailto:contacto@aslideas.cl"
@@ -57,7 +60,7 @@ export default function ContactoPage() {
             href="mailto:soporte@aslideas.cl"
             className="p-4 bg-white rounded-xl shadow-sm border border-[#84A59D]/30 text-center hover:border-[#52796F] transition"
           >
-            <h3 className="font-semibold text-[#52796F]">Soporte Técnico</h3>
+            <h3 className="font-semibold text-[#52796F]">Servicio Técnico & Soporte</h3>
             <p className="text-sm text-gray-500">soporte@aslideas.cl</p>
           </a>
 
@@ -70,6 +73,7 @@ export default function ContactoPage() {
           </a>
         </div>
 
+        {/* Formulario de contacto */}
         <form onSubmit={handleSubmit} className="bg-white p-6 sm:p-8 rounded-2xl shadow-md space-y-6">
           <h2 className="text-xl font-semibold text-[#52796F]">Envíanos un mensaje</h2>
 
@@ -106,6 +110,7 @@ export default function ContactoPage() {
                 className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#52796F] outline-none bg-white"
               >
                 <option value="ASL Ideas SpA">ASL Ideas SpA (Casa Matriz)</option>
+                <option value="Servicio Técnico">Servicio Técnico & Soporte</option>
                 <option value="LAWENMOLL">LAWENMOLL (Salud Integrativa)</option>
                 <option value="Wellness Web App">Wellness Web App (Movimiento Adaptado)</option>
                 <option value="Sabiduría Ancestral">Sabiduría Ancestral (Comunidad)</option>
@@ -149,6 +154,7 @@ export default function ContactoPage() {
             <p className="text-red-600 text-center font-medium">Hubo un error al enviar el mensaje. Intenta nuevamente.</p>
           )}
         </form>
+
       </div>
     </main>
   );
