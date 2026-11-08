@@ -6,6 +6,7 @@ import Link from 'next/link';
 export default function HomePage() {
   const [openSalaMenu, setOpenSalaMenu] = useState(false);
   const [openAgendaMenu, setOpenAgendaMenu] = useState(false);
+  const [showSocialWidget, setShowSocialWidget] = useState(false);
 
   const oficinas = [
     {
@@ -23,7 +24,9 @@ export default function HomePage() {
       ],
       pills: ['Ley TEA N° 21.545', 'Accesibilidad Cognitiva UI/UX'],
       estado: 'Oficina Oficial Activa',
-      enConstruccion: false
+      enConstruccion: false,
+      whatsappGroup: 'https://chat.whatsapp.com/IKCKX6K1hnw1IitD9AP93P',
+      telegramGroup: 'https://t.me/+67u2wG2cDM4yOTRh'
     },
     {
       id: 'lawenmoll',
@@ -40,7 +43,9 @@ export default function HomePage() {
       ],
       pills: ['Ley N° 21.663 - Ciberseguridad', 'Ficha Clínica SOAP'],
       estado: 'Oficina Virtual Activa',
-      enConstruccion: false
+      enConstruccion: false,
+      whatsappGroup: 'https://chat.whatsapp.com/HAKUT7sAlX85HYBeTLzJxm',
+      telegramGroup: 'https://t.me/+HhPuj8YNd9kwYmJh'
     },
     {
       id: 'wellness',
@@ -57,7 +62,9 @@ export default function HomePage() {
       ],
       pills: ['Movimiento Sin Impacto', 'Salas Interactivas Temáticas'],
       estado: 'En Construcción',
-      enConstruccion: true
+      enConstruccion: true,
+      whatsappGroup: 'https://chat.whatsapp.com/ECGCROQEupQ57vcRGYGgm',
+      telegramGroup: 'https://t.me/+pUT4dOcKGoU4MzMx'
     },
     {
       id: 'bienestar',
@@ -74,13 +81,15 @@ export default function HomePage() {
       ],
       pills: ['Diario Mural Popular', 'Recetario Nativo PDF'],
       estado: 'En Construcción',
-      enConstruccion: true
+      enConstruccion: true,
+      whatsappGroup: 'https://chat.whatsapp.com/CqwWcObsomN8yR5nHH67id',
+      telegramGroup: 'https://t.me/+rDlYUfnP-JQwOWZh'
     }
   ];
 
   return (
-    <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] font-sans flex flex-col">
-      {/* HEADER PRINCIPAL CON LOGO AGRANDADO */}
+    <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] font-sans flex flex-col relative">
+      {/* HEADER PRINCIPAL */}
       <header className="bg-[#FAF8F5] border-b border-[#97A884]/30 py-4 px-6 flex flex-wrap items-center justify-between shadow-sm sticky top-0 z-40">
         <div className="flex items-center space-x-4">
           <img src="/logo-asl.png.png" alt="ASL Ideas Logo" className="h-14 w-auto object-contain rounded-full border-2 border-[#97A884]/40 bg-white p-1 shadow-sm" />
@@ -90,10 +99,9 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* MENUS DESPLEGABLES */}
+        {/* MENUS DESPLEGABLES DE SALA Y AGENDA */}
         <nav className="flex flex-wrap items-center space-x-3 my-2 sm:my-0">
           
-          {/* DESPLEGABLE 1: INGRESAR A SALA */}
           <div className="relative">
             <button 
               onClick={() => { setOpenSalaMenu(!openSalaMenu); setOpenAgendaMenu(false); }}
@@ -120,7 +128,6 @@ export default function HomePage() {
             )}
           </div>
 
-          {/* DESPLEGABLE 2: AGENDA DE REUNIONES */}
           <div className="relative">
             <button 
               onClick={() => { setOpenAgendaMenu(!openAgendaMenu); setOpenSalaMenu(false); }}
@@ -147,6 +154,15 @@ export default function HomePage() {
             )}
           </div>
 
+          <a
+            href="[suspicious link removed]"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-[#52796F] hover:bg-[#676E5E] text-white px-3.5 py-2.5 rounded-xl text-xs font-bold shadow transition"
+          >
+            WhatsApp Directo
+          </a>
+
           <Link href="/admin" className="bg-[#D97757] hover:bg-[#C86D51] text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow transition">
             Administración ASL
           </Link>
@@ -170,13 +186,12 @@ export default function HomePage() {
         </p>
       </section>
 
-      {/* TARJETAS CON LOGOS AGRANDADOS (w-20 h-20) */}
+      {/* TARJETAS DE LAS 4 OFICINAS VIRTUALES CON ENLACES DE COMUNIDAD DEDICADOS */}
       <section className="p-6 max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
         {oficinas.map(of => (
           <div key={of.id} className="bg-[#FAF8F5] p-6 rounded-3xl border-2 border-[#97A884]/40 shadow-xl flex flex-col justify-between space-y-5 hover:border-[#52796F] transition">
             <div className="space-y-4">
               
-              {/* CABECERA TARJETA */}
               <div className="flex items-start justify-between border-b border-[#97A884]/30 pb-4 gap-4">
                 <div className="flex items-center space-x-4">
                   <img src={of.logo} alt={of.nombre} className="w-20 h-20 object-contain rounded-full border-2 border-[#52796F] bg-white p-1.5 shadow-md shrink-0" />
@@ -196,13 +211,11 @@ export default function HomePage() {
                 </span>
               </div>
 
-              {/* DESCRIPCIÓN Y DETALLES */}
               <div className="space-y-2">
                 <p className="text-xs font-extrabold text-[#52796F]">{of.subtitulo2}</p>
                 <p className="text-xs text-[#676E5E] leading-relaxed">{of.desc}</p>
               </div>
 
-              {/* SERVICIOS Y MÓDULOS CLAVE */}
               <div className="pt-1 space-y-1.5">
                 <h4 className="text-[11px] font-black text-[#676E5E] uppercase tracking-wide">SERVICIOS Y MÓDULOS CLAVE:</h4>
                 <ul className="text-xs text-[#676E5E] space-y-1 pl-1">
@@ -215,7 +228,6 @@ export default function HomePage() {
                 </ul>
               </div>
 
-              {/* PILLS DE PIE DE TARJETA */}
               <div className="flex flex-wrap gap-2 pt-2">
                 {of.pills.map((pill, idx) => (
                   <span key={idx} className="bg-[#E6E7D5] text-[#52796F] border border-[#97A884]/60 text-[10px] font-extrabold px-3 py-1 rounded-full shadow-2xs">
@@ -226,35 +238,101 @@ export default function HomePage() {
 
             </div>
 
-            {/* BOTONES VINCULADOS DE CADA TARJETA */}
-            <div className="pt-3 flex flex-wrap gap-3">
-              <Link
-                href={`/sala-virtual?app=${encodeURIComponent(of.nombre)}&logo=${encodeURIComponent(of.logo)}&tab=vivo`}
-                className="flex-1 bg-[#676E5E] hover:bg-[#52796F] text-white text-xs font-black py-3 px-4 rounded-2xl shadow text-center transition flex items-center justify-center"
-              >
-                Ver Ficha / Ingresar
-              </Link>
-              <Link
-                href={`/sala-virtual?app=${encodeURIComponent(of.nombre)}&logo=${encodeURIComponent(of.logo)}&tab=cita`}
-                className="flex-1 bg-[#E6E7D5] hover:bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] text-xs font-black py-3 px-4 rounded-2xl shadow-xs text-center transition flex items-center justify-center"
-              >
-                Agenda de Reuniones
-              </Link>
+            {/* BOTONES VINCULADOS DE CADA TARJETA (INCLUYE GRUPO WHATSAPP Y TELEGRAM DEDICADOS) */}
+            <div className="pt-3 flex flex-col gap-2">
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  href={`/sala-virtual?app=${encodeURIComponent(of.nombre)}&logo=${encodeURIComponent(of.logo)}&tab=vivo`}
+                  className="flex-1 bg-[#676E5E] hover:bg-[#52796F] text-white text-xs font-black py-3 px-4 rounded-2xl shadow text-center transition flex items-center justify-center"
+                >
+                  Ver Ficha / Ingresar
+                </Link>
+                <Link
+                  href={`/sala-virtual?app=${encodeURIComponent(of.nombre)}&logo=${encodeURIComponent(of.logo)}&tab=cita`}
+                  className="flex-1 bg-[#E6E7D5] hover:bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] text-xs font-black py-3 px-4 rounded-2xl shadow-xs text-center transition flex items-center justify-center"
+                >
+                  Agenda de Reuniones
+                </Link>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                <a
+                  href={of.whatsappGroup}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 bg-[#52796F] hover:bg-[#676E5E] text-white text-[11px] font-extrabold py-2 px-3 rounded-xl shadow-xs text-center transition flex items-center justify-center"
+                >
+                  Grupo WhatsApp
+                </a>
+                <a
+                  href={of.telegramGroup}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 bg-[#FAF8F5] hover:bg-[#E6E7D5] border border-[#97A884] text-[#52796F] text-[11px] font-extrabold py-2 px-3 rounded-xl shadow-2xs text-center transition flex items-center justify-center"
+                >
+                  Canal Telegram
+                </a>
+              </div>
             </div>
           </div>
         ))}
       </section>
 
-      {/* FOOTER OFICIAL CON CONTACTOS */}
+      {/* WIDGET FLOTANTE COMUNIDAD WHATSAPP & TELEGRAM */}
+      <div className="fixed bottom-6 right-6 z-50">
+        {showSocialWidget && (
+          <div className="bg-[#FAF8F5] border-2 border-[#52796F] rounded-3xl p-4 shadow-2xl mb-3 w-80 space-y-3 animate-in fade-in slide-in-from-bottom duration-200">
+            <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-2">
+              <span className="text-xs font-black text-[#676E5E]">Comunidad & Soporte Directo</span>
+              <button onClick={() => setShowSocialWidget(false)} className="text-gray-400 hover:text-gray-600 font-bold text-xs px-1">✕</button>
+            </div>
+            
+            <a
+              href="[suspicious link removed]"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block bg-[#52796F] hover:bg-[#676E5E] text-white text-xs font-extrabold p-2.5 rounded-xl text-center shadow-sm transition"
+            >
+              WhatsApp Directo (+56 9 8330 2145)
+            </a>
+
+            <div className="space-y-1.5 border-t border-[#97A884]/30 pt-2 max-h-60 overflow-y-auto pr-1">
+              <p className="text-[10px] font-black text-[#52796F] uppercase">COMUNIDADES POR OFICINA:</p>
+              {oficinas.map(o => (
+                <div key={o.id} className="bg-[#E6E7D5]/60 border border-[#97A884]/40 p-2 rounded-xl space-y-1">
+                  <p className="text-[11px] font-black text-[#676E5E]">{o.nombre}</p>
+                  <div className="flex gap-1.5">
+                    <a href={o.whatsappGroup} target="_blank" rel="noreferrer" className="flex-1 bg-[#52796F] text-white text-[9px] font-bold py-1 px-2 rounded-md text-center">
+                      WhatsApp
+                    </a>
+                    <a href={o.telegramGroup} target="_blank" rel="noreferrer" className="flex-1 bg-white border border-[#97A884] text-[#52796F] text-[9px] font-bold py-1 px-2 rounded-md text-center">
+                      Telegram
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <button
+          onClick={() => setShowSocialWidget(!showSocialWidget)}
+          className="bg-[#52796F] hover:bg-[#676E5E] text-white px-5 py-3 rounded-full shadow-2xl font-black text-xs border-2 border-white transition flex items-center gap-2 transform hover:scale-105"
+        >
+          <span>Comunidad WhatsApp & Telegram</span>
+        </button>
+      </div>
+
+      {/* FOOTER OFICIAL */}
       <footer className="bg-[#FAF8F5] border-t border-[#97A884]/30 py-6 px-6 text-center text-xs text-[#676E5E] space-y-3">
         <p className="font-bold text-[#52796F]">ASL Ideas SpA — Casa Matriz y Desarrollo B2B</p>
         <p className="max-w-xl mx-auto text-[11px] text-[#676E5E]">
           Estrategia de Salud Digital Inclusiva. Desarrollamos soluciones tecnológicas amables diseñadas por y para personas con neurodivergencia y condiciones crónicas de salud.
         </p>
 
-        <div className="bg-[#E6E7D5]/40 border border-[#97A884]/30 rounded-2xl p-3 max-w-md mx-auto space-y-1">
-          <p className="text-[10px] font-black text-[#52796F] uppercase tracking-wider">CONTACTOS OFICIALES:</p>
-          <p className="font-extrabold">Teléfono / WhatsApp: <a href="[suspicious link removed]" target="_blank" rel="noreferrer" className="underline text-[#52796F]">+56 9 8330 2145</a></p>
+        <div className="bg-[#E6E7D5]/40 border border-[#97A884]/30 rounded-2xl p-4 max-w-lg mx-auto space-y-2">
+          <p className="text-[10px] font-black text-[#52796F] uppercase tracking-wider">CONTACTOS OFICIALES Y ATENCIÓN DIRECTA:</p>
+          <p className="font-extrabold">WhatsApp Corporativo: <a href="[suspicious link removed]" target="_blank" rel="noreferrer" className="underline text-[#52796F]">+56 9 8330 2145</a></p>
           <p className="text-[11px]">Correos: <span className="font-bold">contacto@aslideas.cl</span> | <span className="font-bold">contacto@lawenmoll.cl</span></p>
         </div>
 
