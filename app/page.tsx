@@ -88,31 +88,11 @@ export default function HomePage() {
   ];
 
   const redesSociales = [
-    { 
-      nombre: 'LinkedIn Corporativo', 
-      url: '[suspicious link removed]',
-      tipo: 'linkedin'
-    },
-    { 
-      nombre: 'Instagram Oficial', 
-      url: '[suspicious link removed]',
-      tipo: 'instagram'
-    },
-    { 
-      nombre: 'TikTok Salud Inclusiva', 
-      url: '[suspicious link removed]',
-      tipo: 'tiktok'
-    },
-    { 
-      nombre: 'Canal de YouTube', 
-      url: '[suspicious link removed]',
-      tipo: 'youtube'
-    },
-    { 
-      nombre: 'Comunidad en Facebook', 
-      url: '[suspicious link removed]',
-      tipo: 'facebook'
-    }
+    { nombre: 'LinkedIn Corporativo', url: '[suspicious link removed]', tipo: 'linkedin' },
+    { nombre: 'Instagram Oficial', url: '[suspicious link removed]', tipo: 'instagram' },
+    { nombre: 'TikTok Salud Inclusiva', url: '[suspicious link removed]', tipo: 'tiktok' },
+    { nombre: 'Canal de YouTube', url: '[suspicious link removed]', tipo: 'youtube' },
+    { nombre: 'Comunidad en Facebook', url: '[suspicious link removed]', tipo: 'facebook' }
   ];
 
   const renderIcono = (tipo: string) => {
@@ -248,12 +228,13 @@ export default function HomePage() {
             )}
           </div>
 
-          {/* CONTACTAR POR CORREO */}
           <a
-            href="mailto:contacto@aslideas.cl"
-            className="bg-[#52796F] hover:bg-[#676E5E] text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow transition"
+            href="[suspicious link removed]"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-[#52796F] hover:bg-[#676E5E] text-white px-3.5 py-2.5 rounded-xl text-xs font-bold shadow transition"
           >
-            Enviar Correo
+            +56 9 8330 2145
           </a>
 
           <Link href="/admin" className="bg-[#D97757] hover:bg-[#C86D51] text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow transition">
@@ -368,7 +349,7 @@ export default function HomePage() {
         ))}
       </section>
 
-      {/* FOOTER EXCLUSIVO CON CORREOS Y COMUNIDAD DE WHATSAPP */}
+      {/* FOOTER CON CORREOS Y TELÉFONO DIRECTO */}
       <footer className="bg-[#FAF8F5] border-t border-[#97A884]/30 py-6 px-6 text-center text-xs text-[#676E5E] space-y-3">
         <p className="font-bold text-[#52796F]">ASL Ideas SpA — Casa Matriz y Desarrollo B2B</p>
         <p className="max-w-xl mx-auto text-[11px] text-[#676E5E]">
@@ -376,9 +357,16 @@ export default function HomePage() {
         </p>
 
         <div className="bg-[#E6E7D5]/40 border border-[#97A884]/30 rounded-2xl p-4 max-w-lg mx-auto space-y-3">
-          <p className="text-[10px] font-black text-[#52796F] uppercase tracking-wider">CANALES OFICIALES DE CONTACTO Y COMUNIDAD:</p>
+          <p className="text-[10px] font-black text-[#52796F] uppercase tracking-wider">CANALES OFICIALES DE CONTACTO Y ATENCIÓN DIRECTA:</p>
           
           <div className="space-y-1">
+            <p className="text-xs font-bold text-[#676E5E]">Contacto Telefónico y WhatsApp Directo:</p>
+            <a href="[suspicious link removed]" target="_blank" rel="noreferrer" className="inline-block bg-[#52796F] text-white hover:bg-[#676E5E] text-xs font-extrabold px-4 py-2 rounded-xl transition shadow-xs">
+              Atención Directa: +56 9 8330 2145
+            </a>
+          </div>
+
+          <div className="space-y-1 pt-1 border-t border-[#97A884]/30">
             <p className="text-xs font-bold text-[#676E5E]">Contacto por Correo Electrónico:</p>
             <div className="flex flex-wrap justify-center gap-3">
               <a href="mailto:contacto@aslideas.cl" className="bg-white border border-[#52796F] text-[#52796F] hover:bg-[#52796F] hover:text-white text-xs font-extrabold px-3 py-1.5 rounded-xl transition">
@@ -391,12 +379,12 @@ export default function HomePage() {
           </div>
 
           <div className="pt-2 border-t border-[#97A884]/30">
-            <p className="text-xs font-bold text-[#676E5E] mb-1">Comunidad Oficial de WhatsApp:</p>
+            <p className="text-xs font-bold text-[#676E5E] mb-1">Comunidad Oficial de WhatsApp (Grupo):</p>
             <a 
               href="https://chat.whatsapp.com/IKCKX6K1hnw1IitD9AP93P" 
               target="_blank" 
               rel="noreferrer" 
-              className="inline-block bg-[#52796F] text-white hover:bg-[#676E5E] text-xs font-black px-4 py-2 rounded-xl shadow-xs transition"
+              className="inline-block bg-white border border-[#97A884] text-[#52796F] hover:bg-[#E6E7D5] text-xs font-black px-4 py-1.5 rounded-xl transition"
             >
               Unirse al Grupo ASL Ideas SpA
             </a>
