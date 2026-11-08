@@ -87,6 +87,8 @@ export default function HomePage() {
     }
   ];
 
+  const whatsappDirecto = "[suspicious link removed].";
+
   return (
     <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] font-sans flex flex-col relative">
       {/* HEADER PRINCIPAL */}
@@ -99,9 +101,8 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* MENUS DESPLEGABLES DE SALA Y AGENDA */}
+        {/* NAVEGACIÓN Y ACCESO DIRECTO A WHATSAPP */}
         <nav className="flex flex-wrap items-center space-x-3 my-2 sm:my-0">
-          
           <div className="relative">
             <button 
               onClick={() => { setOpenSalaMenu(!openSalaMenu); setOpenAgendaMenu(false); }}
@@ -155,12 +156,12 @@ export default function HomePage() {
           </div>
 
           <a
-            href="[suspicious link removed]"
+            href={whatsappDirecto}
             target="_blank"
             rel="noopener noreferrer"
             className="bg-[#52796F] hover:bg-[#676E5E] text-white px-3.5 py-2.5 rounded-xl text-xs font-bold shadow transition"
           >
-            WhatsApp Directo
+            WhatsApp Directo (+56 9 8330 2145)
           </a>
 
           <Link href="/admin" className="bg-[#D97757] hover:bg-[#C86D51] text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow transition">
@@ -186,12 +187,11 @@ export default function HomePage() {
         </p>
       </section>
 
-      {/* TARJETAS DE LAS 4 OFICINAS VIRTUALES CON ENLACES DE COMUNIDAD DEDICADOS */}
+      {/* TARJETAS DE LAS 4 OFICINAS VIRTUALES */}
       <section className="p-6 max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
         {oficinas.map(of => (
           <div key={of.id} className="bg-[#FAF8F5] p-6 rounded-3xl border-2 border-[#97A884]/40 shadow-xl flex flex-col justify-between space-y-5 hover:border-[#52796F] transition">
             <div className="space-y-4">
-              
               <div className="flex items-start justify-between border-b border-[#97A884]/30 pb-4 gap-4">
                 <div className="flex items-center space-x-4">
                   <img src={of.logo} alt={of.nombre} className="w-20 h-20 object-contain rounded-full border-2 border-[#52796F] bg-white p-1.5 shadow-md shrink-0" />
@@ -235,10 +235,8 @@ export default function HomePage() {
                   </span>
                 ))}
               </div>
-
             </div>
 
-            {/* BOTONES VINCULADOS DE CADA TARJETA (INCLUYE GRUPO WHATSAPP Y TELEGRAM DEDICADOS) */}
             <div className="pt-3 flex flex-col gap-2">
               <div className="flex flex-wrap gap-3">
                 <Link
@@ -278,7 +276,7 @@ export default function HomePage() {
         ))}
       </section>
 
-      {/* WIDGET FLOTANTE COMUNIDAD WHATSAPP & TELEGRAM */}
+      {/* WIDGET FLOTANTE */}
       <div className="fixed bottom-6 right-6 z-50">
         {showSocialWidget && (
           <div className="bg-[#FAF8F5] border-2 border-[#52796F] rounded-3xl p-4 shadow-2xl mb-3 w-80 space-y-3 animate-in fade-in slide-in-from-bottom duration-200">
@@ -288,16 +286,16 @@ export default function HomePage() {
             </div>
             
             <a
-              href="[suspicious link removed]"
+              href={whatsappDirecto}
               target="_blank"
               rel="noopener noreferrer"
               className="block bg-[#52796F] hover:bg-[#676E5E] text-white text-xs font-extrabold p-2.5 rounded-xl text-center shadow-sm transition"
             >
-              WhatsApp Directo (+56 9 8330 2145)
+              Enviar WhatsApp a +56 9 8330 2145
             </a>
 
             <div className="space-y-1.5 border-t border-[#97A884]/30 pt-2 max-h-60 overflow-y-auto pr-1">
-              <p className="text-[10px] font-black text-[#52796F] uppercase">COMUNIDADES POR OFICINA:</p>
+              <p className="text-[10px] font-black text-[#52796F] uppercase">GRUPOS Y COMUNIDADES:</p>
               {oficinas.map(o => (
                 <div key={o.id} className="bg-[#E6E7D5]/60 border border-[#97A884]/40 p-2 rounded-xl space-y-1">
                   <p className="text-[11px] font-black text-[#676E5E]">{o.nombre}</p>
@@ -319,11 +317,11 @@ export default function HomePage() {
           onClick={() => setShowSocialWidget(!showSocialWidget)}
           className="bg-[#52796F] hover:bg-[#676E5E] text-white px-5 py-3 rounded-full shadow-2xl font-black text-xs border-2 border-white transition flex items-center gap-2 transform hover:scale-105"
         >
-          <span>Comunidad WhatsApp & Telegram</span>
+          <span>Contacto WhatsApp & Redes</span>
         </button>
       </div>
 
-      {/* FOOTER OFICIAL */}
+      {/* FOOTER CON NÚMERO CLICKEABLE */}
       <footer className="bg-[#FAF8F5] border-t border-[#97A884]/30 py-6 px-6 text-center text-xs text-[#676E5E] space-y-3">
         <p className="font-bold text-[#52796F]">ASL Ideas SpA — Casa Matriz y Desarrollo B2B</p>
         <p className="max-w-xl mx-auto text-[11px] text-[#676E5E]">
@@ -331,8 +329,13 @@ export default function HomePage() {
         </p>
 
         <div className="bg-[#E6E7D5]/40 border border-[#97A884]/30 rounded-2xl p-4 max-w-lg mx-auto space-y-2">
-          <p className="text-[10px] font-black text-[#52796F] uppercase tracking-wider">CONTACTOS OFICIALES Y ATENCIÓN DIRECTA:</p>
-          <p className="font-extrabold">WhatsApp Corporativo: <a href="[suspicious link removed]" target="_blank" rel="noreferrer" className="underline text-[#52796F]">+56 9 8330 2145</a></p>
+          <p className="text-[10px] font-black text-[#52796F] uppercase tracking-wider">CONTACTO DIRECTO WHATSAPP:</p>
+          <p className="font-extrabold text-sm">
+            WhatsApp Corporativo: {' '}
+            <a href={whatsappDirecto} target="_blank" rel="noreferrer" className="underline text-[#52796F] hover:text-[#676E5E]">
+              +56 9 8330 2145
+            </a>
+          </p>
           <p className="text-[11px]">Correos: <span className="font-bold">contacto@aslideas.cl</span> | <span className="font-bold">contacto@lawenmoll.cl</span></p>
         </div>
 
