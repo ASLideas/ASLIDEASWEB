@@ -115,7 +115,7 @@ export default function HomePage() {
     }
   ];
 
-  const renderIcono = (tipo) => {
+  const renderIcono = (tipo: string) => {
     switch(tipo) {
       case 'linkedin':
         return (
