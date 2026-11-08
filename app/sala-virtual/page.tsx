@@ -232,23 +232,23 @@ function SalaVirtualContent() {
   };
 
   const handleCopiarSubtitulos = () => {
-    const textoCompleto = mensajes.map((m) => `[${m.hora}] ${m.emisor}: ${m.texto}`).join('\n');
+    const textoCompleto = mensajes.map((m) => `[${m.hora}] ${m.emisor}: ${m.texto}`).join('[Transcripción en Vivo]');
     navigator.clipboard.writeText(textoCompleto);
     alert('Subtítulos copiados al portapapeles (Ley TEA N° 21.545)');
   };
 
   const handleDescargarMinuta = () => {
-    const contenido = `==========================================\nASL IDEAS SpA - MINUTA Y COMPROMISOS B2B\nApp / Portal: ${appParam}\nFecha: ${new Date().toLocaleDateString()}\n==========================================\n\nTRANSCRIPCIÓN DE REUNIÓN:\n` +
-      mensajes.map((m) => `[${m.hora}] ${m.emisor}: ${m.texto}`).join('\n') +
-      `\n\nARCHIVOS ADJUNTOS EN SALA:\n` +
-      archivos.map((a) => `- ${a.nombre} (${a.tamano})`).join('\n') +
-      `\n\nINVITADOS REGISTRADOS:\n` +
-      (invitadosList.length > 0 ? invitadosList.map((i) => `- ${i}`).join('\n') : '- Sin invitados adicionales');
+    const contenido = `==========================================[Transcripción en Vivo]ASL IDEAS SpA - MINUTA Y COMPROMISOS B2B[Transcripción en Vivo]App / Portal: ${appParam}[Transcripción en Vivo]Fecha: ${new Date().toLocaleDateString()}[Transcripción en Vivo]==========================================[Transcripción en Vivo][Transcripción en Vivo]TRANSCRIPCIÓN DE REUNIÓN:[Transcripción en Vivo]` +
+      mensajes.map((m) => `[${m.hora}] ${m.emisor}: ${m.texto}`).join('[Transcripción en Vivo]') +
+      `[Transcripción en Vivo][Transcripción en Vivo]ARCHIVOS ADJUNTOS EN SALA:[Transcripción en Vivo]` +
+      archivos.map((a) => `- ${a.nombre} (${a.tamano})`).join('[Transcripción en Vivo]') +
+      `[Transcripción en Vivo][Transcripción en Vivo]INVITADOS REGISTRADOS:[Transcripción en Vivo]` +
+      (invitadosList.length > 0 ? invitadosList.map((i) => `- ${i}`).join('[Transcripción en Vivo]') : '- Sin invitados adicionales');
 
     const element = document.createElement("a");
     const file = new Blob([contenido], { type: 'text/plain' });
     element.href = URL.createObjectURL(file);
-    element.download = `Minuta_${appParam.replace(/\s+/g, '_')}.txt`;
+    element.download = `Minuta_${appParam.replace(/[Transcripción en Vivo]+/g, '_')}.txt`;
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
@@ -545,7 +545,7 @@ function SalaVirtualContent() {
                         : 'bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] hover:bg-[#E6E7D5]'
                     }`}
                   >
-                    <span>{transcriptorActivo ? 'Subtítulos LSCh Activos' : 'Activar Subtítulos LSCh'}</span>
+                    <span>{transcriptorActivo ? 'Transcribir reunión' : 'Transcribir reunión'}</span>
                   </button>
 
                   <button
