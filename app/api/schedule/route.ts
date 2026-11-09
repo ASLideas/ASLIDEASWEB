@@ -12,7 +12,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Clave API de Brevo no configurada' }, { status: 500 });
     }
 
-    // A. AGENDAR REUNI√ìN
     if (accion === 'agendar') {
       const linkSala = 'https://aslideasweb.vercel.app/sala-virtual';
       const codigoUnico = codigoReserva || `ASL-${Math.floor(100000 + Math.random() * 900000)}`;
@@ -31,7 +30,7 @@ export async function POST(req: Request) {
             { email: senderEmail, name: 'ASL Ideas SpA' }
           ],
           replyTo: { email: senderEmail, name: 'Soporte ASL Ideas' },
-          subject: `Ì∑ìÔ∏è Confirmaci√≥n de Video Reuni√≥n: ${oficina || 'ASL Ideas SpA'} [${codigoUnico}]`,
+          subject: `ÔøΩÔøΩÔøΩÔ∏è Confirmaci√≥n de Video Reuni√≥n: ${oficina || 'ASL Ideas SpA'} [${codigoUnico}]`,
           htmlContent: `
             <div style="font-family: Arial, sans-serif; background-color: #FAF8F5; padding: 20px; color: #2F3E46;">
               <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 16px; border: 2px solid #84A59D;">
@@ -40,15 +39,15 @@ export async function POST(req: Request) {
                 <p>Confirmamos la reserva de tu cita en la plataforma interactiva de <strong>ASL Ideas SpA</strong>.</p>
                 
                 <div style="background-color: #E6E7D5; padding: 15px; border-radius: 12px; margin: 20px 0;">
-                  <p style="margin: 5px 0;">Ì≥ç <strong>Oficina / √Årea:</strong> ${oficina || 'Casa Matriz B2B'}</p>
-                  <p style="margin: 5px 0;">Ì≥Ö <strong>Fecha:</strong> ${fecha}</p>
+                  <p style="margin: 5px 0;">ÔøΩÔøΩÔøΩ <strong>Oficina / √Årea:</strong> ${oficina || 'Casa Matriz B2B'}</p>
+                  <p style="margin: 5px 0;">ÔøΩÔøΩÔøΩ <strong>Fecha:</strong> ${fecha}</p>
                   <p style="margin: 5px 0;">‚è∞ <strong>Hora:</strong> ${hora}</p>
-                  <p style="margin: 5px 0;">Ì¥ë <strong>C√≥digo de Reserva:</strong> <span style="font-family: monospace; font-weight: bold;">${codigoUnico}</span></p>
+                  <p style="margin: 5px 0;">ÔøΩÔøΩÔøΩ <strong>C√≥digo de Reserva:</strong> <span style="font-family: monospace; font-weight: bold;">${codigoUnico}</span></p>
                 </div>
 
                 <div style="text-align: center; margin: 30px 0;">
                   <a href="${linkSala}" style="background-color: #52796F; color: #ffffff; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: bold; display: inline-block;">
-                    Ìæ• Ingresar a la Sala Virtual en Vivo
+                    ÔøΩÔøΩÔøΩ Ingresar a la Sala Virtual en Vivo
                   </a>
                 </div>
 
@@ -72,7 +71,6 @@ export async function POST(req: Request) {
       });
     }
 
-    // B. CANCELAR REUNI√ìN
     if (accion === 'cancelar') {
       const brevoRes = await fetch('[suspicious link removed]', {
         method: 'POST',
@@ -87,7 +85,7 @@ export async function POST(req: Request) {
             { email: email, name: nombre || 'Usuario' },
             { email: senderEmail, name: 'ASL Ideas SpA' }
           ],
-          subject: `Ì∫´ Notificaci√≥n de Cancelaci√≥n de Reuni√≥n [${codigoReserva || 'Reserva'}]`,
+          subject: `ÔøΩÔøΩÔøΩ Notificaci√≥n de Cancelaci√≥n de Reuni√≥n [${codigoReserva || 'Reserva'}]`,
           htmlContent: `
             <div style="font-family: Arial, sans-serif; background-color: #FAF8F5; padding: 20px; color: #2F3E46;">
               <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 16px; border: 2px solid #DC8D6C;">
