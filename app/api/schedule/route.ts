@@ -12,6 +12,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Clave API de Brevo no configurada' }, { status: 500 });
     }
 
+    // A. AGENDAR REUNIÓN
     if (accion === 'agendar') {
       const linkSala = 'https://aslideasweb.vercel.app/sala-virtual';
       const codigoUnico = codigoReserva || `ASL-${Math.floor(100000 + Math.random() * 900000)}`;
@@ -30,7 +31,7 @@ export async function POST(req: Request) {
             { email: senderEmail, name: 'ASL Ideas SpA' }
           ],
           replyTo: { email: senderEmail, name: 'Soporte ASL Ideas' },
-          subject: `���️ Confirmación de Video Reunión: ${oficina || 'ASL Ideas SpA'} [${codigoUnico}]`,
+          subject: `Confirmación de Video Reunión: ${oficina || 'ASL Ideas SpA'} [${codigoUnico}]`,
           htmlContent: `
             <div style="font-family: Arial, sans-serif; background-color: #FAF8F5; padding: 20px; color: #2F3E46;">
               <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 16px; border: 2px solid #84A59D;">
@@ -71,6 +72,7 @@ export async function POST(req: Request) {
       });
     }
 
+    // B. CANCELAR REUNIÓN
     if (accion === 'cancelar') {
       const brevoRes = await fetch('[suspicious link removed]', {
         method: 'POST',
@@ -85,7 +87,7 @@ export async function POST(req: Request) {
             { email: email, name: nombre || 'Usuario' },
             { email: senderEmail, name: 'ASL Ideas SpA' }
           ],
-          subject: `��� Notificación de Cancelación de Reunión [${codigoReserva || 'Reserva'}]`,
+          subject: `Notificación de Cancelación de Reunión [${codigoReserva || 'Reserva'}]`,
           htmlContent: `
             <div style="font-family: Arial, sans-serif; background-color: #FAF8F5; padding: 20px; color: #2F3E46;">
               <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 16px; border: 2px solid #DC8D6C;">
