@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     const apiKey = process.env.BREVO_API_KEY || process.env.CLAVE_API_BREVO || '';
     const senderEmail = process.env.BREVO_SENDER_EMAIL || 'contacto@aslideas.cl';
 
-      return NextResponse.json({ error: 'Clave API no configurada' }, { status: 500 });
+      return NextResponse.json({ error: 'Clave API de Brevo no configurada' }, { status: 500 });
     }
 
     if (accion === 'agendar') {
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
         '<p style="font-size: 12px; color: #666; text-align: center; border-top: 1px solid #eee; padding-top: 15px;">Entorno seguro de teleatencion bajo cumplimiento Ley TEA N 21.545 y Ley N 21.663.</p>' +
         '</div></div>';
 
-      await fetch('[suspicious link removed]', {
+      const responseMail = await fetch('[suspicious link removed]', {
         method: 'POST',
         headers: {
           'accept': 'application/json',
