@@ -15,7 +15,6 @@ export async function POST(req: Request) {
       const linkSala = 'https://aslideasweb.vercel.app/sala-virtual';
       const codigoUnico = codigoReserva || ('ASL-' + Math.floor(100000 + Math.random() * 900000));
 
-      // 1. Guardar o actualizar el contacto en la Lista #3 (Agendamientos B2B) en Brevo
       try {
         await fetch('[suspicious link removed]', {
           method: 'POST',
@@ -42,7 +41,6 @@ export async function POST(req: Request) {
         console.log('Error registrando contacto en Brevo:', e);
       }
 
-      // 2. Correo de Confirmacion + Aviso de Recordatorios + Cancelacion
       const htmlAgendar = '<div style="font-family: Arial, sans-serif; background-color: #FAF8F5; padding: 20px; color: #2F3E46;">' +
         '<div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 16px; border: 2px solid #84A59D;">' +
         '<h2 style="color: #52796F; text-align: center; margin-bottom: 5px;">¡Cita Agendada con Éxito!</h2>' +
@@ -64,7 +62,7 @@ export async function POST(req: Request) {
         '</div>' +
         '<div style="background-color: #FAF8F5; padding: 12px; border-radius: 8px; text-align: center; font-size: 12px; color: #666;">' +
         '<p style="margin: 0 0 5px 0;">¿Necesitas modificar o cancelar tu cita?</p>' +
-        '<p style="margin: 0;">Responde directamente a este correo o escríbenos a <a href="mailto:' + senderEmail + '" style="color: #52796F; font-weight: bold;">' + senderEmail + '</a> indicando tu código <strong>' + codigoUnico + '</strong>.</p>' +
+        '<p style="margin: 0;">Responde a este correo o escríbenos a <a href="mailto:' + senderEmail + '" style="color: #52796F; font-weight: bold;">' + senderEmail + '</a> indicando tu código <strong>' + codigoUnico + '</strong>.</p>' +
         '</div>' +
         '<p style="font-size: 11px; color: #888; text-align: center; border-top: 1px solid #eee; padding-top: 15px; margin-top: 20px;">Entorno seguro de teleatención bajo cumplimiento Ley TEA N° 21.545 y Ley N° 21.663.</p>' +
         '</div></div>';
