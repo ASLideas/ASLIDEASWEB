@@ -1,5 +1,6 @@
 'use client';
 
+import Header from '@/components/Header';
 import React, { useState } from 'react';
 import Link from 'next/link';
 
@@ -135,113 +136,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#E6E7D5] text-[#676E5E] font-sans flex flex-col relative">
       {/* HEADER PRINCIPAL */}
-      <header className="bg-[#FAF8F5] border-b border-[#97A884]/30 py-4 px-6 flex flex-wrap items-center justify-between shadow-sm sticky top-0 z-40">
-        <div className="flex items-center space-x-4">
-          <img src="/logo-asl.png.png" alt="ASL Ideas Logo" className="h-14 w-auto object-contain rounded-full border-2 border-[#97A884]/40 bg-white p-1 shadow-sm" />
-          <div className="flex flex-col">
-            <span className="font-black text-lg text-[#676E5E] leading-tight">ASL Ideas SpA</span>
-            <span className="text-xs font-bold text-[#52796F] uppercase tracking-wider">ESTRATEGIA DE SALUD DIGITAL INCLUSIVA</span>
-          </div>
-        </div>
-
-        {/* NAVEGACIÓN Y MENÚS DESPLEGABLES */}
-        <nav className="flex flex-wrap items-center space-x-3 my-2 sm:my-0">
-          
-          <div className="relative">
-            <button 
-              onClick={() => { setOpenSalaMenu(!openSalaMenu); setOpenAgendaMenu(false); setOpenRedesMenu(false); }}
-              className="bg-[#676E5E] hover:bg-[#52796F] text-white px-4 py-2.5 rounded-xl text-xs font-extrabold shadow flex items-center gap-1.5 transition"
-            >
-              <span>Ingresar a Sala ▾</span>
-            </button>
-
-            {openSalaMenu && (
-              <div className="absolute right-0 sm:left-0 mt-2 w-64 bg-[#FAF8F5] border-2 border-[#52796F] rounded-2xl shadow-2xl p-2 z-50 space-y-1">
-                <p className="text-[10px] font-black text-[#52796F] px-3 py-1 uppercase border-b border-[#97A884]/30">Selecciona una Sala Virtual:</p>
-                {oficinas.map(of => (
-                  <Link
-                    key={of.id}
-                    href={`/sala-virtual?app=${encodeURIComponent(of.nombre)}&logo=${encodeURIComponent(of.logo)}&tab=vivo`}
-                    onClick={() => setOpenSalaMenu(false)}
-                    className="flex items-center space-x-3 p-2 hover:bg-[#E6E7D5] rounded-xl transition text-xs font-bold text-[#676E5E]"
-                  >
-                    <img src={of.logo} alt="" className="w-8 h-8 rounded-full object-contain bg-white border border-[#97A884] p-0.5" />
-                    <span className="truncate">{of.nombre}</span>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="relative">
-            <button 
-              onClick={() => { setOpenAgendaMenu(!openAgendaMenu); setOpenSalaMenu(false); setOpenRedesMenu(false); }}
-              className="bg-[#E6E7D5] hover:bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] px-4 py-2.5 rounded-xl text-xs font-extrabold shadow-xs flex items-center gap-1.5 transition"
-            >
-              <span>Agenda de Reuniones ▾</span>
-            </button>
-
-            {openAgendaMenu && (
-              <div className="absolute right-0 sm:left-0 mt-2 w-64 bg-[#FAF8F5] border-2 border-[#52796F] rounded-2xl shadow-2xl p-2 z-50 space-y-1">
-                <p className="text-[10px] font-black text-[#52796F] px-3 py-1 uppercase border-b border-[#97A884]/30">Agendar Cita en:</p>
-                {oficinas.map(of => (
-                  <Link
-                    key={of.id}
-                    href={`/sala-virtual?app=${encodeURIComponent(of.nombre)}&logo=${encodeURIComponent(of.logo)}&tab=cita`}
-                    onClick={() => setOpenAgendaMenu(false)}
-                    className="flex items-center space-x-3 p-2 hover:bg-[#E6E7D5] rounded-xl transition text-xs font-bold text-[#676E5E]"
-                  >
-                    <img src={of.logo} alt="" className="w-8 h-8 rounded-full object-contain bg-white border border-[#97A884] p-0.5" />
-                    <span className="truncate">{of.nombre}</span>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* DESPLEGABLE DE REDES SOCIALES CON LOGOS SVG */}
-          <div className="relative">
-            <button 
-              onClick={() => { setOpenRedesMenu(!openRedesMenu); setOpenSalaMenu(false); setOpenAgendaMenu(false); }}
-              className="bg-[#52796F] hover:bg-[#676E5E] text-white px-4 py-2.5 rounded-xl text-xs font-extrabold shadow flex items-center gap-1.5 transition"
-            >
-              <span>Redes Sociales ▾</span>
-            </button>
-
-            {openRedesMenu && (
-              <div className="absolute right-0 mt-2 w-56 bg-[#FAF8F5] border-2 border-[#52796F] rounded-2xl shadow-2xl p-2 z-50 space-y-1">
-                <p className="text-[10px] font-black text-[#52796F] px-3 py-1 uppercase border-b border-[#97A884]/30">Nuestras Redes:</p>
-                {redesSociales.map((red, idx) => (
-                  <a
-                    key={idx}
-                    href={red.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setOpenRedesMenu(false)}
-                    className="flex items-center space-x-3 p-2 hover:bg-[#E6E7D5] rounded-xl transition text-xs font-bold text-[#676E5E]"
-                  >
-                    {renderIcono(red.tipo)}
-                    <span>{red.nombre}</span>
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <a
-            href="[suspicious link removed]"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-[#52796F] hover:bg-[#676E5E] text-white px-3.5 py-2.5 rounded-xl text-xs font-bold shadow transition"
-          >
-            +56 9 8330 2145
-          </a>
-
-          <Link href="/admin" className="bg-[#D97757] hover:bg-[#C86D51] text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow transition">
-            Administración ASL
-          </Link>
-        </nav>
-      </header>
+      <Header />
 
       {/* HERO SECTION */}
       <section className="p-6 sm:p-10 max-w-7xl mx-auto w-full text-center space-y-4">
