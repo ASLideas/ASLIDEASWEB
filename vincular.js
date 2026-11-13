@@ -21,6 +21,6 @@ files.forEach(file => {
     }
 
     fs.writeFileSync(file, content, 'utf8');
-    console.log('EXITO: Modificado ' + file);
+    console.log('EXITO: Conectado en ' + file);
   }
 });
