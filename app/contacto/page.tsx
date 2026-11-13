@@ -3,6 +3,8 @@
 import { useState } from 'react';
 
 export default function ContactoPage() {
+  const [rut, setRut] = useState('');
+  const [invitados, setInvitados] = useState('');
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',

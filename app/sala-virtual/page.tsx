@@ -1,3 +1,4 @@
+import { useState } from 'react';
 'use client';
 
 import React, { useState, useEffect, useRef, Suspense } from 'react';
@@ -957,6 +958,8 @@ function SalaVirtualContent() {
 }
 
 export default function SalaVirtualPage() {
+  const [rut, setRut] = useState('');
+  const [invitados, setInvitados] = useState('');
   return (
     <Suspense fallback={<div className="p-10 text-center font-bold text-[#676E5E]">Cargando Sala Virtual...</div>}>
       <SalaVirtualContent />
