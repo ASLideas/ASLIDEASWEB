@@ -5,6 +5,8 @@ import Header from '@/components/Header';
 import Link from 'next/link';
 
 export default function HomePage() {
+  const [rut, setRut] = useState('');
+  const [invitados, setInvitados] = useState('');
   const [openSalaMenu, setOpenSalaMenu] = useState(false);
   const [openAgendaMenu, setOpenAgendaMenu] = useState(false);
   const [openRedesMenu, setOpenRedesMenu] = useState(false);
