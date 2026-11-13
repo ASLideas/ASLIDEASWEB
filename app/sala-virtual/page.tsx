@@ -260,7 +260,17 @@ function SalaVirtualContent() {
     }`}>
       {/* HEADER PRINCIPAL */}
       <header className="bg-[#FAF8F5] border-b border-[#97A884]/30 py-4 px-6 flex items-center justify-between shadow-sm sticky top-0 z-30">
-        <div className="flex items-center space-x-3">
+        
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">RUT o RUT Tributario *</label>
+              <input type="text" required placeholder="Ej: 76.543.210-K / 12.345.678-9" value={rut} onChange={(e) => setRut(e.target.value)} className="w-full p-2 text-xs border rounded-md focus:ring-2 focus:ring-teal-500 outline-none" />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">Correos de Invitados Adicionales (Opcional)</label>
+              <input type="text" placeholder="Ej: gerencia@empresa.cl, ti@empresa.cl" value={invitados} onChange={(e) => setInvitados(e.target.value)} className="w-full p-2 text-xs border rounded-md focus:ring-2 focus:ring-teal-500 outline-none" />
+              <span className="text-[10px] text-gray-500">Separa varios correos por coma. Recibirán la clave de acceso.</span>
+            </div>
+<div className="flex items-center space-x-3">
           <Link href="/" className="flex items-center space-x-3">
             <img
               src={logoParam}

@@ -67,7 +67,7 @@ export default function ScheduleModal({ isOpen, onClose }: { isOpen: boolean; on
 
         {resultado?.success ? (
           <div className="bg-teal-50 border border-teal-200 text-teal-800 p-4 rounded-lg text-center my-4">
-            <h3 className="font-bold text-lg mb-1">Â¡Cita Agendada con Ã‰xito! í¾‰</h3>
+            <h3 className="font-bold text-lg mb-1">Â¡Cita Agendada con Ã‰xito! ï¿½ï¿½ï¿½</h3>
             <p className="text-sm mb-3">
               Se ha enviado la confirmaciÃ³n y la clave de acceso privada a tu correo y al de tus invitados.
             </p>
