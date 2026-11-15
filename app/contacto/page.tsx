@@ -1,7 +1,5 @@
 'use client';
 import { useState } from 'react';
-'use client';
-
 
 export default function ContactoPage() {
   const [rut, setRut] = useState('');
