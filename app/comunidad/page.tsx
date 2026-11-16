@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useState } from 'react';
 import Link from 'next/link';
 import SalaVirtualB2B from '@/components/SalaVirtualB2B';
