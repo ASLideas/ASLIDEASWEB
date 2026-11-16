@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 
 export default function ContactoPage() {
@@ -17,10 +18,19 @@ export default function ContactoPage() {
     e.preventDefault();
     setStatus('loading');
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch('/api/schedule', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, rut, invitados }),
+        body: JSON.stringify({
+          accion: 'agendar',
+          nombre: formData.nombre,
+          email: formData.email,
+          rut,
+          invitados,
+          servicio: formData.oficina,
+          fecha: new Date().toISOString().split('T'),
+          hora: '10:00 AM',
+        }),
       });
 
       if (res.ok) {
