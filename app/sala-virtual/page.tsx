@@ -1,8 +1,10 @@
 'use client';
+import React, { useState, useRef, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 function SalaVirtualContent() {
+  const [rut, setRut] = useState('');
   const searchParams = useSearchParams();
   const appParam = searchParams.get('app') || 'Casa Matriz ASL Ideas SpA';
   const logoParam = searchParams.get('logo') || '/logo-asl.png.png';
@@ -265,7 +267,7 @@ function SalaVirtualContent() {
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-1">Correos de Invitados Adicionales (Opcional)</label>
-              <input type="text" placeholder="Ej: gerencia@empresa.cl, ti@empresa.cl" value={invitados} onChange={(e) => setInvitados(e.target.value)} className="w-full p-2 text-xs border rounded-md focus:ring-2 focus:ring-teal-500 outline-none" />
+              <input type="text" placeholder="Ej: gerencia@empresa.cl, ti@empresa.cl" value={Array.isArray(invitadosList) ? invitadosList.join(", ") : invitadosList} onChange={(e) => setInvitadosList(e.target.value.split(",").map(s => s.trim()))} className="w-full p-2 text-xs border rounded-md focus:ring-2 focus:ring-teal-500 outline-none" />
               <span className="text-[10px] text-gray-500">Separa varios correos por coma. Recibirán la clave de acceso.</span>
             </div>
 <div className="flex items-center space-x-3">
@@ -955,7 +957,6 @@ function SalaVirtualContent() {
 }
 
 export default function SalaVirtualPage() {
-  const [rut, setRut] = useState('');
   const [invitados, setInvitados] = useState('');
   return (
     <Suspense fallback={<div className="p-10 text-center font-bold text-[#676E5E]">Cargando Sala Virtual...</div>}>
