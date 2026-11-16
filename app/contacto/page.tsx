@@ -1,4 +1,6 @@
 'use client';
+import { useState } from 'react';
+
 export default function ContactoPage() {
   const [rut, setRut] = useState('');
   const [invitados, setInvitados] = useState('');
@@ -25,7 +27,7 @@ export default function ContactoPage() {
           rut,
           invitados,
           servicio: formData.oficina,
-          fecha: new Date().toISOString().split('T'),
+          fecha: new Date().toISOString().split('T')[0],
           hora: '10:00 AM',
         }),
       });
