@@ -1,764 +1,329 @@
 'use client';
+
 import React, { useState, useRef, useEffect, Suspense } from 'react';
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 function SalaVirtualContent() {
-  const [rut, setRut] = useState('');
   const searchParams = useSearchParams();
-  const appParam = searchParams.get('app') || 'Casa Matriz ASL Ideas SpA';
-  const logoParam = searchParams.get('logo') || '/logo-asl.png.png';
   const initialTab = (searchParams.get('tab') as any) || 'vivo';
 
   const [tabActiva, setTabActiva] = useState<'vivo' | 'cita' | 'oficina' | 'reprogramar'>(initialTab);
-  const [pantallaEnfocada, setPantallaEnfocada] = useState<1 | 2>(1);
   const [micActivo, setMicActivo] = useState(false);
   const [camActiva, setCamActiva] = useState(false);
-  const [transcriptorActivo, setTranscriptorActivo] = useState(true);
   const [modoCalma, setModoCalma] = useState(false);
-  const [nivelAudio, setNivelAudio] = useState(0);
 
-  // Subtítulo dinámico hablado
-  const [subtituloActual, setSubtituloActual] = useState<string>('Esperando interacción de voz o cámara...');
+  // Estados del Formulario B2B
+  const [nombre, setNombre] = useState('');
+  const [rut, setRut] = useState('');
+  const [email, setEmail] = useState('');
+  const [invitados, setInvitados] = useState('');
+  const [portal, setPortal] = useState('Casa Matriz ASL Ideas SpA');
+  const [fecha, setFecha] = useState('');
+  const [hora, setHora] = useState('10:00 AM');
 
-  // Modales
-  const [showModalInvitados, setShowModalInvitados] = useState(false);
-  const [archivoPreview, setArchivoPreview] = useState<any | null>(null);
-  
-  const [emailInvitado, setEmailInvitado] = useState('');
-  const [invitadosList, setInvitadosList] = useState<string[]>([]);
-  const [copiado, setCopiado] = useState(false);
+  const [cargando, setCargando] = useState(false);
+  const [mensaje, setMensaje] = useState<{ tipo: 'exito' | 'error'; texto: string } | null>(null);
 
-  // Referencias a elementos HTML nativos (Cámara y Video)
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const streamRef = useRef<MediaStream | null>(null);
+  const handleSubmitCita = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setCargando(true);
+    setMensaje(null);
 
-  // Archivos adjuntos en la sala
-  const [archivos, setArchivos] = useState([
-    { id: 1, nombre: 'Presentacion_Vitrina_B2B_ASL.pdf', tamano: '1.2 MB', fecha: 'Hoy 10:00 AM', estado: 'Listo', url: '', esImagen: false, texto: 'Documento técnico de presentación B2B para la plataforma ASL Ideas SpA.' },
-    { id: 2, nombre: 'WhatsApp Image 2026-11-07 at 20.20.59.jpeg', tamano: '0.1 MB', fecha: 'Ahora', estado: 'Listo', url: logoParam, esImagen: true, texto: 'Imagen oficial cargada en el ecosistema.' }
-  ]);
-
-  // Transcripción y Chat en Vivo
-  const [mensajes, setMensajes] = useState([
-    { id: 1, emisor: 'ASL Bot', texto: `Sala iniciada para: ${appParam} bajo cifrado Ley N° 21.663.`, hora: '10:00 AM' },
-    { id: 2, emisor: 'Sistemas', texto: 'Entorno configurado con baja carga sensorial para Ley TEA N° 21.545.', hora: '10:01 AM' },
-    { id: 3, emisor: 'Anfitrión ASL', texto: `"Bienvenidos a la reunión interactiva de ${appParam}."`, hora: '10:02 AM' }
-  ]);
-  const [nuevoMensaje, setNuevoMensaje] = useState('');
-
-  // Formulario Agenda Vinculada
-  const [formCita, setFormCita] = useState({
-    nombre: '',
-    email: '',
-    rut: '',
-    tipo: appParam,
-    fecha: '',
-    hora: '10:00 AM'
-  });
-  const [citaActiva, setCitaActiva] = useState<any>(null);
-
-  // 1. ACTIVACIÓN REAL DE LA CÁMARA WEB (navigator.mediaDevices.getUserMedia)
-  useEffect(() => {
-    if (camActiva) {
-      navigator.mediaDevices?.getUserMedia({ video: true, audio: micActivo })
-        .then((stream) => {
-          streamRef.current = stream;
-          if (videoRef.current) {
-            videoRef.current.srcObject = stream;
+    try {
+      const { supabase } = await import('@/lib/supabaseClient').catch(() => ({ supabase: null as any }));
+      
+      if (supabase) {
+        const { error } = await supabase.from('citas_b2b').insert([
+          {
+            nombre,
+            rut,
+            email,
+            invitados,
+            portal,
+            fecha,
+            hora
           }
-        })
-        .catch((err) => {
-          console.warn('Permiso de cámara denegado o no disponible:', err);
-          alert('No se pudo acceder a la cámara web. Asegúrate de dar permisos en tu navegador.');
-          setCamActiva(false);
-        });
-    } else {
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => track.stop());
-        streamRef.current = null;
+        ]);
+        if (error) throw error;
       }
-      if (videoRef.current) {
-        videoRef.current.srcObject = null;
-      }
+
+      setMensaje({
+        tipo: 'exito',
+        texto: '¡Cita confirmada y vinculada a la Video Reunión con éxito!'
+      });
+
+      setNombre('');
+      setRut('');
+      setEmail('');
+      setInvitados('');
+      setFecha('');
+    } catch (err: any) {
+      console.error('Error al agendar cita:', err);
+      setMensaje({
+        tipo: 'error',
+        texto: 'No se pudo registrar la cita. Por favor verifica los datos o intenta nuevamente.'
+      });
+    } finally {
+      setCargando(false);
     }
-  }, [camActiva, micActivo]);
-
-  // 2. RECONOCIMIENTO DE VOZ Y TRANSCRIPCIÓN EN TIEMPO REAL (Web Speech API)
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-
-    let recognition: any = null;
-    let audioInterval: any = null;
-
-    if (micActivo) {
-      // Simulación visual del nivel de decibeles
-      audioInterval = setInterval(() => {
-        setNivelAudio(Math.floor(Math.random() * 40) + 45);
-      }, 800);
-
-      if (SpeechRecognition && transcriptorActivo) {
-        try {
-          recognition = new SpeechRecognition();
-          recognition.continuous = true;
-          recognition.interimResults = true;
-          recognition.lang = 'es-CL';
-
-          recognition.onresult = (event: any) => {
-            const current = event.resultIndex;
-            const transcript = event.results[current][0].transcript;
-            setSubtituloActual(transcript);
-
-            if (event.results[current].isFinal) {
-              setMensajes((prev) => [
-                ...prev,
-                {
-                  id: Date.now(),
-                  emisor: 'Usuario (Voz)',
-                  texto: transcript,
-                  hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                }
-              ]);
-            }
-          };
-
-          recognition.start();
-        } catch (e) {
-          console.log('Error al iniciar reconocimiento de voz:', e);
-        }
-      }
-    } else {
-      setNivelAudio(0);
-      setSubtituloActual('Micrófono desactivado.');
-    }
-
-    return () => {
-      if (audioInterval) clearInterval(audioInterval);
-      if (recognition) {
-        try { recognition.stop(); } catch (e) {}
-      }
-    };
-  }, [micActivo, transcriptorActivo]);
-
-  const intercambiar = () => setPantallaEnfocada((prev) => (prev === 1 ? 2 : 1));
-
-  const p1 = { id: 1, titulo: appParam, subtitulo: 'Transmisión Principal de Telemedicina & Salud Digital', badge: 'PANTALLA 01 (PRINCIPAL)' };
-  const p2 = { id: 2, titulo: 'Cámara Secundaria / Intérprete LSCh', subtitulo: 'Vista de Participante o Lengua de Señas Chilena', badge: 'PANTALLA 02 (SECUNDARIA)' };
-
-  const principal = pantallaEnfocada === 1 ? p1 : p2;
-  const secundaria = pantallaEnfocada === 1 ? p2 : p1;
-
-  // 3. SUBIDA Y LECTURA DE ARCHIVOS CON PREVISUALIZACIÓN REAL (FileReader)
-  const handleSubirArchivo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-
-      const esImagen = file.type.startsWith('image/');
-
-      reader.onload = (event) => {
-        const nuevo = {
-          id: Date.now(),
-          nombre: file.name,
-          tamano: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
-          fecha: 'Ahora',
-          estado: 'Listo',
-          url: event.target?.result as string,
-          esImagen: esImagen,
-          texto: `Archivo local procesado: ${file.name} (${file.type || 'Documento general'})`
-        };
-        setArchivos((prev) => [...prev, nuevo]);
-      };
-
-      if (esImagen) {
-        reader.readAsDataURL(file);
-      } else {
-        reader.readAsText(file);
-      }
-
-      e.target.value = '';
-    }
-  };
-
-  const handleEliminarArchivo = (id: number) => {
-    setArchivos((prev) => prev.filter((a) => a.id !== id));
-    if (archivoPreview && archivoPreview.id === id) {
-      setArchivoPreview(null);
-    }
-  };
-
-  const handleEnviarMensaje = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!nuevoMensaje.trim()) return;
-    const msg = {
-      id: Date.now(),
-      emisor: 'Usuario',
-      texto: nuevoMensaje,
-      hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
-    setMensajes((prev) => [...prev, msg]);
-    setNuevoMensaje('');
-  };
-
-  const handleAgregarInvitado = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!emailInvitado.trim()) return;
-    setInvitadosList((prev) => [...prev, emailInvitado]);
-    setEmailInvitado('');
-    alert(`Invitación B2B enviada a ${emailInvitado} con cifrado Ley N° 21.663`);
-  };
-
-  const handleCopiarEnlace = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setCopiado(true);
-    setTimeout(() => setCopiado(false), 3000);
-  };
-
-  const handleConfirmarCita = (e: React.FormEvent) => {
-    e.preventDefault();
-    const nuevaCita = { ...formCita, tipo: appParam, id: Date.now() };
-    setCitaActiva(nuevaCita);
-    setMensajes((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        emisor: 'Sistema de Agenda',
-        texto: `Cita vinculada para ${nuevaCita.nombre} (${nuevaCita.tipo}) el ${nuevaCita.fecha} a las ${nuevaCita.hora}.`,
-        hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      }
-    ]);
-    setTabActiva('vivo');
-  };
-
-  const handleCopiarSubtitulos = () => {
-    const textoCompleto = mensajes.map((m) => `[${m.hora}] ${m.emisor}: ${m.texto}`).join('[Transcripción en Vivo]');
-    navigator.clipboard.writeText(textoCompleto);
-    alert('Subtítulos copiados al portapapeles (Ley TEA N° 21.545)');
-  };
-
-  const handleDescargarMinuta = () => {
-    const contenido = `==========================================[Transcripción en Vivo]ASL IDEAS SpA - MINUTA Y COMPROMISOS B2B[Transcripción en Vivo]App / Portal: ${appParam}[Transcripción en Vivo]Fecha: ${new Date().toLocaleDateString()}[Transcripción en Vivo]==========================================[Transcripción en Vivo][Transcripción en Vivo]TRANSCRIPCIÓN DE REUNIÓN:[Transcripción en Vivo]` +
-      mensajes.map((m) => `[${m.hora}] ${m.emisor}: ${m.texto}`).join('[Transcripción en Vivo]') +
-      `[Transcripción en Vivo][Transcripción en Vivo]ARCHIVOS ADJUNTOS EN SALA:[Transcripción en Vivo]` +
-      archivos.map((a) => `- ${a.nombre} (${a.tamano})`).join('[Transcripción en Vivo]') +
-      `[Transcripción en Vivo][Transcripción en Vivo]INVITADOS REGISTRADOS:[Transcripción en Vivo]` +
-      (invitadosList.length > 0 ? invitadosList.map((i) => `- ${i}`).join('[Transcripción en Vivo]') : '- Sin invitados adicionales');
-
-    const element = document.createElement("a");
-    const file = new Blob([contenido], { type: 'text/plain' });
-    element.href = URL.createObjectURL(file);
-    element.download = `Minuta_${appParam.replace(/[Transcripción en Vivo]+/g, '_')}.txt`;
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
   };
 
   return (
-    <main className={`min-h-screen font-sans flex flex-col transition-colors duration-500 ${
-      modoCalma ? 'bg-[#EAECE6] text-[#4E5447]' : 'bg-[#E6E7D5] text-[#676E5E]'
-    }`}>
-      {/* HEADER PRINCIPAL */}
-      <header className="bg-[#FAF8F5] border-b border-[#97A884]/30 py-4 px-6 flex items-center justify-between shadow-sm sticky top-0 z-30">
-        
-            
-
-                {/* PANTALLA SECUNDARIA MINIATURA */}
-                <div
-                  onClick={intercambiar}
-                  className="group cursor-pointer bg-[#222824] hover:bg-[#2C342F] rounded-2xl p-5 border-2 border-[#52796F] flex flex-col justify-between min-h-[340px] sm:min-h-[420px] relative overflow-hidden shadow-xl transition-all"
-                >
-                  <div className="flex justify-between items-center z-10">
-                    <span className="bg-[#52796F]/80 text-white text-[10px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider">
-                      {secundaria.badge}
-                    </span>
-                    <span className="text-[11px] text-[#97A884] group-hover:underline font-bold">
-                      Clic para Agrandar
-                    </span>
-                  </div>
-
-                  <div className="text-center py-6 space-y-3 z-10">
-                    <div className="w-20 h-20 mx-auto rounded-full bg-[#52796F]/30 border-2 border-[#52796F] flex items-center justify-center text-xs font-extrabold text-emerald-300 shadow-inner group-hover:scale-110 transition-transform">
-                      {secundaria.id === 1 ? 'VÍDEO' : 'LSCh'}
-                    </div>
-                    <div className="space-y-1">
-                      <h3 className="text-sm font-extrabold text-gray-100">
-                        {secundaria.titulo}
-                      </h3>
-                      <p className="text-[11px] text-emerald-300 font-semibold">
-                        Cámara Lateral en Vivo
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3 z-10">
-                    <div className="bg-[#52796F]/40 text-center py-2.5 rounded-xl border border-[#52796F] group-hover:bg-[#52796F] group-hover:text-white transition shadow-sm">
-                      <span className="text-xs font-extrabold text-white flex items-center justify-center gap-1.5">
-                        <span>Agrandar esta Pantalla</span>
-                      </span>
-                    </div>
-                    <p className="text-[10px] text-center text-gray-400">
-                      Presiona para intercambiar de lugar con la pantalla principal
-                    </p>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* MEDIDOR DE AUDIO NATIVO */}
-              <div className="bg-[#FAF8F5] p-3.5 rounded-2xl border border-[#97A884]/40 flex flex-wrap items-center justify-between gap-4 shadow-sm">
-                <span className="text-xs font-extrabold text-[#676E5E] min-w-[130px]">
-                  Nivel de Audio Entrante:
-                </span>
-                <div className="flex-1 bg-gray-200 h-3 rounded-full overflow-hidden relative">
-                  <div
-                    className="h-full bg-gradient-to-r from-emerald-500 via-yellow-400 to-rose-500 transition-all duration-300 rounded-full"
-                    style={{ width: micActivo ? `${nivelAudio}%` : '0%' }}
-                  />
-                </div>
-                <span className="text-xs font-bold text-[#52796F] min-w-[60px] text-right">
-                  {micActivo ? `${nivelAudio}% dB` : '0% dB'}
-                </span>
-              </div>
-
-              {/* BOTONES DE CONTROL INTERACTIVOS */}
-              <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-                <div className="flex flex-wrap items-center gap-3">
-                  <button
-                    onClick={() => setMicActivo(!micActivo)}
-                    className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold shadow transition flex items-center gap-2 ${
-                      micActivo
-                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                        : 'bg-rose-100 border border-rose-300 text-rose-800 hover:bg-rose-200'
-                    }`}
-                  >
-                    <span>{micActivo ? 'Micrófono Activado' : 'Micrófono Silenciado'}</span>
-                  </button>
-
-                  <button
-                    onClick={() => setCamActiva(!camActiva)}
-                    className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold shadow transition flex items-center gap-2 ${
-                      camActiva
-                        ? 'bg-[#676E5E] hover:bg-[#52796F] text-white'
-                        : 'bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] hover:bg-[#E6E7D5]'
-                    }`}
-                  >
-                    <span>{camActiva ? 'Cámara Activada' : 'Encender Cámara'}</span>
-                  </button>
-
-                  <button
-                    onClick={() => setTranscriptorActivo(!transcriptorActivo)}
-                    className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold shadow transition flex items-center gap-2 ${
-                      transcriptorActivo
-                        ? 'bg-[#52796F] text-white'
-                        : 'bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] hover:bg-[#E6E7D5]'
-                    }`}
-                  >
-                    <span>{transcriptorActivo ? 'Transcribir reunión' : 'Transcribir reunión'}</span>
-                  </button>
-
-                  <button
-                    onClick={intercambiar}
-                    className="bg-[#97A884] hover:bg-[#676E5E] text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold shadow transition flex items-center gap-2"
-                  >
-                    <span>Intercambiar Pantallas</span>
-                  </button>
-                </div>
-
-                <button
-                  onClick={() => setShowModalInvitados(true)}
-                  className="bg-[#52796F] hover:bg-[#676E5E] text-white px-5 py-2 rounded-xl text-xs sm:text-sm font-extrabold shadow transition flex items-center gap-2"
-                >
-                  <span>+ Agregar Invitados B2B</span>
-                </button>
-              </div>
-            </div>
-
-            {/* ARCHIVOS Y TRANSCRIPCIÓN */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              
-              {/* BLOQUE 1: ARCHIVOS ADJUNTOS */}
-              <div className="bg-[#FAF8F5] p-5 rounded-3xl border border-[#97A884]/40 shadow-lg space-y-4 flex flex-col justify-between">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between border-b border-[#97A884]/30 pb-3">
-                    <h3 className="font-extrabold text-base text-[#676E5E]">Archivos Adjuntos de {appParam}</h3>
-
-                    <label className="bg-[#52796F] hover:bg-[#676E5E] text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow cursor-pointer transition flex items-center gap-1.5">
-                      <span>+ Subir Archivo</span>
-                      <input type="file" onChange={handleSubirArchivo} className="hidden" />
-                    </label>
-                  </div>
-
-                  <div className="space-y-2.5 max-h-[260px] overflow-y-auto pr-1">
-                    {archivos.map((arc) => (
-                      <div key={arc.id} className="bg-white p-3.5 rounded-2xl border border-[#97A884]/30 flex items-center justify-between gap-3 shadow-xs">
-                        <div className="flex items-center space-x-3 overflow-hidden">
-                          <span className="text-xs font-bold text-[#52796F] bg-[#E6E7D5] px-2 py-1 rounded-md shrink-0">[DOC]</span>
-                          <div className="truncate">
-                            <p className="text-xs font-extrabold text-[#676E5E] truncate">{arc.nombre}</p>
-                            <p className="text-[10px] font-bold text-[#52796F]">{arc.tamano} • {arc.fecha}</p>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center space-x-1.5 shrink-0">
-                          <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded-md">
-                            {arc.estado}
-                          </span>
-                          <button
-                            onClick={() => setArchivoPreview(arc)}
-                            className="bg-[#FAF8F5] hover:bg-[#E6E7D5] text-[#676E5E] text-[11px] font-bold px-2.5 py-1 rounded-lg border border-[#97A884]"
-                          >
-                            Previsualizar
-                          </button>
-                          <button
-                            onClick={() => handleEliminarArchivo(arc.id)}
-                            className="text-rose-600 hover:text-rose-800 text-[11px] font-bold px-1.5 py-1"
-                          >
-                            Eliminar
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t border-[#97A884]/30 text-center">
-                  <p className="text-[10px] font-extrabold text-[#52796F] uppercase tracking-wider flex items-center justify-center gap-1">
-                    <span>Cifrado de documentos según Ley N° 21.663</span>
-                  </p>
-                </div>
-              </div>
-
-              {/* BLOQUE 2: TRANSCRIPCIÓN & CHAT */}
-              <div className="bg-[#FAF8F5] p-5 rounded-3xl border border-[#97A884]/40 shadow-lg space-y-4 flex flex-col justify-between">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between border-b border-[#97A884]/30 pb-3">
-                    <h3 className="font-extrabold text-base text-[#676E5E]">Transcripción en Vivo & Chat</h3>
-
-                    <div className="flex items-center space-x-2">
-                      <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-1 rounded-md">
-                        {transcriptorActivo ? 'Transcriptor Activo' : 'Transcriptor en Pausa'}
-                      </span>
-                      <button
-                        onClick={() => setMensajes([])}
-                        className="text-xs text-[#676E5E] hover:underline font-bold"
-                      >
-                        Limpiar
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="bg-white p-3.5 rounded-2xl border border-[#97A884]/30 h-[170px] overflow-y-auto space-y-2.5 text-xs">
-                    {mensajes.length > 0 ? (
-                      mensajes.map((m) => (
-                        <div key={m.id} className="space-y-0.5">
-                          <span className="font-extrabold text-[#52796F] text-[11px]">{m.emisor}: </span>
-                          <span className="text-[#676E5E]">{m.texto}</span>
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-gray-400 text-center py-8 text-xs font-bold">Sin transcripciones aún.</p>
-                    )}
-                  </div>
-
-                  <form onSubmit={handleEnviarMensaje} className="flex gap-2 pt-1">
-                    <input
-                      type="text"
-                      value={nuevoMensaje}
-                      onChange={(e) => setNuevoMensaje(e.target.value)}
-                      placeholder="Dicta o escribe un comentario..."
-                      className="flex-1 px-3.5 py-2 border border-[#97A884] rounded-xl text-xs bg-white shadow-xs focus:outline-none focus:border-[#52796F]"
-                    />
-                    <button
-                      type="submit"
-                      className="bg-[#52796F] hover:bg-[#676E5E] text-white font-extrabold text-xs px-4 py-2 rounded-xl shadow transition"
-                    >
-                      Enviar
-                    </button>
-                  </form>
-                </div>
-
-                <div className="pt-3 border-t border-[#97A884]/30 flex flex-wrap items-center justify-between gap-2">
-                  <button
-                    onClick={handleCopiarSubtitulos}
-                    className="bg-[#FAF8F5] hover:bg-[#E6E7D5] text-[#52796F] border border-[#97A884] text-xs font-extrabold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5"
-                  >
-                    <span>Copiar Subtítulos (Ley TEA N° 21.545)</span>
-                  </button>
-
-                  <button
-                    onClick={handleDescargarMinuta}
-                    className="bg-[#52796F] hover:bg-[#676E5E] text-white text-xs font-extrabold px-4 py-2 rounded-xl shadow transition flex items-center gap-1.5"
-                  >
-                    <span>Minuta y Compromisos (Descargar .TXT)</span>
-                  </button>
-                </div>
-              </div>
-
-            </div>
-
+    <main className={`min-h-screen p-4 md:p-8 transition-colors duration-300 ${modoCalma ? 'bg-[#FAF8F5] text-[#2C3E35]' : 'bg-slate-900 text-white'}`}>
+      {/* Header */}
+      <header className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-slate-700/50">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center font-bold text-white shadow-lg">
+            ASL
           </div>
-        )}
-
-        {/* PESTAÑA 2: AGENDA Y CITAS */}
-        {tabActiva === 'cita' && (
-          <div className="bg-[#FAF8F5] p-6 sm:p-8 rounded-3xl border border-[#97A884]/40 shadow-lg space-y-6 max-w-2xl mx-auto">
-            <div className="text-center space-y-2">
-              <h2 className="text-xl font-black text-[#676E5E]">Agendar Cita en la Sala de {appParam}</h2>
-              <p className="text-xs text-[#52796F]">
-                Selecciona la fecha y bloque de atención B2B. Al agendar, la cita quedará automáticamente vinculada con la Video Reunión en vivo.
-              </p>
-            </div>
-
-            <form onSubmit={handleConfirmarCita} className="space-y-4 text-xs">
-              <div>
-                <label className="font-extrabold text-[#676E5E] block mb-1">Nombre Completo o Empresa:</label>
-                <input
-                  type="text"
-                  required
-                  value={formCita.nombre}
-                  onChange={(e) => setFormCita({ ...formCita, nombre: e.target.value })}
-                  placeholder="Ej: Centro Médico ASL / Juan Pérez"
-                  className="w-full px-3.5 py-2.5 border border-[#97A884] rounded-xl bg-white focus:outline-none"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="font-extrabold text-[#676E5E] block mb-1">Correo Electrónico:</label>
-                  <input
-                    type="email"
-                    required
-                    value={formCita.email}
-                    onChange={(e) => setFormCita({ ...formCita, email: e.target.value })}
-                    placeholder="correo@ejemplo.com"
-                    className="w-full px-3.5 py-2.5 border border-[#97A884] rounded-xl bg-white focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="font-extrabold text-[#676E5E] block mb-1">Tipo / Portal B2B:</label>
-                  <input
-                    type="text"
-                    readOnly
-                    value={appParam}
-                    className="w-full px-3.5 py-2.5 border border-[#97A884] rounded-xl bg-gray-100 font-bold text-[#52796F]"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="font-extrabold text-[#676E5E] block mb-1">Fecha Preferente:</label>
-                  <input
-                    type="date"
-                    required
-                    value={formCita.fecha}
-                    onChange={(e) => setFormCita({ ...formCita, fecha: e.target.value })}
-                    className="w-full px-3.5 py-2.5 border border-[#97A884] rounded-xl bg-white focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="font-extrabold text-[#676E5E] block mb-1">Bloque Horario:</label>
-                  <select
-                    value={formCita.hora}
-                    onChange={(e) => setFormCita({ ...formCita, hora: e.target.value })}
-                    className="w-full px-3.5 py-2.5 border border-[#97A884] rounded-xl bg-white focus:outline-none font-bold text-[#676E5E]"
-                  >
-                    <option value="09:00 AM">09:00 AM</option>
-                    <option value="10:00 AM">10:00 AM</option>
-                    <option value="11:30 AM">11:30 AM</option>
-                    <option value="03:00 PM">03:00 PM</option>
-                    <option value="04:30 PM">04:30 PM</option>
-                  </select>
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-[#52796F] hover:bg-[#676E5E] text-white font-extrabold text-sm py-3 rounded-xl shadow transition mt-2 flex items-center justify-center gap-2"
-              >
-                <span>Confirmar Cita y Vincular a la Video Reunión</span>
-              </button>
-            </form>
+          <div>
+            <h1 className="text-xl font-bold tracking-tight">Casa Matriz ASL Ideas SpA</h1>
+            <p className="text-xs opacity-75">Sala Virtual & Agendamiento B2B Inclusivo</p>
           </div>
-        )}
+        </div>
 
-        {/* PESTAÑA 3: FICHA OFICIAL */}
-        {tabActiva === 'oficina' && (
-          <div className="bg-[#FAF8F5] p-6 sm:p-8 rounded-3xl border border-[#97A884]/40 shadow-lg space-y-6">
-            <div className="border-b border-[#97A884]/30 pb-4 flex items-center justify-between">
-              <div>
-                <span className="bg-[#52796F] text-white text-[10px] font-black px-3 py-1 rounded-full uppercase">
-                  FICHA OFICIAL B2B
-                </span>
-                <h2 className="text-xl font-black text-[#676E5E] mt-2">
-                  Oficina Virtual: {appParam}
-                </h2>
-              </div>
-              <img src={logoParam} alt="Logo" className="w-16 h-16 object-contain rounded-full border-2 border-[#52796F] bg-white p-1" />
-            </div>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setModoCalma(!modoCalma)}
+            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-200 border border-slate-700"
+          >
+            {modoCalma ? '��� Modo Calma Activo' : 'Activar Modo Calma (TEA)'}
+          </button>
+          <a
+            href="/"
+            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 transition border border-slate-700"
+          >
+            Volver a la Web
+          </a>
+        </div>
+      </header>
 
-            <div className="space-y-4 text-xs sm:text-sm text-[#676E5E]">
-              <h3 className="font-extrabold text-[#52796F] text-base">Propósito Tecnológico & Inclusión</h3>
-              <p className="leading-relaxed">
-                ASL Ideas SpA desarrolla plataformas integrativas de telemedicina accesible, salud digital y programas de actividad física adaptada. Diseñadas bajo cumplimiento estricto de la <strong>Ley TEA N° 21.545</strong> (accesibilidad cognitiva y baja carga sensorial) y la <strong>Ley N° 21.663 de Ciberseguridad</strong>.
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                <div className="bg-white p-4 rounded-2xl border border-[#97A884]/30 space-y-2">
-                  <h4 className="font-extrabold text-[#52796F]">Video Reunión & Accesibilidad</h4>
-                  <ul className="list-disc list-inside text-xs space-y-1 text-[#676E5E]">
-                    <li>Doble pantalla interactiva con Intérprete LSCh.</li>
-                    <li>Subtitulación automática y minutas descargables (.TXT).</li>
-                    <li>Modo Calma para autorregulación sensorial TEA.</li>
-                  </ul>
-                </div>
-
-                <div className="bg-white p-4 rounded-2xl border border-[#97A884]/30 space-y-2">
-                  <h4 className="font-extrabold text-[#52796F]">Ciberseguridad & Agenda</h4>
-                  <ul className="list-disc list-inside text-xs space-y-1 text-[#676E5E]">
-                    <li>Cifrado de documentos TLS 1.3 según Ley N° 21.663.</li>
-                    <li>Agendamiento de horas vinculado directamente a la reunión.</li>
-                    <li>Envío de invitaciones cifradas a múltiples usuarios B2B.</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* PESTAÑA 4: CANCELAR / REPROGRAMAR */}
-        {tabActiva === 'reprogramar' && (
-          <div className="bg-[#FAF8F5] p-6 sm:p-8 rounded-3xl border border-[#97A884]/40 shadow-lg space-y-6 max-w-xl mx-auto text-center">
-            <h2 className="text-xl font-black text-[#676E5E]">Gestión de Citas Existentes</h2>
-            <p className="text-xs text-[#52796F]">
-              Ingresa tu código de reserva o correo para modificar o cancelar tu atención en {appParam}.
-            </p>
-
-            <div className="flex gap-2 max-w-md mx-auto">
-              <input
-                type="text"
-                placeholder="Código de reserva o RUT"
-                className="flex-1 px-3.5 py-2.5 border border-[#97A884] rounded-xl text-xs bg-white focus:outline-none shadow-xs"
-              />
-              <button
-                onClick={() => alert('Búsqueda completada. Puedes seleccionar una nueva fecha.')}
-                className="bg-[#676E5E] hover:bg-[#52796F] text-white font-bold text-xs px-5 py-2.5 rounded-xl transition shadow"
-              >
-                Buscar
-              </button>
-            </div>
-          </div>
-        )}
-
+      {/* Navegación por Pestañas */}
+      <div className="max-w-7xl mx-auto mb-6 flex flex-wrap gap-2 border-b border-slate-700/40 pb-2">
+        <button
+          type="button"
+          onClick={() => setTabActiva('vivo')}
+          className={`px-4 py-2 text-sm font-semibold rounded-lg transition ${
+            tabActiva === 'vivo'
+              ? 'bg-emerald-600 text-white shadow-md'
+              : 'bg-slate-800/60 text-slate-300 hover:bg-slate-800'
+          }`}
+        >
+          ��� Sala Virtual en Vivo
+        </button>
+        <button
+          type="button"
+          onClick={() => setTabActiva('cita')}
+          className={`px-4 py-2 text-sm font-semibold rounded-lg transition ${
+            tabActiva === 'cita'
+              ? 'bg-emerald-600 text-white shadow-md'
+              : 'bg-slate-800/60 text-slate-300 hover:bg-slate-800'
+          }`}
+        >
+          ��� Agendar Cita en la Sala
+        </button>
       </div>
 
-      {/* MODAL 1: PREVISUALIZADOR REAL DE IMÁGENES Y DOCUMENTOS */}
-      {archivoPreview && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-          <div className="bg-[#FAF8F5] p-6 rounded-3xl border-2 border-[#52796F] shadow-2xl max-w-lg w-full space-y-4">
-            <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-3">
-              <h3 className="font-black text-base text-[#676E5E]">Visor de Documentos (Ley N° 21.663)</h3>
-              <button onClick={() => setArchivoPreview(null)} className="text-gray-400 hover:text-gray-600 font-bold text-lg px-2">✕</button>
-            </div>
-
-            <div className="bg-white p-4 rounded-2xl border border-[#97A884]/30 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-black text-[#52796F]">{archivoPreview.nombre}</span>
-                <span className="text-[10px] bg-[#E6E7D5] text-[#52796F] px-2 py-0.5 rounded font-bold">{archivoPreview.tamano}</span>
+      {/* Pestaña 1: Transmisión en Vivo */}
+      {tabActiva === 'vivo' && (
+        <section className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-4">
+            <div className="relative aspect-video bg-black rounded-2xl overflow-hidden border border-slate-700 shadow-2xl flex items-center justify-center">
+              <div className="text-center p-6">
+                <p className="text-slate-400 text-sm mb-2">Transmisión Principal en Vivo</p>
+                <h3 className="text-lg font-semibold">Reunión Virtual Casa Matriz ASL Ideas SpA</h3>
               </div>
-
-              {archivoPreview.esImagen || archivoPreview.url ? (
-                <div className="max-h-64 overflow-hidden rounded-xl border border-gray-200 bg-gray-50 flex items-center justify-center p-2">
-                  <img
-                    src={archivoPreview.url || logoParam}
-                    alt="Previsualización"
-                    className="max-h-56 w-auto object-contain rounded-lg"
-                    onError={(e) => { (e.target as HTMLImageElement).src = logoParam; }}
-                  />
-                </div>
-              ) : (
-                <div className="max-h-56 overflow-y-auto text-xs text-[#676E5E] bg-gray-50 p-3 rounded-xl border border-gray-200 font-mono">
-                  {archivoPreview.texto || 'Contenido encriptado y seguro bajo ciberseguridad Ley N° 21.663.'}
-                </div>
-              )}
             </div>
 
-            <div className="flex justify-between items-center pt-2">
-              <span className="text-[10px] text-[#52796F] font-bold">Estado: Protegido y Verificado</span>
+            <div className="flex items-center justify-center gap-4 p-4 bg-slate-800/50 rounded-xl border border-slate-700/50">
               <button
-                onClick={() => setArchivoPreview(null)}
-                className="bg-[#52796F] hover:bg-[#676E5E] text-white font-bold text-xs px-5 py-2 rounded-xl shadow"
+                type="button"
+                onClick={() => setMicActivo(!micActivo)}
+                className={`px-4 py-2 text-xs font-semibold rounded-lg transition ${
+                  micActivo ? 'bg-emerald-600 text-white' : 'bg-red-600/80 text-white'
+                }`}
               >
-                Cerrar Visor
+                {micActivo ? '���️ Micrófono Encendido' : '���️ Micrófono Apagado'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setCamActiva(!camActiva)}
+                className={`px-4 py-2 text-xs font-semibold rounded-lg transition ${
+                  camActiva ? 'bg-emerald-600 text-white' : 'bg-red-600/80 text-white'
+                }`}
+              >
+                {camActiva ? '��� Cámara Encendida' : '��� Cámara Apagada'}
               </button>
             </div>
           </div>
-        </div>
+
+          <div className="bg-slate-800/40 p-6 rounded-2xl border border-slate-700/50 flex flex-col justify-between">
+            <div>
+              <h3 className="text-md font-bold mb-3 text-emerald-400">Información de la Sala</h3>
+              <p className="text-xs text-slate-300 mb-4 leading-relaxed">
+                Espacio accesible diseñado con baja sobrecarga sensorial para reuniones institucionales y convenios B2B.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setTabActiva('cita')}
+              className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition shadow-lg"
+            >
+              + Agregar Invitados / Agendar Cita B2B
+            </button>
+          </div>
+        </section>
       )}
 
-      {/* MODAL 2: INVITADOS B2B */}
-      {showModalInvitados && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-          <div className="bg-[#FAF8F5] p-6 rounded-3xl border-2 border-[#52796F] shadow-2xl max-w-md w-full space-y-5 animate-in fade-in zoom-in duration-200">
-            <div className="flex justify-between items-center border-b border-[#97A884]/30 pb-3">
-              <h3 className="font-black text-base text-[#676E5E]">Agregar Invitados B2B</h3>
-              <button
-                onClick={() => setShowModalInvitados(false)}
-                className="text-gray-400 hover:text-gray-600 font-bold text-lg px-2"
-              >
-                ✕
-              </button>
+      {/* Pestaña 2: Formulario de Agendamiento B2B */}
+      {tabActiva === 'cita' && (
+        <section className="max-w-3xl mx-auto bg-slate-800/80 p-6 md:p-8 rounded-2xl border border-slate-700 shadow-2xl">
+          <div className="mb-6">
+            <h2 className="text-xl md:text-2xl font-bold text-white mb-2">
+              Agendar Cita en la Sala de Casa Matriz ASL Ideas SpA
+            </h2>
+            <p className="text-xs md:text-sm text-slate-300">
+              Selecciona la fecha y bloque de atención B2B. Al agendar, la cita quedará automáticamente vinculada con la Video Reunión en vivo.
+            </p>
+          </div>
+
+          {mensaje && (
+            <div
+              className={`p-4 mb-6 rounded-xl text-xs md:text-sm font-medium ${
+                mensaje.tipo === 'exito'
+                  ? 'bg-emerald-950/80 border border-emerald-500 text-emerald-200'
+                  : 'bg-red-950/80 border border-red-500 text-red-200'
+              }`}
+            >
+              {mensaje.texto}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmitCita} className="space-y-4 text-left">
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 mb-1">
+                Nombre Completo o Empresa <span className="text-emerald-400">*</span>
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="Ej: Centro Médico ASL / Juan Pérez"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              />
             </div>
 
-            <p className="text-xs text-[#52796F]">
-              Envía invitaciones por correo para sumarse a la reunión de <strong>{appParam}</strong> o copia el enlace directo cifrado.
-            </p>
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 mb-1">
+                RUT o RUT Tributario <span className="text-emerald-400">*</span>
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="Ej: 76.543.210-K / 12.345.678-9"
+                value={rut}
+                onChange={(e) => setRut(e.target.value)}
+                className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              />
+            </div>
 
-            <form onSubmit={handleAgregarInvitado} className="space-y-3">
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 mb-1">
+                Correo Electrónico <span className="text-emerald-400">*</span>
+              </label>
+              <input
+                type="email"
+                required
+                placeholder="correo@ejemplo.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 mb-1">
+                Correos de Invitados Adicionales (Opcional)
+              </label>
+              <input
+                type="text"
+                placeholder="Ej: gerencia@empresa.cl, ti@empresa.cl"
+                value={invitados}
+                onChange={(e) => setInvitados(e.target.value)}
+                className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              />
+              <p className="text-[11px] text-slate-400 mt-1">
+                Separa varios correos por coma. Recibirán la clave de acceso.
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 mb-1">
+                Tipo / Portal B2B
+              </label>
+              <input
+                type="text"
+                value={portal}
+                readOnly
+                className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-400 cursor-not-allowed"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="font-extrabold text-xs text-[#676E5E] block mb-1">Correo del Invitado:</label>
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  Fecha Preferente <span className="text-emerald-400">*</span>
+                </label>
                 <input
-                  type="email"
+                  type="date"
                   required
-                  value={emailInvitado}
-                  onChange={(e) => setEmailInvitado(e.target.value)}
-                  placeholder="invitado@empresa.com"
-                  className="w-full px-3.5 py-2 rounded-xl text-xs bg-white border border-[#97A884] focus:outline-none focus:border-[#52796F]"
+                  value={fecha}
+                  onChange={(e) => setFecha(e.target.value)}
+                  className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
+              <div>
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  Bloque Horario <span className="text-emerald-400">*</span>
+                </label>
+                <select
+                  value={hora}
+                  onChange={(e) => setHora(e.target.value)}
+                  className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-emerald-500"
+                >
+                  <option value="09:00 AM">09:00 AM</option>
+                  <option value="10:00 AM">10:00 AM</option>
+                  <option value="11:00 AM">11:00 AM</option>
+                  <option value="12:00 PM">12:00 PM</option>
+                  <option value="03:00 PM">03:00 PM</option>
+                  <option value="04:00 PM">04:00 PM</option>
+                  <option value="05:00 PM">05:00 PM</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="pt-4">
               <button
                 type="submit"
-                className="w-full bg-[#52796F] hover:bg-[#676E5E] text-white font-extrabold text-xs py-2.5 rounded-xl shadow transition"
+                disabled={cargando}
+                className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold rounded-xl transition shadow-lg disabled:opacity-50"
               >
-                Enviar Invitación Cifrada (Ley N° 21.663)
-              </button>
-            </form>
-
-            <div className="border-t border-[#97A884]/30 pt-3 space-y-2">
-              <button
-                onClick={handleCopiarEnlace}
-                className="w-full bg-white hover:bg-[#E6E7D5] border border-[#97A884] text-[#676E5E] font-extrabold text-xs py-2.5 rounded-xl transition shadow-xs flex items-center justify-center gap-2"
-              >
-                <span>{copiado ? '¡Enlace Copiado al Portapapeles!' : 'Copiar Enlace Directo a esta Sala'}</span>
+                {cargando ? 'Guardando agendamiento...' : 'Confirmar Cita y Vincular a la Video Reunión'}
               </button>
             </div>
-          </div>
-        </div>
+          </form>
+        </section>
       )}
-
-      <footer className="bg-[#FAF8F5] border-t border-[#97A884]/30 py-4 px-6 text-center text-xs text-[#676E5E]/80 mt-auto">
-        <p>© 2026 ASL Ideas SpA — Sala Virtual B2B ({appParam}) | Cumplimiento Ley TEA N° 21.545 & Ley N° 21.663</p>
-      </footer>
     </main>
   );
 }
 
 export default function SalaVirtualPage() {
-  const [invitados, setInvitados] = useState('');
   return (
-    <Suspense fallback={<div className="p-10 text-center font-bold text-[#676E5E]">Cargando Sala Virtual...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-slate-400">Cargando Sala Virtual...</div>}>
       <SalaVirtualContent />
     </Suspense>
   );
