@@ -1,23 +1,25 @@
 'use client';
 
-import React, { useState, useRef, useEffect, Suspense } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 function SalaVirtualContent() {
   const searchParams = useSearchParams();
   const initialTab = (searchParams.get('tab') as any) || 'vivo';
+  const appNombre = searchParams.get('app') || 'Casa Matriz ASL Ideas SpA';
+  const appLogo = searchParams.get('logo') || '/logo-asl.png.png';
 
-  const [tabActiva, setTabActiva] = useState<'vivo' | 'cita' | 'oficina' | 'reprogramar'>(initialTab);
+  const [tabActiva, setTabActiva] = useState<'vivo' | 'cita' | 'cancelar'>(initialTab === 'cita' ? 'cita' : 'vivo');
   const [micActivo, setMicActivo] = useState(false);
   const [camActiva, setCamActiva] = useState(false);
   const [modoCalma, setModoCalma] = useState(false);
+  const [tipoPantalla, setTipoPantalla] = useState<'principal' | 'presentacion' | 'pizarra'>('principal');
 
-  // Estados del Formulario B2B
   const [nombre, setNombre] = useState('');
   const [rut, setRut] = useState('');
   const [email, setEmail] = useState('');
   const [invitados, setInvitados] = useState('');
-  const [portal, setPortal] = useState('Casa Matriz ASL Ideas SpA');
   const [fecha, setFecha] = useState('');
   const [hora, setHora] = useState('10:00 AM');
 
@@ -39,7 +41,7 @@ function SalaVirtualContent() {
             rut,
             email,
             invitados,
-            portal,
+            portal: appNombre,
             fecha,
             hora
           }
@@ -69,16 +71,19 @@ function SalaVirtualContent() {
   };
 
   return (
-    <main className={`min-h-screen p-4 md:p-8 transition-colors duration-300 ${modoCalma ? 'bg-[#FAF8F5] text-[#2C3E35]' : 'bg-slate-900 text-white'}`}>
-      {/* Header */}
-      <header className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-slate-700/50">
+    <main className={`min-h-screen p-4 md:p-8 transition-colors duration-300 ${modoCalma ? 'bg-[#F2F7F6] text-[#1B3B36]' : 'bg-[#E5F0EE] text-[#142E2A]'}`}>
+      
+      {/* HEADER */}
+      <header className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-[#2D6A4F]/20">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center font-bold text-white shadow-lg">
-            ASL
-          </div>
+          <img 
+            src={appLogo} 
+            alt="Logo App" 
+            className="w-12 h-12 object-contain rounded-2xl bg-white p-1 border border-[#2D6A4F]/30 shadow-sm" 
+          />
           <div>
-            <h1 className="text-xl font-bold tracking-tight">Casa Matriz ASL Ideas SpA</h1>
-            <p className="text-xs opacity-75">Sala Virtual & Agendamiento B2B Inclusivo</p>
+            <h1 className="text-lg md:text-xl font-black text-[#1B4D3E]">{appNombre}</h1>
+            <p className="text-xs text-[#2D6A4F] font-bold">Sala Virtual B2B & Agendamiento Inclusivo</p>
           </div>
         </div>
 
@@ -86,213 +91,238 @@ function SalaVirtualContent() {
           <button
             type="button"
             onClick={() => setModoCalma(!modoCalma)}
-            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-200 border border-slate-700"
+            className="px-3 py-1.5 text-xs font-bold rounded-xl bg-[#2D6A4F] text-white hover:bg-[#1B4D3E] transition"
           >
-            {modoCalma ? '🌿 Modo Calma Activo' : 'Activar Modo Calma (TEA)'}
+            {modoCalma ? 'Modo Calma Activo' : 'Activar Modo Calma (TEA)'}
           </button>
-          <a
+          <Link
             href="/"
-            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 transition border border-slate-700"
+            className="px-3 py-1.5 text-xs font-bold rounded-xl bg-[#FAFDFD] text-[#1B4D3E] border border-[#2D6A4F]/30 hover:bg-[#EAF3F2] transition"
           >
             Volver a la Web
-          </a>
+          </Link>
         </div>
       </header>
 
-      {/* Navegación por Pestañas */}
-      <div className="max-w-7xl mx-auto mb-6 flex flex-wrap gap-2 border-b border-slate-700/40 pb-2">
+      {/* PESTAÑAS */}
+      <div className="max-w-7xl mx-auto mb-6 flex flex-wrap gap-2 border-b border-[#2D6A4F]/20 pb-2">
         <button
           type="button"
           onClick={() => setTabActiva('vivo')}
-          className={`px-4 py-2 text-sm font-semibold rounded-lg transition ${
+          className={`px-4 py-2 text-xs md:text-sm font-extrabold rounded-xl transition ${
             tabActiva === 'vivo'
-              ? 'bg-emerald-600 text-white shadow-md'
-              : 'bg-slate-800/60 text-slate-300 hover:bg-slate-800'
+              ? 'bg-[#1B4D3E] text-white shadow-md'
+              : 'bg-[#FAFDFD] text-[#1B4D3E] hover:bg-[#EAF3F2] border border-[#2D6A4F]/20'
           }`}
         >
-          📹 Sala Virtual en Vivo
+          Sala Virtual en Vivo
         </button>
         <button
           type="button"
           onClick={() => setTabActiva('cita')}
-          className={`px-4 py-2 text-sm font-semibold rounded-lg transition ${
+          className={`px-4 py-2 text-xs md:text-sm font-extrabold rounded-xl transition ${
             tabActiva === 'cita'
-              ? 'bg-emerald-600 text-white shadow-md'
-              : 'bg-slate-800/60 text-slate-300 hover:bg-slate-800'
+              ? 'bg-[#1B4D3E] text-white shadow-md'
+              : 'bg-[#FAFDFD] text-[#1B4D3E] hover:bg-[#EAF3F2] border border-[#2D6A4F]/20'
           }`}
         >
-          📅 Agendar Cita en la Sala
+          Agendar Cita B2B
+        </button>
+        <button
+          type="button"
+          onClick={() => setTabActiva('cancelar')}
+          className={`px-4 py-2 text-xs md:text-sm font-extrabold rounded-xl transition ${
+            tabActiva === 'cancelar'
+              ? 'bg-[#1B4D3E] text-white shadow-md'
+              : 'bg-[#FAFDFD] text-[#1B4D3E] hover:bg-[#EAF3F2] border border-[#2D6A4F]/20'
+          }`}
+        >
+          Cancelar Cita
         </button>
       </div>
 
-      {/* Pestaña 1: Transmisión en Vivo */}
+      {/* PESTAÑA 1: SALA EN VIVO */}
       {tabActiva === 'vivo' && (
         <section className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
           <div className="lg:col-span-2 space-y-4">
-            <div className="relative aspect-video bg-black rounded-2xl overflow-hidden border border-slate-700 shadow-2xl flex items-center justify-center">
-              <div className="text-center p-6">
-                <p className="text-slate-400 text-sm mb-2">Transmisión Principal en Vivo</p>
-                <h3 className="text-lg font-semibold">Reunión Virtual Casa Matriz ASL Ideas SpA</h3>
+            
+            {/* CONTENEDOR VIDEOLLAMADA (VERDE OCÉANO MEDIO: NI MUY BLANCO NI MUY OSCURO) */}
+            <div className="relative aspect-video bg-[#C7E3E0] rounded-2xl overflow-hidden border-2 border-[#2D6A4F]/40 shadow-lg flex items-center justify-center p-6 text-center">
+              <div className="space-y-2">
+                <p className="text-[#133A33] text-xs font-bold uppercase tracking-wider">
+                  Transmisión Principal en Vivo — {appNombre}
+                </p>
+                <h3 className="text-base md:text-xl font-black text-[#0A2621]">
+                  Modo Activo: Pantalla {tipoPantalla.charAt(0).toUpperCase() + tipoPantalla.slice(1)}
+                </h3>
+                <p className="text-xs text-[#1C4E46] max-w-md mx-auto">
+                  Entorno seguro de videollamada interactiva con baja carga sensorial.
+                </p>
               </div>
             </div>
 
-            <div className="flex items-center justify-center gap-4 p-4 bg-slate-800/50 rounded-xl border border-slate-700/50">
+            {/* BARRA DE CONTROLES */}
+            <div className="flex flex-wrap items-center justify-between gap-3 p-4 bg-[#FAFDFD] rounded-2xl border border-[#2D6A4F]/30 shadow-sm text-xs">
+              
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setMicActivo(!micActivo)}
+                  className={`px-3 py-2 font-bold rounded-xl transition ${
+                    micActivo ? 'bg-[#1B4D3E] text-white' : 'bg-[#D9534F] text-white'
+                  }`}
+                >
+                  {micActivo ? 'Micrófono Encendido' : 'Micrófono Silenciado'}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setCamActiva(!camActiva)}
+                  className={`px-3 py-2 font-bold rounded-xl transition ${
+                    camActiva ? 'bg-[#1B4D3E] text-white' : 'bg-[#2D6A4F] text-white'
+                  }`}
+                >
+                  {camActiva ? 'Cámara Encendida' : 'Encender Cámara'}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => alert('Función de transcripción activada.')}
+                  className="px-3 py-2 font-bold rounded-xl bg-[#FAFDFD] border border-[#2D6A4F]/40 text-[#1B4D3E] hover:bg-[#EAF3F2]"
+                >
+                  Transcribir Reunión
+                </button>
+              </div>
+
+              {/* SELECTOR DE PANTALLA */}
+              <div className="flex items-center gap-2">
+                <span className="font-extrabold text-[#1B4D3E]">Pantalla:</span>
+                <select
+                  value={tipoPantalla}
+                  onChange={(e) => setTipoPantalla(e.target.value as any)}
+                  className="px-2.5 py-1.5 bg-[#EFF7F6] border border-[#2D6A4F]/40 rounded-xl text-xs font-bold text-[#1B4D3E]"
+                >
+                  <option value="principal">Principal</option>
+                  <option value="presentacion">Presentación</option>
+                  <option value="pizarra">Pizarra</option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+
+          {/* COLUMNA LATERAL */}
+          <div className="bg-[#FAFDFD] p-6 rounded-2xl border border-[#2D6A4F]/30 flex flex-col justify-between space-y-4 shadow-sm">
+            <div className="space-y-3">
+              <h3 className="text-sm font-black text-[#1B4D3E] uppercase tracking-wide border-b border-[#2D6A4F]/20 pb-2">
+                Información de la Sala
+              </h3>
+              <p className="text-xs text-[#2C4A43] leading-relaxed">
+                Espacio accesible diseñado con baja sobrecarga sensorial para reuniones institucionales y convenios B2B de <strong>{appNombre}</strong>.
+              </p>
+            </div>
+
+            <div className="space-y-2 pt-4">
               <button
                 type="button"
-                onClick={() => setMicActivo(!micActivo)}
-                className={`px-4 py-2 text-xs font-semibold rounded-lg transition ${
-                  micActivo ? 'bg-emerald-600 text-white' : 'bg-red-600/80 text-white'
-                }`}
+                onClick={() => setTabActiva('cita')}
+                className="w-full py-3 bg-[#1B4D3E] hover:bg-[#2D6A4F] text-white text-xs font-extrabold rounded-xl transition shadow-sm"
               >
-                {micActivo ? '🎙️ Micrófono Encendido' : '🎙️ Micrófono Apagado'}
-              </button>
-              <button
-                type="button"
-                onClick={() => setCamActiva(!camActiva)}
-                className={`px-4 py-2 text-xs font-semibold rounded-lg transition ${
-                  camActiva ? 'bg-emerald-600 text-white' : 'bg-red-600/80 text-white'
-                }`}
-              >
-                {camActiva ? '📹 Cámara Encendida' : '📹 Cámara Apagada'}
+                Agregar Invitado / Agendar Cita B2B
               </button>
             </div>
           </div>
 
-          <div className="bg-slate-800/40 p-6 rounded-2xl border border-slate-700/50 flex flex-col justify-between">
-            <div>
-              <h3 className="text-md font-bold mb-3 text-emerald-400">Información de la Sala</h3>
-              <p className="text-xs text-slate-300 mb-4 leading-relaxed">
-                Espacio accesible diseñado con baja sobrecarga sensorial para reuniones institucionales y convenios B2B.
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={() => setTabActiva('cita')}
-              className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition shadow-lg"
-            >
-              + Agregar Invitados / Agendar Cita B2B
-            </button>
-          </div>
         </section>
       )}
 
-      {/* Pestaña 2: Formulario de Agendamiento B2B */}
+      {/* PESTAÑA 2: AGENDAR CITA B2B */}
       {tabActiva === 'cita' && (
-        <section className="max-w-3xl mx-auto bg-slate-800/80 p-6 md:p-8 rounded-2xl border border-slate-700 shadow-2xl">
-          <div className="mb-6">
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-2">
-              Agendar Cita en la Sala de Casa Matriz ASL Ideas SpA
+        <section className="max-w-3xl mx-auto bg-[#FAFDFD] p-6 md:p-8 rounded-3xl border-2 border-[#2D6A4F]/30 shadow-md space-y-6">
+          <div>
+            <h2 className="text-lg md:text-xl font-black text-[#1B4D3E]">
+              Agendar Cita en la Sala de {appNombre}
             </h2>
-            <p className="text-xs md:text-sm text-slate-300">
+            <p className="text-xs text-[#2C4A43] mt-1">
               Selecciona la fecha y bloque de atención B2B. Al agendar, la cita quedará automáticamente vinculada con la Video Reunión en vivo.
             </p>
           </div>
 
           {mensaje && (
-            <div
-              className={`p-4 mb-6 rounded-xl text-xs md:text-sm font-medium ${
-                mensaje.tipo === 'exito'
-                  ? 'bg-emerald-950/80 border border-emerald-500 text-emerald-200'
-                  : 'bg-red-950/80 border border-red-500 text-red-200'
-              }`}
-            >
+            <div className={`p-4 rounded-xl text-xs font-bold ${
+              mensaje.tipo === 'exito' ? 'bg-[#D4EDDA] text-[#155724]' : 'bg-[#F8D7DA] text-[#721C24]'
+            }`}>
               {mensaje.texto}
             </div>
           )}
 
-          <form onSubmit={handleSubmitCita} className="space-y-4 text-left">
+          <form onSubmit={handleSubmitCita} className="space-y-4 text-xs">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
-                Nombre Completo o Empresa <span className="text-emerald-400">*</span>
-              </label>
+              <label className="block font-extrabold text-[#1B4D3E] mb-1">Nombre Completo o Empresa *</label>
               <input
                 type="text"
                 required
                 placeholder="Ej: Centro Médico ASL / Juan Pérez"
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                className="w-full px-4 py-2.5 bg-[#EFF7F6] border border-[#2D6A4F]/30 rounded-xl font-medium text-[#1B3B36]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
-                RUT o RUT Tributario <span className="text-emerald-400">*</span>
-              </label>
+              <label className="block font-extrabold text-[#1B4D3E] mb-1">RUT o RUT Tributario *</label>
               <input
                 type="text"
                 required
                 placeholder="Ej: 76.543.210-K / 12.345.678-9"
                 value={rut}
                 onChange={(e) => setRut(e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                className="w-full px-4 py-2.5 bg-[#EFF7F6] border border-[#2D6A4F]/30 rounded-xl font-medium text-[#1B3B36]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
-                Correo Electrónico <span className="text-emerald-400">*</span>
-              </label>
+              <label className="block font-extrabold text-[#1B4D3E] mb-1">Correo Electrónico *</label>
               <input
                 type="email"
                 required
                 placeholder="correo@ejemplo.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                className="w-full px-4 py-2.5 bg-[#EFF7F6] border border-[#2D6A4F]/30 rounded-xl font-medium text-[#1B3B36]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
-                Correos de Invitados Adicionales (Opcional)
-              </label>
+              <label className="block font-extrabold text-[#1B4D3E] mb-1">Correos de Invitados Adicionales (Agregar Invitado)</label>
               <input
                 type="text"
                 placeholder="Ej: gerencia@empresa.cl, ti@empresa.cl"
                 value={invitados}
                 onChange={(e) => setInvitados(e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
-              />
-              <p className="text-[11px] text-slate-400 mt-1">
-                Separa varios correos por coma. Recibirán la clave de acceso.
-              </p>
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
-                Tipo / Portal B2B
-              </label>
-              <input
-                type="text"
-                value={portal}
-                readOnly
-                className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-400 cursor-not-allowed"
+                className="w-full px-4 py-2.5 bg-[#EFF7F6] border border-[#2D6A4F]/30 rounded-xl font-medium text-[#1B3B36]"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">
-                  Fecha Preferente <span className="text-emerald-400">*</span>
-                </label>
+                <label className="block font-extrabold text-[#1B4D3E] mb-1">Fecha Preferente *</label>
                 <input
                   type="date"
                   required
                   value={fecha}
                   onChange={(e) => setFecha(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full px-4 py-2.5 bg-[#EFF7F6] border border-[#2D6A4F]/30 rounded-xl font-medium text-[#1B3B36]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">
-                  Bloque Horario <span className="text-emerald-400">*</span>
-                </label>
+                <label className="block font-extrabold text-[#1B4D3E] mb-1">Bloque Horario *</label>
                 <select
                   value={hora}
                   onChange={(e) => setHora(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full px-4 py-2.5 bg-[#EFF7F6] border border-[#2D6A4F]/30 rounded-xl font-medium text-[#1B3B36]"
                 >
                   <option value="09:00 AM">09:00 AM</option>
                   <option value="10:00 AM">10:00 AM</option>
@@ -300,30 +330,50 @@ function SalaVirtualContent() {
                   <option value="12:00 PM">12:00 PM</option>
                   <option value="03:00 PM">03:00 PM</option>
                   <option value="04:00 PM">04:00 PM</option>
-                  <option value="05:00 PM">05:00 PM</option>
                 </select>
               </div>
             </div>
 
-            <div className="pt-4">
-              <button
-                type="submit"
-                disabled={cargando}
-                className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold rounded-xl transition shadow-lg disabled:opacity-50"
-              >
-                {cargando ? 'Guardando agendamiento...' : 'Confirmar Cita y Vincular a la Video Reunión'}
-              </button>
-            </div>
+            <button
+              type="submit"
+              disabled={cargando}
+              className="w-full py-3 bg-[#1B4D3E] hover:bg-[#2D6A4F] text-white font-extrabold rounded-xl transition shadow-md"
+            >
+              {cargando ? 'Guardando cita...' : 'Confirmar Cita y Vincular a la Video Reunión'}
+            </button>
           </form>
         </section>
       )}
+
+      {/* PESTAÑA 3: CANCELAR CITA */}
+      {tabActiva === 'cancelar' && (
+        <section className="max-w-xl mx-auto bg-[#FAFDFD] p-6 md:p-8 rounded-3xl border-2 border-[#2D6A4F]/30 shadow-md space-y-4 text-xs">
+          <h2 className="text-lg font-black text-[#1B4D3E]">Cancelar Cita B2B</h2>
+          <p className="text-[#2C4A43]">Ingresa tu correo o RUT para gestionar o anular tu cita agendada previamente.</p>
+          
+          <input
+            type="text"
+            placeholder="Ingresa tu Correo o RUT registrado"
+            className="w-full px-4 py-2.5 bg-[#EFF7F6] border border-[#2D6A4F]/30 rounded-xl font-medium text-[#1B3B36]"
+          />
+
+          <button
+            type="button"
+            onClick={() => alert('Se ha enviado la solicitud de cancelación.')}
+            className="w-full py-3 bg-[#D9534F] text-white font-extrabold rounded-xl transition shadow-md hover:bg-[#C9302C]"
+          >
+            Confirmar Cancelación de Cita
+          </button>
+        </section>
+      )}
+
     </main>
   );
 }
 
 export default function SalaVirtualPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-slate-400">Cargando Sala Virtual...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-[#2D6A4F]">Cargando Sala Virtual...</div>}>
       <SalaVirtualContent />
     </Suspense>
   );
