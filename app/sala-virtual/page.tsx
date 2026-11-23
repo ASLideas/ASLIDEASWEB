@@ -7,8 +7,18 @@ import Link from 'next/link';
 function SalaVirtualContent() {
   const searchParams = useSearchParams();
   const appParam = searchParams.get('app') || 'ASL Ideas SpA';
-  const logoParam = searchParams.get('logo') || '/logo-asl.png.png';
 
+  // Seleccionar logo según la aplicación activa
+  const getLogoByApp = (nombreApp: string) => {
+    if (nombreApp.includes('LAWENMOLL')) return '/logo-lawenmoll.jpg.png';
+    if (nombreApp.includes('Wellness')) return '/logo-wellness.jpg.jpg';
+    if (nombreApp.includes('Bienestar')) return '/logo-bienestar.png.png';
+    return '/logo-asl.png.png';
+  };
+
+  const logoActual = getLogoByApp(appParam);
+
+  // Pestaña predeterminada: 'mision'
   const [tabActiva, setTabActiva] = useState<'mision' | 'vivo' | 'cita' | 'cancelar'>('mision');
   
   // Controles de Video Llamada
@@ -52,7 +62,7 @@ function SalaVirtualContent() {
 
       setMensaje({
         tipo: 'exito',
-        texto: 'Cita confirmada y vinculada a la Video Reunión con éxito.'
+        texto: 'Cita confirmada y vinculada a la Sala Virtual con exito.'
       });
       setNombre(''); setRut(''); setEmail(''); setInvitados(''); setFecha('');
     } catch (err: any) {
@@ -90,7 +100,7 @@ function SalaVirtualContent() {
       console.error('Error al cancelar cita:', err);
       setCancelMensaje({
         tipo: 'error',
-        texto: 'No se encontró una cita activa asociada a los datos ingresados.'
+        texto: 'No se encontro una cita activa asociada a los datos ingresados.'
       });
     } finally {
       setCancelCargando(false);
@@ -99,13 +109,13 @@ function SalaVirtualContent() {
 
   return (
     <main className={`min-h-screen p-4 md:p-8 transition-colors duration-300 ${modoCalma ? 'bg-[#FAF8F5] text-[#2C3E35]' : 'bg-[#121E19] text-white'}`}>
-      {/* Header Corporativo con Logo y Colores */}
-      <header className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-[#2D6A4F]/50">
+      {/* Header Corporativo */}
+      <header className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-slate-700/50">
         <div className="flex items-center gap-3">
-          <img src={logoParam} alt={`Logo ${appParam}`} className="w-10 h-10 object-contain rounded-xl bg-white p-1 shadow-lg border border-[#E8829C]/40" />
+          <img src={logoActual} alt={`Logo ${appParam}`} className="w-11 h-11 object-contain rounded-xl bg-white p-1 shadow-lg border border-[#E8829C]/40" />
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-[#E8829C]">{appParam}</h1>
-            <p className="text-xs opacity-75 text-slate-300">Sala Virtual & Herramientas Digitales B2B</p>
+            <h1 className="text-xl font-bold tracking-tight">{appParam}</h1>
+            <p className="text-xs text-[#E8829C] font-medium">Oficina Virtual & Conexión Interactiva</p>
           </div>
         </div>
 
@@ -113,13 +123,13 @@ function SalaVirtualContent() {
           <button
             type="button"
             onClick={() => setModoCalma(!modoCalma)}
-            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-[#1A2822] text-slate-200 border border-[#2D6A4F] hover:bg-[#253A30] transition"
+            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-[#1A2822] text-slate-200 border border-slate-700 hover:bg-slate-800 transition"
           >
             {modoCalma ? 'Modo Calma Activo' : 'Activar Modo Calma (TEA)'}
           </button>
           <Link
             href="/"
-            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-[#1A2822] text-slate-200 hover:bg-[#253A30] transition border border-[#2D6A4F]"
+            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-[#E8829C] text-white hover:bg-[#D8708C] transition shadow-md"
           >
             Volver a la Web
           </Link>
@@ -127,12 +137,12 @@ function SalaVirtualContent() {
       </header>
 
       {/* Navegación por Pestañas */}
-      <nav className="max-w-7xl mx-auto mb-6 flex flex-wrap gap-2 border-b border-[#2D6A4F]/40 pb-2">
+      <nav className="max-w-7xl mx-auto mb-6 flex flex-wrap gap-2 border-b border-slate-700/40 pb-2">
         <button
           type="button"
           onClick={() => setTabActiva('mision')}
           className={`px-4 py-2 text-sm font-semibold rounded-lg transition ${
-            tabActiva === 'mision' ? 'bg-[#E8829C] text-slate-900 font-bold shadow-md' : 'bg-[#1A2822] text-slate-300 hover:bg-[#253A30]'
+            tabActiva === 'mision' ? 'bg-[#E8829C] text-white shadow-md' : 'bg-[#1A2822] text-slate-300 hover:bg-slate-800'
           }`}
         >
           Misión y Visión
@@ -141,7 +151,7 @@ function SalaVirtualContent() {
           type="button"
           onClick={() => setTabActiva('vivo')}
           className={`px-4 py-2 text-sm font-semibold rounded-lg transition ${
-            tabActiva === 'vivo' ? 'bg-[#E8829C] text-slate-900 font-bold shadow-md' : 'bg-[#1A2822] text-slate-300 hover:bg-[#253A30]'
+            tabActiva === 'vivo' ? 'bg-[#E8829C] text-white shadow-md' : 'bg-[#1A2822] text-slate-300 hover:bg-slate-800'
           }`}
         >
           Sala Virtual en Vivo
@@ -150,7 +160,7 @@ function SalaVirtualContent() {
           type="button"
           onClick={() => setTabActiva('cita')}
           className={`px-4 py-2 text-sm font-semibold rounded-lg transition ${
-            tabActiva === 'cita' ? 'bg-[#E8829C] text-slate-900 font-bold shadow-md' : 'bg-[#1A2822] text-slate-300 hover:bg-[#253A30]'
+            tabActiva === 'cita' ? 'bg-[#E8829C] text-white shadow-md' : 'bg-[#1A2822] text-slate-300 hover:bg-slate-800'
           }`}
         >
           Agendar Cita B2B
@@ -159,85 +169,139 @@ function SalaVirtualContent() {
           type="button"
           onClick={() => setTabActiva('cancelar')}
           className={`px-4 py-2 text-sm font-semibold rounded-lg transition ${
-            tabActiva === 'cancelar' ? 'bg-red-600/80 text-white shadow-md' : 'bg-[#1A2822] text-slate-300 hover:bg-[#253A30]'
+            tabActiva === 'cancelar' ? 'bg-red-600/80 text-white shadow-md' : 'bg-[#1A2822] text-slate-300 hover:bg-slate-800'
           }`}
         >
           Cancelar Cita
         </button>
       </nav>
 
-      {/* Pestaña 1: Misión, Visión & Propósito */}
+      {/* Pestaña 1: Misión y Visión según la Aplicación Activa */}
       {tabActiva === 'mision' && (
-        <section className="max-w-4xl mx-auto bg-[#1A2822] p-6 md:p-8 rounded-2xl border border-[#2D6A4F] shadow-2xl space-y-6">
-          <div className="flex items-center justify-between border-b border-[#2D6A4F]/60 pb-4">
+        <section className="max-w-4xl mx-auto bg-[#1A2822] p-6 md:p-8 rounded-2xl border border-[#2D6A4F]/60 shadow-2xl space-y-6">
+          <div className="flex items-center justify-between border-b border-slate-700 pb-4">
             <div className="flex items-center gap-3">
-              <img src={logoParam} alt="Logo App" className="w-10 h-10 object-contain rounded-lg bg-white p-1" />
+              <img src={logoActual} alt="Logo App" className="w-10 h-10 object-contain bg-white p-1 rounded-xl" />
               <div>
-                <span className="bg-[#E8829C]/20 text-[#E8829C] border border-[#E8829C]/40 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">
-                  Identidad & Propósito Corporativo
+                <span className="bg-[#E8829C] text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">
+                  Identidad & Propósito
                 </span>
-                <h2 className="text-xl md:text-2xl font-bold text-white mt-1">{appParam}</h2>
+                <h2 className="text-xl md:text-2xl font-bold text-white mt-1">{appParam}: Misión y Visión</h2>
               </div>
             </div>
             <button
               type="button"
               onClick={() => window.print()}
-              className="px-3 py-1.5 bg-[#121E19] hover:bg-[#253A30] text-xs font-semibold text-white rounded-lg transition border border-[#2D6A4F]"
+              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white rounded-lg transition border border-slate-700"
             >
               Imprimir / PDF
             </button>
           </div>
 
-          {appParam.includes('LAWENMOLL') ? (
+          {/* ASL IDEAS SPA CASA MATRIZ */}
+          {appParam.includes('ASL') && (
             <>
-              <div className="bg-[#121E19] p-5 rounded-xl border border-[#2D6A4F] space-y-3">
-                <h3 className="text-base font-bold text-[#E8829C]">Vitrina Virtual Integrativa</h3>
+              <div className="bg-[#121E19] p-5 rounded-xl border border-slate-700 space-y-2">
+                <h3 className="text-base font-bold text-[#E8829C]">Propósito Principal</h3>
+                <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
+                  Diseñamos y desarrollamos soluciones tecnológicas amables y herramientas digitales a medida para emprendedores, PYMEs y comercios. ASL Ideas SpA Casa Matriz combina diseño gráfico de alta sensibilidad visual con ingeniería de software accesible. Aunque nacimos impulsando el ecosistema de la salud y el bienestar integrativo, creamos plataformas e interfaces visuales adaptadas para potenciar negocios en cualquier área del mercado.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-[#121E19] p-5 rounded-xl border border-slate-700 space-y-2">
+                  <h3 className="text-base font-bold text-[#E8829C]">Nuestra Misión</h3>
+                  <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
+                    Diseñar aplicaciones web y móviles amables con baja carga sensorial, adaptadas a personas con neurodivergencias y neurotípicas, otorgando a distintas áreas mayor visibilidad con las herramientas digitales e integrar a personas con discapacidad al mundo laboral.
+                  </p>
+                </div>
+                <div className="bg-[#121E19] p-5 rounded-xl border border-slate-700 space-y-2">
+                  <h3 className="text-base font-bold text-[#E8829C]">Nuestra Visión</h3>
+                  <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
+                    Ser la empresa líder en soluciones tecnológicas accesibles para personas neurodivergentes y con discapacidad, dando trabajo y visibilidad a distintas empresas y dando soluciones a distintas problemáticas que enfrentamos como sociedad a través del diseño, tecnología, conectando personas y emprendedores, bajo estándares de ciberseguridad de la Ley N° 21.663.
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* LAWENMOLL */}
+          {appParam.includes('LAWENMOLL') && (
+            <>
+              <div className="bg-[#121E19] p-5 rounded-xl border border-slate-700 space-y-2">
+                <h3 className="text-base font-bold text-emerald-400">Vitrina Virtual Integrativa</h3>
                 <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
                   LAWENMOLL es la plataforma pionera de una vitrina virtual integrativa para el diagnóstico preventivo y acompañamiento continuo en enfermedades. Permite realizar tests de composición metabólica, emitir reportes inteligentes y conectar de forma segura a pacientes y distintos tipos de servicios que ofrece nuestra plataforma.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-[#121E19] p-5 rounded-xl border border-[#2D6A4F] space-y-2">
-                  <h3 className="text-base font-bold text-[#E8829C]">Nuestra Misión</h3>
+                <div className="bg-[#121E19] p-5 rounded-xl border border-slate-700 space-y-2">
+                  <h3 className="text-base font-bold text-emerald-400">Nuestra Misión</h3>
                   <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
                     Dar a conocer de forma visual e interactiva que existen múltiples posibilidades de acompañamiento y herramientas tecnológicas a través de la vitrina integrativa, ofreciendo diversos servicios visuales para mejorar la calidad de vida de cada usuario.
                   </p>
                 </div>
-
-                <div className="bg-[#121E19] p-5 rounded-xl border border-[#2D6A4F] space-y-2">
-                  <h3 className="text-base font-bold text-[#E8829C]">Nuestra Visión</h3>
+                <div className="bg-[#121E19] p-5 rounded-xl border border-slate-700 space-y-2">
+                  <h3 className="text-base font-bold text-emerald-400">Nuestra Visión</h3>
                   <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
                     Conectar de manera visual, transparente y accesible a las personas con distintos tipos de servicios, profesionales y emprendimientos del área de la salud integrativa, bienestar y gastronomía, mediante herramientas digitales con baja carga sensorial.
                   </p>
                 </div>
               </div>
             </>
-          ) : (
+          )}
+
+          {/* WELLNESS WEB APP */}
+          {appParam.includes('Wellness') && (
             <>
+              <div className="bg-[#121E19] p-5 rounded-xl border border-slate-700 space-y-2">
+                <h3 className="text-base font-bold text-[#E8829C]">Espacio Visual & Salas Virtuales</h3>
+                <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
+                  Wellness Web App es un espacio visual en el cual puedes ver distintos tipos de videos donde hay rutinas de ejercicios específicos para cardio, metabolismo, etc., guías de meditación para calmar la mente y el cuerpo con distintas disciplinas y tips gastronómicos para acompañar a nuestros usuarios, dando visibilidad a profesionales que dan clases en nuestras salas virtuales conectando a personas que les cueste asistir de forma presencial a ciertas actividades.
+                </p>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-[#121E19] p-5 rounded-xl border border-[#2D6A4F] space-y-2">
+                <div className="bg-[#121E19] p-5 rounded-xl border border-slate-700 space-y-2">
                   <h3 className="text-base font-bold text-[#E8829C]">Nuestra Misión</h3>
                   <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
-                    Diseñar aplicaciones web y móviles amables con baja carga sensorial, adaptadas a personas con neurodivergencias y neurotípicas, otorgando a distintas áreas mayor visibilidad con las herramientas digitales e integrar a personas con discapacidad al mundo laboral.
+                    Dar mayor visualización a profesionales que dan clases y acercar a personas que no puedan tomar rutinas en vivo y en directo y lograr que hay más de una forma de tener una mejor calidad de vida.
                   </p>
                 </div>
-
-                <div className="bg-[#121E19] p-5 rounded-xl border border-[#2D6A4F] space-y-2">
+                <div className="bg-[#121E19] p-5 rounded-xl border border-slate-700 space-y-2">
                   <h3 className="text-base font-bold text-[#E8829C]">Nuestra Visión</h3>
                   <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
-                    Ser la empresa líder en soluciones tecnológicas accesibles para personas neurodivergentes y con discapacidad, dando trabajo y visibilidad a distintas empresas y entregando respuestas a diversas problemáticas que enfrentamos como sociedad a través del diseño y la tecnología, conectando personas y emprendedores bajo los estándares de ciberseguridad de la Ley N° 21.663.
+                    Mejorar la calidad de vida, asistir a clases virtuales con una o más personas y poder interactuar si es que tiene problemas sensoriales o físicos.
                   </p>
                 </div>
               </div>
+            </>
+          )}
 
-              <div className="bg-[#121E19] p-5 rounded-xl border border-[#E8829C]/40 space-y-3">
-                <h3 className="text-base font-bold text-[#E8829C]">
-                  Visualización, Diseño & Desarrollo para PYMEs
-                </h3>
+          {/* BIENESTAR */}
+          {appParam.includes('Bienestar') && (
+            <>
+              <div className="bg-[#121E19] p-5 rounded-xl border border-slate-700 space-y-2">
+                <h3 className="text-base font-bold text-emerald-400">Mensajería, Salud & Shopping PYME</h3>
                 <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
-                  Diseñamos y desarrollamos soluciones tecnológicas amables y herramientas digitales a medida para emprendedores, PYMEs y comercios asociados. ASL Ideas SpA Casa Matriz combina diseño gráfico de alta sensibilidad visual con ingeniería de software accesible.
+                  Bienestar es un portal enfocado en la mensajería y en la rutina del día a día para anotar horas médicas, consultas, recordatorios de tomar agua, caminar, rutina de ejercicios; también tendrá la parte de conectarse con PYMEs y ofrecer sus productos, y por último, para personas que tengan problemas de insomnio, poder solucionar con música, relatos o tips para conciliar el sueño y alcanzar el sueño REM reparador.
                 </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-[#121E19] p-5 rounded-xl border border-slate-700 space-y-2">
+                  <h3 className="text-base font-bold text-emerald-400">Nuestra Misión</h3>
+                  <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
+                    Que haya comunicación, retroalimentación y conexión de forma fluida y amena.
+                  </p>
+                </div>
+                <div className="bg-[#121E19] p-5 rounded-xl border border-slate-700 space-y-2">
+                  <h3 className="text-base font-bold text-emerald-400">Nuestra Visión</h3>
+                  <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
+                    Que nuestro usuario recuerde que también se puede cuidar con la agenda de bienestar con su hora médica, recordar tomar agua, cuántos pasos debe caminar, poder tener un ingreso extra y una mejor calidad del sueño.
+                  </p>
+                </div>
               </div>
             </>
           )}
@@ -248,7 +312,7 @@ function SalaVirtualContent() {
       {tabActiva === 'vivo' && (
         <section className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-4">
-            <div className="relative aspect-video bg-black rounded-2xl overflow-hidden border border-[#2D6A4F] shadow-2xl flex flex-col items-center justify-center p-4">
+            <div className="relative aspect-video bg-black rounded-2xl overflow-hidden border border-slate-700 shadow-2xl flex flex-col items-center justify-center p-4">
               {pantallaActiva === 'cam' && (
                 <div className="text-center">
                   <p className="text-[#E8829C] text-xs font-semibold uppercase tracking-wider mb-1">Transmisión Principal en Vivo</p>
@@ -260,39 +324,39 @@ function SalaVirtualContent() {
               )}
 
               {pantallaActiva === 'presentacion' && (
-                <div className="text-center bg-[#121E19]/90 w-full h-full flex flex-col items-center justify-center p-6 border border-[#2D6A4F] rounded-xl">
+                <div className="text-center bg-slate-950/90 w-full h-full flex flex-col items-center justify-center p-6 border border-slate-800 rounded-xl">
                   <h4 className="text-sm font-bold text-[#E8829C] mb-1">Presentación Corporativa & Diapositivas B2B</h4>
                   <p className="text-xs text-slate-400">Compartiendo pantalla de convenio institucional ASL Ideas SpA</p>
                 </div>
               )}
 
               {pantallaActiva === 'mision' && (
-                <div className="text-center bg-[#121E19]/90 w-full h-full flex flex-col items-center justify-center p-6 border border-[#2D6A4F] rounded-xl">
-                  <h4 className="text-sm font-bold text-[#E8829C] mb-1">Misión, Visión & Vitrina Integrativa</h4>
-                  <p className="text-xs text-slate-400">Visualizando propuesta de valor y herramientas para emprendedores</p>
+                <div className="text-center bg-slate-950/90 w-full h-full flex flex-col items-center justify-center p-6 border border-slate-800 rounded-xl">
+                  <h4 className="text-sm font-bold text-[#E8829C] mb-1">Misión y Visión de {appParam}</h4>
+                  <p className="text-xs text-slate-400">Visualizando propuesta de valor y propósito corporativo</p>
                 </div>
               )}
 
               {pantallaActiva === 'pizarra' && (
-                <div className="text-center bg-[#121E19]/90 w-full h-full flex flex-col items-center justify-center p-6 border border-[#2D6A4F] rounded-xl">
+                <div className="text-center bg-slate-950/90 w-full h-full flex flex-col items-center justify-center p-6 border border-slate-800 rounded-xl">
                   <h4 className="text-sm font-bold text-[#E8829C] mb-1">Pizarra Digital Colaborativa</h4>
                   <p className="text-xs text-slate-400">Dibujo y anotaciones de accesibilidad cognitiva en tiempo real</p>
                 </div>
               )}
 
               {transcripcionActiva && (
-                <div className="absolute bottom-3 left-3 right-3 bg-black/80 backdrop-blur-md border border-[#E8829C]/50 p-2.5 rounded-xl text-center text-xs text-[#E8829C]">
-                  <span className="font-bold text-white">Transcripción en Vivo (IA):</span> &quot;Bienvenidos a la sala virtual de {appParam}...&quot;
+                <div className="absolute bottom-3 left-3 right-3 bg-black/80 backdrop-blur-md border border-[#E8829C]/50 p-2.5 rounded-xl text-center text-xs text-emerald-200">
+                  <span className="font-bold text-[#E8829C]">Transcripción en Vivo (IA):</span> &quot;Bienvenidos a la reunión de {appParam}...&quot;
                 </div>
               )}
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-3 p-4 bg-[#1A2822] rounded-xl border border-[#2D6A4F]/50">
+            <div className="flex flex-wrap items-center justify-center gap-3 p-4 bg-[#1A2822] rounded-xl border border-slate-700/50">
               <button
                 type="button"
                 onClick={() => setMicActivo(!micActivo)}
                 className={`px-4 py-2 text-xs font-semibold rounded-lg transition ${
-                  micActivo ? 'bg-[#E8829C] text-slate-900 font-bold' : 'bg-red-600/90 text-white'
+                  micActivo ? 'bg-[#E8829C] text-white' : 'bg-red-600/90 text-white'
                 }`}
               >
                 {micActivo ? 'Micrófono Encendido' : 'Micrófono Silenciado'}
@@ -302,7 +366,7 @@ function SalaVirtualContent() {
                 type="button"
                 onClick={() => setCamActiva(!camActiva)}
                 className={`px-4 py-2 text-xs font-semibold rounded-lg transition ${
-                  camActiva ? 'bg-[#E8829C] text-slate-900 font-bold' : 'bg-red-600/90 text-white'
+                  camActiva ? 'bg-[#E8829C] text-white' : 'bg-red-600/90 text-white'
                 }`}
               >
                 {camActiva ? 'Cámara Encendida' : 'Encender Cámara'}
@@ -312,39 +376,39 @@ function SalaVirtualContent() {
                 type="button"
                 onClick={() => setTranscripcionActiva(!transcripcionActiva)}
                 className={`px-4 py-2 text-xs font-semibold rounded-lg transition ${
-                  transcripcionActiva ? 'bg-[#E8829C] text-slate-900 font-bold' : 'bg-[#121E19] text-slate-200 border border-[#2D6A4F]'
+                  transcripcionActiva ? 'bg-[#E8829C] text-white' : 'bg-slate-800 text-slate-200'
                 }`}
               >
                 {transcripcionActiva ? 'Transcribiendo...' : 'Transcribir Reunión'}
               </button>
 
-              <div className="flex items-center gap-1 bg-[#121E19] p-1 rounded-lg border border-[#2D6A4F] text-xs">
+              <div className="flex items-center gap-1 bg-[#121E19] p-1 rounded-lg border border-slate-700 text-xs">
                 <span className="text-[11px] text-slate-400 px-2">Pantalla:</span>
                 <button
                   type="button"
                   onClick={() => setPantallaActiva('cam')}
-                  className={`px-2 py-1 rounded ${pantallaActiva === 'cam' ? 'bg-[#E8829C] text-slate-900 font-bold' : 'text-slate-400 hover:text-white'}`}
+                  className={`px-2 py-1 rounded ${pantallaActiva === 'cam' ? 'bg-[#E8829C] text-white' : 'text-slate-400 hover:text-white'}`}
                 >
                   Principal
                 </button>
                 <button
                   type="button"
                   onClick={() => setPantallaActiva('presentacion')}
-                  className={`px-2 py-1 rounded ${pantallaActiva === 'presentacion' ? 'bg-[#E8829C] text-slate-900 font-bold' : 'text-slate-400 hover:text-white'}`}
+                  className={`px-2 py-1 rounded ${pantallaActiva === 'presentacion' ? 'bg-[#E8829C] text-white' : 'text-slate-400 hover:text-white'}`}
                 >
                   Presentación
                 </button>
                 <button
                   type="button"
                   onClick={() => setPantallaActiva('mision')}
-                  className={`px-2 py-1 rounded ${pantallaActiva === 'mision' ? 'bg-[#E8829C] text-slate-900 font-bold' : 'text-slate-400 hover:text-white'}`}
+                  className={`px-2 py-1 rounded ${pantallaActiva === 'mision' ? 'bg-[#E8829C] text-white' : 'text-slate-400 hover:text-white'}`}
                 >
                   Misión/Visión
                 </button>
                 <button
                   type="button"
                   onClick={() => setPantallaActiva('pizarra')}
-                  className={`px-2 py-1 rounded ${pantallaActiva === 'pizarra' ? 'bg-[#E8829C] text-slate-900 font-bold' : 'text-slate-400 hover:text-white'}`}
+                  className={`px-2 py-1 rounded ${pantallaActiva === 'pizarra' ? 'bg-[#E8829C] text-white' : 'text-slate-400 hover:text-white'}`}
                 >
                   Pizarra
                 </button>
@@ -352,16 +416,16 @@ function SalaVirtualContent() {
             </div>
           </div>
 
-          <div className="bg-[#1A2822] p-6 rounded-2xl border border-[#2D6A4F]/50 flex flex-col justify-between space-y-4">
+          <div className="bg-[#1A2822] p-6 rounded-2xl border border-slate-700/50 flex flex-col justify-between space-y-4">
             <div>
               <h3 className="text-md font-bold mb-2 text-[#E8829C]">Información de la Sala</h3>
               <p className="text-xs text-slate-300 leading-relaxed mb-4">
-                Entorno interactivo con baja carga sensorial diseñado por ASL Ideas SpA para convenios B2B, salas temáticas y atención accesible.
+                Espacio accesible diseñado con baja sobrecarga sensorial para reuniones institucionales, alianzas con colaboradores y atención comunitaria.
               </p>
-              <div className="bg-[#121E19] p-3 rounded-xl border border-[#2D6A4F] text-xs space-y-1.5">
+              <div className="bg-[#121E19] p-3 rounded-xl border border-slate-700 text-xs space-y-1.5">
                 <p><strong className="text-slate-200">Portal:</strong> {appParam}</p>
-                <p><strong className="text-slate-200">Seguridad:</strong> Cifrado SSL / Ley N° 21.663</p>
-                <p><strong className="text-slate-200">Estado:</strong> <span className="text-[#E8829C] font-bold">En Vivo</span></p>
+                <p><strong className="text-slate-200">Seguridad:</strong> SSL / Ley N° 21.663</p>
+                <p><strong className="text-slate-200">Estado:</strong> <span className="text-emerald-400 font-bold">En Vivo</span></p>
               </div>
             </div>
 
@@ -369,14 +433,14 @@ function SalaVirtualContent() {
               <button
                 type="button"
                 onClick={() => setTabActiva('mision')}
-                className="w-full py-2.5 bg-[#121E19] hover:bg-[#253A30] text-white text-xs font-bold rounded-xl transition border border-[#2D6A4F]"
+                className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-xl transition border border-slate-700"
               >
-                Ver Misión, Visión & Propósito
+                Ver Misión y Visión
               </button>
               <button
                 type="button"
                 onClick={() => setTabActiva('cita')}
-                className="w-full py-2.5 bg-[#E8829C] hover:bg-[#d8708c] text-slate-900 text-xs font-black rounded-xl transition shadow-lg"
+                className="w-full py-2.5 bg-[#E8829C] hover:bg-[#D8708C] text-white text-xs font-bold rounded-xl transition shadow-lg"
               >
                 + Agendar Cita B2B
               </button>
@@ -387,19 +451,19 @@ function SalaVirtualContent() {
 
       {/* Pestaña 3: Formulario de Agendamiento B2B */}
       {tabActiva === 'cita' && (
-        <section className="max-w-3xl mx-auto bg-[#1A2822] p-6 md:p-8 rounded-2xl border border-[#2D6A4F] shadow-2xl">
+        <section className="max-w-3xl mx-auto bg-[#1A2822] p-6 md:p-8 rounded-2xl border border-slate-700 shadow-2xl">
           <div className="mb-6">
             <h2 className="text-xl md:text-2xl font-bold text-white mb-2">
               Agendar Cita B2B en {appParam}
             </h2>
             <p className="text-xs md:text-sm text-slate-300">
-              Súmate a nuestra red de colaboradores y comercios asociados para potenciar tu presencia visual y herramientas tecnológicas.
+              Súmate a nuestra red de colaboradores y suscriptores para potenciar tu presencia y llegar a muchas más personas.
             </p>
           </div>
 
           {mensaje && (
             <div className={`p-4 mb-6 rounded-xl text-xs md:text-sm font-medium ${
-              mensaje.tipo === 'exito' ? 'bg-[#121E19] border border-[#E8829C] text-[#E8829C]' : 'bg-red-950/80 border border-red-500 text-red-200'
+              mensaje.tipo === 'exito' ? 'bg-emerald-950/80 border border-emerald-500 text-emerald-200' : 'bg-red-950/80 border border-red-500 text-red-200'
             }`}>
               {mensaje.texto}
             </div>
@@ -413,10 +477,10 @@ function SalaVirtualContent() {
               <input
                 type="text"
                 required
-                placeholder="Ej: Centro ASL / Juan Pérez"
+                placeholder="Ej: Centro Médico ASL / Juan Pérez"
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
-                className="w-full px-4 py-2.5 bg-[#121E19] border border-[#2D6A4F] rounded-xl text-sm text-white focus:outline-none focus:border-[#E8829C]"
+                className="w-full px-4 py-2.5 bg-[#121E19] border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-[#E8829C]"
               />
             </div>
 
@@ -430,7 +494,7 @@ function SalaVirtualContent() {
                 placeholder="Ej: 76.543.210-K / 12.345.678-9"
                 value={rut}
                 onChange={(e) => setRut(e.target.value)}
-                className="w-full px-4 py-2.5 bg-[#121E19] border border-[#2D6A4F] rounded-xl text-sm text-white focus:outline-none focus:border-[#E8829C]"
+                className="w-full px-4 py-2.5 bg-[#121E19] border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-[#E8829C]"
               />
             </div>
 
@@ -444,7 +508,7 @@ function SalaVirtualContent() {
                 placeholder="correo@ejemplo.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2.5 bg-[#121E19] border border-[#2D6A4F] rounded-xl text-sm text-white focus:outline-none focus:border-[#E8829C]"
+                className="w-full px-4 py-2.5 bg-[#121E19] border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-[#E8829C]"
               />
             </div>
 
@@ -457,7 +521,7 @@ function SalaVirtualContent() {
                 placeholder="Ej: gerencia@empresa.cl, ti@empresa.cl"
                 value={invitados}
                 onChange={(e) => setInvitados(e.target.value)}
-                className="w-full px-4 py-2.5 bg-[#121E19] border border-[#2D6A4F] rounded-xl text-sm text-white focus:outline-none focus:border-[#E8829C]"
+                className="w-full px-4 py-2.5 bg-[#121E19] border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-[#E8829C]"
               />
             </div>
 
@@ -471,7 +535,7 @@ function SalaVirtualContent() {
                   required
                   value={fecha}
                   onChange={(e) => setFecha(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-[#121E19] border border-[#2D6A4F] rounded-xl text-sm text-white focus:outline-none focus:border-[#E8829C]"
+                  className="w-full px-4 py-2.5 bg-[#121E19] border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-[#E8829C]"
                 />
               </div>
 
@@ -482,7 +546,7 @@ function SalaVirtualContent() {
                 <select
                   value={hora}
                   onChange={(e) => setHora(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-[#121E19] border border-[#2D6A4F] rounded-xl text-sm text-white focus:outline-none focus:border-[#E8829C]"
+                  className="w-full px-4 py-2.5 bg-[#121E19] border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-[#E8829C]"
                 >
                   <option value="09:00 AM">09:00 AM</option>
                   <option value="10:00 AM">10:00 AM</option>
@@ -499,7 +563,7 @@ function SalaVirtualContent() {
               <button
                 type="submit"
                 disabled={cargando}
-                className="w-full py-3 bg-[#E8829C] hover:bg-[#d8708c] text-slate-900 font-black text-sm rounded-xl transition shadow-lg disabled:opacity-50"
+                className="w-full py-3 bg-[#E8829C] hover:bg-[#D8708C] text-white text-sm font-bold rounded-xl transition shadow-lg disabled:opacity-50"
               >
                 {cargando ? 'Guardando agendamiento...' : 'Confirmar Cita y Unirse a la Red B2B'}
               </button>
@@ -510,17 +574,17 @@ function SalaVirtualContent() {
 
       {/* Pestaña 4: Cancelar Cita */}
       {tabActiva === 'cancelar' && (
-        <section className="max-w-2xl mx-auto bg-[#1A2822] p-6 md:p-8 rounded-2xl border border-[#2D6A4F] shadow-2xl">
+        <section className="max-w-2xl mx-auto bg-[#1A2822] p-6 md:p-8 rounded-2xl border border-slate-700 shadow-2xl">
           <div className="mb-6">
             <h2 className="text-xl font-bold text-white mb-2">Cancelar Cita Agendada</h2>
             <p className="text-xs text-slate-300">
-              Ingresa los datos del titular para proceder con la cancelación y liberación inmediata del cupo.
+              Ingresa los datos del titular para proceder con la cancelación y liberación inmediata del cupo en la Sala Virtual.
             </p>
           </div>
 
           {cancelMensaje && (
             <div className={`p-4 mb-6 rounded-xl text-xs md:text-sm font-medium ${
-              cancelMensaje.tipo === 'exito' ? 'bg-[#121E19] border border-[#E8829C] text-[#E8829C]' : 'bg-red-950/80 border border-red-500 text-red-200'
+              cancelMensaje.tipo === 'exito' ? 'bg-emerald-950/80 border border-emerald-500 text-emerald-200' : 'bg-red-950/80 border border-red-500 text-red-200'
             }`}>
               {cancelMensaje.texto}
             </div>
@@ -537,7 +601,7 @@ function SalaVirtualContent() {
                 placeholder="Ej: 12.345.678-9"
                 value={cancelRut}
                 onChange={(e) => setCancelRut(e.target.value)}
-                className="w-full px-4 py-2.5 bg-[#121E19] border border-[#2D6A4F] rounded-xl text-sm text-white focus:outline-none focus:border-red-500"
+                className="w-full px-4 py-2.5 bg-[#121E19] border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-red-500"
               />
             </div>
 
@@ -550,7 +614,7 @@ function SalaVirtualContent() {
                 placeholder="Ej: B2B-9876"
                 value={cancelFolio}
                 onChange={(e) => setCancelFolio(e.target.value)}
-                className="w-full px-4 py-2.5 bg-[#121E19] border border-[#2D6A4F] rounded-xl text-sm text-white focus:outline-none focus:border-red-500"
+                className="w-full px-4 py-2.5 bg-[#121E19] border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-red-500"
               />
             </div>
 
@@ -563,7 +627,7 @@ function SalaVirtualContent() {
                 placeholder="Ej: Cambio de fecha o problema de agenda"
                 value={cancelMotivo}
                 onChange={(e) => setCancelMotivo(e.target.value)}
-                className="w-full px-4 py-2.5 bg-[#121E19] border border-[#2D6A4F] rounded-xl text-sm text-white focus:outline-none focus:border-red-500"
+                className="w-full px-4 py-2.5 bg-[#121E19] border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-red-500"
               />
             </div>
 
