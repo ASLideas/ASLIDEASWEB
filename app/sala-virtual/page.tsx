@@ -8,16 +8,17 @@ function SalaVirtualContent() {
   const searchParams = useSearchParams();
   const appParam = searchParams.get('app') || 'Casa Matriz ASL Ideas SpA';
 
-  const [tabActiva, setTabActiva] = useState<'vivo' | 'cita' | 'ficha' | 'cancelar'>('vivo');
+  // Pestaña 1 predeterminada: 'mision' (Misión y Visión)
+  const [tabActiva, setTabActiva] = useState<'mision' | 'vivo' | 'cita' | 'cancelar'>('mision');
   
-  // Estados de Controles dentro de la Video Llamada
+  // Controles de Video Llamada
   const [micActivo, setMicActivo] = useState(false);
   const [camActiva, setCamActiva] = useState(false);
   const [transcripcionActiva, setTranscripcionActiva] = useState(false);
-  const [pantallaActiva, setPantallaActiva] = useState<'cam' | 'presentacion' | 'ficha' | 'pizarra'>('cam');
+  const [pantallaActiva, setPantallaActiva] = useState<'cam' | 'presentacion' | 'mision' | 'pizarra'>('cam');
   const [modoCalma, setModoCalma] = useState(false);
 
-  // Estados del Formulario de Agendamiento B2B
+  // Formulario de Agendamiento B2B
   const [nombre, setNombre] = useState('');
   const [rut, setRut] = useState('');
   const [email, setEmail] = useState('');
@@ -28,7 +29,7 @@ function SalaVirtualContent() {
   const [cargando, setCargando] = useState(false);
   const [mensaje, setMensaje] = useState<{ tipo: 'exito' | 'error'; texto: string } | null>(null);
 
-  // Estados del Formulario de Cancelación de Cita
+  // Formulario de Cancelación de Cita
   const [cancelRut, setCancelRut] = useState('');
   const [cancelFolio, setCancelFolio] = useState('');
   const [cancelMotivo, setCancelMotivo] = useState('');
@@ -52,7 +53,7 @@ function SalaVirtualContent() {
 
       setMensaje({
         tipo: 'exito',
-        texto: '¡Cita confirmada y vinculada a la Video Reunión con éxito!'
+        texto: 'Cita confirmada y vinculada a la Video Reunion con exito.'
       });
       setNombre(''); setRut(''); setEmail(''); setInvitados(''); setFecha('');
     } catch (err: any) {
@@ -91,7 +92,7 @@ function SalaVirtualContent() {
       console.error('Error al cancelar cita:', err);
       setCancelMensaje({
         tipo: 'error',
-        texto: 'No se encontró una cita activa asociada a los datos ingresados.'
+        texto: 'No se encontro una cita activa asociada a los datos ingresados.'
       });
     } finally {
       setCancelCargando(false);
@@ -103,12 +104,10 @@ function SalaVirtualContent() {
       {/* Header Corporativo */}
       <header className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-slate-700/50">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center font-bold text-white shadow-lg">
-            ASL
-          </div>
+          <img src="/LOGO_asl.png" alt="Logo ASL Ideas" className="w-10 h-10 object-contain rounded-xl bg-white p-1 shadow-lg" />
           <div>
             <h1 className="text-xl font-bold tracking-tight">{appParam}</h1>
-            <p className="text-xs opacity-75">Sala Virtual & Agendamiento B2B Inclusivo</p>
+            <p className="text-xs opacity-75">Sala Virtual & Red Cuerpo y Alma B2B</p>
           </div>
         </div>
 
@@ -118,7 +117,7 @@ function SalaVirtualContent() {
             onClick={() => setModoCalma(!modoCalma)}
             className="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 transition"
           >
-            {modoCalma ? '🌿 Modo Calma Activo' : 'Activar Modo Calma (TEA)'}
+            {modoCalma ? 'Modo Calma Activo' : 'Activar Modo Calma (TEA)'}
           </button>
           <Link
             href="/"
@@ -133,12 +132,21 @@ function SalaVirtualContent() {
       <nav className="max-w-7xl mx-auto mb-6 flex flex-wrap gap-2 border-b border-slate-700/40 pb-2">
         <button
           type="button"
+          onClick={() => setTabActiva('mision')}
+          className={`px-4 py-2 text-sm font-semibold rounded-lg transition ${
+            tabActiva === 'mision' ? 'bg-emerald-600 text-white shadow-md' : 'bg-slate-800/60 text-slate-300 hover:bg-slate-800'
+          }`}
+        >
+          Misión y Visión
+        </button>
+        <button
+          type="button"
           onClick={() => setTabActiva('vivo')}
           className={`px-4 py-2 text-sm font-semibold rounded-lg transition ${
             tabActiva === 'vivo' ? 'bg-emerald-600 text-white shadow-md' : 'bg-slate-800/60 text-slate-300 hover:bg-slate-800'
           }`}
         >
-          📹 Sala Virtual en Vivo
+          Sala Virtual en Vivo
         </button>
         <button
           type="button"
@@ -147,16 +155,7 @@ function SalaVirtualContent() {
             tabActiva === 'cita' ? 'bg-emerald-600 text-white shadow-md' : 'bg-slate-800/60 text-slate-300 hover:bg-slate-800'
           }`}
         >
-          📅 Agendar Cita B2B
-        </button>
-        <button
-          type="button"
-          onClick={() => setTabActiva('ficha')}
-          className={`px-4 py-2 text-sm font-semibold rounded-lg transition ${
-            tabActiva === 'ficha' ? 'bg-emerald-600 text-white shadow-md' : 'bg-slate-800/60 text-slate-300 hover:bg-slate-800'
-          }`}
-        >
-          📋 Ficha Oficial
+          Agendar Cita B2B
         </button>
         <button
           type="button"
@@ -165,11 +164,75 @@ function SalaVirtualContent() {
             tabActiva === 'cancelar' ? 'bg-red-600/80 text-white shadow-md' : 'bg-slate-800/60 text-slate-300 hover:bg-slate-800'
           }`}
         >
-          ❌ Cancelar Cita
+          Cancelar Cita
         </button>
       </nav>
 
-      {/* Pestaña 1: Video Llamada en Vivo */}
+      {/* Pestaña 1: Misión, Visión & Beneficios de la Comunidad */}
+      {tabActiva === 'mision' && (
+        <section className="max-w-4xl mx-auto bg-slate-800/80 p-6 md:p-8 rounded-2xl border border-slate-700 shadow-2xl space-y-6">
+          <div className="flex items-center justify-between border-b border-slate-700 pb-4">
+            <div>
+              <span className="bg-emerald-900/60 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">
+                Identidad & Propósito Corporativo
+              </span>
+              <h2 className="text-xl md:text-2xl font-bold text-white mt-1">ASL Ideas SpA: Misión y Visión</h2>
+            </div>
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-xs font-semibold text-white rounded-lg transition"
+            >
+              Imprimir / PDF
+            </button>
+          </div>
+
+          {/* Misión y Visión */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-slate-900/90 p-5 rounded-xl border border-slate-700 space-y-2">
+              <h3 className="text-base font-bold text-emerald-400">Nuestra Misión</h3>
+              <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
+                Desarrollar soluciones de salud digital integrativa e inclusiva con alta accesibilidad cognitiva y baja carga sensorial. Buscamos transformar la gestión de la salud en personas con neurodivergencias (TEA 1, TDAH) y condiciones crónicas, eliminando la discriminación, los estigmas sobre el peso y las barreras tecnológicas.
+              </p>
+            </div>
+
+            <div className="bg-slate-900/90 p-5 rounded-xl border border-slate-700 space-y-2">
+              <h3 className="text-base font-bold text-emerald-400">Nuestra Visión</h3>
+              <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
+                Consolidarnos como el ecosistema de tecnología en salud integrativa líder en Latinoamérica, donde empresas, profesionales y comunidades se conectan bajo estándares de telemedicina cifrada, cumplimiento de la Ley TEA N° 21.545 y colaboración humana sostenible.
+              </p>
+            </div>
+          </div>
+
+          {/* Beneficios de Ser Parte de la Comunidad y Colaboradores */}
+          <div className="bg-slate-900/90 p-5 rounded-xl border border-emerald-500/50 space-y-3">
+            <h3 className="text-base font-bold text-emerald-300">
+              Beneficios de Ser Parte de Nuestra Comunidad y Red de Colaboradores
+            </h3>
+            <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
+              Al unirte como suscriptor, profesional de la salud, PYME o colaborador institucional en nuestra Red <strong>&quot;Cuerpo y Alma&quot;</strong>, te ves directamente favorecido al amplificar tu presencia y alcance:
+            </p>
+            <ul className="space-y-2 text-xs md:text-sm text-slate-200 leading-relaxed list-disc list-inside">
+              <li><strong>Visibilidad Amplificada:</strong> Conexión prioritaria entre personas naturales y tus servicios o emprendimientos a través de vitrinas interactivas.</li>
+              <li><strong>Impacto en Calidad de Vida:</strong> Llegas a miles de usuarios necesitados de atención humana, empática y libre de juicios.</li>
+              <li><strong>Infraestructura Segura e Inclusiva:</strong> Cumplimiento normativo de Ciberseguridad (Ley N° 21.663) y diseño adaptado (Ley TEA N° 21.545).</li>
+              <li><strong>Formación e Interacción en Vivo:</strong> Acceso a salas virtuales para clases, talleres de gastronomía consciente y asesorías de bienestar.</li>
+            </ul>
+          </div>
+
+          {/* Quiénes Somos e Historia Fundacional */}
+          <div className="bg-slate-900/60 p-5 rounded-xl border border-slate-700/70 space-y-2">
+            <h3 className="text-sm font-bold text-emerald-300">
+              Quiénes Somos e Historia Fundacional
+            </h3>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Fundados por una Diseñadora Gráfica de 47 años con neurodivergencia (TEA 1 / TDAH), enfermedades crónicas y sobrepeso. Su vivencia personal se transforma en innovación tecnológica: diseñar software amable que simplifica la vida diaria de pacientes, PYMEs y colaboradores institucionales.
+            </p>
+          </div>
+        </section>
+      )}
+
+      {/* Pestaña 2: Video Llamada en Vivo */}
       {tabActiva === 'vivo' && (
         <section className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-4">
@@ -179,30 +242,27 @@ function SalaVirtualContent() {
                   <p className="text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-1">Transmisión Principal en Vivo</p>
                   <h3 className="text-lg font-bold text-white mb-2">{appParam}</h3>
                   <p className="text-xs text-slate-400">
-                    {camActiva ? '📹 Cámara transmitiendo en alta definición' : '📹 Cámara desactivada por privacidad / ahorro de ancho de banda'}
+                    {camActiva ? 'Cámara transmitiendo en alta definición' : 'Cámara desactivada por privacidad / ahorro de ancho de banda'}
                   </p>
                 </div>
               )}
 
               {pantallaActiva === 'presentacion' && (
                 <div className="text-center bg-slate-950/90 w-full h-full flex flex-col items-center justify-center p-6 border border-slate-800 rounded-xl">
-                  <span className="text-2xl mb-2">📊</span>
                   <h4 className="text-sm font-bold text-emerald-300 mb-1">Presentación Corporativa & Diapositivas B2B</h4>
                   <p className="text-xs text-slate-400">Compartiendo pantalla de convenio institucional ASL Ideas SpA</p>
                 </div>
               )}
 
-              {pantallaActiva === 'ficha' && (
+              {pantallaActiva === 'mision' && (
                 <div className="text-center bg-slate-950/90 w-full h-full flex flex-col items-center justify-center p-6 border border-slate-800 rounded-xl">
-                  <span className="text-2xl mb-2">📋</span>
-                  <h4 className="text-sm font-bold text-emerald-300 mb-1">Ficha Clínica / Integrativa en Pantalla</h4>
-                  <p className="text-xs text-slate-400">Visualizando datos encriptados bajo cumplimiento Ley N° 21.663</p>
+                  <h4 className="text-sm font-bold text-emerald-300 mb-1">Misión, Visión & Beneficios de la Comunidad</h4>
+                  <p className="text-xs text-slate-400">Visualizando propuesta de valor para colaboradores y suscriptores</p>
                 </div>
               )}
 
               {pantallaActiva === 'pizarra' && (
                 <div className="text-center bg-slate-950/90 w-full h-full flex flex-col items-center justify-center p-6 border border-slate-800 rounded-xl">
-                  <span className="text-2xl mb-2">🎨</span>
                   <h4 className="text-sm font-bold text-emerald-300 mb-1">Pizarra Digital Colaborativa</h4>
                   <p className="text-xs text-slate-400">Dibujo y anotaciones de accesibilidad cognitiva en tiempo real</p>
                 </div>
@@ -211,7 +271,7 @@ function SalaVirtualContent() {
               {/* Subtítulos en Vivo */}
               {transcripcionActiva && (
                 <div className="absolute bottom-3 left-3 right-3 bg-black/80 backdrop-blur-md border border-emerald-500/50 p-2.5 rounded-xl text-center text-xs text-emerald-200">
-                  <span className="font-bold text-emerald-400">📝 Transcripción en Vivo (IA):</span> &quot;Bienvenidos a la reunión de Casa Matriz ASL Ideas SpA...&quot;
+                  <span className="font-bold text-emerald-400">Transcripción en Vivo (IA):</span> &quot;Bienvenidos a la reunión de Casa Matriz ASL Ideas SpA...&quot;
                 </div>
               )}
             </div>
@@ -225,7 +285,7 @@ function SalaVirtualContent() {
                   micActivo ? 'bg-emerald-600 text-white' : 'bg-red-600/90 text-white'
                 }`}
               >
-                {micActivo ? '🎙️ Micrófono Encendido' : '🎙️ Micrófono Silenciado'}
+                {micActivo ? 'Micrófono Encendido' : 'Micrófono Silenciado'}
               </button>
 
               <button
@@ -235,7 +295,7 @@ function SalaVirtualContent() {
                   camActiva ? 'bg-emerald-600 text-white' : 'bg-red-600/90 text-white'
                 }`}
               >
-                {camActiva ? '📹 Cámara Encendida' : '📹 Encender Cámara'}
+                {camActiva ? 'Cámara Encendida' : 'Encender Cámara'}
               </button>
 
               <button
@@ -245,12 +305,12 @@ function SalaVirtualContent() {
                   transcripcionActiva ? 'bg-emerald-600 text-white' : 'bg-slate-700 text-slate-200'
                 }`}
               >
-                {transcripcionActiva ? '📝 Transcribiendo...' : '📝 Transcribir Reunión'}
+                {transcripcionActiva ? 'Transcribiendo...' : 'Transcribir Reunión'}
               </button>
 
               {/* Selector de Pantallas */}
               <div className="flex items-center gap-1 bg-slate-900 p-1 rounded-lg border border-slate-700 text-xs">
-                <span className="text-[11px] text-slate-400 px-2">🖥️ Pantalla:</span>
+                <span className="text-[11px] text-slate-400 px-2">Pantalla:</span>
                 <button
                   type="button"
                   onClick={() => setPantallaActiva('cam')}
@@ -267,10 +327,10 @@ function SalaVirtualContent() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setPantallaActiva('ficha')}
-                  className={`px-2 py-1 rounded ${pantallaActiva === 'ficha' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-white'}`}
+                  onClick={() => setPantallaActiva('mision')}
+                  className={`px-2 py-1 rounded ${pantallaActiva === 'mision' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-white'}`}
                 >
-                  Ficha
+                  Misión/Visión
                 </button>
                 <button
                   type="button"
@@ -283,27 +343,27 @@ function SalaVirtualContent() {
             </div>
           </div>
 
-          {/* Panel Lateral de Información */}
+          {/* Panel Lateral de Información con Beneficios */}
           <div className="bg-slate-800/40 p-6 rounded-2xl border border-slate-700/50 flex flex-col justify-between space-y-4">
             <div>
-              <h3 className="text-md font-bold mb-2 text-emerald-400">Información de la Sala</h3>
+              <h3 className="text-md font-bold mb-2 text-emerald-400">Información de la Sala & Comunidad</h3>
               <p className="text-xs text-slate-300 leading-relaxed mb-4">
-                Espacio accesible diseñado con baja sobrecarga sensorial para reuniones institucionales, convenios B2B y atenciones de Salud Digital Inclusiva.
+                Espacio accesible diseñado con baja sobrecarga sensorial para reuniones institucionales, alianzas con colaboradores y atención comunitaria.
               </p>
               <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-700 text-xs space-y-1.5">
                 <p><strong className="text-slate-200">Portal:</strong> {appParam}</p>
-                <p><strong className="text-slate-200">Seguridad:</strong> Cifrado SSL / Ley N° 21.663</p>
-                <p><strong className="text-slate-200">Estado:</strong> <span className="text-emerald-400 font-bold">● En Vivo</span></p>
+                <p><strong className="text-slate-200">Red:</strong> Beneficios Cuerpo y Alma B2B</p>
+                <p><strong className="text-slate-200">Estado:</strong> <span className="text-emerald-400 font-bold">En Vivo</span></p>
               </div>
             </div>
 
             <div className="space-y-2">
               <button
                 type="button"
-                onClick={() => setTabActiva('ficha')}
+                onClick={() => setTabActiva('mision')}
                 className="w-full py-2.5 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold rounded-xl transition"
               >
-                📋 Abrir Ficha Oficial
+                Ver Misión, Visión & Beneficios
               </button>
               <button
                 type="button"
@@ -317,7 +377,7 @@ function SalaVirtualContent() {
         </section>
       )}
 
-      {/* Pestaña 2: Formulario de Agendamiento B2B */}
+      {/* Pestaña 3: Formulario de Agendamiento B2B + Beneficios Colaboradores */}
       {tabActiva === 'cita' && (
         <section className="max-w-3xl mx-auto bg-slate-800/80 p-6 md:p-8 rounded-2xl border border-slate-700 shadow-2xl">
           <div className="mb-6">
@@ -325,7 +385,7 @@ function SalaVirtualContent() {
               Agendar Cita B2B en {appParam}
             </h2>
             <p className="text-xs md:text-sm text-slate-300">
-              Selecciona la fecha y bloque de atención. La cita quedará automáticamente vinculada con la Sala Virtual.
+              Súmate a nuestra red de colaboradores y suscriptores para potenciar tu presencia y llegar a muchas más personas.
             </p>
           </div>
 
@@ -340,7 +400,7 @@ function SalaVirtualContent() {
           <form onSubmit={handleSubmitCita} className="space-y-4 text-left">
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1">
-                Nombre Completo o Empresa <span className="text-emerald-400">*</span>
+                Nombre Completo o Empresa / PYME <span className="text-emerald-400">*</span>
               </label>
               <input
                 type="text"
@@ -382,7 +442,7 @@ function SalaVirtualContent() {
 
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1">
-                Correos de Invitados Adicionales (Opcional)
+                Correos de Invitados / Colaboradores (Opcional)
               </label>
               <input
                 type="text"
@@ -433,49 +493,10 @@ function SalaVirtualContent() {
                 disabled={cargando}
                 className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold rounded-xl transition shadow-lg disabled:opacity-50"
               >
-                {cargando ? 'Guardando agendamiento...' : 'Confirmar Cita y Vincular a la Video Reunión'}
+                {cargando ? 'Guardando agendamiento...' : 'Confirmar Cita y Unirse a la Red B2B'}
               </button>
             </div>
           </form>
-        </section>
-      )}
-
-      {/* Pestaña 3: Ficha Oficial */}
-      {tabActiva === 'ficha' && (
-        <section className="max-w-3xl mx-auto bg-slate-800/80 p-6 md:p-8 rounded-2xl border border-slate-700 shadow-2xl space-y-6">
-          <div className="flex items-center justify-between border-b border-slate-700 pb-4">
-            <div>
-              <span className="bg-emerald-900/60 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">
-                Ficha Oficial Cifrada
-              </span>
-              <h2 className="text-xl font-bold text-white mt-1">Registro Clínico e Integrativo</h2>
-            </div>
-            <button
-              type="button"
-              onClick={() => window.print()}
-              className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-xs font-semibold text-white rounded-lg transition"
-            >
-              🖨️ Imprimir / PDF
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-            <div className="bg-slate-900/80 p-3.5 rounded-xl border border-slate-700/60">
-              <p className="text-slate-400">Institución / Casa Matriz:</p>
-              <p className="font-bold text-white text-sm">ASL Ideas SpA</p>
-            </div>
-            <div className="bg-slate-900/80 p-3.5 rounded-xl border border-slate-700/60">
-              <p className="text-slate-400">Normativa de Seguridad:</p>
-              <p className="font-bold text-emerald-400 text-sm">Cifrado Ley N° 21.663</p>
-            </div>
-          </div>
-
-          <div className="bg-slate-900/60 p-4 rounded-xl border border-slate-700/60 space-y-2 text-xs text-slate-300">
-            <h4 className="font-bold text-emerald-400 text-sm">Observaciones de Accesibilidad Cognitiva:</h4>
-            <p>• Paciente/Usuario requiere interfaz con baja carga sensorial (Paleta suave, contraste reducido).</p>
-            <p>• Modalidad de atención adaptada para personas con Condición del Espectro Autista (TEA) y TDAH.</p>
-            <p>• Subtítulos en vivo y material de apoyo visual activados automáticamente.</p>
-          </div>
         </section>
       )}
 
