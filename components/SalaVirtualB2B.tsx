@@ -38,27 +38,27 @@ export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
   }).toString();
 
   return (
-    <div className="w-full bg-white p-5 sm:p-6 rounded-2xl border-2 border-[#4DB6AC]/40 shadow-lg text-center space-y-4">
-      <div className="flex items-center justify-center space-x-2">
+    <div className="w-full bg-white p-5 sm:p-6 rounded-3xl border-2 border-[#00796B]/30 shadow-xl text-center space-y-4">
+      <div className="flex items-center justify-center space-x-3">
         <img 
           src={logoMostrar} 
           alt="Logo App" 
-          className="w-8 h-8 object-contain rounded-full border border-[#B2DFDB] bg-white p-0.5" 
+          className="w-12 h-12 object-contain rounded-2xl border border-[#00796B]/30 bg-[#EBF5F4] p-1 flex-shrink-0" 
         />
-        <span className="bg-[#00796B] text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
+        <span className="bg-[#00796B] text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">
           SALA VIRTUAL B2B EN VIVO
         </span>
       </div>
 
       <h3 className="text-lg sm:text-xl font-black text-[#004D40]">{nombreMostrar}</h3>
-      <p className="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto font-medium">
-        Entorno interactivo con videollamada, agenda vinculada, Ficha Oficial, archivos cifrados e invitaciones B2B.
+      <p className="text-xs sm:text-sm text-[#00796B] max-w-lg mx-auto font-medium">
+        Entorno interactivo accesible con videollamada, agendamiento B2B, transcripción de accesibilidad e invitaciones directas.
       </p>
 
       <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
         <Link 
           href={`/sala-virtual?${queryParams}`}
-          className="bg-[#00796B] hover:bg-[#004D40] text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-md transition transform hover:scale-105 flex items-center gap-2"
+          className="bg-[#00796B] hover:bg-[#004D40] text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-md transition flex items-center gap-2"
         >
           <span>Ingresar a la Sala de {nombreMostrar}</span>
         </Link>
@@ -66,7 +66,7 @@ export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
           <button 
             type="button"
             onClick={handleClose} 
-            className="bg-[#F4FAF9] border border-[#B2DFDB] text-[#004D40] font-bold text-xs px-4 py-3 rounded-xl hover:bg-[#E0F2F1] transition"
+            className="bg-white border-2 border-[#00796B]/30 text-[#004D40] font-bold text-xs px-4 py-3 rounded-xl hover:bg-[#EBF5F4] transition"
           >
             Cerrar Vista Previa
           </button>
