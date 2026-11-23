@@ -38,7 +38,7 @@ export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
   }).toString();
 
   return (
-    <div className="w-full bg-[#1A2822] p-5 sm:p-6 rounded-2xl border-2 border-[#2D6A4F]/60 shadow-xl text-center space-y-4 text-white">
+    <div className="w-full bg-white p-5 sm:p-6 rounded-2xl border-2 border-[#2D6A4F]/30 shadow-xl text-center space-y-4 text-[#2C3E35]">
       <div className="flex items-center justify-center space-x-2">
         <img 
           src={logoMostrar} 
@@ -50,15 +50,15 @@ export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
         </span>
       </div>
 
-      <h3 className="text-lg sm:text-xl font-black text-white">{nombreMostrar}</h3>
-      <p className="text-xs sm:text-sm text-slate-300 max-w-lg mx-auto">
+      <h3 className="text-lg sm:text-xl font-black text-[#2C3E35]">{nombreMostrar}</h3>
+      <p className="text-xs sm:text-sm text-[#52796F] max-w-lg mx-auto">
         Entorno interactivo con videollamada, agenda vinculada, Misión y Visión, e invitaciones B2B.
       </p>
 
       <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
         <Link 
           href={`/sala-virtual?${queryParams}`}
-          className="bg-[#E8829C] hover:bg-[#D8708C] text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition transform hover:scale-105 flex items-center gap-2"
+          className="bg-[#E8829C] hover:bg-[#D8708C] text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-md transition transform hover:scale-105 flex items-center gap-2"
         >
           <span>Ingresar a la Sala de {nombreMostrar}</span>
         </Link>
@@ -66,7 +66,7 @@ export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
           <button 
             type="button"
             onClick={handleClose} 
-            className="bg-[#121E19] border border-slate-700 text-slate-300 font-bold text-xs px-4 py-3 rounded-xl hover:bg-slate-800 transition"
+            className="bg-[#FAF8F5] border border-slate-300 text-[#2C3E35] font-bold text-xs px-4 py-3 rounded-xl hover:bg-[#EAE7DF] transition"
           >
             Cerrar Vista Previa
           </button>
