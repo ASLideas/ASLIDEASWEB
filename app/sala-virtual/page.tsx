@@ -69,11 +69,11 @@ function SalaVirtualContent() {
   };
 
   return (
-    <main className={`min-h-screen p-4 md:p-8 transition-colors duration-300 ${modoCalma ? 'bg-[#F0F4F8] text-[#2C3E35]' : 'bg-[#F7FAF6] text-[#1F2937]'}`}>
+    <main className={`min-h-screen p-4 md:p-8 transition-colors duration-300 ${modoCalma ? 'bg-[#FAF8F5] text-[#2C3E35]' : 'bg-slate-900 text-white'}`}>
       {/* Header */}
       <header className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-slate-700/50">
         <div className="flex items-center gap-3">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-[#B8D6B2] flex items-center justify-center font-bold text-[#1F2937] shadow-lg">
+          <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center font-bold text-white shadow-lg">
             ASL
           </div>
           <div>
@@ -88,7 +88,7 @@ function SalaVirtualContent() {
             onClick={() => setModoCalma(!modoCalma)}
             className="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-200 border border-slate-700"
           >
-            {modoCalma ? ' Modo Calma Activo' : 'Activar Modo Calma (TEA)'}
+            {modoCalma ? '🌿 Modo Calma Activo' : 'Activar Modo Calma (TEA)'}
           </button>
           <a
             href="/"
@@ -106,22 +106,22 @@ function SalaVirtualContent() {
           onClick={() => setTabActiva('vivo')}
           className={`px-4 py-2 text-sm font-semibold rounded-lg transition ${
             tabActiva === 'vivo'
-              ? 'bg-[#B8D6B2] text-[#1F2937] shadow-md'
+              ? 'bg-emerald-600 text-white shadow-md'
               : 'bg-slate-800/60 text-slate-300 hover:bg-slate-800'
           }`}
         >
-           Sala Virtual en Vivo
+          📹 Sala Virtual en Vivo
         </button>
         <button
           type="button"
           onClick={() => setTabActiva('cita')}
           className={`px-4 py-2 text-sm font-semibold rounded-lg transition ${
             tabActiva === 'cita'
-              ? 'bg-[#B8D6B2] text-[#1F2937] shadow-md'
+              ? 'bg-emerald-600 text-white shadow-md'
               : 'bg-slate-800/60 text-slate-300 hover:bg-slate-800'
           }`}
         >
-           Agendar Cita en la Sala
+          📅 Agendar Cita en la Sala
         </button>
       </div>
 
@@ -141,26 +141,26 @@ function SalaVirtualContent() {
                 type="button"
                 onClick={() => setMicActivo(!micActivo)}
                 className={`px-4 py-2 text-xs font-semibold rounded-lg transition ${
-                  micActivo ? 'bg-[#B8D6B2] text-[#1F2937]' : 'bg-red-600/80 text-[#1F2937]'
+                  micActivo ? 'bg-emerald-600 text-white' : 'bg-red-600/80 text-white'
                 }`}
               >
-                {micActivo ? ' Micrófono Encendido' : ' Micrófono Apagado'}
+                {micActivo ? '🎙️ Micrófono Encendido' : '🎙️ Micrófono Apagado'}
               </button>
               <button
                 type="button"
                 onClick={() => setCamActiva(!camActiva)}
                 className={`px-4 py-2 text-xs font-semibold rounded-lg transition ${
-                  camActiva ? 'bg-[#B8D6B2] text-[#1F2937]' : 'bg-red-600/80 text-[#1F2937]'
+                  camActiva ? 'bg-emerald-600 text-white' : 'bg-red-600/80 text-white'
                 }`}
               >
-                {camActiva ? ' Cámara Encendida' : ' Cámara Apagada'}
+                {camActiva ? '📹 Cámara Encendida' : '📹 Cámara Apagada'}
               </button>
             </div>
           </div>
 
           <div className="bg-slate-800/40 p-6 rounded-2xl border border-slate-700/50 flex flex-col justify-between">
             <div>
-              <h3 className="text-md font-bold mb-3 text-[#B2942F]">Información de la Sala</h3>
+              <h3 className="text-md font-bold mb-3 text-emerald-400">Información de la Sala</h3>
               <p className="text-xs text-slate-300 mb-4 leading-relaxed">
                 Espacio accesible diseñado con baja sobrecarga sensorial para reuniones institucionales y convenios B2B.
               </p>
@@ -168,7 +168,7 @@ function SalaVirtualContent() {
             <button
               type="button"
               onClick={() => setTabActiva('cita')}
-              className="w-full py-2.5 bg-[#B8D6B2] hover:bg-emerald-500 text-[#1F2937] text-xs font-bold rounded-xl transition shadow-lg"
+              className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition shadow-lg"
             >
               + Agregar Invitados / Agendar Cita B2B
             </button>
@@ -180,7 +180,7 @@ function SalaVirtualContent() {
       {tabActiva === 'cita' && (
         <section className="max-w-3xl mx-auto bg-slate-800/80 p-6 md:p-8 rounded-2xl border border-slate-700 shadow-2xl">
           <div className="mb-6">
-            <h2 className="text-xl md:text-2xl font-bold text-[#1F2937] mb-2">
+            <h2 className="text-xl md:text-2xl font-bold text-white mb-2">
               Agendar Cita en la Sala de Casa Matriz ASL Ideas SpA
             </h2>
             <p className="text-xs md:text-sm text-slate-300">
@@ -203,7 +203,7 @@ function SalaVirtualContent() {
           <form onSubmit={handleSubmitCita} className="space-y-4 text-left">
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1">
-                Nombre Completo o Empresa <span className="text-[#B2942F]">*</span>
+                Nombre Completo o Empresa <span className="text-emerald-400">*</span>
               </label>
               <input
                 type="text"
@@ -211,13 +211,13 @@ function SalaVirtualContent() {
                 placeholder="Ej: Centro Médico ASL / Juan Pérez"
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
-                className="w-full px-4 py-2.5 bg-[#F7FAF6] border border-slate-700 rounded-xl text-sm text-[#1F2937] placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
               />
             </div>
 
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1">
-                RUT o RUT Tributario <span className="text-[#B2942F]">*</span>
+                RUT o RUT Tributario <span className="text-emerald-400">*</span>
               </label>
               <input
                 type="text"
@@ -225,13 +225,13 @@ function SalaVirtualContent() {
                 placeholder="Ej: 76.543.210-K / 12.345.678-9"
                 value={rut}
                 onChange={(e) => setRut(e.target.value)}
-                className="w-full px-4 py-2.5 bg-[#F7FAF6] border border-slate-700 rounded-xl text-sm text-[#1F2937] placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
               />
             </div>
 
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1">
-                Correo Electrónico <span className="text-[#B2942F]">*</span>
+                Correo Electrónico <span className="text-emerald-400">*</span>
               </label>
               <input
                 type="email"
@@ -239,7 +239,7 @@ function SalaVirtualContent() {
                 placeholder="correo@ejemplo.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2.5 bg-[#F7FAF6] border border-slate-700 rounded-xl text-sm text-[#1F2937] placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
               />
             </div>
 
@@ -252,7 +252,7 @@ function SalaVirtualContent() {
                 placeholder="Ej: gerencia@empresa.cl, ti@empresa.cl"
                 value={invitados}
                 onChange={(e) => setInvitados(e.target.value)}
-                className="w-full px-4 py-2.5 bg-[#F7FAF6] border border-slate-700 rounded-xl text-sm text-[#1F2937] placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
               />
               <p className="text-[11px] text-slate-400 mt-1">
                 Separa varios correos por coma. Recibirán la clave de acceso.
@@ -274,25 +274,25 @@ function SalaVirtualContent() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-300 mb-1">
-                  Fecha Preferente <span className="text-[#B2942F]">*</span>
+                  Fecha Preferente <span className="text-emerald-400">*</span>
                 </label>
                 <input
                   type="date"
                   required
                   value={fecha}
                   onChange={(e) => setFecha(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-[#F7FAF6] border border-slate-700 rounded-xl text-sm text-[#1F2937] focus:outline-none focus:border-emerald-500"
+                  className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-slate-300 mb-1">
-                  Bloque Horario <span className="text-[#B2942F]">*</span>
+                  Bloque Horario <span className="text-emerald-400">*</span>
                 </label>
                 <select
                   value={hora}
                   onChange={(e) => setHora(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-[#F7FAF6] border border-slate-700 rounded-xl text-sm text-[#1F2937] focus:outline-none focus:border-emerald-500"
+                  className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-emerald-500"
                 >
                   <option value="09:00 AM">09:00 AM</option>
                   <option value="10:00 AM">10:00 AM</option>
@@ -309,7 +309,7 @@ function SalaVirtualContent() {
               <button
                 type="submit"
                 disabled={cargando}
-                className="w-full py-3 bg-[#B8D6B2] hover:bg-emerald-500 text-[#1F2937] text-sm font-bold rounded-xl transition shadow-lg disabled:opacity-50"
+                className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold rounded-xl transition shadow-lg disabled:opacity-50"
               >
                 {cargando ? 'Guardando agendamiento...' : 'Confirmar Cita y Vincular a la Video Reunión'}
               </button>
