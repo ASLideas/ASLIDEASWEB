@@ -38,27 +38,27 @@ export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
   }).toString();
 
   return (
-    <div className="w-full bg-[#FAF8F5] p-5 sm:p-6 rounded-2xl border-2 border-[#52796F]/40 shadow-xl text-center space-y-4">
+    <div className="w-full bg-[#F7FAF6] p-5 sm:p-6 rounded-2xl border-2 border-[#B8D6B2]/40 shadow-xl text-center space-y-4">
       <div className="flex items-center justify-center space-x-2">
         <img 
           src={logoMostrar} 
           alt="Logo App" 
-          className="w-8 h-8 object-contain rounded-full border border-[#97A884]/40 bg-white p-0.5" 
+          className="w-12 h-12 object-contain rounded-full border border-[#97A884]/40 bg-white p-0.5" 
         />
-        <span className="bg-[#52796F] text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
+        <span className="bg-[#B8D6B2] text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
           SALA VIRTUAL B2B EN VIVO
         </span>
       </div>
 
-      <h3 className="text-lg sm:text-xl font-black text-[#676E5E]">{nombreMostrar}</h3>
-      <p className="text-xs sm:text-sm text-[#52796F] max-w-lg mx-auto">
+      <h3 className="text-lg sm:text-xl font-black text-[#1F2937]">{nombreMostrar}</h3>
+      <p className="text-xs sm:text-sm text-[#B8D6B2] max-w-lg mx-auto">
         Entorno interactivo con videollamada dual, agenda vinculada, Ficha Oficial, archivos cifrados e invitaciones B2B.
       </p>
 
       <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
         <Link 
           href={`/sala-virtual?${queryParams}`}
-          className="bg-[#52796F] hover:bg-[#676E5E] text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition transform hover:scale-105 flex items-center gap-2"
+          className="bg-[#B8D6B2] hover:bg-[#1F2937] text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition transform hover:scale-105 flex items-center gap-2"
         >
           <span>Ingresar a la Sala de {nombreMostrar}</span>
         </Link>
@@ -66,7 +66,7 @@ export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
           <button 
             type="button"
             onClick={handleClose} 
-            className="bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] font-bold text-xs px-4 py-3 rounded-xl hover:bg-[#E6E7D5] transition"
+            className="bg-[#F7FAF6] border border-[#97A884] text-[#1F2937] font-bold text-xs px-4 py-3 rounded-xl hover:bg-[#E6E7D5] transition"
           >
             Cerrar Vista Previa
           </button>
