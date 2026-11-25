@@ -1,10 +1,6 @@
-import './globals.css';
-import React from 'react';
+'use client';
 
-export const metadata = {
-  title: 'ASL Ideas SpA | Ecosistema de Salud Digital Inclusiva',
-  description: 'Desarrollo y soluciones accesibles para PYME y comercio asociado. Adaptado para neurodivergencias (TEA/TDAH) y condiciones cronicas.',
-};
+import React from 'react';
 
 export default function RootLayout({
   children,
