@@ -1,10 +1,6 @@
-import type { Metadata } from 'next';
-import './globals.css';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'ASL Ideas SpA — Estrategia de Salud Digital Inclusiva',
-  description: 'Ecosistema de Salud Digital Inclusiva, Red Cuerpo y Alma B2B, y Plataformas de Autocuidado Accesible.',
-};
+import React from 'react';
 
 export default function RootLayout({
   children,
@@ -13,7 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="antialiased bg-slate-900 text-white min-h-screen">
+      <body className="bg-slate-900 text-white min-h-screen antialiased">
         {children}
       </body>
     </html>
