@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'ASL Ideas SpA | Estrategia de Salud Digital Inclusiva',
-  description: 'Ecosistema de Salud Digital Inclusiva, Telemedicina integrativa y Red Cuerpo y Alma B2B.',
+  title: 'ASL Ideas SpA — Estrategia de Salud Digital Inclusiva',
+  description: 'Ecosistema de Salud Digital Inclusiva, Red Cuerpo y Alma B2B, y Plataformas de Autocuidado Accesible.',
 };
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="antialiased font-sans selection:bg-[#52796F] selection:text-white">
+      <body className="antialiased bg-slate-900 text-white min-h-screen">
         {children}
       </body>
     </html>

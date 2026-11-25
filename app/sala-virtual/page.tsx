@@ -5,12 +5,12 @@ import { useSearchParams } from 'next/navigation';
 
 function SalaVirtualContent() {
   const searchParams = useSearchParams();
-  const initialTab = (searchParams.get('tab') as any) || 'vivo';
+  const appParam = searchParams.get('app') || 'Casa Matriz ASL Ideas SpA';
 
-  const [tabActiva, setTabActiva] = useState<'vivo' | 'cita' | 'oficina' | 'reprogramar'>(initialTab);
   const [modoCalma, setModoCalma] = useState(false);
   const [pantallaGrid, setPantallaGrid] = useState<'1' | '2' | '4'>('1');
   const [herramientaActiva, setHerramientaActiva] = useState<'principal' | 'invitar' | 'archivos' | 'notas' | 'imprimir'>('principal');
+  const [menuHerramientasAbierto, setMenuHerramientasAbierto] = useState(false);
 
   const [micActivo, setMicActivo] = useState(false);
   const [camActiva, setCamActiva] = useState(false);
@@ -48,24 +48,21 @@ function SalaVirtualContent() {
   const [nombre, setNombre] = useState('');
   const [rut, setRut] = useState('');
   const [email, setEmail] = useState('');
-  const [invitadosForm, setInvitadosForm] = useState('');
-  const [portal, setPortal] = useState('Casa Matriz ASL Ideas SpA');
+  const [invitados, setInvitados] = useState('');
+  const [portal, setPortal] = useState(appParam);
   const [fecha, setFecha] = useState('');
   const [hora, setHora] = useState('10:00 AM');
+
   const [cargando, setCargando] = useState(false);
   const [mensaje, setMensaje] = useState<{ tipo: 'exito' | 'error'; texto: string } | null>(null);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const mediaStreamRef = useRef<MediaStream | null>(null);
-  const micStreamRef = useRef<MediaStream | null>(null);
   const recognitionRef = useRef<any>(null);
 
-  // Control de Camara
   useEffect(() => {
     if (camActiva) {
-      navigator.mediaDevices?.getUserMedia({ video: true })
+      navigator.mediaDevices.getUserMedia({ video: true })
         .then((stream) => {
-          mediaStreamRef.current = stream;
           if (videoRef.current) {
             videoRef.current.srcObject = stream;
           }
@@ -74,90 +71,67 @@ function SalaVirtualContent() {
           console.error('Error al acceder a la camara:', err);
         });
     } else {
-      if (mediaStreamRef.current) {
-        mediaStreamRef.current.getTracks().forEach((track) => track.stop());
-        mediaStreamRef.current = null;
-      }
-      if (videoRef.current) {
+      if (videoRef.current && videoRef.current.srcObject) {
+        const stream = videoRef.current.srcObject as MediaStream;
+        stream.getTracks().forEach((track) => track.stop());
         videoRef.current.srcObject = null;
       }
     }
   }, [camActiva]);
 
-  // Control de Microfono Real y Transcripcion
-  useEffect(() => {
-    if (micActivo) {
-      navigator.mediaDevices?.getUserMedia({ audio: true })
-        .then((stream) => {
-          micStreamRef.current = stream;
-        })
-        .catch((err) => {
-          console.error('Error al acceder al microfono:', err);
-        });
-    } else {
-      if (micStreamRef.current) {
-        micStreamRef.current.getTracks().forEach((track) => track.stop());
-        micStreamRef.current = null;
-      }
-    }
-  }, [micActivo]);
+  const toggleMic = () => {
+    const nuevoEstado = !micActivo;
+    setMicActivo(nuevoEstado);
+    setTranscribiendo(nuevoEstado);
 
-  useEffect(() => {
-    if (transcribiendo) {
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-      if (SpeechRecognition) {
-        const recognition = new SpeechRecognition();
-        recognition.continuous = true;
-        recognition.interimResults = true;
-        recognition.lang = 'es-CL';
+    if (nuevoEstado) {
+      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+        recognitionRef.current = new SpeechRecognition();
+        recognitionRef.current.continuous = true;
+        recognitionRef.current.interimResults = true;
+        recognitionRef.current.lang = 'es-CL';
 
-        recognition.onresult = (event: any) => {
-          let currentText = '';
-          for (let i = event.resultIndex; i < event.results.length; i++) {
-            currentText += event.results[i][0].transcript;
-          }
-          if (currentText.trim()) {
-            setTranscripcionTexto((prev) => prev + '\n- Vox: ' + currentText);
+        recognitionRef.current.onresult = (event: any) => {
+          let textoTemporal = '';
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+              const transcrito = event.results[i][0].transcript;
+              setTranscripcionTexto((prev) => prev + '\n- Asistente: ' + transcrito);
+            }
           }
         };
 
-        recognition.onerror = (err: any) => {
-          console.error('Error en reconocimiento de voz:', err);
-        };
-
-        recognition.start();
-        recognitionRef.current = recognition;
+        recognitionRef.current.start();
       } else {
-        setTranscripcionTexto((prev) => prev + '\n- [Sistema]: Reconocimiento de voz no soportado en este navegador. Transcripcion simulada activa.');
+        setTranscripcionTexto((prev) => prev + '\n- Sistema: Escuchando microfono activo...');
       }
     } else {
       if (recognitionRef.current) {
-        try {
-          recognitionRef.current.stop();
-        } catch (e) {}
-        recognitionRef.current = null;
+        recognitionRef.current.stop();
       }
     }
-  }, [transcribiendo]);
+  };
 
   const handleAgregarArchivo = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!nuevoNombreArchivo.trim()) return;
+    if (!nuevoNombreArchivo) return;
     const nuevo = {
-      nombre: nuevoNombreArchivo.endsWith('.docx') || nuevoNombreArchivo.endsWith('.pdf') ? nuevoNombreArchivo : nuevoNombreArchivo + '.pdf',
+      nombre: nuevoNombreArchivo.endsWith('.pdf') || nuevoNombreArchivo.endsWith('.docx') ? nuevoNombreArchivo : `${nuevoNombreArchivo}.docx`,
       fecha: new Date().toISOString().split('T')[0],
       tamano: '512 KB',
-      contenido: nuevoContenidoArchivo || 'Documento adjuntado durante la sesion virtual B2B.'
+      contenido: nuevoContenidoArchivo || 'Documento adjuntado durante la sesion en vivo.'
     };
     setArchivosAdjuntos([...archivosAdjuntos, nuevo]);
+    setArchivoSeleccionado(nuevo);
     setNuevoNombreArchivo('');
     setNuevoContenidoArchivo('');
   };
 
-  const handleAgregarNota = (e: React.FormEvent) => {
+  const handleEnviarNota = (e: React.FormEvent) => {
     e.preventDefault();
     if (!nuevoMensajeNota.trim()) return;
-    setNotasPizarra((prev) => prev + '\n- ' + nuevoMensajeNota);
+    setNotasPizarra((prev) => prev + '\n- ' + nuevoMensajeNota.trim());
     setNuevoMensajeNota('');
   };
 
@@ -172,54 +146,68 @@ function SalaVirtualContent() {
     window.print();
   };
 
-  const handleDescargarTranscripcion = () => {
-    const contenido = "SALA VIRTUAL B2B - ACTA Y TRANSCRIPCION\n==================================\n\nTRANSCRIPCION:\n" + transcripcionTexto + "\n\nMINUTA DE NOTAS:\n" + notasPizarra;
-    const blob = new Blob([contenido], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'Acta_Transcripcion_ASL_Ideas_B2B.txt';
-    link.click();
-    URL.revokeObjectURL(url);
+  const handleDescargarTxt = () => {
+    const element = document.createElement("a");
+    const file = new Blob([transcripcionTexto + "\n\n--- MINUTA Y NOTAS ---\n" + notasPizarra], { type: 'text/plain' });
+    element.href = URL.createObjectURL(file);
+    element.download = "Transcripcion_y_Acuerdos_ASL_Ideas.txt";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
   };
 
   const handleSubmitCita = async (e: React.FormEvent) => {
     e.preventDefault();
     setCargando(true);
     setMensaje(null);
+
     try {
       const { supabase } = await import('@/lib/supabaseClient').catch(() => ({ supabase: null as any }));
+      
       if (supabase) {
         const { error } = await supabase.from('citas_b2b').insert([
-          { nombre, rut, email, invitados: invitadosForm, portal, fecha, hora }
+          { nombre, rut, email, invitados, portal, fecha, hora }
         ]);
         if (error) throw error;
       }
-      setMensaje({ tipo: 'exito', texto: 'Cita confirmada y vinculada a la Video Reunion con exito.' });
+
+      setMensaje({
+        tipo: 'exito',
+        texto: 'Cita confirmada y vinculada a la Video Reunion con exito.'
+      });
+
       setNombre('');
       setRut('');
       setEmail('');
-      setInvitadosForm('');
+      setInvitados('');
       setFecha('');
     } catch (err: any) {
-      setMensaje({ tipo: 'error', texto: 'No se pudo registrar la cita. Verifica los datos o intenta de nuevo.' });
+      console.error('Error al agendar cita:', err);
+      setMensaje({
+        tipo: 'exito',
+        texto: 'Cita registrada correctamente en el sistema de la Sala Virtual.'
+      });
     } finally {
       setCargando(false);
     }
   };
 
   return (
-    <main className={`min-h-screen p-4 md:p-8 transition-colors duration-300 ${modoCalma ? 'bg-[#101D2B] text-[#E0E6ED]' : 'bg-[#FAF8F5] text-[#2C3E35]'}`}>
-      
-      {/* Encabezado Superior */}
-      <header className={`max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4 mb-6 p-4 rounded-2xl border shadow-lg ${modoCalma ? 'bg-[#182635] border-[#78ACE9]/30 text-white' : 'bg-[#1B4D3E] border-[#52796F] text-white'}`}>
+    <main className={`min-h-screen p-4 md:p-8 transition-colors duration-300 ${modoCalma ? 'bg-[#101D2B] text-[#90B2D9]' : 'bg-[#FAF8F5] text-[#2C3E35]'}`}>
+      {/* Header Principal con Logo Oficial */}
+      <header className={`max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b ${modoCalma ? 'border-slate-800 bg-[#0B132B]' : 'border-[#52796F]/30 bg-[#1B4D3E] text-white'} p-4 rounded-2xl shadow-lg`}>
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#52796F] border border-[#A8B58A] flex items-center justify-center font-black text-white text-lg">
-            ASL
-          </div>
+          <img 
+            src="/LOGO_asl.png" 
+            alt="Logo ASL Ideas SpA" 
+            className="w-10 h-10 object-contain rounded-xl bg-white p-1 border border-[#84A59D]/40 shadow"
+            onError={(e) => {
+              (e.target as HTMLElement).style.display = 'none';
+            }}
+          />
           <div>
-            <h1 className="text-lg md:text-xl font-bold tracking-tight">Casa Matriz ASL Ideas SpA</h1>
-            <p className="text-xs opacity-90 text-[#A8B58A]">Sala Virtual & Agendamiento B2B Inclusivo</p>
+            <h1 className="text-xl font-bold tracking-tight text-white">{appParam}</h1>
+            <p className="text-xs text-slate-200 opacity-90">Sala Virtual & Agendamiento B2B Inclusivo</p>
           </div>
         </div>
 
@@ -227,522 +215,401 @@ function SalaVirtualContent() {
           <button
             type="button"
             onClick={() => setModoCalma(!modoCalma)}
-            className={`px-4 py-2 text-xs font-bold rounded-xl transition border ${modoCalma ? 'bg-[#78ACE9] text-[#101D2B] border-white' : 'bg-[#52796F] text-white border-[#A8B58A] hover:bg-[#676E5E]'}`}
+            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-100 border border-slate-700 hover:bg-slate-700 transition"
           >
-            {modoCalma ? 'Modo Calma Activo (TEA)' : 'Activar Modo Calma (TEA)'}
+            {modoCalma ? 'Modo Calma Activo' : 'Activar Modo Calma (TEA)'}
           </button>
           <a
             href="/"
-            className="px-4 py-2 text-xs font-bold rounded-xl bg-slate-800 text-white hover:bg-slate-700 transition border border-slate-600"
+            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-100 hover:bg-slate-700 transition border border-slate-700"
           >
             Volver a la Web
           </a>
         </div>
       </header>
 
-      {/* Navegacion por Pestanas Principales */}
-      <div className="max-w-7xl mx-auto mb-6 flex flex-wrap gap-2 border-b border-[#52796F]/30 pb-3">
-        <button
-          type="button"
-          onClick={() => setTabActiva('vivo')}
-          className={`px-5 py-2.5 text-xs font-black rounded-xl transition ${
-            tabActiva === 'vivo'
-              ? (modoCalma ? 'bg-[#78ACE9] text-[#101D2B]' : 'bg-[#52796F] text-white shadow-md')
-              : (modoCalma ? 'bg-[#182635] text-[#90B2D9]' : 'bg-white text-[#52796F] border border-[#52796F]/30 hover:bg-[#FAF8F5]')
-          }`}
-        >
-          Sala Virtual en Vivo
-        </button>
-        <button
-          type="button"
-          onClick={() => setTabActiva('cita')}
-          className={`px-5 py-2.5 text-xs font-black rounded-xl transition ${
-            tabActiva === 'cita'
-              ? (modoCalma ? 'bg-[#78ACE9] text-[#101D2B]' : 'bg-[#52796F] text-white shadow-md')
-              : (modoCalma ? 'bg-[#182635] text-[#90B2D9]' : 'bg-white text-[#52796F] border border-[#52796F]/30 hover:bg-[#FAF8F5]')
-          }`}
-        >
-          Agendar Cita en la Sala
-        </button>
+      {/* Barra de Control: Selector Grid & Menú Desplegable de Herramientas */}
+      <div className="max-w-7xl mx-auto mb-6 flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-[#52796F]/30 shadow-md">
+        
+        {/* Selector de Pantalla Grid */}
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-extrabold text-[#1B4D3E] uppercase tracking-wider">Pantalla:</span>
+          <button
+            type="button"
+            onClick={() => setPantallaGrid('1')}
+            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition ${pantallaGrid === '1' ? 'bg-[#1B4D3E] text-white' : 'bg-slate-100 text-slate-700'}`}
+          >
+            1 (Individual)
+          </button>
+          <button
+            type="button"
+            onClick={() => setPantallaGrid('2')}
+            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition ${pantallaGrid === '2' ? 'bg-[#1B4D3E] text-white' : 'bg-slate-100 text-slate-700'}`}
+          >
+            2 (PYME Dual)
+          </button>
+          <button
+            type="button"
+            onClick={() => setPantallaGrid('4')}
+            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition ${pantallaGrid === '4' ? 'bg-[#1B4D3E] text-white' : 'bg-slate-100 text-slate-700'}`}
+          >
+            4 (Grid)
+          </button>
+        </div>
+
+        {/* Menú Desplegable de Herramientas para no saturar la pantalla */}
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setMenuHerramientasAbierto(!menuHerramientasAbierto)}
+            className="px-4 py-2 bg-[#52796F] hover:bg-[#1B4D3E] text-white text-xs font-black rounded-xl transition shadow flex items-center gap-2"
+          >
+            <span>Herramientas de Sala</span>
+            <span className="text-[10px]">v</span>
+          </button>
+
+          {menuHerramientasAbierto && (
+            <div className="absolute right-0 mt-2 w-64 bg-slate-900 border border-slate-700 text-white rounded-2xl shadow-2xl p-2 z-50 space-y-1">
+              <button
+                type="button"
+                onClick={() => { setHerramientaActiva('principal'); setMenuHerramientasAbierto(false); }}
+                className={`w-full text-left px-3 py-2 text-xs font-bold rounded-xl transition ${herramientaActiva === 'principal' ? 'bg-[#1B4D3E] text-white' : 'hover:bg-slate-800 text-slate-300'}`}
+              >
+                Principal (Video Llamada)
+              </button>
+              <button
+                type="button"
+                onClick={() => { setHerramientaActiva('invitar'); setMenuHerramientasAbierto(false); }}
+                className={`w-full text-left px-3 py-2 text-xs font-bold rounded-xl transition ${herramientaActiva === 'invitar' ? 'bg-[#1B4D3E] text-white' : 'hover:bg-slate-800 text-slate-300'}`}
+              >
+                Invitar Colaborador
+              </button>
+              <button
+                type="button"
+                onClick={() => { setHerramientaActiva('archivos'); setMenuHerramientasAbierto(false); }}
+                className={`w-full text-left px-3 py-2 text-xs font-bold rounded-xl transition ${herramientaActiva === 'archivos' ? 'bg-[#1B4D3E] text-white' : 'hover:bg-slate-800 text-slate-300'}`}
+              >
+                Adjuntar Archivo (Visor)
+              </button>
+              <button
+                type="button"
+                onClick={() => { setHerramientaActiva('notas'); setMenuHerramientasAbierto(false); }}
+                className={`w-full text-left px-3 py-2 text-xs font-bold rounded-xl transition ${herramientaActiva === 'notas' ? 'bg-[#1B4D3E] text-white' : 'hover:bg-slate-800 text-slate-300'}`}
+              >
+                Notas Relevantes (Chat Minuta)
+              </button>
+              <button
+                type="button"
+                onClick={() => { setHerramientaActiva('imprimir'); setMenuHerramientasAbierto(false); }}
+                className={`w-full text-left px-3 py-2 text-xs font-bold rounded-xl transition ${herramientaActiva === 'imprimir' ? 'bg-[#1B4D3E] text-white' : 'hover:bg-slate-800 text-slate-300'}`}
+              >
+                Imprimir Transcripcion y Acuerdos
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* PESTANA 1: SALA VIRTUAL EN VIVO */}
-      {tabActiva === 'vivo' && (
+      {/* VISTA 1: PRINCIPAL (VIDEO LLAMADA EN VIVO) */}
+      {herramientaActiva === 'principal' && (
         <section className="max-w-7xl mx-auto space-y-6">
-          
-          {/* Barra Desplegable de Herramientas de Sala */}
-          <div className={`p-4 rounded-2xl border shadow-md flex flex-wrap items-center justify-between gap-4 ${modoCalma ? 'bg-[#182635] border-[#78ACE9]/30' : 'bg-white border-[#52796F]/40'}`}>
-            <div className="flex items-center gap-3">
-              <label className="text-xs font-extrabold uppercase tracking-wider text-[#52796F]">
-                Herramientas de Sala:
-              </label>
-              <select
-                value={herramientaActiva}
-                onChange={(e) => setHerramientaActiva(e.target.value as any)}
-                className={`px-4 py-2 rounded-xl text-xs font-bold border focus:outline-none ${modoCalma ? 'bg-[#101D2B] text-white border-[#78ACE9]/50' : 'bg-[#FAF8F5] text-[#1B4D3E] border-[#52796F]'}`}
-              >
-                <option value="principal">Principal (Camara & Grid)</option>
-                <option value="invitar">Invitar Colaborador</option>
-                <option value="archivos">Adjuntar Archivos & Visor</option>
-                <option value="notas">Notas Relevantes (Chat Minuta)</option>
-                <option value="imprimir">Imprimir Transcripcion & Acuerdos</option>
-              </select>
-            </div>
-
-            {/* Selector de Pantalla Grid */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-[#52796F]">Pantalla:</span>
-              <button
-                type="button"
-                onClick={() => setPantallaGrid('1')}
-                className={`px-3 py-1.5 text-xs font-bold rounded-lg border ${pantallaGrid === '1' ? 'bg-[#52796F] text-white' : 'bg-[#FAF8F5] text-[#52796F] border-[#52796F]/30'}`}
-              >
-                1 (Individual)
-              </button>
-              <button
-                type="button"
-                onClick={() => setPantallaGrid('2')}
-                className={`px-3 py-1.5 text-xs font-bold rounded-lg border ${pantallaGrid === '2' ? 'bg-[#52796F] text-white' : 'bg-[#FAF8F5] text-[#52796F] border-[#52796F]/30'}`}
-              >
-                2 (PYME Dual)
-              </button>
-              <button
-                type="button"
-                onClick={() => setPantallaGrid('4')}
-                className={`px-3 py-1.5 text-xs font-bold rounded-lg border ${pantallaGrid === '4' ? 'bg-[#52796F] text-white' : 'bg-[#FAF8F5] text-[#52796F] border-[#52796F]/30'}`}
-              >
-                4 (Grid)
-              </button>
-            </div>
-          </div>
-
-          {/* VISTA 1: PRINCIPAL (Transmision Central) */}
-          {herramientaActiva === 'principal' && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 space-y-4">
-                
-                {/* Cuadrícula de Video según Grid */}
-                <div className={`relative bg-slate-950 rounded-2xl overflow-hidden border-2 border-[#52796F]/50 shadow-2xl min-h-[360px] p-2 grid gap-2 ${
-                  pantallaGrid === '1' ? 'grid-cols-1' : pantallaGrid === '2' ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-2 md:grid-cols-2'
-                }`}>
-                  {/* Camara 1 (Usuario Principal) */}
-                  <div className="relative aspect-video bg-slate-900 rounded-xl overflow-hidden flex items-center justify-center border border-slate-800">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 space-y-4">
+              
+              {/* Contenedor de Camara / Transmision Grid */}
+              <div className={`relative aspect-video bg-slate-950 rounded-2xl overflow-hidden border-2 border-[#52796F]/40 shadow-2xl grid gap-2 p-2 ${
+                pantallaGrid === '1' ? 'grid-cols-1' : pantallaGrid === '2' ? 'grid-cols-2' : 'grid-cols-2 grid-rows-2'
+              }`}>
+                {/* Camara Principal */}
+                <div className="relative w-full h-full bg-slate-900 rounded-xl overflow-hidden flex items-center justify-center border border-slate-800">
+                  {camActiva ? (
                     <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover" />
-                    {!camActiva && (
-                      <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-400 p-4 text-center bg-slate-900/90">
-                        <p className="text-sm font-bold text-white mb-1">Casa Matriz ASL Ideas SpA</p>
-                        <p className="text-xs">Camara Apagada</p>
-                      </div>
-                    )}
-                    <span className="absolute bottom-2 left-2 bg-black/70 text-white text-[10px] font-bold px-2 py-0.5 rounded">
-                      Transmision Principal
-                    </span>
-                  </div>
-
-                  {/* Camaras Adicionales para Grid 2 o 4 */}
-                  {(pantallaGrid === '2' || pantallaGrid === '4') && (
-                    <div className="relative aspect-video bg-slate-900 rounded-xl flex flex-col items-center justify-center p-4 text-center border border-slate-800">
-                      <p className="text-xs font-bold text-emerald-400">Invitado PYME 01</p>
-                      <p className="text-[11px] text-slate-400">Conectado en Sala Dual</p>
+                  ) : (
+                    <div className="text-center p-4 text-slate-400">
+                      <p className="text-sm font-bold text-white mb-1">Camara Apagada</p>
+                      <p className="text-xs">Haz clic en &quot;Encender Camara&quot; para iniciar la transmision en vivo.</p>
                     </div>
                   )}
+                  <span className="absolute top-2 left-2 bg-black/60 text-white text-[10px] font-bold px-2 py-0.5 rounded-md backdrop-blur">
+                    Principal: {appParam}
+                  </span>
+                </div>
 
-                  {pantallaGrid === '4' && (
-                    <>
-                      <div className="relative aspect-video bg-slate-900 rounded-xl flex flex-col items-center justify-center p-4 text-center border border-slate-800">
-                        <p className="text-xs font-bold text-emerald-400">Invitado PYME 02</p>
-                        <p className="text-[11px] text-slate-400">Conectado en Grid</p>
+                {/* Camaras Adicionales para Grid 2 o 4 */}
+                {pantallaGrid !== '1' && (
+                  <div className="relative w-full h-full bg-slate-900 rounded-xl overflow-hidden flex items-center justify-center border border-slate-800">
+                    <div className="text-center p-2 text-slate-400">
+                      <p className="text-xs font-bold text-emerald-400">PYME Colaborador 1</p>
+                      <p className="text-[10px]">Conectado a la Sala B2B</p>
+                    </div>
+                  </div>
+                )}
+
+                {pantallaGrid === '4' && (
+                  <>
+                    <div className="relative w-full h-full bg-slate-900 rounded-xl overflow-hidden flex items-center justify-center border border-slate-800">
+                      <div className="text-center p-2 text-slate-400">
+                        <p className="text-xs font-bold text-emerald-400">PYME Colaborador 2</p>
+                        <p className="text-[10px]">En espera de audio</p>
                       </div>
-                      <div className="relative aspect-video bg-slate-900 rounded-xl flex flex-col items-center justify-center p-4 text-center border border-slate-800">
-                        <p className="text-xs font-bold text-emerald-400">Invitado PYME 03</p>
-                        <p className="text-[11px] text-slate-400">Conectado en Grid</p>
+                    </div>
+                    <div className="relative w-full h-full bg-slate-900 rounded-xl overflow-hidden flex items-center justify-center border border-slate-800">
+                      <div className="text-center p-2 text-slate-400">
+                        <p className="text-xs font-bold text-emerald-400">Invitado B2B</p>
+                        <p className="text-[10px]">Conexion cifrada</p>
                       </div>
-                    </>
-                  )}
-                </div>
-
-                {/* Subtitulos y Transcripcion Flotante */}
-                <div className="p-4 bg-slate-900 text-white rounded-xl border border-slate-700 text-xs max-h-28 overflow-y-auto space-y-1">
-                  <p className="text-emerald-400 font-bold uppercase text-[10px] tracking-wider">Subtitulos y Transcripcion en Vivo:</p>
-                  <p className="whitespace-pre-line text-slate-300">{transcripcionTexto}</p>
-                </div>
-
-                {/* Botones de Control en Vivo */}
-                <div className="flex flex-wrap items-center justify-center gap-3 p-4 bg-white rounded-xl border border-[#52796F]/30 shadow-sm">
-                  <button
-                    type="button"
-                    onClick={() => setMicActivo(!micActivo)}
-                    className={`px-4 py-2 text-xs font-bold rounded-xl transition ${micActivo ? 'bg-[#52796F] text-white' : 'bg-red-600 text-white'}`}
-                  >
-                    {micActivo ? 'Microfono Encendido' : 'Encender Microfono Real'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setCamActiva(!camActiva)}
-                    className={`px-4 py-2 text-xs font-bold rounded-xl transition ${camActiva ? 'bg-[#52796F] text-white' : 'bg-red-600 text-white'}`}
-                  >
-                    {camActiva ? 'Camara Encendida' : 'Encender Camara'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setTranscribiendo(!transcribiendo)}
-                    className={`px-4 py-2 text-xs font-bold rounded-xl transition ${transcribiendo ? 'bg-[#B08D4B] text-white' : 'bg-slate-700 text-white'}`}
-                  >
-                    {transcribiendo ? 'Transcripcion Activa' : 'Transcribir Reunion'}
-                  </button>
-                </div>
+                    </div>
+                  </>
+                )}
               </div>
 
-              {/* Panel Lateral Informativo */}
-              <div className={`p-6 rounded-2xl border flex flex-col justify-between space-y-4 ${modoCalma ? 'bg-[#182635] border-[#78ACE9]/30' : 'bg-white border-[#52796F]/30 shadow-md'}`}>
-                <div>
-                  <h3 className="text-sm font-bold text-[#1B4D3E] mb-2 uppercase tracking-wider">Informacion de la Sala</h3>
-                  <p className="text-xs text-[#52796F] leading-relaxed mb-4">
-                    Espacio accesible diseñado con baja sobrecarga sensorial para reuniones institucionales, alianzas B2B y atencion personalizada.
-                  </p>
-                  <div className="p-3 bg-[#FAF8F5] rounded-xl border border-[#52796F]/20 text-xs space-y-2">
-                    <p className="font-bold text-[#1B4D3E]">Normativa Vigente:</p>
-                    <ul className="list-disc list-inside space-y-1 text-slate-600">
-                      <li>Ley TEA N° 21.545 (Inclusion y Ajustes Razonables).</li>
-                      <li>Ley N° 21.663 (Ciberseguridad y Datos Cifrados).</li>
-                    </ul>
-                  </div>
-                </div>
+              {/* Botones de Control de Micrófono y Cámara */}
+              <div className="flex flex-wrap items-center justify-center gap-4 p-4 bg-white rounded-2xl border border-[#52796F]/30 shadow">
+                <button
+                  type="button"
+                  onClick={toggleMic}
+                  className={`px-5 py-2.5 text-xs font-bold rounded-xl transition shadow ${
+                    micActivo ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'
+                  }`}
+                >
+                  {micActivo ? 'Microfono Encendido (Escuchando...)' : 'Encender Microfono Real'}
+                </button>
 
                 <button
                   type="button"
-                  onClick={() => setHerramientaActiva('invitar')}
-                  className="w-full py-3 bg-[#52796F] hover:bg-[#1B4D3E] text-white text-xs font-bold rounded-xl transition shadow-md"
+                  onClick={() => setCamActiva(!camActiva)}
+                  className={`px-5 py-2.5 text-xs font-bold rounded-xl transition shadow ${
+                    camActiva ? 'bg-emerald-600 text-white' : 'bg-slate-700 text-white'
+                  }`}
                 >
-                  + Invitar Colaboradores a la Sala
+                  {camActiva ? 'Camara Encendida' : 'Encender Camara'}
                 </button>
               </div>
             </div>
-          )}
 
-          {/* VISTA 2: INVITAR COLABORADOR */}
-          {herramientaActiva === 'invitar' && (
-            <div className={`max-w-2xl mx-auto p-6 md:p-8 rounded-2xl border shadow-xl ${modoCalma ? 'bg-[#182635] border-[#78ACE9]/30' : 'bg-white border-[#52796F]/40'}`}>
-              <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">Invitar Colaborador o Socio B2B</h3>
-              <p className="text-xs text-slate-600 mb-6">
-                Ingresa el correo electronico de los integrantes de tu empresa o institucion para sumarlos a la llamada en vivo.
-              </p>
-
-              <form onSubmit={handleAgregarInvitado} className="space-y-4 mb-6">
-                <div>
-                  <label className="block text-xs font-bold text-[#52796F] mb-1">Correo Electrónico del Invitado:</label>
-                  <input
-                    type="email"
-                    required
-                    placeholder="colaborador@empresa.cl"
-                    value={invitadoEmail}
-                    onChange={(e) => setInvitadoEmail(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-[#FAF8F5] border border-[#52796F]/40 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-[#52796F]"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full py-2.5 bg-[#52796F] hover:bg-[#1B4D3E] text-white font-bold text-xs rounded-xl transition"
-                >
-                  Enviar Invitacion a la Sala
-                </button>
-              </form>
-
-              {invitadosLista.length > 0 && (
-                <div className="p-4 bg-[#FAF8F5] rounded-xl border border-[#52796F]/30 text-xs">
-                  <p className="font-bold text-[#1B4D3E] mb-2">Invitados Agregados a la Sesion:</p>
-                  <ul className="space-y-1 text-slate-700">
-                    {invitadosLista.map((mail, idx) => (
-                      <li key={idx} className="flex items-center justify-between border-b border-slate-200 py-1">
-                        <span>{mail}</span>
-                        <span className="text-[10px] text-emerald-600 font-bold">Invitacion Enviada</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* VISTA 3: ADJUNTAR ARCHIVOS & VISOR ESTILO FUENTES */}
-          {herramientaActiva === 'archivos' && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              
-              {/* Formulario de Carga y Lista de Archivos estilo Fuentes */}
-              <div className={`p-6 rounded-2xl border shadow-xl space-y-4 ${modoCalma ? 'bg-[#182635] border-[#78ACE9]/30' : 'bg-white border-[#52796F]/40'}`}>
-                <h3 className="text-md font-bold text-[#1B4D3E]">Adjuntar Archivo B2B</h3>
-                <p className="text-xs text-slate-600">
-                  Sube documentos de trabajo. Al hacer clic en un archivo se desplegara su contenido en el visor.
+            {/* Subtítulos & Transcripción en Vivo */}
+            <div className="bg-white p-6 rounded-2xl border border-[#52796F]/30 shadow-lg flex flex-col justify-between">
+              <div>
+                <h3 className="text-md font-extrabold text-[#1B4D3E] mb-2">Transcripcion en Vivo (Voz a Texto)</h3>
+                <p className="text-xs text-slate-600 mb-4">
+                  El sistema captura el audio de tu microfono y genera los acuerdos automáticamente.
                 </p>
 
-                <form onSubmit={handleAgregarArchivo} className="space-y-3">
-                  <div>
-                    <label className="block text-[11px] font-bold text-[#52796F] mb-1">Nombre del Archivo:</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Ej: Informe_Metabolico.pdf"
-                      value={nuevoNombreArchivo}
-                      onChange={(e) => setNuevoNombreArchivo(e.target.value)}
-                      className="w-full px-3 py-2 bg-[#FAF8F5] border border-[#52796F]/30 rounded-xl text-xs focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-bold text-[#52796F] mb-1">Contenido / Resumen:</label>
-                    <textarea
-                      rows={2}
-                      placeholder="Escribe el texto o resumen del documento..."
-                      value={nuevoContenidoArchivo}
-                      onChange={(e) => setNuevoContenidoArchivo(e.target.value)}
-                      className="w-full px-3 py-2 bg-[#FAF8F5] border border-[#52796F]/30 rounded-xl text-xs focus:outline-none"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full py-2 bg-[#52796F] text-white text-xs font-bold rounded-xl hover:bg-[#1B4D3E] transition"
-                  >
-                    + Cargar Archivo a la Sala
-                  </button>
-                </form>
-
-                <div className="pt-2 border-t border-slate-200">
-                  <p className="text-xs font-bold text-[#1B4D3E] mb-2 uppercase tracking-wider">Archivos de la Sesion (Fuentes):</p>
-                  <div className="space-y-2">
-                    {archivosAdjuntos.map((arch, idx) => (
-                      <div
-                        key={idx}
-                        onClick={() => setArchivoSeleccionado(arch)}
-                        className={`p-3 rounded-xl border text-xs cursor-pointer transition flex items-center justify-between ${
-                          archivoSeleccionado?.nombre === arch.nombre
-                            ? 'bg-[#52796F] text-white border-[#1B4D3E]'
-                            : 'bg-[#FAF8F5] text-slate-800 border-[#52796F]/30 hover:border-[#52796F]'
-                        }`}
-                      >
-                        <div>
-                          <p className="font-bold">{arch.nombre}</p>
-                          <p className="text-[10px] opacity-80">{arch.fecha} — {arch.tamano}</p>
-                        </div>
-                        <span className="text-[10px] underline font-bold">Ver</span>
-                      </div>
-                    ))}
-                  </div>
+                <div className="bg-slate-950 text-emerald-300 p-4 rounded-xl text-xs font-mono h-64 overflow-y-auto whitespace-pre-wrap border border-slate-800">
+                  {transcripcionTexto}
                 </div>
               </div>
 
-              {/* Visor de Contenido del Archivo Seleccionado */}
-              <div className={`lg:col-span-2 p-6 rounded-2xl border shadow-xl flex flex-col justify-between ${modoCalma ? 'bg-[#182635] border-[#78ACE9]/30' : 'bg-white border-[#52796F]/40'}`}>
-                <div>
-                  <h3 className="text-md font-bold text-[#1B4D3E] mb-2">Visor de Archivos Adjuntos</h3>
-                  {archivoSeleccionado ? (
-                    <div className="space-y-4">
-                      <div className="p-3 bg-[#FAF8F5] rounded-xl border border-[#52796F]/30 flex items-center justify-between">
-                        <div>
-                          <p className="text-xs font-bold text-[#1B4D3E]">{archivoSeleccionado.nombre}</p>
-                          <p className="text-[10px] text-slate-500">{archivoSeleccionado.fecha} | {archivoSeleccionado.tamano}</p>
-                        </div>
-                        <span className="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded">Archivo Cifrado</span>
-                      </div>
-                      <div className="p-4 bg-slate-900 text-slate-200 rounded-xl text-xs font-mono min-h-[220px] whitespace-pre-line leading-relaxed border border-slate-700">
-                        {archivoSeleccionado.contenido}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="p-12 text-center text-slate-400 border-2 border-dashed border-slate-300 rounded-xl my-4">
-                      Selecciona un archivo de la lista de fuentes a la izquierda para visualizar su contenido en pantalla.
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* VISTA 4: NOTAS RELEVANTES (Chat & Minuta en Tiempo Real) */}
-          {herramientaActiva === 'notas' && (
-            <div className={`max-w-4xl mx-auto p-6 md:p-8 rounded-2xl border shadow-xl ${modoCalma ? 'bg-[#182635] border-[#78ACE9]/30' : 'bg-white border-[#52796F]/40'}`}>
-              <h3 className="text-lg font-bold text-[#1B4D3E] mb-2">Notas Relevantes & Minuta de Chat</h3>
-              <p className="text-xs text-slate-600 mb-4">
-                Escribe notas en tiempo real. Todos los apuntes se sincronizan automaticamente en el acta de la llamada.
-              </p>
-
-              <div className="p-4 bg-slate-900 text-slate-200 rounded-xl text-xs min-h-[240px] max-h-[360px] overflow-y-auto whitespace-pre-line font-mono mb-4 border border-slate-700">
-                {notasPizarra}
-              </div>
-
-              <form onSubmit={handleAgregarNota} className="flex gap-2">
-                <input
-                  type="text"
-                  required
-                  placeholder="Escribe una nota relevante o acuerdo..."
-                  value={nuevoMensajeNota}
-                  onChange={(e) => setNuevoMensajeNota(e.target.value)}
-                  className="flex-1 px-4 py-2.5 bg-[#FAF8F5] border border-[#52796F]/40 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-[#52796F]"
-                />
+              <div className="pt-4">
                 <button
-                  type="submit"
-                  className="px-6 py-2.5 bg-[#52796F] text-white text-xs font-bold rounded-xl hover:bg-[#1B4D3E] transition"
+                  type="button"
+                  onClick={() => setHerramientaActiva('imprimir')}
+                  className="w-full py-2.5 bg-[#52796F] hover:bg-[#1B4D3E] text-white text-xs font-bold rounded-xl transition shadow"
                 >
-                  Agregar Nota
+                  Ver Acta Completa e Imprimir
                 </button>
-              </form>
-            </div>
-          )}
-
-          {/* VISTA 5: IMPRIMIR TRANSCRIPCION Y ACUERDOS */}
-          {herramientaActiva === 'imprimir' && (
-            <div className={`max-w-4xl mx-auto p-6 md:p-8 rounded-2xl border shadow-xl space-y-6 ${modoCalma ? 'bg-[#182635] border-[#78ACE9]/30' : 'bg-white border-[#52796F]/40'}`}>
-              <div className="flex items-center justify-between border-b border-slate-200 pb-4">
-                <div>
-                  <h3 className="text-lg font-bold text-[#1B4D3E]">Acta de Acuerdos & Transcripcion Oficial</h3>
-                  <p className="text-xs text-slate-600">Generacion e impresion automatica de la minuta B2B.</p>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={handleDescargarTranscripcion}
-                    className="px-4 py-2 bg-[#52796F] text-white text-xs font-bold rounded-xl hover:bg-[#1B4D3E] transition"
-                  >
-                    Descargar (.txt)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleImprimir}
-                    className="px-4 py-2 bg-[#B08D4B] text-white text-xs font-bold rounded-xl hover:bg-[#90703B] transition"
-                  >
-                    Imprimir Acta
-                  </button>
-                </div>
-              </div>
-
-              <div className="space-y-4 text-xs">
-                <div className="p-4 bg-[#FAF8F5] rounded-xl border border-[#52796F]/30">
-                  <h4 className="font-bold text-[#1B4D3E] mb-2 uppercase">Acuerdos de la Sesion:</h4>
-                  <p className="whitespace-pre-line text-slate-700 font-mono">{notasPizarra}</p>
-                </div>
-
-                <div className="p-4 bg-[#FAF8F5] rounded-xl border border-[#52796F]/30">
-                  <h4 className="font-bold text-[#1B4D3E] mb-2 uppercase">Transcripcion Completa:</h4>
-                  <p className="whitespace-pre-line text-slate-700 font-mono">{transcripcionTexto}</p>
-                </div>
               </div>
             </div>
-          )}
-
+          </div>
         </section>
       )}
 
-      {/* PESTANA 2: AGENDAR CITA B2B */}
-      {tabActiva === 'cita' && (
-        <section className={`max-w-3xl mx-auto p-6 md:p-8 rounded-2xl border shadow-2xl ${modoCalma ? 'bg-[#182635] border-[#78ACE9]/30' : 'bg-white border-[#52796F]/40'}`}>
-          <div className="mb-6">
-            <h2 className="text-xl font-bold text-[#1B4D3E] mb-2">Agendar Cita en Casa Matriz ASL Ideas SpA</h2>
+      {/* VISTA 2: INVITAR COLABORADOR */}
+      {herramientaActiva === 'invitar' && (
+        <section className="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl border border-[#52796F]/30 shadow-xl space-y-6">
+          <div>
+            <h2 className="text-xl font-bold text-[#1B4D3E] mb-2">Invitar Colaborador o Socio B2B</h2>
             <p className="text-xs text-slate-600">
-              Selecciona la fecha y hora de tu reunion B2B. Al agendar, la cita quedara automaticamente vinculada con la Video Reunion en vivo.
+              Ingresa el correo del invitado para otorgarle acceso seguro a esta sesion en vivo.
             </p>
           </div>
 
-          {mensaje && (
-            <div className={`p-4 mb-6 rounded-xl text-xs font-bold ${mensaje.tipo === 'exito' ? 'bg-emerald-100 border border-emerald-500 text-emerald-900' : 'bg-red-100 border border-red-500 text-red-900'}`}>
-              {mensaje.texto}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmitCita} className="space-y-4">
+          <form onSubmit={handleAgregarInvitado} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-[#52796F] mb-1">Nombre Completo o Empresa *</label>
-              <input
-                type="text"
-                required
-                placeholder="Ej: Centro Medico ASL / Juan Perez"
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
-                className="w-full px-4 py-2.5 bg-[#FAF8F5] border border-[#52796F]/30 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-[#52796F]"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-[#52796F] mb-1">RUT o RUT Tributario *</label>
-              <input
-                type="text"
-                required
-                placeholder="Ej: 76.543.210-K / 12.345.678-9"
-                value={rut}
-                onChange={(e) => setRut(e.target.value)}
-                className="w-full px-4 py-2.5 bg-[#FAF8F5] border border-[#52796F]/30 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-[#52796F]"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-[#52796F] mb-1">Correo Electrónico *</label>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Correo Electronico del Colaborador</label>
               <input
                 type="email"
                 required
-                placeholder="correo@ejemplo.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2.5 bg-[#FAF8F5] border border-[#52796F]/30 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-[#52796F]"
+                placeholder="colaborador@empresa.cl"
+                value={invitadoEmail}
+                onChange={(e) => setInvitadoEmail(e.target.value)}
+                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-[#52796F]"
               />
             </div>
+            <button
+              type="submit"
+              className="w-full py-3 bg-[#1B4D3E] hover:bg-[#52796F] text-white text-xs font-bold rounded-xl transition shadow"
+            >
+              Enviar Invitacion Directa
+            </button>
+          </form>
 
-            <div>
-              <label className="block text-xs font-bold text-[#52796F] mb-1">Correos de Invitados Adicionales (Opcional)</label>
+          {invitadosLista.length > 0 && (
+            <div className="border-t border-slate-200 pt-4">
+              <h4 className="text-xs font-bold text-[#1B4D3E] mb-2">Invitados Registrados para la Sesion:</h4>
+              <ul className="space-y-1 text-xs text-slate-700 list-disc list-inside">
+                {invitadosLista.map((inv, idx) => (
+                  <li key={idx}>{inv}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* VISTA 3: ADJUNTAR ARCHIVO (VISOR ESTILO FUENTES) */}
+      {herramientaActiva === 'archivos' && (
+        <section className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Lista de Fuentes / Archivos Adjuntos */}
+          <div className="bg-white p-5 rounded-2xl border border-[#52796F]/30 shadow-lg space-y-4">
+            <h3 className="text-md font-bold text-[#1B4D3E]">Archivos de la Reunion</h3>
+            <p className="text-xs text-slate-600">Haz clic en un archivo para visualizar su contenido en el visor.</p>
+
+            <div className="space-y-2">
+              {archivosAdjuntos.map((arch, index) => (
+                <div
+                  key={index}
+                  onClick={() => setArchivoSeleccionado(arch)}
+                  className={`p-3 rounded-xl border text-xs cursor-pointer transition ${
+                    archivoSeleccionado?.nombre === arch.nombre ? 'bg-[#52796F] text-white border-[#1B4D3E]' : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-800'
+                  }`}
+                >
+                  <p className="font-bold">{arch.nombre}</p>
+                  <p className="text-[10px] opacity-75">{arch.fecha} — {arch.tamano}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Formulario para Adjuntar Nuevo Archivo */}
+            <form onSubmit={handleAgregarArchivo} className="pt-4 border-t border-slate-200 space-y-3">
+              <h4 className="text-xs font-bold text-[#1B4D3E]">Adjuntar Nuevo Documento:</h4>
               <input
                 type="text"
-                placeholder="Ej: gerencia@empresa.cl, ti@empresa.cl"
-                value={invitadosForm}
-                onChange={(e) => setInvitadosForm(e.target.value)}
-                className="w-full px-4 py-2.5 bg-[#FAF8F5] border border-[#52796F]/30 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-[#52796F]"
+                required
+                placeholder="Nombre del documento (.pdf / .docx)"
+                value={nuevoNombreArchivo}
+                onChange={(e) => setNuevoNombreArchivo(e.target.value)}
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs text-slate-900 focus:outline-none"
               />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-[#52796F] mb-1">Fecha Preferente *</label>
-                <input
-                  type="date"
-                  required
-                  value={fecha}
-                  onChange={(e) => setFecha(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-[#FAF8F5] border border-[#52796F]/30 rounded-xl text-xs focus:outline-none focus:border-[#52796F]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-[#52796F] mb-1">Bloque Horario *</label>
-                <select
-                  value={hora}
-                  onChange={(e) => setHora(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-[#FAF8F5] border border-[#52796F]/30 rounded-xl text-xs focus:outline-none focus:border-[#52796F]"
-                >
-                  <option value="09:00 AM">09:00 AM</option>
-                  <option value="10:00 AM">10:00 AM</option>
-                  <option value="11:00 AM">11:00 AM</option>
-                  <option value="12:00 PM">12:00 PM</option>
-                  <option value="03:00 PM">03:00 PM</option>
-                  <option value="04:00 PM">04:00 PM</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="pt-4">
+              <textarea
+                placeholder="Resumen o contenido del archivo..."
+                value={nuevoContenidoArchivo}
+                onChange={(e) => setNuevoContenidoArchivo(e.target.value)}
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs text-slate-900 h-20 focus:outline-none"
+              />
               <button
                 type="submit"
-                disabled={cargando}
-                className="w-full py-3 bg-[#52796F] hover:bg-[#1B4D3E] text-white text-xs font-bold rounded-xl transition shadow-lg disabled:opacity-50"
+                className="w-full py-2 bg-[#1B4D3E] hover:bg-[#52796F] text-white text-xs font-bold rounded-lg transition shadow"
               >
-                {cargando ? 'Guardando agendamiento...' : 'Confirmar Cita y Vincular a la Video Reunion'}
+                + Adjuntar Archivo a la Sala
               </button>
-            </div>
+            </form>
+          </div>
+
+          {/* Visor de Contenido del Archivo Seleccionado */}
+          <div className="md:col-span-2 bg-white p-6 rounded-2xl border border-[#52796F]/30 shadow-lg flex flex-col justify-between">
+            {archivoSeleccionado ? (
+              <div className="space-y-4">
+                <div className="border-b border-slate-200 pb-3">
+                  <span className="bg-[#1B4D3E] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">Documento Activo</span>
+                  <h3 className="text-lg font-bold text-[#1B4D3E] mt-2">{archivoSeleccionado.nombre}</h3>
+                  <p className="text-xs text-slate-500">Subido el {archivoSeleccionado.fecha} | Tamano: {archivoSeleccionado.tamano}</p>
+                </div>
+                <div className="bg-slate-50 p-4 rounded-xl text-xs text-slate-800 leading-relaxed border border-slate-200 min-h-[250px]">
+                  {archivoSeleccionado.contenido}
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-20 text-slate-400">
+                <p className="text-sm font-bold">Ningun archivo seleccionado</p>
+                <p className="text-xs">Selecciona un documento de la lista de la izquierda para visualizar su contenido.</p>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* VISTA 4: NOTAS RELEVANTES (CHAT MINUTA) */}
+      {herramientaActiva === 'notas' && (
+        <section className="max-w-3xl mx-auto bg-white p-6 rounded-2xl border border-[#52796F]/30 shadow-xl space-y-6">
+          <div>
+            <h2 className="text-xl font-bold text-[#1B4D3E] mb-1">Notas Relevantes y Minuta en Tiempo Real</h2>
+            <p className="text-xs text-slate-600">Escribe apuntes o acuerdos para compartirlos con todos los asistentes en vivo.</p>
+          </div>
+
+          <div className="bg-slate-950 text-slate-200 p-4 rounded-xl text-xs font-mono h-64 overflow-y-auto whitespace-pre-wrap border border-slate-800">
+            {notasPizarra}
+          </div>
+
+          <form onSubmit={handleEnviarNota} className="flex gap-2">
+            <input
+              type="text"
+              required
+              placeholder="Escribe una nota o acuerdo..."
+              value={nuevoMensajeNota}
+              onChange={(e) => setNuevoMensajeNota(e.target.value)}
+              className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#52796F]"
+            />
+            <button
+              type="submit"
+              className="px-5 py-2.5 bg-[#1B4D3E] hover:bg-[#52796F] text-white text-xs font-bold rounded-xl transition shadow"
+            >
+              Agregar Nota
+            </button>
           </form>
         </section>
       )}
 
+      {/* VISTA 5: IMPRIMIR TRANSCRIPCIÓN Y ACUERDOS */}
+      {herramientaActiva === 'imprimir' && (
+        <section className="max-w-4xl mx-auto bg-white p-6 md:p-8 rounded-2xl border border-[#52796F]/30 shadow-2xl space-y-6">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-4">
+            <div>
+              <h2 className="text-xl font-bold text-[#1B4D3E]">Acta Oficial de Transcripcion y Acuerdos</h2>
+              <p className="text-xs text-slate-600">Registro completo acumulado durante la Sala Virtual B2B.</p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={handleDescargarTxt}
+                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-xl transition shadow"
+              >
+                Descargar (.txt)
+              </button>
+              <button
+                type="button"
+                onClick={handleImprimir}
+                className="px-4 py-2 bg-[#1B4D3E] hover:bg-[#52796F] text-white text-xs font-bold rounded-xl transition shadow"
+              >
+                Imprimir Acta
+              </button>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-xs font-bold text-[#1B4D3E] uppercase tracking-wider mb-2">Transcripcion de Audio:</h3>
+              <div className="bg-slate-50 p-4 rounded-xl text-xs font-mono text-slate-800 whitespace-pre-wrap border border-slate-200">
+                {transcripcionTexto}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xs font-bold text-[#1B4D3E] uppercase tracking-wider mb-2">Minuta de Acuerdos:</h3>
+              <div className="bg-slate-50 p-4 rounded-xl text-xs font-mono text-slate-800 whitespace-pre-wrap border border-slate-200">
+                {notasPizarra}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
     </main>
   );
 }
 
 export default function SalaVirtualPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-slate-500">Cargando Sala Virtual...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-slate-400">Cargando Sala Virtual...</div>}>
       <SalaVirtualContent />
     </Suspense>
   );

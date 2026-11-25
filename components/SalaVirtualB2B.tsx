@@ -16,14 +16,14 @@ export interface SalaVirtualB2BProps {
 }
 
 export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
-  const {
-    isOpen,
-    onClose,
-    onCerrar,
-    portalNombre = 'Casa Matriz ASL Ideas SpA',
-    initialApp,
+  const { 
+    isOpen, 
+    onClose, 
+    onCerrar, 
+    portalNombre = 'Casa Matriz ASL Ideas SpA', 
+    initialApp, 
     appLogo,
-    portalData
+    portalData 
   } = props || {};
 
   if (isOpen === false) return null;
@@ -39,34 +39,34 @@ export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
 
   return (
     <div className="w-full bg-[#FAF8F5] p-5 sm:p-6 rounded-2xl border-2 border-[#52796F]/40 shadow-xl text-center space-y-4">
-      <div className="flex items-center justify-center space-x-2">
-        <img
-          src={logoMostrar}
-          alt="Logo App"
-          className="w-8 h-8 object-contain rounded-full border border-[#A8B58A]/40 bg-white p-0.5"
+      <div className="flex items-center justify-center space-x-3">
+        <img 
+          src={logoMostrar} 
+          alt="Logo App" 
+          className="w-10 h-10 object-contain rounded-xl border border-[#97A884]/40 bg-white p-1 shadow" 
         />
         <span className="bg-[#52796F] text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
           SALA VIRTUAL B2B EN VIVO
         </span>
       </div>
 
-      <h3 className="text-lg sm:text-xl font-black text-[#1B4D3E]">{nombreMostrar}</h3>
+      <h3 className="text-lg sm:text-xl font-black text-[#676E5E]">{nombreMostrar}</h3>
       <p className="text-xs sm:text-sm text-[#52796F] max-w-lg mx-auto">
         Entorno interactivo con videollamada dual, agenda vinculada, Ficha Oficial, archivos cifrados e invitaciones B2B.
       </p>
 
       <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
-        <Link
+        <Link 
           href={`/sala-virtual?${queryParams}`}
-          className="bg-[#52796F] hover:bg-[#1B4D3E] text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition transform hover:scale-105 block"
+          className="bg-[#52796F] hover:bg-[#676E5E] text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition transform hover:scale-105 flex items-center gap-2"
         >
-          Ingresar a la Sala de {nombreMostrar}
+          <span>Ingresar a la Sala de {nombreMostrar}</span>
         </Link>
         {handleClose && (
-          <button
+          <button 
             type="button"
-            onClick={handleClose}
-            className="bg-[#FAF8F5] border border-[#A8B58A] text-[#1B4D3E] font-bold text-xs px-4 py-3 rounded-xl hover:bg-[#E6E7D5] transition"
+            onClick={handleClose} 
+            className="bg-[#FAF8F5] border border-[#97A884] text-[#676E5E] font-bold text-xs px-4 py-3 rounded-xl hover:bg-[#E6E7D5] transition"
           >
             Cerrar Vista Previa
           </button>
