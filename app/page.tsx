@@ -8,110 +8,93 @@ export default function HomePage() {
   const [menuAbierto, setMenuAbierto] = useState(false);
 
   return (
-    <main className={`min-h-screen transition-colors duration-300 ${modoCalma ? 'bg-[#101D2B] text-[#E2E8F0]' : 'bg-[#0B132B] text-slate-100'}`}>
-      {/* Header Principal con alto contraste y diseno limpio */}
-      <header className="sticky top-0 z-50 bg-[#1C2A3A] border-b border-[#52796F]/50 shadow-2xl">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-4">
+    <main className={`min-h-screen transition-colors duration-300 ${modoCalma ? 'bg-[#101D2B] text-slate-100' : 'bg-[#0B132B] text-slate-100'}`}>
+      
+      {/* Header Principal con Alto Contraste */}
+      <header className="bg-[#1C2A3A] border-b border-[#52796F]/60 shadow-xl sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
           
-          {/* Logo y Nombre Principal */}
+          {/* Logo Principal y Subtitulo */}
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#52796F] flex items-center justify-center font-black text-white text-xl shadow-lg border border-[#84A59D]/50">
-              ASL
-            </div>
+            <img 
+              src="/logo-asl.png.png" 
+              alt="ASL Ideas SpA" 
+              className="w-14 h-14 object-contain rounded-xl bg-white p-1 border-2 border-[#52796F] shadow-md"
+            />
             <div>
-              <h1 className="text-xl md:text-2xl font-black tracking-tight text-[#90B2D9]">
+              <h1 className="text-xl md:text-2xl font-black tracking-tight text-white">
                 ASL Ideas SpA
               </h1>
-              <p className="text-xs font-semibold text-slate-300">
+              <p className="text-xs font-semibold text-emerald-400">
                 Ecosistema de Soluciones Digitales y Diseños para PYMEs y Asociados
               </p>
             </div>
           </div>
 
-          {/* Acciones del Header */}
+          {/* Acciones Header */}
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => setModoCalma(!modoCalma)}
-              className="px-4 py-2 text-xs font-bold rounded-xl bg-[#243547] text-slate-200 border border-[#52796F]/50 hover:bg-[#2C4258] transition shadow-sm"
+              className="hidden sm:inline-flex px-4 py-2 text-xs font-bold rounded-xl bg-[#52796F] text-white hover:bg-[#676E5E] transition shadow"
             >
-              {modoCalma ? 'Modo Calma Activo' : 'Activar Modo Calma'}
+              {modoCalma ? 'Modo Calma Activo (TEA)' : 'Activar Modo Calma (TEA)'}
             </button>
 
             <Link
               href="/sala-virtual"
-              className="px-4 py-2 text-xs font-bold rounded-xl bg-[#52796F] text-white hover:bg-[#676E5E] transition shadow-md flex items-center gap-2"
+              className="px-4 py-2 text-xs font-bold rounded-xl bg-emerald-600 text-white hover:bg-emerald-500 transition shadow-md"
             >
-              <span>Sala Virtual B2B</span>
+              Sala Virtual B2B
             </Link>
 
-            {/* Cuadrado de 3 Lineas (Boton de Menu Desplegable) */}
+            {/* Cuadrado de 3 lineas horizontales (Menu Desplegable) */}
             <button
               type="button"
               onClick={() => setMenuAbierto(!menuAbierto)}
-              aria-label="Menu principal"
-              className="w-10 h-10 rounded-xl bg-[#52796F] text-white flex items-center justify-center hover:bg-[#676E5E] transition shadow-md border border-[#84A59D]/40"
+              aria-label="Abrir menu principal"
+              className="w-10 h-10 rounded-xl bg-[#52796F] text-white flex flex-col items-center justify-center gap-1 hover:bg-[#676E5E] transition shadow-md border border-white/20"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
+              <span className="w-5 h-0.5 bg-white rounded-full"></span>
+              <span className="w-5 h-0.5 bg-white rounded-full"></span>
+              <span className="w-5 h-0.5 bg-white rounded-full"></span>
             </button>
           </div>
         </div>
 
-        {/* Panel Desplegable del Boton de 3 Lineas */}
+        {/* Menu Desplegable Vertical */}
         {menuAbierto && (
-          <div className="bg-[#162231] border-t border-[#52796F]/40 p-6 shadow-2xl animate-fadeIn">
-            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-[#101D2B] border-t border-[#52796F]/50 px-4 py-6 shadow-2xl">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
               
               {/* Columna 1: Salas y Agenda */}
-              <div className="space-y-3">
-                <h3 className="text-xs font-black uppercase tracking-wider text-[#78ACE9] border-b border-slate-700 pb-1">
-                  Salas Virtuales y Agendamiento
-                </h3>
-                <ul className="space-y-2 text-xs font-bold text-slate-200">
+              <div className="space-y-3 bg-[#1C2A3A] p-4 rounded-2xl border border-slate-700">
+                <h4 className="font-bold text-emerald-400 text-xs uppercase tracking-wider">
+                  Salas Virtuales & Agenda B2B
+                </h4>
+                <ul className="space-y-2 text-xs text-slate-200">
                   <li>
-                    <Link 
-                      href="/sala-virtual?app=ASL%20Ideas%20SpA" 
-                      onClick={() => setMenuAbierto(false)}
-                      className="hover:text-[#90B2D9] transition block py-1"
-                    >
-                      Oficina 01: Casa Matriz ASL Ideas SpA
+                    <Link href="/sala-virtual?app=ASL%20Ideas%20SpA" onClick={() => setMenuAbierto(false)} className="hover:text-emerald-400 transition block">
+                      Casa Matriz ASL Ideas SpA
                     </Link>
                   </li>
                   <li>
-                    <Link 
-                      href="/sala-virtual?app=LAWENMOLL" 
-                      onClick={() => setMenuAbierto(false)}
-                      className="hover:text-[#90B2D9] transition block py-1"
-                    >
-                      Oficina 02: LAWENMOLL Salud Integrativa
+                    <Link href="/sala-virtual?app=LAWENMOLL" onClick={() => setMenuAbierto(false)} className="hover:text-emerald-400 transition block">
+                      LAWENMOLL - Salud Integrativa
                     </Link>
                   </li>
                   <li>
-                    <Link 
-                      href="/sala-virtual?app=Wellness%20Web%20App" 
-                      onClick={() => setMenuAbierto(false)}
-                      className="hover:text-[#90B2D9] transition block py-1"
-                    >
-                      Oficina 03: Wellness Web App
+                    <Link href="/sala-virtual?app=Wellness%20Web%20App" onClick={() => setMenuAbierto(false)} className="hover:text-emerald-400 transition block">
+                      Wellness Web App - Movimiento & Gastronomia
                     </Link>
                   </li>
                   <li>
-                    <Link 
-                      href="/sala-virtual?app=Bienestar" 
-                      onClick={() => setMenuAbierto(false)}
-                      className="hover:text-[#90B2D9] transition block py-1"
-                    >
-                      Oficina 04: Bienestar y Shopping PYME
+                    <Link href="/sala-virtual?app=Bienestar" onClick={() => setMenuAbierto(false)} className="hover:text-emerald-400 transition block">
+                      Bienestar - Mensajeria & Marketplace
                     </Link>
                   </li>
-                  <li className="pt-2">
-                    <Link
-                      href="/sala-virtual?tab=cita"
-                      onClick={() => setMenuAbierto(false)}
-                      className="inline-block px-4 py-2 bg-[#52796F] text-white font-bold rounded-xl text-xs hover:bg-[#676E5E] transition shadow"
-                    >
+                  <li className="pt-2 border-t border-slate-700">
+                    <Link href="/sala-virtual?tab=cita" onClick={() => setMenuAbierto(false)} className="text-emerald-400 font-bold hover:underline block">
                       Agendar Cita B2B
                     </Link>
                   </li>
@@ -119,45 +102,53 @@ export default function HomePage() {
               </div>
 
               {/* Columna 2: Redes Sociales Oficiales */}
-              <div className="space-y-3">
-                <h3 className="text-xs font-black uppercase tracking-wider text-[#78ACE9] border-b border-slate-700 pb-1">
-                  Nuestras Redes Oficiales
-                </h3>
-                <div className="flex flex-col space-y-2 text-xs font-semibold text-slate-200">
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#90B2D9] transition">
-                    LinkedIn: ASL Ideas SpA
-                  </a>
-                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#90B2D9] transition">
-                    Instagram: @aslideas.cl
-                  </a>
-                  <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#90B2D9] transition">
-                    TikTok: @aslideas_oficial
-                  </a>
-                  <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#90B2D9] transition">
-                    YouTube: Canal ASL Ideas
-                  </a>
-                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#90B2D9] transition">
-                    Facebook: ASL Ideas SpA
-                  </a>
-                </div>
+              <div className="space-y-3 bg-[#1C2A3A] p-4 rounded-2xl border border-slate-700">
+                <h4 className="font-bold text-emerald-400 text-xs uppercase tracking-wider">
+                  Nuestras Redes Sociales
+                </h4>
+                <ul className="space-y-2 text-xs text-slate-200">
+                  <li>
+                    <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-emerald-400 transition block">
+                      LinkedIn Oficial
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-emerald-400 transition block">
+                      Instagram Corporativo
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="hover:text-emerald-400 transition block">
+                      TikTok Institucional
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://youtube.com" target="_blank" rel="noreferrer" className="hover:text-emerald-400 transition block">
+                      Canal de YouTube
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:text-emerald-400 transition block">
+                      Facebook ASL Ideas
+                    </a>
+                  </li>
+                </ul>
               </div>
 
               {/* Columna 3: Contacto Directo */}
-              <div className="space-y-3">
-                <h3 className="text-xs font-black uppercase tracking-wider text-[#78ACE9] border-b border-slate-700 pb-1">
-                  Contacto Directo
-                </h3>
-                <div className="text-xs space-y-2 text-slate-300">
-                  <p><strong>Telefono:</strong> +56 9 8330 2145</p>
-                  <p><strong>Correo:</strong> contacto@aslideas.cl</p>
-                  <p><strong>Ubicacion:</strong> Casa Matriz ASL Ideas SpA</p>
-                  <a
-                    href="#contacto"
-                    onClick={() => setMenuAbierto(false)}
-                    className="inline-block mt-2 text-[#90B2D9] underline hover:text-white transition font-bold"
-                  >
-                    Ver detalles completos de contacto
-                  </a>
+              <div className="space-y-3 bg-[#1C2A3A] p-4 rounded-2xl border border-slate-700">
+                <h4 className="font-bold text-emerald-400 text-xs uppercase tracking-wider">
+                  Contacto Directo & Canales
+                </h4>
+                <div className="text-xs text-slate-200 space-y-2">
+                  <p><strong>Telefono / WhatsApp:</strong> +56 9 8330 2145</p>
+                  <p><strong>Correo Electronico:</strong> contacto@aslideas.cl</p>
+                  <p><strong>Atencion B2B:</strong> Lunes a Viernes 09:00 - 18:00 hrs</p>
+                  <div className="pt-2">
+                    <a href="#contacto" onClick={() => setMenuAbierto(false)} className="inline-block px-3 py-1.5 bg-[#52796F] text-white rounded-lg text-xs font-bold hover:bg-[#676E5E] transition">
+                      Ver Canales de Atencion
+                    </a>
+                  </div>
                 </div>
               </div>
 
@@ -166,181 +157,205 @@ export default function HomePage() {
         )}
       </header>
 
-      {/* Banner Propuesta de Valor */}
+      {/* Banner Principal de Propuesta de Valor */}
       <section className="max-w-7xl mx-auto px-4 py-12 text-center space-y-4">
-        <span className="bg-[#52796F]/30 text-[#90B2D9] border border-[#52796F] text-xs font-extrabold px-4 py-2 rounded-full uppercase tracking-wider shadow-sm">
+        <span className="bg-[#52796F]/30 text-emerald-400 border border-[#52796F] text-xs font-extrabold px-4 py-2 rounded-full uppercase tracking-wider inline-block shadow">
           Red Cuerpo y Alma B2B
         </span>
         <h2 className="text-2xl md:text-4xl font-black text-white max-w-4xl mx-auto leading-tight">
           Desarrollo y soluciones accesibles para PYME y comercio asociado
         </h2>
         <p className="text-sm md:text-base text-slate-300 max-w-3xl mx-auto leading-relaxed">
-          Diseñado por y para neurodivergencias (TEA/TDAH) y condiciones crónicas. Al sumarte a nuestra red como empresa, profesional o colaborador B2B, te favoreces al multiplicar tu alcance y cambiar la calidad de vida de miles de personas.
+          Diseñado por y para neurodivergencias (TEA/TDAH) y condiciones cronicas. Al sumarte a nuestra red como empresa, profesional o colaborador B2B, te favoreces al multiplicar tu alcance y cambiar la calidad de vida de miles de personas.
         </p>
       </section>
 
       {/* Secciones de las 4 Oficinas Virtuales */}
-      <section className="max-w-7xl mx-auto px-4 pb-20 grid grid-cols-1 md:grid-cols-2 gap-8">
+      <section className="max-w-7xl mx-auto px-4 pb-16 grid grid-cols-1 md:grid-cols-2 gap-8">
         
-        {/* OFICINA 01: ASL IDEAS SPA (Quiénes Somos & Red B2B) */}
-        <div className="bg-[#1C2A3A] p-6 sm:p-8 rounded-3xl border-2 border-[#52796F]/50 shadow-2xl flex flex-col justify-between space-y-6">
+        {/* OFICINA 01: ASL IDEAS SPA */}
+        <div className="bg-[#1C2A3A] p-6 rounded-3xl border-2 border-[#52796F] shadow-2xl flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="bg-[#52796F] text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
+              <span className="bg-[#52796F] text-white text-[10px] font-black px-3 py-1 rounded-full uppercase">
                 Oficina 01
               </span>
-              <span className="text-xs text-[#90B2D9] font-bold">Casa Matriz & Alianzas B2B</span>
+              <span className="text-xs text-emerald-400 font-bold">Casa Matriz & Alianzas B2B</span>
             </div>
-
+            
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white p-2 border border-[#84A59D] flex items-center justify-center shadow-md shrink-0">
-                <img src="/logo-asl.png.png" alt="Logo ASL Ideas SpA" className="w-full h-full object-contain" />
+              <img 
+                src="/logo-asl.png.png" 
+                alt="ASL Ideas SpA Logo" 
+                className="w-16 h-16 object-contain rounded-2xl bg-white p-1 border border-slate-600 shadow"
+              />
+              <div>
+                <h3 className="text-xl font-black text-white">ASL Ideas SpA</h3>
+                <p className="text-xs text-emerald-400 font-semibold">Quienes Somos & Red Cuerpo y Alma</p>
               </div>
-              <h3 className="text-xl font-extrabold text-white">
-                ASL Ideas SpA — Quiénes Somos & Red Cuerpo y Alma
-              </h3>
             </div>
 
             <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
-              <strong>Quiénes Somos:</strong> Fundados por una Diseñadora Gráfica con neurodivergencia (TEA 1 / TDAH) y condiciones crónicas, transformamos la vivencia del autocuidado eliminando la sobrecarga sensorial y la culpa.
+              <strong>Quienes Somos:</strong> Fundados por una Disenadora Grafica con neurodivergencia (TEA 1 / TDAH) y condiciones cronicas, transformamos la vivencia del autocuidado eliminando la sobrecarga sensorial y la culpa.
             </p>
 
-            <div className="bg-[#131F2D] p-5 rounded-2xl border border-slate-700 text-xs space-y-3">
-              <h4 className="font-bold text-[#90B2D9]">Beneficios de Suscribirse y Ser Colaborador B2B:</h4>
-              <ul className="space-y-1.5 text-slate-300 list-disc list-inside">
-                <li><strong>Beneficio de Red:</strong> Formarás parte de la red Cuerpo y Alma, siendo favorecido para llegar a muchas más personas y potenciar tu impacto.</li>
-                <li><strong>Cumplimiento Normativo:</strong> Consultoría en Ley TEA N° 21.545 y Ley de Ciberseguridad N° 21.663.</li>
-                <li><strong>Vitrinas Accesibles:</strong> Software e infraestructura amable adaptada para PYMEs.</li>
-              </ul>
+            <div className="bg-[#0B132B] p-4 rounded-2xl border border-slate-700 text-xs space-y-2">
+              <h4 className="font-bold text-emerald-400 uppercase tracking-wider text-[11px]">
+                Mision & Vision Institucional:
+              </h4>
+              <p className="text-slate-300">
+                <strong>Mision:</strong> Desarrollar tecnologia amable y accesible de baja carga sensorial que elimine barreras de comunicacion y garantice el cumplimiento normativo (Ley TEA N° 21.545 y Ley de Ciberseguridad N° 21.663).
+              </p>
+              <p className="text-slate-300">
+                <strong>Vision:</strong> Liderar el ecosistema de salud digital e integracion laboral B2B para PYMEs y emprendedores neurodivergentes a nivel regional.
+              </p>
             </div>
           </div>
 
           <Link
             href="/sala-virtual?app=ASL%20Ideas%20SpA"
-            className="w-full py-3.5 bg-[#52796F] hover:bg-[#676E5E] text-white font-bold text-xs rounded-xl transition text-center shadow-lg block"
+            className="w-full py-3 bg-[#52796F] hover:bg-[#676E5E] text-white font-bold text-xs rounded-xl transition text-center shadow-lg block uppercase tracking-wider"
           >
             Ingresar a Casa Matriz & Red B2B
           </Link>
         </div>
 
-        {/* OFICINA 02: LAWENMOLL (Salud Integrativa) */}
-        <div className="bg-[#1C2A3A] p-6 sm:p-8 rounded-3xl border-2 border-[#52796F]/50 shadow-2xl flex flex-col justify-between space-y-6">
+        {/* OFICINA 02: LAWENMOLL */}
+        <div className="bg-[#1C2A3A] p-6 rounded-3xl border-2 border-[#52796F] shadow-2xl flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="bg-[#52796F] text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
+              <span className="bg-[#52796F] text-white text-[10px] font-black px-3 py-1 rounded-full uppercase">
                 Oficina 02
               </span>
-              <span className="text-xs text-[#90B2D9] font-bold">Diagnóstico & Telemedicina</span>
+              <span className="text-xs text-emerald-400 font-bold">Diagnostico & Telemedicina</span>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white p-2 border border-[#84A59D] flex items-center justify-center shadow-md shrink-0">
-                <img src="/logo-lawenmoll.jpg.png" alt="Logo LAWENMOLL" className="w-full h-full object-contain" />
+              <img 
+                src="/logo-lawenmoll.jpg.png" 
+                alt="LAWENMOLL Logo" 
+                className="w-16 h-16 object-contain rounded-2xl bg-white p-1 border border-slate-600 shadow"
+              />
+              <div>
+                <h3 className="text-xl font-black text-white">LAWENMOLL</h3>
+                <p className="text-xs text-emerald-400 font-semibold">Salud Integrativa & Fichas Cifradas</p>
               </div>
-              <h3 className="text-xl font-extrabold text-white">
-                LAWENMOLL — Salud Integrativa & Fichas Cifradas
-              </h3>
             </div>
 
             <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
-              <strong>Misión & Visión:</strong> Plataforma inteligente de evaluación metabólica y seguimiento clínico integrativo. Acompañamos el bienestar del paciente conectándolo con profesionales en un espacio transparente y encriptado.
+              Plataforma inteligente de evaluacion metabolica y seguimiento clinico integrativo, disenada para conectar pacientes con terapeutas y medicos de forma segura.
             </p>
 
-            <div className="bg-[#131F2D] p-5 rounded-2xl border border-slate-700 text-xs space-y-3">
-              <h4 className="font-bold text-[#90B2D9]">Características Principales:</h4>
-              <ul className="space-y-1.5 text-slate-300 list-disc list-inside">
-                <li>Test Metabólico y Composición Corporal Inteligente.</li>
-                <li>Fichas Clínicas SOAP encriptadas bajo estándar Ley N° 21.663.</li>
-                <li>Telemedicina integrativa con seguimiento continuo.</li>
-              </ul>
+            <div className="bg-[#0B132B] p-4 rounded-2xl border border-slate-700 text-xs space-y-2">
+              <h4 className="font-bold text-emerald-400 uppercase tracking-wider text-[11px]">
+                Mision & Vision Clinica:
+              </h4>
+              <p className="text-slate-300">
+                <strong>Mision:</strong> Brindar acompanamiento integrativo continuo y transparente mediante evaluaciones metabolicas y fichas cifradas bajo ley.
+              </p>
+              <p className="text-slate-300">
+                <strong>Vision:</strong> Consolidar la mayor red de telemedicina amable y trazabilidad metabolica para profesionales de la salud holistica.
+              </p>
             </div>
           </div>
 
           <Link
             href="/sala-virtual?app=LAWENMOLL"
-            className="w-full py-3.5 bg-[#52796F] hover:bg-[#676E5E] text-white font-bold text-xs rounded-xl transition text-center shadow-lg block"
+            className="w-full py-3 bg-[#52796F] hover:bg-[#676E5E] text-white font-bold text-xs rounded-xl transition text-center shadow-lg block uppercase tracking-wider"
           >
             Ingresar a LAWENMOLL
           </Link>
         </div>
 
-        {/* OFICINA 03: WELLNESS WEB APP (Movimiento Adaptado & Gastronomía) */}
-        <div className="bg-[#1C2A3A] p-6 sm:p-8 rounded-3xl border-2 border-[#52796F]/50 shadow-2xl flex flex-col justify-between space-y-6">
+        {/* OFICINA 03: WELLNESS WEB APP */}
+        <div className="bg-[#1C2A3A] p-6 rounded-3xl border-2 border-[#52796F] shadow-2xl flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="bg-[#52796F] text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
+              <span className="bg-[#52796F] text-white text-[10px] font-black px-3 py-1 rounded-full uppercase">
                 Oficina 03
               </span>
-              <span className="text-xs text-[#90B2D9] font-bold">Mente, Cuerpo & Gastronomía</span>
+              <span className="text-xs text-emerald-400 font-bold">Mente, Cuerpo & Gastronomia</span>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white p-2 border border-[#84A59D] flex items-center justify-center shadow-md shrink-0">
-                <img src="/logo-wellness.jpg.jpg" alt="Logo Wellness Web App" className="w-full h-full object-contain" />
+              <img 
+                src="/logo-wellness.jpg.jpg" 
+                alt="Wellness Web App Logo" 
+                className="w-16 h-16 object-contain rounded-2xl bg-white p-1 border border-slate-600 shadow"
+              />
+              <div>
+                <h3 className="text-xl font-black text-white">Wellness Web App</h3>
+                <p className="text-xs text-emerald-400 font-semibold">Movimiento Adaptado & Gastronomia Consciente</p>
               </div>
-              <h3 className="text-xl font-extrabold text-white">
-                Wellness Web App — Movimiento Adaptado & Gastronomía
-              </h3>
             </div>
 
             <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
-              <strong>Misión & Visión:</strong> Dar visibilidad a instructores y profesionales de la salud física, acercando rutinas adaptadas sin salto para proteger articulaciones y reducir el cortisol urbano sin dietas punitivas.
+              Espacio visual e interactivo para conectar mente y cuerpo. Rutinas de ejercicio sin salto para proteger tus articulaciones y reducir el cortisol urbano.
             </p>
 
-            <div className="bg-[#131F2D] p-5 rounded-2xl border border-slate-700 text-xs space-y-3">
-              <h4 className="font-bold text-[#90B2D9]">Experiencia Interactiva & Conexión:</h4>
-              <ul className="space-y-1.5 text-slate-300 list-disc list-inside">
-                <li><strong>Conexión con Profesores:</strong> Clases en vivo en salas virtuales o visita la cuenta/perfil del instructor.</li>
-                <li><strong>Gastronomía Saludable:</strong> Cocina demostrativa e ideas de alimentación nutritiva.</li>
-                <li><strong>Pausas Activas:</strong> Módulos anti-estrés para entorno laboral y personal.</li>
-              </ul>
+            <div className="bg-[#0B132B] p-4 rounded-2xl border border-slate-700 text-xs space-y-2">
+              <h4 className="font-bold text-emerald-400 uppercase tracking-wider text-[11px]">
+                Mision & Vision de Bienestar:
+              </h4>
+              <p className="text-slate-300">
+                <strong>Mision:</strong> Visibilizar a instructores y profesionales del movimiento adaptado, facilitando pausas activas y recetas nutritivas sin culpabilidad.
+              </p>
+              <p className="text-slate-300">
+                <strong>Vision:</strong> Convertirse en la plataforma referente de actividades laborales sin impacto articular y nutricion integrativa.
+              </p>
             </div>
           </div>
 
           <Link
             href="/sala-virtual?app=Wellness%20Web%20App"
-            className="w-full py-3.5 bg-[#52796F] hover:bg-[#676E5E] text-white font-bold text-xs rounded-xl transition text-center shadow-lg block"
+            className="w-full py-3 bg-[#52796F] hover:bg-[#676E5E] text-white font-bold text-xs rounded-xl transition text-center shadow-lg block uppercase tracking-wider"
           >
             Ingresar a Wellness Web App
           </Link>
         </div>
 
-        {/* OFICINA 04: BIENESTAR (Mensajería, Salud Holística & Shopping PYME) */}
-        <div className="bg-[#1C2A3A] p-6 sm:p-8 rounded-3xl border-2 border-[#52796F]/50 shadow-2xl flex flex-col justify-between space-y-6">
+        {/* OFICINA 04: BIENESTAR */}
+        <div className="bg-[#1C2A3A] p-6 rounded-3xl border-2 border-[#52796F] shadow-2xl flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="bg-[#52796F] text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
+              <span className="bg-[#52796F] text-white text-[10px] font-black px-3 py-1 rounded-full uppercase">
                 Oficina 04
               </span>
-              <span className="text-xs text-[#90B2D9] font-bold">Mensajería, Salud & Shopping PYME</span>
+              <span className="text-xs text-emerald-400 font-bold">Mensajeria, Salud & Shopping PYME</span>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white p-2 border border-[#84A59D] flex items-center justify-center shadow-md shrink-0">
-                <img src="/logo-bienestar.png.png" alt="Logo Bienestar" className="w-full h-full object-contain" />
+              <img 
+                src="/logo-bienestar.png.png" 
+                alt="Bienestar Logo" 
+                className="w-16 h-16 object-contain rounded-2xl bg-white p-1 border border-slate-600 shadow"
+              />
+              <div>
+                <h3 className="text-xl font-black text-white">Sabiduria Ancestral / Bienestar</h3>
+                <p className="text-xs text-emerald-400 font-semibold">Mensajeria, Salud Holistica & Conexion Comercial</p>
               </div>
-              <h3 className="text-xl font-extrabold text-white">
-                Sabiduría Ancestral / Bienestar — Mensajería & Shopping PYME
-              </h3>
             </div>
 
             <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
-              <strong>Misión & Visión:</strong> Fomentar una comunicación fluida y amena. Cuidar la salud emocional diaria, potenciar el descanso reparador (Módulo Morfeo) y generar ingresos extras conectando usuarios con PYMEs recomendadas.
+              App interactiva de comunicacion y retroalimentacion en salud. Permite gestionar tu vida diaria, cuidar tu salud emocional y conectar con las mejores PYMEs.
             </p>
 
-            <div className="bg-[#131F2D] p-5 rounded-2xl border border-slate-700 text-xs space-y-3">
-              <h4 className="font-bold text-[#90B2D9]">Módulos de Bienestar & Marketplace:</h4>
-              <ul className="space-y-1.5 text-slate-300 list-disc list-inside">
-                <li><strong>Salud & Hábitos:</strong> Horas médicas, hidratación, estado de ánimo y descanso REM.</li>
-                <li><strong>Módulo Morfeo:</strong> Seguimiento para un sueño profundo y reparador.</li>
-                <li><strong>Chat, Agenda & Shopping:</strong> Conexión con PYMEs y emprendimientos locales.</li>
-              </ul>
+            <div className="bg-[#0B132B] p-4 rounded-2xl border border-slate-700 text-xs space-y-2">
+              <h4 className="font-bold text-emerald-400 uppercase tracking-wider text-[11px]">
+                Mision & Vision de Comunidad:
+              </h4>
+              <p className="text-slate-300">
+                <strong>Mision:</strong> Fomentar una comunicacion fluida y amena, integrando modulo Morfeo para descanso REM y dinamizar el comercio PYME.
+              </p>
+              <p className="text-slate-300">
+                <strong>Vision:</strong> Construir una comunidad sostenible de apoyo mutuo, promocion comercial accesible y equilibrio emocional diario.
+              </p>
             </div>
           </div>
 
           <Link
             href="/sala-virtual?app=Bienestar"
-            className="w-full py-3.5 bg-[#52796F] hover:bg-[#676E5E] text-white font-bold text-xs rounded-xl transition text-center shadow-lg block"
+            className="w-full py-3 bg-[#52796F] hover:bg-[#676E5E] text-white font-bold text-xs rounded-xl transition text-center shadow-lg block uppercase tracking-wider"
           >
             Ingresar a Bienestar
           </Link>
@@ -348,33 +363,33 @@ export default function HomePage() {
 
       </section>
 
-      {/* Pie de Pagina y Seccion de Contacto Directo */}
-      <footer id="contacto" className="bg-[#162231] border-t border-[#52796F]/50 py-12 px-4">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-xs text-slate-300">
+      {/* Pie de Pagina Oficial y Contacto */}
+      <footer id="contacto" className="bg-[#1C2A3A] border-t border-[#52796F]/50 py-10 px-4 text-slate-300 text-xs">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h4 className="text-sm font-black text-white mb-2">ASL Ideas SpA</h4>
-            <p>Ecosistema de Soluciones Digitales y Diseños para PYMEs y Asociados.</p>
-            <p className="mt-2 text-slate-400">Cumplimiento Ley N° 21.545 (TEA) y Ley N° 21.663 (Ciberseguridad).</p>
+            <h4 className="font-bold text-white text-sm mb-2">ASL Ideas SpA</h4>
+            <p className="text-slate-400 leading-relaxed">
+              Ecosistema de Soluciones Digitales y Disenos para PYMEs y Asociados. Compromiso con la accesibilidad, baja sobrecarga sensorial e inclusion social.
+            </p>
           </div>
           <div>
-            <h4 className="text-sm font-black text-white mb-2">Canales Oficiales de Atencion</h4>
-            <p><strong>Telefono:</strong> +56 9 8330 2145</p>
+            <h4 className="font-bold text-white text-sm mb-2">Canales de Atencion Directa</h4>
+            <p><strong>Telefono / WhatsApp:</strong> +56 9 8330 2145</p>
             <p><strong>Correo Electrónico:</strong> contacto@aslideas.cl</p>
-            <p><strong>Atencion:</strong> Lunes a Viernes de 09:00 a 18:00 hrs</p>
+            <p><strong>Santiago, Chile</strong></p>
           </div>
           <div>
-            <h4 className="text-sm font-black text-white mb-2">Redes Sociales</h4>
-            <div className="flex flex-col space-y-1 font-semibold text-[#90B2D9]">
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn ASL Ideas SpA</a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram @aslideas.cl</a>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">YouTube Canal Oficial</a>
-            </div>
+            <h4 className="font-bold text-white text-sm mb-2">Cumplimiento Normativo</h4>
+            <p className="text-slate-400 leading-relaxed">
+              Ley N° 21.545 (Inclusion y Derechos TEA) & Ley N° 21.663 (Marco de Ciberseguridad e Infraestructura Critica).
+            </p>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto mt-8 pt-6 border-t border-slate-800 text-center text-[11px] text-slate-500">
-          © {new Date().getFullYear()} ASL Ideas SpA. Todos los derechos reservados.
+        <div className="max-w-7xl mx-auto mt-8 pt-4 border-t border-slate-700 text-center text-slate-400 text-[11px]">
+          © 2026 ASL Ideas SpA. Todos los derechos reservados.
         </div>
       </footer>
+
     </main>
   );
 }
