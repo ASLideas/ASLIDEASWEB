@@ -38,20 +38,22 @@ export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
   }).toString();
 
   return (
-    <div className="w-full bg-[#FAF8F5] p-5 sm:p-6 rounded-2xl border-2 border-[#52796F]/40 shadow-xl text-center space-y-4">
-      <div className="flex items-center justify-center space-x-2">
-        <img 
-          src={logoMostrar} 
-          alt="Logo App" 
-          className="w-10 h-10 object-contain rounded-full border border-[#52796F]/40 bg-white p-0.5" 
-        />
-        <span className="bg-[#52796F] text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
+    <div className="w-full bg-[#1C2A3A] p-5 sm:p-6 rounded-3xl border-2 border-[#52796F]/50 shadow-2xl text-center space-y-4">
+      <div className="flex items-center justify-center space-x-3">
+        <div className="w-10 h-10 rounded-xl bg-white p-1 border border-[#84A59D] flex items-center justify-center shadow shrink-0">
+          <img 
+            src={logoMostrar} 
+            alt="Logo App" 
+            className="w-full h-full object-contain" 
+          />
+        </div>
+        <span className="bg-[#52796F] text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">
           SALA VIRTUAL B2B EN VIVO
         </span>
       </div>
 
-      <h3 className="text-lg sm:text-xl font-black text-[#52796F]">{nombreMostrar}</h3>
-      <p className="text-xs sm:text-sm text-slate-700 max-w-lg mx-auto">
+      <h3 className="text-lg sm:text-xl font-black text-white">{nombreMostrar}</h3>
+      <p className="text-xs sm:text-sm text-slate-300 max-w-lg mx-auto leading-relaxed">
         Entorno interactivo con videollamada dual, agenda vinculada, Ficha Oficial, archivos cifrados e invitaciones B2B.
       </p>
 
@@ -66,7 +68,7 @@ export default function SalaVirtualB2B(props: SalaVirtualB2BProps) {
           <button 
             type="button"
             onClick={handleClose} 
-            className="bg-[#FAF8F5] border border-[#52796F] text-[#52796F] font-bold text-xs px-4 py-3 rounded-xl hover:bg-[#E6E7D5] transition"
+            className="bg-[#131F2D] border border-slate-700 text-slate-300 font-bold text-xs px-4 py-3 rounded-xl hover:bg-[#243547] transition"
           >
             Cerrar Vista Previa
           </button>
